@@ -1,0 +1,101 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "(%lld)" : {
+
+    },
+    "All" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все"
+          }
+        }
+      }
+    },
+    "Delete product" : {
+
+    },
+    "Make an order" : {
+
+    },
+    "New" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новые"
+          }
+        }
+      }
+    },
+    "Sale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скидки"
+          }
+        }
+      }
+    },
+    "Super summer sale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Супер летние скидки"
+          }
+        }
+      }
+    },
+    "There was an error" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Произошла ошибка"
+          }
+        }
+      }
+    },
+    "View all" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смотреть все"
+          }
+        }
+      }
+    },
+    "You can also like this" : {
+
+    },
+    "You can buy it right now!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы можете купить его прямо сейчас!"
+          }
+        }
+      }
+    },
+    "You’ve never seen it before!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы никогда не видели этого раньше!"
+          }
+        }
+      }
+    },
+    "Торт&\nLand" : {
+
+    }
+  },
+  "version" : "1.0"
+}

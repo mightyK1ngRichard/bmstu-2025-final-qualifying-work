@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-enum ImageState: Hashable {
+enum ImageState: Identifiable, Hashable {
     case loading
     case fetched(ImageKind)
     case error(ImageErrorKind)
@@ -16,6 +16,9 @@ enum ImageState: Hashable {
 }
 
 extension ImageState {
+    var id: Int {
+        UUID().hashValue
+    }
 
     enum ImageKind: Hashable {
         case uiImage(UIImage)

@@ -53,7 +53,7 @@ private extension CakesListView {
                     sectionView(for: section)
                 }
             case .error:
-                Text("Cлучилась ошибка")
+                Text("There was an error")
             }
         }
         .padding(.vertical, 13)
