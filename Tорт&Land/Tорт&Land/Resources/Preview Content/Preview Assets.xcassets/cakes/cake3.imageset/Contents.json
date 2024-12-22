@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "desert-tort-pirozhnoe-klubnika.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
