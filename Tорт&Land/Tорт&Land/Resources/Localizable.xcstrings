@@ -14,7 +14,19 @@
         }
       }
     },
+    "Already have account?" : {
+
+    },
     "Delete product" : {
+
+    },
+    "Don't have account?" : {
+
+    },
+    "Email" : {
+
+    },
+    "Error" : {
 
     },
     "Make an order" : {
@@ -30,6 +42,21 @@
         }
       }
     },
+    "Nickname" : {
+
+    },
+    "OK" : {
+
+    },
+    "Password" : {
+
+    },
+    "Register" : {
+
+    },
+    "Repeat Password" : {
+
+    },
     "Sale" : {
       "localizations" : {
         "ru" : {
@@ -39,6 +66,9 @@
           }
         }
       }
+    },
+    "Sign In" : {
+
     },
     "Super summer sale" : {
       "localizations" : {
