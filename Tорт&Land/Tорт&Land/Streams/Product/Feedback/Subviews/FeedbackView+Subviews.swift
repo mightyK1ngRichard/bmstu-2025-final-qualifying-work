@@ -59,7 +59,7 @@ extension FeedbackView {
 
     var textInputView: some View {
         LimitedTextField(
-            config: .init(
+            configuration: .init(
                 limit: 550,
                 tint: Constants.titleColor,
                 autoResizes: false,

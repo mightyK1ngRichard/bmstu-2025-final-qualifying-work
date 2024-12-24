@@ -4,6 +4,19 @@
     "(%lld)" : {
 
     },
+    "%lld" : {
+
+    },
+    "%lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
     "All" : {
       "localizations" : {
         "ru" : {
@@ -51,10 +64,19 @@
     "Password" : {
 
     },
+    "Please share your opinion about the product" : {
+
+    },
+    "ratings" : {
+
+    },
     "Register" : {
 
     },
     "Repeat Password" : {
+
+    },
+    "reviews" : {
 
     },
     "Sale" : {
@@ -66,6 +88,9 @@
           }
         }
       }
+    },
+    "Send review" : {
+
     },
     "Sign In" : {
 
@@ -100,6 +125,12 @@
         }
       }
     },
+    "What is you rate?" : {
+
+    },
+    "Write a review" : {
+
+    },
     "You can also like this" : {
 
     },
@@ -122,6 +153,9 @@
           }
         }
       }
+    },
+    "Your feedback" : {
+
     },
     "Торт&\nLand" : {
 

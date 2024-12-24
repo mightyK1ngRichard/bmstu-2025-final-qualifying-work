@@ -1,6 +1,6 @@
 //
 //  LimitedTextField+Configuration.swift
-//  CakesHub
+//  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 06.04.2024.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension LimitedTextField {
-    struct Config {
+    struct Configuration {
         var limit: Int
         var tint: Color = .blue
         var autoResizes: Bool = false

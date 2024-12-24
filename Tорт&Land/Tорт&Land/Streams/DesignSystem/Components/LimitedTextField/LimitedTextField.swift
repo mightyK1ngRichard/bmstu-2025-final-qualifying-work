@@ -1,6 +1,6 @@
 //
 //  LimitedTextField.swift
-//  CakesHub
+//  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 06.04.2024.
 //
@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct LimitedTextField: View {
-    var config: Config
+    var configuration: Configuration
     var hint: String
     @Binding var value: String
     @FocusState private var isKeyboardShowing: Bool
     var onSubmit: TLVoidBlock?
 
     var body: some View {
-        VStack(alignment: config.progressConfig.alignment, spacing: 12) {
+        VStack(alignment: configuration.progressConfig.alignment, spacing: 12) {
             ZStack(alignment: .top) {
                 TappedView
 
@@ -24,8 +24,8 @@ struct LimitedTextField: View {
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             .background {
-                RoundedRectangle(cornerRadius: config.borderConfig.radius)
-                    .stroke(progressColor.gradient, lineWidth: config.borderConfig.width)
+                RoundedRectangle(cornerRadius: configuration.borderConfig.radius)
+                    .stroke(progressColor.gradient, lineWidth: configuration.borderConfig.width)
             }
 
             ProgressBar
@@ -35,11 +35,11 @@ struct LimitedTextField: View {
     // MARK: Calculated Values
 
     private var progress: CGFloat {
-        max(min(CGFloat(value.count) / CGFloat(config.limit), 1), 0)
+        max(min(CGFloat(value.count) / CGFloat(configuration.limit), 1), 0)
     }
 
     private var progressColor: Color {
-        progress < 0.6 ? config.tint : progress == 1 ? .red : .orange
+        progress < 0.6 ? configuration.tint : progress == 1 ? .red : .orange
     }
 }
 
@@ -48,10 +48,10 @@ struct LimitedTextField: View {
 private extension LimitedTextField {
 
     var TappedView: some View {
-        RoundedRectangle(cornerRadius: config.borderConfig.radius)
+        RoundedRectangle(cornerRadius: configuration.borderConfig.radius)
             .fill(.clear)
-            .frame(height: config.autoResizes ? 0 : nil)
-            .contentShape(.rect(cornerRadius: config.borderConfig.radius))
+            .frame(height: configuration.autoResizes ? 0 : nil)
+            .contentShape(.rect(cornerRadius: configuration.borderConfig.radius))
             .onTapGesture {
                 isKeyboardShowing = true
             }
@@ -61,18 +61,18 @@ private extension LimitedTextField {
         TextField(hint, text: $value, axis: .vertical)
             .focused($isKeyboardShowing)
             .onChange(of: value, initial: true) { oldValue, newValue in
-                guard !config.allowsExcessTyping else { return }
-                value = String(value.prefix(config.limit))
+                guard !configuration.allowsExcessTyping else { return }
+                value = String(value.prefix(configuration.limit))
             }
             .onSubmit {
                 onSubmit?()
             }
-            .submitLabel(config.submitLabel)
+            .submitLabel(configuration.submitLabel)
     }
 
     var ProgressBar: some View {
         HStack(alignment: .top, spacing: 12) {
-            if config.progressConfig.showsRing {
+            if configuration.progressConfig.showsRing {
                 ZStack {
                     Circle()
                         .stroke(.ultraThinMaterial, lineWidth: 5)
@@ -85,8 +85,8 @@ private extension LimitedTextField {
                 .frame(width: 20, height: 20)
             }
 
-            if config.progressConfig.showsText {
-                Text("\(value.count)/\(config.limit)")
+            if configuration.progressConfig.showsText {
+                Text("\(value.count)/\(configuration.limit)")
                     .foregroundStyle(progressColor.gradient)
             }
         }
@@ -97,14 +97,10 @@ private extension LimitedTextField {
 
 #Preview {
     LimitedTextField(
-        config: .init(limit: 40, tint: .secondary, autoResizes: true),
+        configuration: .init(limit: 40, tint: .secondary, autoResizes: true),
         hint: "Type here",
         value: .constant("")
     )
     .frame(maxHeight: 150)
     .padding()
-}
-
-#Preview {
-    LimitedTextFieldPreview()
 }
