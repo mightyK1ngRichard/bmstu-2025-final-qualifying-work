@@ -22,6 +22,8 @@ struct RatingReviewsView: View {
 // MARK: - Preview
 
 #Preview {
-    RatingReviewsView(viewModel: RatingReviewsViewModelMock())
-        .environment(Coordinator())
+    NavigationStack {
+        RatingReviewsView(viewModel: RatingReviewsViewModelMock())
+    }
+    .environment(Coordinator())
 }

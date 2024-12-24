@@ -22,6 +22,35 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
         self.cakeModel = cakeModel
     }
 
+    func setEnvironmentObjects(coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
+
+    func didTapSellerInfoButton() {}
+
+    func didTapRatingReviewsButton() {
+        print("[DEBUG]: \(#function)")
+        coordinator?.addScreen(CakeDetailsModel.Screens.ratingReviews)
+    }
+
+    func didTapBackButton() {}
+
+    func didTapSimilarCake(model: CakeModel) {
+        coordinator?.addScreen(CakesListModel.Screens.details(model))
+    }
+
+    func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
+}
+
+// MARK: - Configure
+
+extension CakeDetailsViewModelMock {
+
+    func configureRatingReviewsView() -> RatingReviewsView {
+        let viewModel = RatingReviewsViewModelMock(comments: cakeModel.comments)
+        return RatingReviewsView(viewModel: viewModel)
+    }
+
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration {
         .init(imageState: thumbnail.imageState)
     }
@@ -38,7 +67,10 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
             }(),
             subtitle: cakeModel.seller.name,
             description: cakeModel.description,
-            starsConfiguration: .basic(kind: .init(rawValue: cakeModel.fillStarsCount) ?? .zero, feedbackCount: cakeModel.numberRatings)
+            starsConfiguration: .basic(
+                kind: .init(rawValue: Int(cakeModel.comments.averageRating)) ?? .zero,
+                feedbackCount: cakeModel.comments.count
+            )
         )
     }
 
@@ -47,21 +79,6 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
         return worker.configureProductCard(model: model, section: .all([]))
     }
 
-    func setEnvironmentObjects(coordinator: Coordinator) {
-        self.coordinator = coordinator
-    }
-
-    func didTapSellerInfoButton() {}
-
-    func didTapRatingReviewsButton() {}
-
-    func didTapBackButton() {}
-
-    func didTapSimilarCake(model: CakeModel) {
-        coordinator?.addScreen(CakesListModel.Screens.details(model))
-    }
-
-    func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
 }
 
 #endif

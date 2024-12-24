@@ -8,3 +8,9 @@
 import Foundation
 
 enum CakeDetailsModel {}
+
+extension CakeDetailsModel {
+    enum Screens: Hashable {
+        case ratingReviews
+    }
+}

@@ -3,6 +3,7 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 24.12.2024.
+//  Copyright © 2024 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
@@ -18,16 +19,14 @@ struct CakeModel: Identifiable, Hashable {
     let price: Double
     /// Цена со скидкой (если есть)
     let discountedPrice: Double?
-    /// Количество заполненных звёзд
-    let fillStarsCount: Int
-    /// Количество оценок
-    let numberRatings: Int
     /// Флаг любимого товара
     var isSelected: Bool
     /// Описание товара
     var description: String
     /// Схожие товары
     var similarCakes: [CakeModel]
+    /// Комментарии
+    var comments: [CommentInfo] = []
     /// Продовец
     var seller: UserModel
 }

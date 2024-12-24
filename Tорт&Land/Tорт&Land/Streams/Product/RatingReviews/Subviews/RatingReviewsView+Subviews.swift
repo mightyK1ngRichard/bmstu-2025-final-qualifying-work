@@ -40,7 +40,7 @@ extension RatingReviewsView {
     }
 
     var sectionTitle: some View {
-        Text(Constants.sectionTitle(count: viewModel.countOfComments).capitalized)
+        Text(Constants.sectionTitle(count: viewModel.comments.count).capitalized)
             .style(24, .semibold)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.init(top: 37, leading: 16, bottom: 30, trailing: 32))
@@ -48,7 +48,7 @@ extension RatingReviewsView {
 
     var reviewsBlock: some View {
         LazyVStack {
-            ForEach(viewModel.data.comments) { comment in
+            ForEach(viewModel.comments) { comment in
                 TLCommentView(
                     configuration: viewModel.configureCommentConfiguration(comment: comment)
                 )
