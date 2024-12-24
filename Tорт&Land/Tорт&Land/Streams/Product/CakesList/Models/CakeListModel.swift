@@ -17,25 +17,8 @@ extension CakesListModel {
         case new([CakeModel])
     }
 
-    struct CakeModel: Identifiable {
-        /// Код торта
-        let id: String
-        /// Состояние изображения
-        var imageState: ImageState
-        /// Название продавца
-        let sellerName: String
-        /// Название торта
-        let cakeName: String
-        /// Цена торта (без скидки)
-        let price: Double
-        /// Цена со скидкой (если есть)
-        let discountedPrice: Double?
-        /// Количество заполненных звёзд
-        let fillStarsCount: Int
-        /// Количество оценок
-        let numberRatings: Int
-        /// Флаг любимого товара
-        var isSelected: Bool
+    enum Screens: Hashable {
+        case details(CakeModel)
     }
 }
 

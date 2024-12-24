@@ -8,8 +8,7 @@
 import Foundation
 
 final class ProductCardWorker {
-
-    func configureProductCard(model: CakesListModel.CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
         let badgeViewConfiguration: TLBadgeView.Configuration? = {
             let text: String
             let kind: TLBadgeView.Configuration.Kind
@@ -38,10 +37,10 @@ final class ProductCardWorker {
         }()
 
         return .basic(
-            imageState: model.imageState,
+            imageState: model.thumbnails.first?.imageState ?? .empty,
             imageHeight: 184,
             productText: .init(
-                seller: model.sellerName,
+                seller: model.seller.name,
                 productName: model.cakeName,
                 productPrice: "\(model.price)$",
                 productDiscountedPrice: productDiscountedPrice

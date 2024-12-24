@@ -14,13 +14,15 @@ protocol CakesListDisplayLogic: CakesListViewModelInput {
 
 protocol CakesListViewModelInput {
     func fetchData()
-    func configureProductCard(model: CakesListModel.CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration
     func configureShimmeringProductCard() -> TLProductCard.Configuration
-    func didTapCell(model: CakesListModel.CakeModel)
+    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
+    func didTapCell(model: CakeModel)
+    func setEnvironmentObjects(coordinator: Coordinator)
 }
 
 protocol CakesListViewModelOutput {
-    func didTapNewsAllButton(_ configurations: [CakesListModel.CakeModel])
-    func didTapSalesAllButton(_ configurations: [CakesListModel.CakeModel])
-    func didTapLikeButton(model: CakesListModel.CakeModel, isSelected: Bool)
+    func didTapNewsAllButton(_ configurations: [CakeModel])
+    func didTapSalesAllButton(_ configurations: [CakeModel])
+    func didTapLikeButton(model: CakeModel, isSelected: Bool)
 }

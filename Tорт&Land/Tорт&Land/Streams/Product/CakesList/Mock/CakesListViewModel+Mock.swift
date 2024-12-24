@@ -14,8 +14,12 @@ import Observation
 final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOutput {
     private(set) var sections: [CakesListModel.Section] = []
     private(set) var screenState: ScreenState = .initial
+    @ObservationIgnored
     private var delay: TimeInterval = 0
+    @ObservationIgnored
     private let productWorker = ProductCardWorker()
+    @ObservationIgnored
+    private var coordinator: Coordinator?
 
     init(delay: TimeInterval) {
         self.delay = delay
@@ -28,13 +32,13 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
             await MainActor.run {
                 sections = [
                     .sale(
-                        (1...20).map { generateCakeModel(id: $0) }
+                        (1...20).map { CommonMockData.generateMockCakeModel(id: $0) }
                     ),
                     .new(
-                        (21...32).map { generateCakeModel(id: $0) }
+                        (21...32).map { CommonMockData.generateMockCakeModel(id: $0) }
                     ),
                     .all(
-                        (33...40).map { generateCakeModel(id: $0) }
+                        (33...40).map { CommonMockData.generateMockCakeModel(id: $0) }
                     )
                 ]
                 screenState = .finished
@@ -42,19 +46,20 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
         }
     }
 
-    func didTapNewsAllButton(_ configurations: [CakesListModel.CakeModel]) {
+    func didTapNewsAllButton(_ configurations: [CakeModel]) {
         print("[DEBUG]: Нажали секцию news")
     }
 
-    func didTapSalesAllButton(_ configurations: [CakesListModel.CakeModel]) {
+    func didTapSalesAllButton(_ configurations: [CakeModel]) {
         print("[DEBUG]: Нажали секцию sales")
     }
 
-    func didTapCell(model: CakesListModel.CakeModel) {
+    func didTapCell(model: CakeModel) {
         print("[DEBUG]: Нажали на торт: \(model.id)")
+        coordinator?.addScreen(CakesListModel.Screens.details(model))
     }
 
-    func didTapLikeButton(model: CakesListModel.CakeModel, isSelected: Bool) {
+    func didTapLikeButton(model: CakeModel, isSelected: Bool) {
         print("[DEBUG]: Нажали лайк для торта: \(model.id), isSelected: \(isSelected)")
     }
 }
@@ -63,31 +68,26 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
 
 extension CakesListViewModelMock {
 
+    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
+        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
+        return CakeDetailsView(viewModel: viewModel)
+    }
+
     func configureShimmeringProductCard() -> TLProductCard.Configuration {
         .shimmering(imageHeight: 184)
     }
 
-    func configureProductCard(model: CakesListModel.CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
         productWorker.configureProductCard(model: model, section: section)
     }
 }
 
-// MARK: - Helpers
+// MARK: - Setter
 
-private extension CakesListViewModelMock {
+extension CakesListViewModelMock {
 
-    func generateCakeModel(id: Int) -> CakesListModel.CakeModel {
-        .init(
-            id: String(id),
-            imageState: .fetched(.uiImage([.cake1, .cake2, .cake3].randomElement() ?? .cake1)),
-            sellerName: "Пермяков Дмитрий #\(id)",
-            cakeName: "Название торта #\(id)",
-            price: Double("1\(id)") ?? 0,
-            discountedPrice: Double(id),
-            fillStarsCount: id % 5,
-            numberRatings: id,
-            isSelected: id % 2 == 0
-        )
+    func setEnvironmentObjects(coordinator: Coordinator) {
+        self.coordinator = coordinator
     }
 }
 

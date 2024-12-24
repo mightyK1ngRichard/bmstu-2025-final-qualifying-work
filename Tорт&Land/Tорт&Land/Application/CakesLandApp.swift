@@ -18,6 +18,7 @@ struct CakesLandApp: App {
                 contentView
             }
             .environment(startScreenControl)
+            .environment(coordinator)
         }
     }
 }

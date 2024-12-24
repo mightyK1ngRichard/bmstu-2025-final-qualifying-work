@@ -8,14 +8,15 @@
 import Foundation
 
 protocol CakeDetailsDisplayLogic: CakeDetailsViewModelInput {
-    var cakeModel: CakeDetailsModel.CakeModel { get }
+    var cakeModel: CakeModel { get }
     var isOwnedByUser: Bool { get }
-    var currentUser: CakeDetailsModel.UserModel { get }
+    var currentUser: UserModel { get }
 }
 
 protocol CakeDetailsViewModelInput {
-    func configureImageViewConfiguration(for imageState: ImageState) -> TLImageView.Configuration
-    func configureSimilarProductConfiguration(for model: CakeDetailsModel.CakeModel) -> TLProductCard.Configuration
+    func setEnvironmentObjects(coordinator: Coordinator)
+    func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration
+    func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration
 }
 
@@ -23,4 +24,6 @@ protocol CakeDetailsViewModelOutput {
     func didTapSellerInfoButton()
     func didTapRatingReviewsButton()
     func didTapBackButton()
+    func didTapSimilarCake(model: CakeModel)
+    func didTapCakeLike(model: CakeModel, isSelected: Bool)
 }

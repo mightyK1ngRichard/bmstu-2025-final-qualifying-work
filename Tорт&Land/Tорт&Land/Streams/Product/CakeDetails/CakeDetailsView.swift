@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CakeDetailsView: View {
     @State var viewModel: CakeDetailsDisplayLogic & CakeDetailsViewModelOutput
+    @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
         mainContainer
@@ -18,5 +19,10 @@ struct CakeDetailsView: View {
 // MARK: - Preview
 
 #Preview {
-    CakeDetailsView(viewModel: CakeDetailsViewModelMock())
+    @Previewable
+    @State var coordinator = Coordinator()
+    NavigationStack(path: $coordinator.navPath) {
+        CakeDetailsView(viewModel: CakeDetailsViewModelMock())
+    }
+    .environment(coordinator)
 }

@@ -10,13 +10,20 @@
 import Foundation
 
 final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewModelOutput {
-    let currentUser = CakeDetailsModel.UserModel(id: "2", name: "Мария")
+    let currentUser = UserModel(id: "1", name: "Дмитрий Пермяков")
     var isOwnedByUser: Bool { cakeModel.seller.id == currentUser.id }
-    private(set) var cakeModel = CakeDetailsModel.CakeModel.mockData
+    private(set) var cakeModel: CakeModel
+    @ObservationIgnored
     private let worker = ProductCardWorker()
+    @ObservationIgnored
+    private var coordinator: Coordinator?
 
-    func configureImageViewConfiguration(for imageState: ImageState) -> TLImageView.Configuration {
-        .init(imageState: imageState)
+    init(cakeModel: CakeModel = CommonMockData.generateMockCakeModel(id: 23)) {
+        self.cakeModel = cakeModel
+    }
+
+    func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration {
+        .init(imageState: thumbnail.imageState)
     }
 
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration {
@@ -35,20 +42,13 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
         )
     }
 
-    func configureSimilarProductConfiguration(for model: CakeDetailsModel.CakeModel) -> TLProductCard.Configuration {
-        let model = CakesListModel.CakeModel(
-            id: model.id,
-            imageState: model.images.first ?? .empty,
-            sellerName: model.seller.name,
-            cakeName: model.cakeName,
-            price: model.price,
-            discountedPrice: model.discountedPrice,
-            fillStarsCount: model.fillStarsCount,
-            numberRatings: model.numberRatings,
-            isSelected: model.isFavorite
-        )
+    func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
         // FIXME: section: .all([]) поправить и придумать логику оценивания бейджа без хадкодинга
         return worker.configureProductCard(model: model, section: .all([]))
+    }
+
+    func setEnvironmentObjects(coordinator: Coordinator) {
+        self.coordinator = coordinator
     }
 
     func didTapSellerInfoButton() {}
@@ -56,50 +56,12 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
     func didTapRatingReviewsButton() {}
 
     func didTapBackButton() {}
-}
 
-// MARK: - CakeDetailsModel CakeModel
-
-private extension CakeDetailsModel.CakeModel {
-    static var mockData: CakeDetailsModel.CakeModel {
-        var cake = generateCakeModel(id: 23)
-        cake.similarCakes = (0...5).map { .generateCakeModel(id: $0) }
-        return cake
+    func didTapSimilarCake(model: CakeModel) {
+        coordinator?.addScreen(CakesListModel.Screens.details(model))
     }
 
-    static func generateCakeModel(id: Int) -> CakeDetailsModel.CakeModel {
-        CakeDetailsModel.CakeModel(
-            id: String(id),
-            images: [
-                .fetched(.uiImage(.cake1)),
-                .fetched(.uiImage(.cake2)),
-                .fetched(.uiImage(.cake3)),
-            ].shuffled(),
-            isFavorite: true,
-            cakeName: "Моковый торт #\(id)",
-            price: 19.99,
-            discountedPrice: 15.99,
-            description: """
-            Состав:
-            Бисквит (мука, яйцо, сахар)  Крем (творожный сыр, сливки 33%, сахарная пудра)  Мусс (творожный сыр, сливки 33%, сахар, печенье Орео, загуститель)  Белый шоколад, пищевой краситель
-            Размер:
-            Ширина - 12 см
-            Высота - 8 см
-            
-            Вес товара:
-            700 гр.
-            Изготовитель:
-            Ms cake
-            """,
-            fillStarsCount: id % 5,
-            numberRatings: 10,
-            similarCakes: [],
-            seller: .init(
-                id: "1",
-                name: "Дмитрий Пермяков"
-            )
-        )
-    }
+    func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
 }
 
 #endif

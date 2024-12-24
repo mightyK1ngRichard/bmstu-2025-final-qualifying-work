@@ -131,7 +131,7 @@ private extension CakesListView {
 
     func cakesSectionView(
         section: CakesListModel.Section,
-        models: [CakesListModel.CakeModel],
+        models: [CakeModel],
         action: TLVoidBlock? = nil
     ) -> some View {
         VStack(spacing: 22) {
@@ -153,7 +153,7 @@ private extension CakesListView {
 
     func horizontalCakesContainer(
         section: CakesListModel.Section,
-        models: [CakesListModel.CakeModel]
+        models: [CakeModel]
     ) -> some View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 16) {
@@ -180,7 +180,7 @@ private extension CakesListView {
     @ViewBuilder
     func gridCakesContainer(
         section: CakesListModel.Section,
-        models: [CakesListModel.CakeModel]
+        models: [CakeModel]
     ) -> some View {
         LazyVGrid(
             columns: Array(repeating:  GridItem(), count: 2),

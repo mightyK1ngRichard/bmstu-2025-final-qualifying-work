@@ -21,6 +21,7 @@ extension CakeDetailsView {
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .navigationTitle(viewModel.cakeModel.cakeName)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -41,10 +42,10 @@ private extension CakeDetailsView {
 
     var imagesCarousel: some View {
         ScrollView(.horizontal) {
-            LazyHStack(spacing: 4) {
-                ForEach(viewModel.cakeModel.images) { imageState in
+            HStack(spacing: 4) {
+                ForEach(viewModel.cakeModel.thumbnails) { thumbnail in
                     TLImageView(
-                        configuration: viewModel.configureImageViewConfiguration(for: imageState)
+                        configuration: viewModel.configureImageViewConfiguration(for: thumbnail)
                     )
                     .frame(width: 275, height: 473)
                 }
@@ -79,9 +80,12 @@ private extension CakeDetailsView {
                     TLProductCard(
                         configuration: viewModel.configureSimilarProductConfiguration(for: simillarCake)
                     ) { isSelected in
+                        viewModel.didTapCakeLike(model: simillarCake, isSelected: isSelected)
                     }
                     .frame(width: 148)
+                    .contentShape(.rect)
                     .onTapGesture {
+                        viewModel.didTapSimilarCake(model: simillarCake)
                     }
                 }
             }
@@ -129,9 +133,12 @@ private extension CakeDetailsView {
 // MARK: - Preview
 
 #Preview {
-    NavigationStack {
+    @Previewable
+    @State var coordinator = Coordinator()
+    NavigationStack(path: $coordinator.navPath) {
         CakeDetailsView(viewModel: CakeDetailsViewModelMock())
     }
+    .environment(coordinator)
 }
 
 // MARK: - Constants
