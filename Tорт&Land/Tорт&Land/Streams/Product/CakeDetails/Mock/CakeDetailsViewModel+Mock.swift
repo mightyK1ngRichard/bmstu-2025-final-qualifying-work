@@ -33,7 +33,9 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
         coordinator?.addScreen(CakeDetailsModel.Screens.ratingReviews)
     }
 
-    func didTapBackButton() {}
+    func didTapBackButton() {
+        coordinator?.openPreviousScreen()
+    }
 
     func didTapSimilarCake(model: CakeModel) {
         coordinator?.addScreen(CakesListModel.Screens.details(model))

@@ -30,6 +30,8 @@ private extension CakesListView {
         switch screen {
         case let .details(cakeModel):
             viewModel.assemblyDetailsView(model: cakeModel)
+        case let .tags(cakes, sectionKind):
+            viewModel.assemblyTagsView(cakes: cakes, sectionKind: sectionKind)
         }
     }
 }
@@ -40,9 +42,7 @@ private extension CakesListView {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
-        CakesListView(
-            viewModel: CakesListViewModelMock(delay: 2)
-        )
+        CakesListView(viewModel: CakesListViewModelMock(delay: 2))
     }
     .environment(coordinator)
 }

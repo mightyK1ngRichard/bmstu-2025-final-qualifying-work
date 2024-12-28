@@ -35,10 +35,10 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
                         (1...20).map { CommonMockData.generateMockCakeModel(id: $0) }
                     ),
                     .new(
-                        (21...32).map { CommonMockData.generateMockCakeModel(id: $0) }
+                        (21...32).map { CommonMockData.generateMockCakeModel(id: $0, withDiscount: false) }
                     ),
                     .all(
-                        (33...40).map { CommonMockData.generateMockCakeModel(id: $0) }
+                        (33...40).map { CommonMockData.generateMockCakeModel(id: $0, withDiscount: false) }
                     )
                 ]
                 screenState = .finished
@@ -46,12 +46,14 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
         }
     }
 
-    func didTapNewsAllButton(_ configurations: [CakeModel]) {
+    func didTapNewsAllButton(_ cakes: [CakeModel]) {
         print("[DEBUG]: Нажали секцию news")
+        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, .new))
     }
 
-    func didTapSalesAllButton(_ configurations: [CakeModel]) {
+    func didTapSalesAllButton(_ cakes: [CakeModel]) {
         print("[DEBUG]: Нажали секцию sales")
+        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, .sales))
     }
 
     func didTapCell(model: CakeModel) {
@@ -71,6 +73,11 @@ extension CakesListViewModelMock {
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
         let viewModel = CakeDetailsViewModelMock(cakeModel: model)
         return CakeDetailsView(viewModel: viewModel)
+    }
+
+    func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView {
+        let viewModel = ProductsGridViewModelMock(cakes: cakes, sectionKind: sectionKind)
+        return ProductsGridView(viewModel: viewModel)
     }
 
     func configureShimmeringProductCard() -> TLProductCard.Configuration {

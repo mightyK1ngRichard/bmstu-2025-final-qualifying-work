@@ -10,7 +10,7 @@
 import Foundation
 
 enum CommonMockData {
-    static func generateMockCakeModel(id: Int) -> CakeModel {
+    static func generateMockCakeModel(id: Int, withDiscount: Bool = true) -> CakeModel {
         CakeModel(
             id: String(id),
             thumbnails: [
@@ -20,8 +20,8 @@ enum CommonMockData {
             ].shuffled(),
             cakeName: "Моковый торт #\(id)",
             price: 19.99,
-            discountedPrice: 15.99,
-            isSelected: id % 2 == 0,
+            discountedPrice: withDiscount ? 15.99 : nil,
+            isSelected: Bool.random(),
             description: Constants.longDescription,
             similarCakes: [],
             comments: (1...10).map {

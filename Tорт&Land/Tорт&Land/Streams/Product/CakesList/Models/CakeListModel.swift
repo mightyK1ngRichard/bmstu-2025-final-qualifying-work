@@ -19,6 +19,7 @@ extension CakesListModel {
 
     enum Screens: Hashable {
         case details(CakeModel)
+        case tags([CakeModel], ProductsGridModel.SectionKind)
     }
 }
 

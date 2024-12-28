@@ -17,12 +17,13 @@ protocol CakesListViewModelInput {
     func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration
     func configureShimmeringProductCard() -> TLProductCard.Configuration
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
+    func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView
     func didTapCell(model: CakeModel)
     func setEnvironmentObjects(coordinator: Coordinator)
 }
 
 protocol CakesListViewModelOutput {
-    func didTapNewsAllButton(_ configurations: [CakeModel])
-    func didTapSalesAllButton(_ configurations: [CakeModel])
+    func didTapNewsAllButton(_ cakes: [CakeModel])
+    func didTapSalesAllButton(_ cakes: [CakeModel])
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
 }
