@@ -53,8 +53,6 @@ extension View {
     }
 }
 
-// MARK: Helper
-
 struct RemovebackgroundColor: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         UIView()
@@ -63,6 +61,50 @@ struct RemovebackgroundColor: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {
         DispatchQueue.main.async {
             uiView.superview?.superview?.backgroundColor = .clear
+        }
+    }
+}
+
+// MARK: - Scroll view
+
+struct OffsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func offsetX(completion: @escaping (CGFloat) -> Void) -> some View {
+        overlay {
+            GeometryReader {
+                let minX = $0.frame(in: .scrollView(axis: .horizontal)).minX
+
+                Color.clear
+                    .preference(key: OffsetKey.self, value: minX)
+                    .onPreferenceChange(OffsetKey.self, perform: completion)
+            }
+        }
+    }
+
+    func tabMask(_ progress: CGFloat, count: CGFloat) -> some View {
+        ZStack {
+            self
+                .foregroundStyle(TLColor<TextPalette>.textSecondary.color)
+
+            self
+                .foregroundStyle(TLColor<TextPalette>.textPrimary.color)
+                .mask {
+                    GeometryReader {
+                        let size = $0.size
+                        let capsuleWidth = size.width / count
+                        Capsule()
+                            .frame(width: capsuleWidth)
+                            .offset(x: progress * (size.width - capsuleWidth))
+                    }
+                }
         }
     }
 }

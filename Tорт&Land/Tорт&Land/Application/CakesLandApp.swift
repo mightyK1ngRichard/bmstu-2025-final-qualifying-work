@@ -24,7 +24,6 @@ struct CakesLandApp: App {
 }
 
 private extension CakesLandApp {
-
     @ViewBuilder
     var contentView: some View {
         switch startScreenControl.screenKind {
@@ -32,8 +31,64 @@ private extension CakesLandApp {
             let viewModel = AuthViewModelMock()
             AuthView(viewModel: viewModel)
         case .cakesList:
-            let viewModel = CakesListViewModelMock(delay: 2)
-            CakesListView(viewModel: viewModel)
+            tabBarView
         }
+    }
+
+    var tabBarView: some View {
+        VStack(spacing: 0) {
+            allTabBarViews
+            CustomTabBarView()
+        }
+    }
+}
+
+// MARK: - Tab Views
+
+private extension CakesLandApp {
+    @ViewBuilder
+    var allTabBarViews: some View {
+        switch coordinator.activeTab {
+        case .house:
+            cakeListScreen
+        case .categories:
+            categoriesScreen
+        case .chat:
+            chatScreen
+        case .notifications:
+            notificationsScreen
+        case .profile:
+            profileScreen
+        }
+    }
+
+    @ViewBuilder
+    var cakeListScreen: some View {
+        let viewModel = CakesListViewModelMock(delay: 2)
+        CakesListView(viewModel: viewModel)
+    }
+
+    @ViewBuilder
+    var categoriesScreen: some View {
+        let viewModel = CategoriesViewModelMock()
+        CategoriesView(viewModel: viewModel)
+    }
+
+    @ViewBuilder
+    var chatScreen: some View {
+        Text("Chat")
+            .frame(maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    var notificationsScreen: some View {
+        Text("Notifications")
+            .frame(maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    var profileScreen: some View {
+        Text("Profile")
+            .frame(maxHeight: .infinity)
     }
 }

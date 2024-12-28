@@ -30,6 +30,15 @@
     "Already have account?" : {
 
     },
+    "Categories" : {
+
+    },
+    "Chat" : {
+
+    },
+    "Chats" : {
+
+    },
     "Delete product" : {
 
     },
@@ -42,7 +51,16 @@
     "Error" : {
 
     },
+    "Home" : {
+
+    },
+    "kids" : {
+
+    },
     "Make an order" : {
+
+    },
+    "men" : {
 
     },
     "New" : {
@@ -58,6 +76,12 @@
     "Nickname" : {
 
     },
+    "Nothing found" : {
+
+    },
+    "Notifications" : {
+
+    },
     "OK" : {
 
     },
@@ -65,6 +89,9 @@
 
     },
     "Please share your opinion about the product" : {
+
+    },
+    "Profile" : {
 
     },
     "Rating&Reviews" : {
@@ -91,6 +118,9 @@
           }
         }
       }
+    },
+    "Search" : {
+
     },
     "Send review" : {
 
@@ -129,6 +159,9 @@
       }
     },
     "What is you rate?" : {
+
+    },
+    "women" : {
 
     },
     "Write a review" : {
