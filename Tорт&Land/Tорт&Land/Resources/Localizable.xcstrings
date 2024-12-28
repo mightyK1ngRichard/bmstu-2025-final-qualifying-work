@@ -1,0 +1,168 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "(%lld)" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "All" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все"
+          }
+        }
+      }
+    },
+    "Already have account?" : {
+
+    },
+    "Delete product" : {
+
+    },
+    "Don't have account?" : {
+
+    },
+    "Email" : {
+
+    },
+    "Error" : {
+
+    },
+    "Make an order" : {
+
+    },
+    "New" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новые"
+          }
+        }
+      }
+    },
+    "Nickname" : {
+
+    },
+    "OK" : {
+
+    },
+    "Password" : {
+
+    },
+    "Please share your opinion about the product" : {
+
+    },
+    "Rating&Reviews" : {
+
+    },
+    "ratings" : {
+
+    },
+    "Register" : {
+
+    },
+    "Repeat Password" : {
+
+    },
+    "reviews" : {
+
+    },
+    "Sale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скидки"
+          }
+        }
+      }
+    },
+    "Send review" : {
+
+    },
+    "Sign In" : {
+
+    },
+    "Super summer sale" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Супер летние скидки"
+          }
+        }
+      }
+    },
+    "There was an error" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Произошла ошибка"
+          }
+        }
+      }
+    },
+    "View all" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смотреть все"
+          }
+        }
+      }
+    },
+    "What is you rate?" : {
+
+    },
+    "Write a review" : {
+
+    },
+    "You can also like this" : {
+
+    },
+    "You can buy it right now!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы можете купить его прямо сейчас!"
+          }
+        }
+      }
+    },
+    "You’ve never seen it before!" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы никогда не видели этого раньше!"
+          }
+        }
+      }
+    },
+    "Your feedback" : {
+
+    },
+    "Торт&\nLand" : {
+
+    }
+  },
+  "version" : "1.0"
+}
