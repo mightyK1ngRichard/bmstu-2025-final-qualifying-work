@@ -79,10 +79,7 @@ extension CakeDetailsViewModelMock {
             }(),
             subtitle: cakeModel.seller.name,
             description: cakeModel.description,
-            starsConfiguration: .basic(
-                kind: .init(rawValue: Int(cakeModel.comments.averageRating)) ?? .zero,
-                feedbackCount: cakeModel.comments.count
-            )
+            starsConfiguration: cakeModel.starsConfiguration
         )
     }
 

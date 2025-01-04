@@ -230,7 +230,10 @@ private extension CakesListView {
 // MARK: - Preview
 
 #Preview("Mockable delay") {
-    CakesListView(viewModel: CakesListViewModelMock(delay: 5))
+    CakesListView(
+        viewModel: CakesListViewModelMock(delay: 5)
+    )
+    .environment(Coordinator())
 }
 
 // MARK: - Constants

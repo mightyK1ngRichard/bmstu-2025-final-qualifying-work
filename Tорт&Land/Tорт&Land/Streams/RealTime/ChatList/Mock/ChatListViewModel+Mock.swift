@@ -49,6 +49,14 @@ final class ChatListViewModelMock: ChatListDisplayLogic & ChatListViewModelOutpu
         coordinator?.addScreen(ChatListModel.Screens.chat(cell))
     }
 
+    func setEnvironmentObjects(coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
+}
+
+// MARK: - Configurations
+
+extension ChatListViewModelMock {
     func configureChatView(with model: ChatListModel.ChatCellModel) -> ChatView {
         let viewModel = ChatViewModelMock()
         return ChatView(viewModel: viewModel)
@@ -61,10 +69,6 @@ final class ChatListViewModelMock: ChatListDisplayLogic & ChatListViewModelOutpu
             subtitle: model.lastMessage,
             time: model.timeMessage.formattedString(format: "HH:mm")
         )
-    }
-
-    func setEnvironmentObjects(coordinator: Coordinator) {
-        self.coordinator = coordinator
     }
 }
 

@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension CakeDetailsView {
-
     var mainContainer: some View {
         ScrollView {
             VStack(spacing: 22) {
@@ -39,7 +38,6 @@ extension CakeDetailsView {
 // MARK: - Private UI Subviews
 
 private extension CakeDetailsView {
-
     var imagesCarousel: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 4) {
@@ -144,7 +142,6 @@ private extension CakeDetailsView {
 // MARK: - Constants
 
 private extension CakeDetailsView {
-
     enum Constants {
         static let similarBlockHeaderTitle = String(localized: "You can also like this")
         static let ratingReviewsTitle = String(localized: "Rating&Reviews")

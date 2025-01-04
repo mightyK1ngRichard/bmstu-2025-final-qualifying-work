@@ -61,7 +61,15 @@ extension CakeModel {
                 productDiscountedPrice: productDiscountedPrice
             ),
             badgeViewConfiguration: badgeViewConfiguration,
-            productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected))
+            productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected)),
+            starsViewConfiguration: starsConfiguration
+        )
+    }
+
+    var starsConfiguration: TLStarsView.Configuration {
+        .basic(
+            kind: .init(rawValue: Int(comments.averageRating)) ?? .zero,
+            feedbackCount: comments.count
         )
     }
 
