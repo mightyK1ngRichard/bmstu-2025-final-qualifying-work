@@ -13,4 +13,8 @@ extension Date {
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
+
+    var formattedHHmm: String {
+        formattedString(format: "HH:mm")
+    }
 }

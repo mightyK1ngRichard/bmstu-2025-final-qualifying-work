@@ -67,7 +67,7 @@ extension ChatListViewModelMock {
             imageState: model.user.avatarImage,
             title: model.user.name,
             subtitle: model.lastMessage,
-            time: model.timeMessage.formattedString(format: "HH:mm")
+            time: model.timeMessage.formattedHHmm
         )
     }
 }

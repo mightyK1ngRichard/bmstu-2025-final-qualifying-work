@@ -38,6 +38,14 @@ extension ChatView {
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                headerInfo
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                interlocutorAvatar
+            }
+        }
     }
 }
 
@@ -95,14 +103,33 @@ private extension ChatView {
         }
         .padding(.horizontal, 8)
     }
+
+    var headerInfo: some View {
+        VStack {
+            Text(viewModel.interlocutor.name)
+                .style(17, .medium, TLColor<TextPalette>.textPrimary.color)
+            Text(viewModel.interlocutor.mail)
+                .style(13, .regular, TLColor<TextPalette>.textSecondary.color)
+        }
+    }
+
+    var interlocutorAvatar: some View {
+        TLImageView(
+            configuration: viewModel.configureInterlocutorAvatar()
+        )
+        .frame(width: 37, height: 37)
+        .clipShape(.circle)
+    }
 }
 
 // MARK: - Preview
 
 #Preview {
-    ChatView(
-        viewModel: ChatViewModelMock()
-    )
+    NavigationStack {
+        ChatView(
+            viewModel: ChatViewModelMock()
+        )
+    }
     .environment(Coordinator())
 }
 
