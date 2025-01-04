@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct ShimmeringView: View {
+    var kind: ShimmeringKind = .default
     @State private var isAnimating = false
     @State private var startPoint = UnitPoint(x: -1.8, y: -1.2)
     @State private var endPoint = UnitPoint(x: 0, y: -0.2)
 
     var body: some View {
         LinearGradient(
-            colors: Constants.colors,
+            colors: kind.colors,
             startPoint: startPoint,
             endPoint: endPoint
         )
@@ -30,21 +31,66 @@ struct ShimmeringView: View {
     }
 }
 
+// MARK: - ShimmeringKind
+
+extension ShimmeringView {
+    enum ShimmeringKind: Hashable {
+        case `default`
+        case inverted
+    }
+}
+
+private extension ShimmeringView.ShimmeringKind {
+    var colors: [Color] {
+        switch self {
+        case .default:
+            return [
+                Constants.shimmering2,
+                Constants.shimmering1,
+                Constants.shimmering2,
+            ]
+        case .inverted:
+            return [
+                Constants.shimmering1,
+                Constants.shimmering2,
+                Constants.shimmering1,
+            ]
+        }
+    }
+}
+
 // MARK: - Preview
 
 #Preview {
-    ShimmeringView()
+    VStack {
+        VStack {
+            ShimmeringView()
+                .frame(height: 100)
+
+            ShimmeringView(kind: .inverted)
+                .frame(height: 100)
+        }
+
+        VStack {
+            TLNotificationCell(
+                configuration: .init(isShimmering: true)
+            )
+
+            TLProductCard(
+                configuration: .shimmering(imageHeight: 140)
+            )
+            .frame(width: 140)
+        }
+        .padding()
+        .background(TLColor<BackgroundPalette>.bgMainColor.color)
+    }
 }
 
 // MARK: - Constants
 
-private extension ShimmeringView {
+private extension ShimmeringView.ShimmeringKind {
     enum Constants {
-        static let shimmeringColor = TLColor<BackgroundPalette>.bgShimmering.color
-        static let colors = [
-            shimmeringColor,
-            Color(uiColor: UIColor.systemGray5),
-            shimmeringColor
-        ]
+        static let shimmering1 = TLColor<BackgroundPalette>.bgMainColor.color
+        static let shimmering2 = TLColor<BackgroundPalette>.bgCommentView.color
     }
 }

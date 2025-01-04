@@ -67,8 +67,8 @@ private extension RootView {
 
     @ViewBuilder
     var notificationsScreen: some View {
-        Text("Notifications")
-            .frame(maxHeight: .infinity)
+        let viewModel = NotificationsListViewModelMock(delay: 2)
+        NotificationsListView(viewModel: viewModel)
     }
 
     @ViewBuilder
@@ -77,7 +77,6 @@ private extension RootView {
         ProfileView(viewModel: viewModel)
     }
 }
-
 
 // MARK: - Preview
 
