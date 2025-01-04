@@ -28,9 +28,7 @@ private extension CakeDetailsView {
     func openNextScreen(_ screen: CakeDetailsModel.Screens) -> some View {
         switch screen {
         case .ratingReviews:
-            viewModel.configureRatingReviewsView()
-        case .profile:
-            viewModel.configureProfileView()
+            viewModel.assemblyRatingReviewsView()
         }
     }
 }

@@ -104,3 +104,23 @@ extension CakeModel {
         return ("-\(Int(round(discountPercentage)))%", .red)
     }
 }
+
+// MARK: - TLProductDescriptionView Configuration
+
+extension CakeModel {
+    func configureDescriptionView() -> TLProductDescriptionView.Configuration {
+        .basic(
+            title: cakeName,
+            price: "$\(price)",
+            discountedPrice: {
+                guard let discountedPrice else {
+                    return nil
+                }
+                return "$\(discountedPrice)"
+            }(),
+            subtitle: seller.name,
+            description: description,
+            starsConfiguration: starsConfiguration
+        )
+    }
+}

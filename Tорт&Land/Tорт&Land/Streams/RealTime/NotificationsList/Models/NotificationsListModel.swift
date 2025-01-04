@@ -15,6 +15,10 @@ extension NotificationsListModel {
         var screenState: ScreenState = .initial
     }
 
+    enum Screens: Hashable {
+        case details(NotificationModel)
+    }
+
     struct NotificationModel: Identifiable, Hashable {
         let id: String
         var title: String

@@ -17,6 +17,21 @@ struct NotificationsListView: View {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
             viewModel.fetchNotifications()
         }
+        .navigationDestination(for: NotificationsListModel.Screens.self) { screen in
+            openNextScreen(for: screen)
+        }
+    }
+}
+
+// MARK: - Navigation Destination
+
+private extension NotificationsListView {
+    @ViewBuilder
+    func openNextScreen(for screen: NotificationsListModel.Screens) -> some View {
+        switch screen {
+        case let .details(notification):
+            viewModel.assemblyNotificationDetails(with: notification)
+        }
     }
 }
 

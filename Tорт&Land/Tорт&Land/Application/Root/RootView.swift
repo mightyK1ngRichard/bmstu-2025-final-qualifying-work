@@ -33,6 +33,8 @@ private extension RootView {
         switch screen {
         case let .details(cakeModel):
             viewModel.assemblyDetailsView(model: cakeModel)
+        case let .profile(userModel):
+            viewModel.assemblyProfileView(userModel: userModel)
         }
     }
 }

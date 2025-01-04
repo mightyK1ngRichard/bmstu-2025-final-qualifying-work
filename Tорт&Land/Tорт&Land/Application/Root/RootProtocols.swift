@@ -15,6 +15,7 @@ protocol RootDisplayLogic: RootViewModelInput {
 protocol RootViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
+    func assemblyProfileView(userModel: UserModel) -> ProfileView
 }
 
 protocol RootViewModelOutput {}

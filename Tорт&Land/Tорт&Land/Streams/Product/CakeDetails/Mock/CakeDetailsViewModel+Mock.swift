@@ -31,7 +31,8 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
     }
 
     func didTapSellerInfoButton() {
-        coordinator?.addScreen(CakeDetailsModel.Screens.profile)
+        print("[DEBUG]: \(#function)")
+        coordinator?.addScreen(RootModel.Screens.profile(cakeModel.seller))
     }
 
     func didTapRatingReviewsButton() {
@@ -40,6 +41,7 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
     }
 
     func didTapBackButton() {
+        print("[DEBUG]: \(#function)")
         coordinator?.openPreviousScreen()
     }
 
@@ -53,14 +55,9 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
 // MARK: - Configure
 
 extension CakeDetailsViewModelMock {
-    func configureRatingReviewsView() -> RatingReviewsView {
+    func assemblyRatingReviewsView() -> RatingReviewsView {
         let viewModel = RatingReviewsViewModelMock(comments: cakeModel.comments)
         return RatingReviewsView(viewModel: viewModel)
-    }
-
-    func configureProfileView() -> ProfileView {
-        let viewModel = ProfileViewModelMock(user: cakeModel.seller, isCurrentUser: cakeModel.seller.id == currentUser.id)
-        return ProfileView(viewModel: viewModel)
     }
 
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration {
@@ -68,19 +65,7 @@ extension CakeDetailsViewModelMock {
     }
 
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration {
-        .basic(
-            title: cakeModel.cakeName,
-            price: "$\(cakeModel.price)",
-            discountedPrice: {
-                guard let discountedPrice = cakeModel.discountedPrice else {
-                    return nil
-                }
-                return "$\(discountedPrice)"
-            }(),
-            subtitle: cakeModel.seller.name,
-            description: cakeModel.description,
-            starsConfiguration: cakeModel.starsConfiguration
-        )
+        cakeModel.configureDescriptionView()
     }
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {

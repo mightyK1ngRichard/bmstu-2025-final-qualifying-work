@@ -81,6 +81,9 @@
         }
       }
     },
+    "Customer" : {
+
+    },
     "Delete product" : {
       "localizations" : {
         "ru" : {
@@ -90,6 +93,9 @@
           }
         }
       }
+    },
+    "Delivery address" : {
+
     },
     "Don't have account?" : {
       "localizations" : {
@@ -123,6 +129,9 @@
           }
         }
       }
+    },
+    "ID: %@" : {
+
     },
     "kids" : {
       "localizations" : {
@@ -194,6 +203,9 @@
         }
       }
     },
+    "Notification content" : {
+
+    },
     "Notifications" : {
       "localizations" : {
         "ru" : {
@@ -205,6 +217,12 @@
       }
     },
     "OK" : {
+
+    },
+    "Order" : {
+
+    },
+    "Order date" : {
 
     },
     "Password" : {
@@ -226,6 +244,9 @@
           }
         }
       }
+    },
+    "Product" : {
+
     },
     "Profile" : {
       "localizations" : {
@@ -307,6 +328,9 @@
         }
       }
     },
+    "Seller" : {
+
+    },
     "Seller Info" : {
       "localizations" : {
         "ru" : {
@@ -359,6 +383,9 @@
           }
         }
       }
+    },
+    "User address not found" : {
+
     },
     "View all" : {
       "localizations" : {

@@ -16,5 +16,6 @@ extension RootModel {
 
     enum Screens: Hashable {
         case details(CakeModel)
+        case profile(UserModel)
     }
 }

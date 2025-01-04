@@ -17,6 +17,8 @@ final class NotificationsListViewModelMock: NotificationsListDisplayLogic & Noti
     @ObservationIgnored
     var delay: TimeInterval
     private(set) var notifications: [NotificationsListModel.NotificationModel]
+    @ObservationIgnored
+    private var coordinator: Coordinator?
 
     init(
         delay: TimeInterval = 0,
@@ -26,7 +28,9 @@ final class NotificationsListViewModelMock: NotificationsListDisplayLogic & Noti
         self.notifications = notifications ?? []
     }
 
-    func setEnvironmentObjects(coordinator: Coordinator) {}
+    func setEnvironmentObjects(coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
 }
 
 extension NotificationsListViewModelMock {
@@ -45,6 +49,7 @@ extension NotificationsListViewModelMock {
 extension NotificationsListViewModelMock {
     func didTapNotificationCell(with notification: NotificationsListModel.NotificationModel) {
         print("[DEBUG]: \(#function)")
+        coordinator?.addScreen(NotificationsListModel.Screens.details(notification))
     }
 
     func didDeleteNotification(id: String) {
@@ -53,6 +58,17 @@ extension NotificationsListViewModelMock {
 
     func configureNotificationCell(for notification: NotificationsListModel.NotificationModel) -> TLNotificationCell.Configuration {
         .init(notification: notification)
+    }
+
+    func assemblyNotificationDetails(with notification: NotificationsListModel.NotificationModel) -> NotificationDetailView {
+        let orderData = NotificationDetailModel.OrderData(
+            kind: .purchase(CommonMockData.generateMockUserModel(id: 1)),
+            cake: CommonMockData.generateMockCakeModel(id: 1, withDiscount: true),
+            notification: notification,
+            deliveryAddress: nil
+        )
+        let viewModel = NotificationDetailViewModelMock(orderData: orderData)
+        return NotificationDetailView(viewModel: viewModel)
     }
 }
 
