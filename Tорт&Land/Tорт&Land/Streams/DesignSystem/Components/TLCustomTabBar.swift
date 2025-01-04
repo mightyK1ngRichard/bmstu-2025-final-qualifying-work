@@ -1,5 +1,5 @@
 //
-//  CustomTabBar.swift
+//  TLCustomTabBarView.swift
 //  CakesHub
 //
 //  Created by Dmitriy Permyakov on 08.03.2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomTabBarView: View {
+struct TLCustomTabBarView: View {
     @State private var allTabs: [AnimatedTab] = TabBarItem.allCases.compactMap {
         AnimatedTab(tabBarItem: $0)
     }
@@ -22,7 +22,7 @@ struct CustomTabBarView: View {
 
 // MARK: - Private Subviews
 
-private extension CustomTabBarView {
+private extension TLCustomTabBarView {
     @ViewBuilder
     var customTabBar: some View {
         HStack(spacing: 0) {
@@ -68,7 +68,7 @@ private extension CustomTabBarView {
 // MARK: - Preview
 
 #Preview {
-    CustomTabBarView()
+    TLCustomTabBarView()
         .environment(Coordinator())
 }
 
@@ -83,7 +83,7 @@ private extension View {
     }
 }
 
-private extension CustomTabBarView {
+private extension TLCustomTabBarView {
     enum Constants {
         static let iconSelectedColor = TLColor<IconPalette>.iconRed.color
         static let iconUnselectedColor = TLColor<IconPalette>.iconGray.color

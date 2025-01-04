@@ -13,4 +13,12 @@ struct UserModel: Identifiable, Hashable {
     let id: String
     /// Имя пользователя
     let name: String
+    /// Почта пользователя
+    let mail: String
+    /// Аватарка пользователя
+    var avatarImage: ImageState
+    /// Шапка пользователя
+    var headerImage: ImageState
+    /// Продавайемые торты пользователя
+    var cakes: [CakeModel]
 }

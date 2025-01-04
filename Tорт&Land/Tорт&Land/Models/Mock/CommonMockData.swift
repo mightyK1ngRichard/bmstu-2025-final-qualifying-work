@@ -23,21 +23,29 @@ enum CommonMockData {
             discountedPrice: withDiscount ? 15.99 : nil,
             isSelected: Bool.random(),
             description: Constants.longDescription,
+            establishmentDate: Date().description,
             similarCakes: [],
             comments: (1...10).map {
                 CommentInfo(
                     id: String($0),
-                    author: UserModel(id: String($0), name: "Комментатор #\($0)"),
-                    date: "June 5, 2019",
+                    author: generateMockUserModel(id: $0, name: "Комментатор #\($0)"),
+                    date: "June 5, 2025",
                     description: Constants.longComment,
                     countFillStars: (1...5).randomElement() ?? 1
                 )
             },
-            seller: .init(id: "2", name: "Продавец Николай")
+            seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
         )
     }
-    static func generateMockUserModel(id: Int) -> UserModel {
-        UserModel(id: String(id), name: "User name #\(id)")
+    static func generateMockUserModel(id: Int, name: String? = nil) -> UserModel {
+        UserModel(
+            id: String(id),
+            name: name ?? "Имя пользователя #\(id)",
+            mail: "email_\(id)@gmail.com",
+            avatarImage: .fetched(.uiImage(.king)),
+            headerImage: .fetched(.uiImage(.headerKing)),
+            cakes: []
+        )
     }
 }
 

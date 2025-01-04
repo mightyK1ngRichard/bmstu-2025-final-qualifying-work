@@ -10,11 +10,9 @@
 import Foundation
 
 final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewModelOutput {
-    let currentUser = UserModel(id: "1", name: "Дмитрий Пермяков")
+    let currentUser = CommonMockData.generateMockUserModel(id: -1, name: "Дмитрий Пермяков")
     var isOwnedByUser: Bool { cakeModel.seller.id == currentUser.id }
     private(set) var cakeModel: CakeModel
-    @ObservationIgnored
-    private let worker = ProductCardWorker()
     @ObservationIgnored
     private var coordinator: Coordinator?
 
@@ -77,8 +75,7 @@ extension CakeDetailsViewModelMock {
     }
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
-        // FIXME: section: .all([]) поправить и придумать логику оценивания бейджа без хадкодинга
-        return worker.configureProductCard(model: model, section: .all([]))
+        return model.configureProductCard()
     }
 
 }

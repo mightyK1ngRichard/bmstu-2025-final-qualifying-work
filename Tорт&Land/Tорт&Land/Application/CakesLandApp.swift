@@ -38,7 +38,7 @@ private extension CakesLandApp {
     var tabBarView: some View {
         VStack(spacing: 0) {
             allTabBarViews
-            CustomTabBarView()
+            TLCustomTabBarView()
         }
     }
 }

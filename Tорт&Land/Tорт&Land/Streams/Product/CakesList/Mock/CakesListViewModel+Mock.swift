@@ -17,8 +17,6 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
     @ObservationIgnored
     private var delay: TimeInterval = 0
     @ObservationIgnored
-    private let productWorker = ProductCardWorker()
-    @ObservationIgnored
     private var coordinator: Coordinator?
 
     init(delay: TimeInterval) {
@@ -69,7 +67,6 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
 // MARK: - Configuration
 
 extension CakesListViewModelMock {
-
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
         let viewModel = CakeDetailsViewModelMock(cakeModel: model)
         return CakeDetailsView(viewModel: viewModel)
@@ -85,14 +82,13 @@ extension CakesListViewModelMock {
     }
 
     func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
-        productWorker.configureProductCard(model: model, section: section)
+        return model.configureProductCard()
     }
 }
 
 // MARK: - Setter
 
 extension CakesListViewModelMock {
-
     func setEnvironmentObjects(coordinator: Coordinator) {
         self.coordinator = coordinator
     }
