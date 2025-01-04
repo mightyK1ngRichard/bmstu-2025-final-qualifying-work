@@ -1,6 +1,6 @@
 //
 //  ___VARIABLE_productName:identifier___View+Subviews.swift
-//  WBMUIDemoApp
+//  Tорт&Land
 //
 //  Created by ___FULLUSERNAME___ on ___DATE___.
 //  Copyright © ___YEAR___ https://github.com/mightyK1ngRichard. All rights reserved.
