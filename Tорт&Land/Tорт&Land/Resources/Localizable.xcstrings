@@ -48,6 +48,7 @@
       }
     },
     "Chat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -342,6 +343,9 @@
           }
         }
       }
+    },
+    "The chat history is empty" : {
+
     },
     "There was an error" : {
       "localizations" : {

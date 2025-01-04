@@ -49,7 +49,7 @@ private extension RootView {
 
     @ViewBuilder
     var cakeListScreen: some View {
-        let viewModel = CakesListViewModelMock(delay: 2)
+        let viewModel = CakesListViewModelMock(delay: 3)
         CakesListView(viewModel: viewModel)
     }
 
@@ -61,13 +61,13 @@ private extension RootView {
 
     @ViewBuilder
     var chatScreen: some View {
-        Text("Chat")
-            .frame(maxHeight: .infinity)
+        let viewModel = ChatListViewModelMock(delay: 3)
+        ChatListView(viewModel: viewModel)
     }
 
     @ViewBuilder
     var notificationsScreen: some View {
-        let viewModel = NotificationsListViewModelMock(delay: 2)
+        let viewModel = NotificationsListViewModelMock(delay: 3)
         NotificationsListView(viewModel: viewModel)
     }
 
