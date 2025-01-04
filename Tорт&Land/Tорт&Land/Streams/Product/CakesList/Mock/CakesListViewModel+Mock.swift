@@ -29,33 +29,9 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
             try? await Task.sleep(for: .seconds(delay))
             await MainActor.run {
                 sections = [
-                    .sale(
-                        (1...20).map {
-                            var cakes = CommonMockData.generateMockCakeModel(id: $0)
-                            cakes.similarCakes = (21...32).map { similarID in
-                                CommonMockData.generateMockCakeModel(id: similarID, withDiscount: false)
-                            }
-                            return cakes
-                        }
-                    ),
-                    .new(
-                        (21...32).map {
-                            var cakes = CommonMockData.generateMockCakeModel(id: $0, withDiscount: false)
-                            cakes.similarCakes = (33...40).map { similarID in
-                                CommonMockData.generateMockCakeModel(id: similarID, withDiscount: false)
-                            }
-                            return cakes
-                        }
-                    ),
-                    .all(
-                        (33...40).map {
-                            var cakes = CommonMockData.generateMockCakeModel(id: $0, withDiscount: false)
-                            cakes.similarCakes = (1...20).map { similarID in
-                                CommonMockData.generateMockCakeModel(id: similarID)
-                            }
-                            return cakes
-                        }
-                    )
+                    .sale(MockData.saleCakes),
+                    .new(MockData.newCakes),
+                    .all(MockData.allCakes)
                 ]
                 screenState = .finished
             }
@@ -107,4 +83,24 @@ extension CakesListViewModelMock {
     }
 }
 
+// MARK: - Constants
+
+private extension CakesListViewModelMock {
+    enum MockData {
+        static let saleCakes = (1...20).map {
+            var cakes = CommonMockData.generateMockCakeModel(id: $0)
+            cakes.similarCakes = newCakes
+            return cakes
+        }
+        static let newCakes = (21...32).map {
+            var cakes = CommonMockData.generateMockCakeModel(id: $0, withDiscount: false)
+            cakes.similarCakes = allCakes
+            return cakes
+        }
+        static let allCakes = (33...40).map {
+            var cakes = CommonMockData.generateMockCakeModel(id: $0, withDiscount: false)
+            return cakes
+        }
+    }
+}
 #endif

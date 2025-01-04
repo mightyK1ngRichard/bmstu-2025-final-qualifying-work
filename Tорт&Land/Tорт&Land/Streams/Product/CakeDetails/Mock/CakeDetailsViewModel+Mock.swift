@@ -10,13 +10,19 @@
 import Foundation
 
 final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewModelOutput {
-    let currentUser = CommonMockData.generateMockUserModel(id: -1, name: "Дмитрий Пермяков")
-    var isOwnedByUser: Bool { cakeModel.seller.id == currentUser.id }
+    let currentUser: UserModel
+    var isOwnedByUser: Bool {
+        cakeModel.seller.id == currentUser.id
+    }
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
 
-    init(cakeModel: CakeModel = CommonMockData.generateMockCakeModel(id: 23)) {
+    init(
+        currentUser: UserModel? = nil,
+        cakeModel: CakeModel = CommonMockData.generateMockCakeModel(id: 23)
+    ) {
+        self.currentUser = currentUser ?? CommonMockData.generateMockUserModel(id: 1, name: "Дмитрий Пермяков")
         self.cakeModel = cakeModel
     }
 
@@ -24,7 +30,9 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
         self.coordinator = coordinator
     }
 
-    func didTapSellerInfoButton() {}
+    func didTapSellerInfoButton() {
+        coordinator?.addScreen(CakeDetailsModel.Screens.profile)
+    }
 
     func didTapRatingReviewsButton() {
         print("[DEBUG]: \(#function)")
@@ -45,10 +53,14 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
 // MARK: - Configure
 
 extension CakeDetailsViewModelMock {
-
     func configureRatingReviewsView() -> RatingReviewsView {
         let viewModel = RatingReviewsViewModelMock(comments: cakeModel.comments)
         return RatingReviewsView(viewModel: viewModel)
+    }
+
+    func configureProfileView() -> ProfileView {
+        let viewModel = ProfileViewModelMock(user: cakeModel.seller, isCurrentUser: cakeModel.seller.id == currentUser.id)
+        return ProfileView(viewModel: viewModel)
     }
 
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration {

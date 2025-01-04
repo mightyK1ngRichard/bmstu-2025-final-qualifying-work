@@ -8,6 +8,7 @@
 
 #if DEBUG
 import Foundation
+import UIKit
 
 enum CommonMockData {
     static func generateMockCakeModel(id: Int, withDiscount: Bool = true) -> CakeModel {
@@ -37,13 +38,22 @@ enum CommonMockData {
             seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
         )
     }
-    static func generateMockUserModel(id: Int, name: String? = nil) -> UserModel {
+    static func generateMockUserModel(
+        id: Int,
+        name: String? = nil,
+        avatar: ImageState? = nil,
+        header: ImageState? = nil
+    ) -> UserModel {
         UserModel(
             id: String(id),
             name: name ?? "Имя пользователя #\(id)",
             mail: "email_\(id)@gmail.com",
-            avatarImage: .fetched(.uiImage(.king)),
-            headerImage: .fetched(.uiImage(.headerKing)),
+            avatarImage: avatar ?? .fetched(
+                .uiImage(UIImage(named: "user\(Int.random(in: 1...7))") ?? .user1)
+            ),
+            headerImage: header ?? .fetched(
+                .uiImage(UIImage(named: "header\(Int.random(in: 1...6))") ?? .header1)
+            ),
             cakes: []
         )
     }

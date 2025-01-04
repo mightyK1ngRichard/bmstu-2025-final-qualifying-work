@@ -19,6 +19,7 @@ protocol CakeDetailsViewModelInput {
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration
     func configureRatingReviewsView() -> RatingReviewsView
+    func configureProfileView() -> ProfileView
 }
 
 protocol CakeDetailsViewModelOutput {

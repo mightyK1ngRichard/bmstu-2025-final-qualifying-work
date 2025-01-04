@@ -11,6 +11,7 @@ enum CakeDetailsModel {}
 
 extension CakeDetailsModel {
     enum Screens: Hashable {
+        case profile
         case ratingReviews
     }
 }

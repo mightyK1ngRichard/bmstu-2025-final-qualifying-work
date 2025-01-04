@@ -29,6 +29,8 @@ private extension CakeDetailsView {
         switch screen {
         case .ratingReviews:
             viewModel.configureRatingReviewsView()
+        case .profile:
+            viewModel.configureProfileView()
         }
     }
 }

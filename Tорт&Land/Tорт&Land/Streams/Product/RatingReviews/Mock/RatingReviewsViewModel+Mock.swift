@@ -35,8 +35,12 @@ final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic & RatingReview
     }
 
     func configureCommentConfiguration(comment: CommentInfo) -> TLCommentView.Configuration {
-        .basic(
-            imageState: .fetched(.uiImage(.mockUser)),
+        return .basic(
+            imageState: {
+                comment.author.avatarImage == .empty
+                    ? ImageState.fetched(.uiImage(.mockUser))
+                    : comment.author.avatarImage
+            }(),
             userName: comment.author.name,
             date: comment.date,
             description: comment.description,

@@ -19,11 +19,21 @@ final class ProfileViewModelMock: ProfileDisplayLogic & ProfileViewModelOutput {
     @ObservationIgnored
     private var coordinator: Coordinator?
 
-    init(isCurrentUser: Bool = false) {
-        var userInfo = CommonMockData.generateMockUserModel(id: 1, name: "Пермяков Дмитрий")
-        userInfo.cakes = (1...10).map { CommonMockData.generateMockCakeModel(id: $0) }
-        self.user = userInfo
+    init(user: UserModel? = nil, isCurrentUser: Bool = false) {
+        var userInfo = CommonMockData.generateMockUserModel(
+            id: 1,
+            name: "Пермяков Дмитрий",
+            avatar: .fetched(.uiImage(.king)),
+            header: .fetched(.uiImage(.headerKing))
+        )
+        userInfo.cakes = (1...10).map {
+            var cake = CommonMockData.generateMockCakeModel(id: $0)
+            cake.seller = user ?? userInfo
+            return cake
+        }
+        self.user = user ?? userInfo
         self.isCurrentUser = isCurrentUser
+        print("[DEBUG]: isCurrentUser=\(isCurrentUser)")
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
