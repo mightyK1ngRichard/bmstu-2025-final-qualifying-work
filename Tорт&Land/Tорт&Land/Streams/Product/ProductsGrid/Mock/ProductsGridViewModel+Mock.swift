@@ -32,7 +32,7 @@ final class ProductsGridViewModelMock: ProductsGridDisplayLogic & ProductsGridVi
     }
 
     func didTapProductCard(cake: CakeModel) {
-        coordinator?.addScreen(CakesListModel.Screens.details(cake))
+        coordinator?.addScreen(RootModel.Screens.details(cake))
     }
 
     func didTapProductLikeButton(cake: CakeModel, isSelected: Bool) {}

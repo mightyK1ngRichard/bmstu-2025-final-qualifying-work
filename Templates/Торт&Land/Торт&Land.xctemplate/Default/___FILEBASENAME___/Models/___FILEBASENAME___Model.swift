@@ -11,6 +11,6 @@ import Foundation
 enum ___VARIABLE_productName:identifier___Model {}
 
 extension ___VARIABLE_productName:identifier___Model {
-    struct UIProperties {
+    struct UIProperties: Hashable {
     }
 }

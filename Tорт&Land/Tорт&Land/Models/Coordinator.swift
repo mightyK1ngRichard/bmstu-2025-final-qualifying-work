@@ -16,7 +16,6 @@ final class Coordinator {
 }
 
 extension Coordinator {
-
     func addScreen<T: Hashable>(_ screen: T) {
         navPath.append(screen)
     }

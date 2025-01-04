@@ -36,7 +36,7 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
     }
 
     func didTapSimilarCake(model: CakeModel) {
-        coordinator?.addScreen(CakesListModel.Screens.details(model))
+        coordinator?.addScreen(RootModel.Screens.details(model))
     }
 
     func didTapCakeLike(model: CakeModel, isSelected: Bool) {}

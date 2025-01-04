@@ -9,7 +9,7 @@
 import Foundation
 
 enum FeedbackModel {
-    struct UIProperties {
+    struct UIProperties: Hashable {
         var countFillStars = 0
         var feedbackText = ""
         var isLoading = false

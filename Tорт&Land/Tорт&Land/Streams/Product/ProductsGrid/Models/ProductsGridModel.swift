@@ -11,7 +11,7 @@ import Foundation
 enum ProductsGridModel {}
 
 extension ProductsGridModel {
-    struct UIProperties {
+    struct UIProperties: Hashable {
     }
 
     enum SectionKind: Hashable {

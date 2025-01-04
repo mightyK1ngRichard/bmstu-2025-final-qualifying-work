@@ -11,7 +11,7 @@ import Foundation
 enum CategoriesModel {}
 
 extension CategoriesModel {
-    struct UIProperties {
+    struct UIProperties: Hashable {
         var tabBarProgess: CGFloat = .zero
         var selectedTab: Tab? = .women
         var searchText = ""

@@ -56,6 +56,7 @@ private extension ProfileView {
             .offset(y: max(60 - minY, 0))
         }
         .offset(y: -36)
+        .zIndex(1)
     }
 
     @ViewBuilder
@@ -132,7 +133,7 @@ private extension ProfileView {
 
 // MARK: - Helpers
 
-fileprivate struct MessageButton: View {
+private struct MessageButton: View {
     var title: String
     var imgString: String
     var action: () -> Void
@@ -150,7 +151,7 @@ fileprivate struct MessageButton: View {
     }
 }
 
-fileprivate struct IconButton: View {
+private struct IconButton: View {
     let iconname: UIImage?
     var action: () -> Void
 

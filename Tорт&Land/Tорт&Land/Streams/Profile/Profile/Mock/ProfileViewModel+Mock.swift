@@ -36,6 +36,7 @@ final class ProfileViewModelMock: ProfileDisplayLogic & ProfileViewModelOutput {
 extension ProfileViewModelMock {
     func didTapCakeCard(with cake: CakeModel) {
         print("[DEBUG]: did tap cake with id=\(cake.id)")
+        coordinator?.addScreen(RootModel.Screens.details(cake))
     }
 
     func didTapCreateProduct() {

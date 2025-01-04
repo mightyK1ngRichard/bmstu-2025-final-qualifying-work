@@ -11,7 +11,7 @@ import Foundation
 enum RatingReviewsModel {}
 
 extension RatingReviewsModel {
-    struct UIProperties {
+    struct UIProperties: Hashable {
         var isOpenFeedbackView = false
     }
 }

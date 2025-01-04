@@ -10,7 +10,6 @@ import Foundation
 enum CakesListModel {}
 
 extension CakesListModel {
-
     enum Section: Identifiable {
         case all([CakeModel])
         case sale([CakeModel])
@@ -18,7 +17,6 @@ extension CakesListModel {
     }
 
     enum Screens: Hashable {
-        case details(CakeModel)
         case tags([CakeModel], ProductsGridModel.SectionKind)
     }
 }
@@ -26,7 +24,6 @@ extension CakesListModel {
 // MARK: - Section
 
 extension CakesListModel.Section {
-
     var id: String {
         switch self {
         case .all:

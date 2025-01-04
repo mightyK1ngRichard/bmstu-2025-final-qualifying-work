@@ -30,13 +30,31 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
             await MainActor.run {
                 sections = [
                     .sale(
-                        (1...20).map { CommonMockData.generateMockCakeModel(id: $0) }
+                        (1...20).map {
+                            var cakes = CommonMockData.generateMockCakeModel(id: $0)
+                            cakes.similarCakes = (21...32).map { similarID in
+                                CommonMockData.generateMockCakeModel(id: similarID, withDiscount: false)
+                            }
+                            return cakes
+                        }
                     ),
                     .new(
-                        (21...32).map { CommonMockData.generateMockCakeModel(id: $0, withDiscount: false) }
+                        (21...32).map {
+                            var cakes = CommonMockData.generateMockCakeModel(id: $0, withDiscount: false)
+                            cakes.similarCakes = (33...40).map { similarID in
+                                CommonMockData.generateMockCakeModel(id: similarID, withDiscount: false)
+                            }
+                            return cakes
+                        }
                     ),
                     .all(
-                        (33...40).map { CommonMockData.generateMockCakeModel(id: $0, withDiscount: false) }
+                        (33...40).map {
+                            var cakes = CommonMockData.generateMockCakeModel(id: $0, withDiscount: false)
+                            cakes.similarCakes = (1...20).map { similarID in
+                                CommonMockData.generateMockCakeModel(id: similarID)
+                            }
+                            return cakes
+                        }
                     )
                 ]
                 screenState = .finished
@@ -56,7 +74,7 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
 
     func didTapCell(model: CakeModel) {
         print("[DEBUG]: Нажали на торт: \(model.id)")
-        coordinator?.addScreen(CakesListModel.Screens.details(model))
+        coordinator?.addScreen(RootModel.Screens.details(model))
     }
 
     func didTapLikeButton(model: CakeModel, isSelected: Bool) {
@@ -67,11 +85,6 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
 // MARK: - Configuration
 
 extension CakesListViewModelMock {
-    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
-        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
-        return CakeDetailsView(viewModel: viewModel)
-    }
-
     func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView {
         let viewModel = ProductsGridViewModelMock(cakes: cakes, sectionKind: sectionKind)
         return ProductsGridView(viewModel: viewModel)
@@ -82,7 +95,7 @@ extension CakesListViewModelMock {
     }
 
     func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
-        return model.configureProductCard()
+        model.configureProductCard()
     }
 }
 

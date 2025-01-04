@@ -11,6 +11,6 @@ import Foundation
 enum ProfileModel {}
 
 extension ProfileModel {
-    struct UIProperties {
+    struct UIProperties: Hashable {
     }
 }
