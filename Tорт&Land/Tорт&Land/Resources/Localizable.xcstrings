@@ -28,46 +28,137 @@
       }
     },
     "Already have account?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уже есть аккаунт?"
+          }
+        }
+      }
     },
     "Categories" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Категории"
+          }
+        }
+      }
     },
     "Chat" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чат"
+          }
+        }
+      }
     },
     "Chats" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чаты"
+          }
+        }
+      }
     },
     "Create a product" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создать продукт"
+          }
+        }
+      }
     },
     "Delete product" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить продукт"
+          }
+        }
+      }
     },
     "Don't have account?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас нет аккаунта?"
+          }
+        }
+      }
     },
     "Email" : {
 
     },
     "Error" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка"
+          }
+        }
+      }
     },
     "Home" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Главная"
+          }
+        }
+      }
     },
     "kids" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "детское"
+          }
+        }
+      }
     },
     "Make an order" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сделать заказ"
+          }
+        }
+      }
     },
     "men" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "мужское"
+          }
+        }
+      }
     },
     "Message" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сообщение"
+          }
+        }
+      }
     },
     "New" : {
       "localizations" : {
@@ -80,40 +171,117 @@
       }
     },
     "Nickname" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдоним"
+          }
+        }
+      }
     },
     "Nothing found" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ничего не найдено"
+          }
+        }
+      }
     },
     "Notifications" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведомления"
+          }
+        }
+      }
     },
     "OK" : {
 
     },
     "Password" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пароль"
+          }
+        }
+      }
     },
     "Please share your opinion about the product" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пожалуйста, поделитесь своим мнением о продукте"
+          }
+        }
+      }
     },
     "Profile" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Профиль"
+          }
+        }
+      }
     },
     "Rating&Reviews" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рейтинг и отзывы"
+          }
+        }
+      }
     },
     "ratings" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "рейтинг"
+          }
+        }
+      }
     },
     "Register" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Регистрация"
+          }
+        }
+      }
     },
     "Repeat Password" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторите пароль"
+          }
+        }
+      }
     },
     "reviews" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "отзывы"
+          }
+        }
+      }
     },
     "Sale" : {
       "localizations" : {
@@ -126,13 +294,44 @@
       }
     },
     "Search" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиск"
+          }
+        }
+      }
+    },
+    "Seller Info" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация о продавце"
+          }
+        }
+      }
     },
     "Send review" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отправить отзыв"
+          }
+        }
+      }
     },
     "Sign In" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти"
+          }
+        }
+      }
     },
     "Super summer sale" : {
       "localizations" : {
@@ -165,16 +364,44 @@
       }
     },
     "What is you rate?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Какова ваша оценка?"
+          }
+        }
+      }
     },
     "women" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "женское"
+          }
+        }
+      }
     },
     "Write a review" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напишите отзыв"
+          }
+        }
+      }
     },
     "You can also like this" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вам также может понравиться это"
+          }
+        }
+      }
     },
     "You can buy it right now!" : {
       "localizations" : {
@@ -197,7 +424,14 @@
       }
     },
     "Your feedback" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш отзыв"
+          }
+        }
+      }
     },
     "Торт&\nLand" : {
 

@@ -97,11 +97,11 @@ private extension CakeDetailsView {
     var moreInfoContainer: some View {
         VStack {
             Divider()
-            moreInfoCell(text: "Rating&Reviews") {
+            moreInfoCell(text: Constants.ratingReviewsTitle) {
                 viewModel.didTapRatingReviewsButton()
             }
             if !viewModel.isOwnedByUser {
-                moreInfoCell(text: "Seller Info") {
+                moreInfoCell(text: Constants.sellerInfoTitle) {
                     viewModel.didTapSellerInfoButton()
                 }
             }
@@ -147,6 +147,8 @@ private extension CakeDetailsView {
 
     enum Constants {
         static let similarBlockHeaderTitle = String(localized: "You can also like this")
+        static let ratingReviewsTitle = String(localized: "Rating&Reviews")
+        static let sellerInfoTitle = String(localized: "Seller Info")
         static let buyButtonTitle = String(localized: "Make an order")
         static let deleteButtonTitle = String(localized: "Delete product")
     }
