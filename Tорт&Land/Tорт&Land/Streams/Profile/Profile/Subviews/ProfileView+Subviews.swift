@@ -93,7 +93,7 @@ private extension ProfileView {
 
                 Group {
                     VStack(spacing: 6) {
-                        Text(viewModel.user.name.uppercased())
+                        Text(viewModel.user.name)
                             .bold()
                             .font(.title)
                         Text(viewModel.user.mail).font(.callout)
