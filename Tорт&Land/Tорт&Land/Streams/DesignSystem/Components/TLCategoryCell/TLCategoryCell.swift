@@ -55,5 +55,5 @@ struct TLCategoryCell: View {
         )
     )
     .padding()
-    .background(TLColor<PreviewPalette>.bgPreview.color)
+    .background(.bar)
 }

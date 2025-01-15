@@ -39,9 +39,6 @@ enum SeparatorPalette: Hashable {}
 enum TextPalette: Hashable {}
 enum ShadowPalette: Hashable {}
 enum CustomPalette: Hashable {}
-#if DEBUG
-enum PreviewPalette: Hashable {}
-#endif
 
 // MARK: - Background Colors
 
@@ -119,13 +116,3 @@ extension TLColor where Palette == ShadowPalette {
     static let customShadow = TLColor(hexLight: 0x9B9B9B, hexDark: 0x2A2C36, alpha: 0.5)
     static let tabBarShadow = TLColor(hexLight: 0x000000, hexDark: 0x1A1B20, alphaLight: 0.06)
 }
-
-// MARK: - Preview Colors
-
-#if DEBUG
-extension TLColor where Palette == PreviewPalette {
-
-    /// Серый фон превью
-    static let bgPreview = TLColor(uiColor: UIColor(hex: 0xE5E5E5))
-}
-#endif

@@ -125,9 +125,11 @@ private extension NotificationDetailView {
 // MARK: - Preview
 
 #Preview {
-    NotificationDetailView(
-        viewModel: NotificationDetailViewModelMock()
-    )
+    NavigationStack {
+        NotificationDetailView(
+            viewModel: NotificationDetailViewModelMock()
+        )
+    }
     .environment(Coordinator())
 }
 

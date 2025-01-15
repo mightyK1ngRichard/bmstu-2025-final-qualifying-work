@@ -10,12 +10,15 @@ import SwiftUI
 
 struct RootView: View {
     @State var viewModel: RootDisplayLogic & RootViewModelOutput
-    @State var startScreenControl = StartScreenControl()
-    @State var coordinator = Coordinator()
+    @State private var startScreenControl = StartScreenControl()
+    @State private var coordinator = Coordinator()
 
     var body: some View {
         NavigationStack(path: $coordinator.navPath) {
-            mainContainer.navigationDestination(for: RootModel.Screens.self) { screen in
+            mainContainer.onFirstAppear {
+                viewModel.setEnvironmentObjects(coordinator, startScreenControl)
+            }
+            .navigationDestination(for: RootModel.Screens.self) { screen in
                 openNextScreen(for: screen)
             }
         }

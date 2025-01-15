@@ -11,7 +11,7 @@ import SwiftUI
 extension RootView {
     @ViewBuilder
     var mainContainer: some View {
-        switch startScreenControl.screenKind {
+        switch viewModel.screenKind {
         case .initial, .auth:
             let viewModel = AuthViewModelMock()
             AuthView(viewModel: viewModel)
@@ -33,7 +33,7 @@ extension RootView {
 private extension RootView {
     @ViewBuilder
     var allTabBarViews: some View {
-        switch coordinator.activeTab {
+        switch viewModel.activeTab {
         case .house:
             cakeListScreen
         case .categories:

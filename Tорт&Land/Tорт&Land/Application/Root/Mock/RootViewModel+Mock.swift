@@ -13,14 +13,28 @@ import Observation
 
 @Observable
 final class RootViewModelMock: RootDisplayLogic & RootViewModelOutput {
+    // Inner values
     var uiProperties = RootModel.UIProperties()
+    // Computed values
+    var screenKind: StartScreenKind {
+        startScreenControl?.screenKind ?? .initial
+    }
+    var activeTab: TabBarItem {
+        coordinator?.activeTab ?? .house
+    }
+    // Private values
     private(set) var currentUser: UserModel
+    private var startScreenControl: StartScreenControl?
+    private var coordinator: Coordinator?
 
     init(currentUser: UserModel = MockData.mockCurrentUser) {
         self.currentUser = currentUser
     }
 
-    func setEnvironmentObjects(coordinator: Coordinator) {}
+    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
+        self.coordinator = coordinator
+        self.startScreenControl = startScreenControl
+    }
 
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
         let viewModel = CakeDetailsViewModelMock(cakeModel: model)
