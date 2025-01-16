@@ -9,13 +9,23 @@ import (
 )
 
 type Config struct {
-	Env  string     `yaml:"env" env-default:"local"`
-	GRPC GRPCConfig `yaml:"grpc"`
+	Env  string         `yaml:"env" env-default:"local"`
+	GRPC GRPCConfig     `yaml:"grpc"`
+	DB   DatabaseConfig `yaml:"database"`
 }
 
 type GRPCConfig struct {
 	Port    int           `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
+}
+
+type DatabaseConfig struct {
+	Host     string `yaml:"host"`
+	DBName   string `yaml:"dbName"`
+	Port     int    `yaml:"port"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	SSLMode  string `yaml:"sslmode"`
 }
 
 func NewConfig() (*Config, error) {

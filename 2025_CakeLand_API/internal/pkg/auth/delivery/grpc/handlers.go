@@ -11,7 +11,6 @@ import (
 
 type AuthGrpcHandler struct {
 	usecase auth.IAuthUsecase
-
 	generatedAuth.UnimplementedAuthServer
 }
 
@@ -21,22 +20,22 @@ func NewGrpcAuthHandler(usecase auth.IAuthUsecase) *AuthGrpcHandler {
 	}
 }
 
-func (h AuthGrpcHandler) Register(ctx context.Context, req *generatedAuth.RegisterRequest) (*generatedAuth.RegisterResponse, error) {
-	registerUser := models.RegisterUser{
+func (h *AuthGrpcHandler) Register(ctx context.Context, req *generatedAuth.RegisterRequest) (*generatedAuth.RegisterResponse, error) {
+	registerUser := models.UCRegisterUserReq{
 		Email:    req.Email,
 		Password: req.Password,
 	}
-	_, err := h.usecase.Register(ctx, registerUser)
+	res, err := h.usecase.Register(ctx, registerUser)
 	if err != nil {
 		return nil, err
 	}
 
 	return &generatedAuth.RegisterResponse{
-		UserID: 333,
+		UserUID: res.UserUID.String(),
 	}, nil
 }
 
-func (h AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginRequest) (*generatedAuth.LoginResponse, error) {
+func (h *AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginRequest) (*generatedAuth.LoginResponse, error) {
 	if req.Email == "" {
 		return nil, status.Error(codes.InvalidArgument, "email is required")
 	}
@@ -44,7 +43,7 @@ func (h AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginRequ
 		return nil, status.Error(codes.InvalidArgument, "password is required")
 	}
 
-	loginUser := models.LoginUser{
+	loginUser := models.UCLoginUser{
 		Email:        req.Email,
 		PasswordHash: req.Password,
 	}
@@ -58,6 +57,6 @@ func (h AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginRequ
 	}, nil
 }
 
-func (h AuthGrpcHandler) Logout(context.Context, *generatedAuth.LogoutRequest) (*generatedAuth.LogoutResponse, error) {
+func (h *AuthGrpcHandler) Logout(context.Context, *generatedAuth.LogoutRequest) (*generatedAuth.LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
