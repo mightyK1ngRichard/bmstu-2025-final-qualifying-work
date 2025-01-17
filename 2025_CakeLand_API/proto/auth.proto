@@ -8,7 +8,9 @@ message RegisterRequest {
   string password = 2;
 }
 message RegisterResponse {
-  string userUID = 1;
+  string accessToken = 1;
+  string refreshToken = 2;
+  int64 expiresIn = 3;
 }
 
 message LoginRequest {
@@ -16,7 +18,9 @@ message LoginRequest {
   string password = 2;
 }
 message LoginResponse {
-  string token = 1;
+  string accessToken = 1;
+  string refreshToken = 2;
+  int64 expiresIn = 3;
 }
 
 message LogoutRequest {

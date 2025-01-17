@@ -1,33 +1,44 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"github.com/guregu/null"
+	"time"
+)
 
 // UCLoginUser is user info for usecase
 // where UC - Usecase
 type UCLoginUser struct {
 	Email        string
 	PasswordHash string
+	Fingerprint  string
+}
+type UCLoginResponse struct {
+	AccessToken  string
+	RefreshToken string
+	ExpiresIn    time.Time
 }
 
 // UCRegisterUserReq is user info for usecase
 // where UC - Usecase
 type UCRegisterUserReq struct {
-	Email    string
-	Password string
+	Email       string
+	Password    string
+	Fingerprint string
 }
 
-type UCRegisterUserRes struct {
-	UserUID uuid.UUID
-}
-
-// RepUser is user info for repository
-type RepUser struct {
-	Email        string
-	PasswordHash []byte
+// RepUserReq is user info for repository
+type RepUserReq struct {
+	UUID             uuid.UUID
+	Email            string
+	PasswordHash     []byte
+	RefreshTokensMap map[string]string
 }
 
 type User struct {
-	ID       uuid.UUID
-	Nickname string
-	Email    string
+	ID               uuid.UUID
+	Nickname         null.String
+	Email            string
+	PasswordHash     []byte
+	RefreshTokensMap map[string]string // key: fingerprint, value: refreshToken
 }

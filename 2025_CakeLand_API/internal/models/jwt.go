@@ -2,8 +2,8 @@ package models
 
 import "time"
 
-type RefreshTokenPayload struct {
-	UserID    uint
+type JWTTokenPayload struct {
+	UserUID   string
 	Token     string
-	ExpiresAt time.Time
+	ExpiresIn time.Time
 }
