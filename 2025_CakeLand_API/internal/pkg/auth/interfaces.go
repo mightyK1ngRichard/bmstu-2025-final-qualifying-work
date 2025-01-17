@@ -1,20 +1,18 @@
 package auth
 
 import (
-	"2025_CakeLand_API/internal/models"
+	"2025_CakeLand_API/internal/pkg/auth/repo"
+	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"context"
-	"github.com/google/uuid"
 )
 
 type IAuthUsecase interface {
-	Register(context.Context, models.UCRegisterUserReq) (*models.UCLoginResponse, error)
-	Login(context.Context, models.UCLoginUser) (*models.UCLoginResponse, error)
-	//Logout(context.Context, *generatedAuth.LogoutRequest) (*generatedAuth.LogoutResponse, error)
+	Register(context.Context, umodels.RegisterReq) (*umodels.RegisterRes, error)
+	Login(context.Context, umodels.LoginReq) (*umodels.LoginRes, error)
 }
 
 type IAuthRepository interface {
-	CreateUser(context.Context, models.RepUserReq) error
-	GetUserByEmail(context.Context, string) (*models.User, error)
-	UpdateUserRefreshTokens(ctx context.Context, userID uuid.UUID, refreshTokensMap map[string]string) error
-	//InsertRefreshToken(context.Context, uuid.UUID, models.JWTTokenPayload) error
+	CreateUser(context.Context, repo.CreateUserReq) error
+	GetUserByEmail(context.Context, repo.GetUserByEmailReq) (*repo.GetUserByEmailRes, error)
+	UpdateUserRefreshTokens(context.Context, repo.UpdateUserRefreshTokensReq) error
 }

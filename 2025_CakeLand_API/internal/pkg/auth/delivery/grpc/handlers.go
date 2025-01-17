@@ -4,6 +4,7 @@ import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/auth"
 	generatedAuth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
+	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -27,7 +28,7 @@ func (h *AuthGrpcHandler) Register(ctx context.Context, req *generatedAuth.Regis
 		return nil, err
 	}
 
-	registerUser := models.UCRegisterUserReq{
+	registerUser := umodels.RegisterReq{
 		Email:       req.Email,
 		Password:    req.Password,
 		Fingerprint: fingerprint,
@@ -56,7 +57,7 @@ func (h *AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginReq
 		return nil, err
 	}
 
-	loginUser := models.UCLoginUser{
+	loginUser := umodels.LoginReq{
 		Email:        req.Email,
 		PasswordHash: req.Password,
 		Fingerprint:  fingerprint,

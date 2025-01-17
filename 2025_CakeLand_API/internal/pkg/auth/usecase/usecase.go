@@ -1,8 +1,9 @@
 package usecase
 
 import (
-	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/auth"
+	"2025_CakeLand_API/internal/pkg/auth/repo"
+	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"2025_CakeLand_API/internal/pkg/utils/jwt"
 	"context"
 	"fmt"
@@ -23,21 +24,23 @@ func NewAuthUsecase(log *slog.Logger, repo auth.IAuthRepository) *AuthUseсase {
 	}
 }
 
-func (u *AuthUseсase) Login(ctx context.Context, user models.UCLoginUser) (*models.UCLoginResponse, error) {
+func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels.LoginRes, error) {
 	// Получаем данные пользователя
-	resUser, err := u.repo.GetUserByEmail(ctx, user.Email)
+	res, err := u.repo.GetUserByEmail(ctx, repo.GetUserByEmailReq{
+		Email: in.Email,
+	})
 	if err != nil {
 		u.log.Error(fmt.Sprintf("Ошибка получения пользователя по email: %v", err))
 		return nil, err
 	}
 
-	accessToken, err := jwt.GenerateAccessToken(resUser.ID.String())
+	accessToken, err := jwt.GenerateAccessToken(res.User.ID.String())
 	if err != nil {
 		u.log.Error(fmt.Sprintf("Ошибка генерации access token: %v", err))
 		return nil, err
 	}
 
-	oldRefreshToken, exists := resUser.RefreshTokensMap[user.Fingerprint]
+	oldRefreshToken, exists := res.User.RefreshTokensMap[in.Fingerprint]
 	// Если токен уже сущестувет, проверим его срок годности. Если ещё валиден, тогда генерируем только access token
 	if exists {
 		isExpired, expErr := jwt.IsTokenExpired(oldRefreshToken, true)
@@ -47,7 +50,7 @@ func (u *AuthUseсase) Login(ctx context.Context, user models.UCLoginUser) (*mod
 		} else if !isExpired {
 			// Если токен не устарел, создаём только access токен
 			u.log.Debug("Сгенерирован только новый access token. refresh остаётся старым")
-			return &models.UCLoginResponse{
+			return &umodels.LoginRes{
 				AccessToken:  accessToken.Token,
 				RefreshToken: oldRefreshToken,
 				ExpiresIn:    accessToken.ExpiresIn,
@@ -56,30 +59,33 @@ func (u *AuthUseсase) Login(ctx context.Context, user models.UCLoginUser) (*mod
 		}
 	}
 
-	newRefreshToken, err := jwt.GenerateRefreshToken(resUser.ID.String())
+	newRefreshToken, err := jwt.GenerateRefreshToken(res.User.ID.String())
 	if err != nil {
 		u.log.Error(fmt.Sprintf("Ошибка генерации newRefreshToken: %v", err))
 		return nil, err
 	}
 
 	// Сохраняем или обновляем токены в бд
-	resUser.RefreshTokensMap[user.Fingerprint] = newRefreshToken.Token
-	u.log.Debug(fmt.Sprintf(`userid = %s`, resUser.ID.String()))
-	err = u.repo.UpdateUserRefreshTokens(ctx, resUser.ID, resUser.RefreshTokensMap)
+	res.User.RefreshTokensMap[in.Fingerprint] = newRefreshToken.Token
+	u.log.Debug(fmt.Sprintf(`userid = %s`, res.User.ID.String()))
+	err = u.repo.UpdateUserRefreshTokens(ctx, repo.UpdateUserRefreshTokensReq{
+		UserID:           res.User.ID,
+		RefreshTokensMap: res.User.RefreshTokensMap,
+	})
 	if err != nil {
 		u.log.Error(fmt.Sprintf("ошибка обновления RefreshTokensMap в бд: %v", err))
 		return nil, err
 	}
 
-	return &models.UCLoginResponse{
+	return &umodels.LoginRes{
 		AccessToken:  accessToken.Token,
 		RefreshToken: newRefreshToken.Token,
 		ExpiresIn:    accessToken.ExpiresIn,
 	}, nil
 }
 
-func (u *AuthUseсase) Register(ctx context.Context, user models.UCRegisterUserReq) (*models.UCLoginResponse, error) {
-	hashedPassword, err := generatePasswordHash(user.Password)
+func (u *AuthUseсase) Register(ctx context.Context, in umodels.RegisterReq) (*umodels.RegisterRes, error) {
+	hashedPassword, err := generatePasswordHash(in.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -97,23 +103,26 @@ func (u *AuthUseсase) Register(ctx context.Context, user models.UCRegisterUserR
 	}
 
 	// Создаём пользователя
-	if err = u.repo.CreateUser(ctx, models.RepUserReq{
+	if err = u.repo.CreateUser(ctx, repo.CreateUserReq{
 		UUID:         userID,
-		Email:        user.Email,
+		Email:        in.Email,
 		PasswordHash: hashedPassword,
 		RefreshTokensMap: map[string]string{
-			user.Fingerprint: refreshToken.Token,
+			in.Fingerprint: refreshToken.Token,
 		},
 	}); err != nil {
 		u.log.Error(fmt.Sprintf("Ошибка создания пользователя: %v", err))
 		return nil, err
 	}
 
-	return &models.UCLoginResponse{
+	return &umodels.RegisterRes{
 		AccessToken:  accessToken.Token,
 		RefreshToken: refreshToken.Token,
 		ExpiresIn:    accessToken.ExpiresIn,
 	}, nil
+}
+
+func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in umodels.UpdateAccessTokenReq) {
 }
 
 func generatePasswordHash(password string) ([]byte, error) {

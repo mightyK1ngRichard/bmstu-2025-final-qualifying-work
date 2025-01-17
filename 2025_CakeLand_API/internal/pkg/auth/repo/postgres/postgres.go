@@ -2,10 +2,10 @@ package postgres
 
 import (
 	"2025_CakeLand_API/internal/models"
+	"2025_CakeLand_API/internal/pkg/auth/repo"
 	"context"
 	"database/sql"
 	"encoding/json"
-	"github.com/google/uuid"
 )
 
 const (
@@ -24,17 +24,17 @@ func NewAuthRepository(db *sql.DB) *AuthRepository {
 	}
 }
 
-func (r *AuthRepository) CreateUser(ctx context.Context, user models.RepUserReq) error {
-	refreshTokensJSON, err := json.Marshal(user.RefreshTokensMap)
+func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) error {
+	refreshTokensJSON, err := json.Marshal(in.RefreshTokensMap)
 	if err != nil {
 		return err
 	}
 
 	if _, err = r.db.ExecContext(ctx,
 		createUserCommand,
-		user.UUID,
-		user.Email,
-		user.PasswordHash,
+		in.UUID,
+		in.Email,
+		in.PasswordHash,
 		refreshTokensJSON,
 	); err != nil {
 		return err
@@ -43,8 +43,8 @@ func (r *AuthRepository) CreateUser(ctx context.Context, user models.RepUserReq)
 	return nil
 }
 
-func (r *AuthRepository) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
-	row := r.db.QueryRowContext(ctx, getUserByEmailCommand, email)
+func (r *AuthRepository) GetUserByEmail(ctx context.Context, in repo.GetUserByEmailReq) (*repo.GetUserByEmailRes, error) {
+	row := r.db.QueryRowContext(ctx, getUserByEmailCommand, in.Email)
 	var user models.User
 	var refreshTokensMap []byte
 	if err := row.Scan(&user.ID, &user.Email, &user.Nickname, &refreshTokensMap, &user.PasswordHash); err != nil {
@@ -53,14 +53,17 @@ func (r *AuthRepository) GetUserByEmail(ctx context.Context, email string) (*mod
 	if err := json.Unmarshal(refreshTokensMap, &user.RefreshTokensMap); err != nil {
 		return nil, err
 	}
-	return &user, nil
+
+	return &repo.GetUserByEmailRes{
+		User: user,
+	}, nil
 }
 
-func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, userID uuid.UUID, refreshTokensMap map[string]string) error {
-	refreshTokensJSON, err := json.Marshal(refreshTokensMap)
+func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in repo.UpdateUserRefreshTokensReq) error {
+	refreshTokensJSON, err := json.Marshal(in.RefreshTokensMap)
 	if err != nil {
 		return err
 	}
-	_, err = r.db.ExecContext(ctx, updateUserRefreshTokensCommand, refreshTokensJSON, userID)
+	_, err = r.db.ExecContext(ctx, updateUserRefreshTokensCommand, refreshTokensJSON, in.UserID)
 	return err
 }
