@@ -12,9 +12,9 @@ type UpdateAccessTokenReq struct {
 // Login
 
 type LoginReq struct {
-	Email        string
-	PasswordHash string
-	Fingerprint  string
+	Email       string
+	Password    string
+	Fingerprint string
 }
 type LoginRes struct {
 	AccessToken  string

@@ -8,8 +8,10 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.1
 	github.com/golang-migrate/migrate/v4 v4.18.1
 	github.com/google/uuid v1.6.0
+	github.com/guregu/null v4.0.0+incompatible
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/lib/pq v1.10.9
+	github.com/pkg/errors v0.9.1
 	golang.org/x/crypto v0.31.0
 	google.golang.org/grpc v1.69.4
 	google.golang.org/protobuf v1.36.3
@@ -17,7 +19,6 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
-	github.com/guregu/null v4.0.0+incompatible // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
