@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	UpdateAccessToken(ctx context.Context, in *UpdateAccessTokenRequest, opts ...grpc.CallOption) (*UpdateAccessTokenResponse, error)
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 }
 
@@ -49,6 +50,15 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 	return out, nil
 }
 
+func (c *authClient) UpdateAccessToken(ctx context.Context, in *UpdateAccessTokenRequest, opts ...grpc.CallOption) (*UpdateAccessTokenResponse, error) {
+	out := new(UpdateAccessTokenResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdateAccessToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *authClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error) {
 	out := new(LogoutResponse)
 	err := c.cc.Invoke(ctx, "/Auth/Logout", in, out, opts...)
@@ -64,6 +74,7 @@ func (c *authClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc
 type AuthServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	UpdateAccessToken(context.Context, *UpdateAccessTokenRequest) (*UpdateAccessTokenResponse, error)
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
@@ -77,6 +88,9 @@ func (UnimplementedAuthServer) Register(context.Context, *RegisterRequest) (*Reg
 }
 func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAuthServer) UpdateAccessToken(context.Context, *UpdateAccessTokenRequest) (*UpdateAccessTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccessToken not implemented")
 }
 func (UnimplementedAuthServer) Logout(context.Context, *LogoutRequest) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
@@ -130,6 +144,24 @@ func _Auth_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_UpdateAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAccessTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateAccessToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdateAccessToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateAccessToken(ctx, req.(*UpdateAccessTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Auth_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LogoutRequest)
 	if err := dec(in); err != nil {
@@ -162,6 +194,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _Auth_Login_Handler,
+		},
+		{
+			MethodName: "UpdateAccessToken",
+			Handler:    _Auth_UpdateAccessToken_Handler,
 		},
 		{
 			MethodName: "Logout",

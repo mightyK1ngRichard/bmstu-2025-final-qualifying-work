@@ -2,8 +2,8 @@ package jwt
 
 import (
 	"2025_CakeLand_API/internal/models"
-	"fmt"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/pkg/errors"
 	"time"
 )
 
@@ -53,35 +53,70 @@ func GenerateRefreshToken(userUID string) (*models.JWTTokenPayload, error) {
 
 // IsTokenExpired проверяет, истёк ли срок действия токена
 func IsTokenExpired(tokenString string, isRefresh bool) (bool, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Проверка метода подписи
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		if isRefresh {
-			return refreshSecret, nil
-		} else {
-			return accessSecret, nil
-		}
-	})
-
+	var secret []byte
+	if isRefresh {
+		secret = refreshSecret
+	} else {
+		secret = accessSecret
+	}
+	// Извлечение claims и валидация токена
+	claims, err := getTokenClaims(tokenString, secret)
 	if err != nil {
 		return false, err
 	}
-
-	// Получение claims
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		// Проверка наличия "exp"
-		if exp, ok := claims["exp"].(float64); ok {
-			expirationTime := time.Unix(int64(exp), 0)
-			// Проверяем, истёк ли токен
-			if time.Now().After(expirationTime) {
-				return true, nil // Токен истёк
-			}
-			return false, nil // Токен действителен
+	if exp, ok := claims["exp"].(float64); ok {
+		expirationTime := time.Unix(int64(exp), 0)
+		// Проверяем, истёк ли токен
+		if time.Now().After(expirationTime) {
+			return true, nil // Токен истёк
 		}
-		return false, fmt.Errorf("expiration time (exp) not found in token")
+		return false, nil // Токен действителен
+	}
+	return false, errors.New("expiration time (exp) not found in token")
+}
+
+// GetUserIDFromRefreshToken возваращет user_id если токен ещё протух
+func GetUserIDFromRefreshToken(tokenString string) (string, error) {
+	// Извлечение claims и валидация токена
+	claims, err := getTokenClaims(tokenString, refreshSecret)
+	if err != nil {
+		return "", err
 	}
 
-	return false, fmt.Errorf("invalid token")
+	exp, ok := claims["exp"].(float64)
+	if !ok {
+		return "", errors.New("exp not found in token")
+	}
+	expirationTime := time.Unix(int64(exp), 0)
+	if time.Now().After(expirationTime) {
+		return "", errors.New("token expired")
+	}
+
+	userID, ok := claims["user_id"].(string)
+	if !ok {
+		return "", errors.New("user_id not found in token")
+	}
+
+	return userID, nil
+}
+
+func getTokenClaims(tokenString string, secret []byte) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Проверка метода подписи
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return secret, nil
+	})
+	if err != nil {
+		return nil, errors.Errorf("error parsing token: %v", err)
+	}
+
+	// Извлечение claims и валидация токена
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, errors.New("invalid token or claims")
+	}
+
+	return claims, nil
 }

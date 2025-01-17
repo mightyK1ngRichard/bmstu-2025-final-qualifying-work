@@ -133,7 +133,47 @@ func (u *AuthUseсase) Register(ctx context.Context, in umodels.RegisterReq) (*u
 	}, nil
 }
 
-func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in umodels.UpdateAccessTokenReq) {
+func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in umodels.UpdateAccessTokenReq) (*umodels.UpdateAccessTokenRes, error) {
+	// Получаем userID пользателя из refresh токена
+	userID, err := jwt.GetUserIDFromRefreshToken(in.RefreshToken)
+	if err != nil {
+		u.log.Error(`[Usecase.UpdateAccessToken] ошибка получени userID из refreshToken`, slog.String("error", fmt.Sprintf("%v", err)))
+		return nil, fmt.Errorf("%w: %v", models.ErrInvalidRefreshToken, err)
+	}
+
+	// Получаем все refresh токены пользователя
+	res, err := u.repo.GetUserRefreshTokens(ctx, repo.GetUserRefreshTokensReq{
+		UserID: userID,
+	})
+	if err != nil {
+		u.log.Error(`[Usecase.UpdateAccessToken] ошибка бд`, slog.Any("error", err))
+		return nil, err
+	}
+
+	// Ищем refresh токен для заданного fingerprint
+	oldRefreshToken, exists := res.RefreshTokensMap[in.Fingerprint]
+	if !exists {
+		u.log.Error(`[Usecase.UpdateAccessToken] refresh токен не найден в бд`, slog.Any("error", err))
+		return nil, models.NoToken
+	}
+
+	// Проверяем схожи ли токены
+	if oldRefreshToken != in.RefreshToken {
+		u.log.Error(`[Usecase.UpdateAccessToken] refresh токен не совпадает`)
+		return nil, models.ErrInvalidRefreshToken
+	}
+
+	// Генерируем новый access токен
+	accessToken, err := jwt.GenerateAccessToken(userID)
+	if err != nil {
+		u.log.Error("[Usecase.UpdateAccessToken] ошибка генерации access токена", slog.Any("error", err))
+		return nil, err
+	}
+
+	return &umodels.UpdateAccessTokenRes{
+		AccessToken: accessToken.Token,
+		ExpiresIn:   accessToken.ExpiresIn,
+	}, nil
 }
 
 func generatePasswordHash(password string) ([]byte, error) {

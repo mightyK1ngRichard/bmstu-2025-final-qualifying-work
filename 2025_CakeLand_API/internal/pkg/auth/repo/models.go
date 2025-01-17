@@ -23,3 +23,10 @@ type UpdateUserRefreshTokensReq struct {
 	UserID           uuid.UUID
 	RefreshTokensMap map[string]string
 }
+
+type GetUserRefreshTokensReq struct {
+	UserID string
+}
+type GetUserRefreshTokensRes struct {
+	RefreshTokensMap map[string]string
+}

@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	isUserExistsCommand            = `SELECT EXISTS(SELECT 1 FROM "user" WHERE email = $1)`
-	createUserCommand              = `INSERT INTO "user" (userID, email, passwordHash, refreshTokensMap) VALUES ($1, $2, $3, $4)`
-	getUserByEmailCommand          = `SELECT userID, email, name, refreshTokensMap, passwordHash FROM "user" WHERE email = $1`
-	updateUserRefreshTokensCommand = `UPDATE "user" SET refreshTokensMap = $1 WHERE userid = $2`
+	isUserExistsCommand            = `SELECT EXISTS(SELECT 1 FROM "user" WHERE email = $1);`
+	createUserCommand              = `INSERT INTO "user" (userID, email, passwordHash, refreshTokensMap) VALUES ($1, $2, $3, $4);`
+	getUserByEmailCommand          = `SELECT userID, email, name, refreshTokensMap, passwordHash FROM "user" WHERE email = $1;`
+	updateUserRefreshTokensCommand = `UPDATE "user" SET refreshTokensMap = $1 WHERE userid = $2;`
 )
 
 type AuthRepository struct {
@@ -90,4 +90,19 @@ func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in repo.Up
 	}
 
 	return nil
+}
+
+func (r *AuthRepository) GetUserRefreshTokens(ctx context.Context, in repo.GetUserRefreshTokensReq) (*repo.GetUserRefreshTokensRes, error) {
+	var refreshTokens []byte
+	row := r.db.QueryRowContext(ctx, `SELECT refreshtokensmap FROM "user" where userid = $1`, in.UserID)
+	if err := row.Scan(&refreshTokens); err != nil {
+		return nil, errors.New(`refreshtokensmap not found`)
+	}
+	var refreshTokensMap map[string]string
+	if err := json.Unmarshal(refreshTokens, &refreshTokensMap); err != nil {
+		return nil, errors.Wrapf(err, `ошибка декодирования JSON refreshTokensMap`)
+	}
+	return &repo.GetUserRefreshTokensRes{
+		RefreshTokensMap: refreshTokensMap,
+	}, nil
 }

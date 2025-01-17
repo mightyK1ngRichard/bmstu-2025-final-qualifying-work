@@ -5,8 +5,12 @@ import "time"
 // UpdateAccessToken
 
 type UpdateAccessTokenReq struct {
-	UserID       string
 	RefreshToken string
+	Fingerprint  string
+}
+type UpdateAccessTokenRes struct {
+	AccessToken string
+	ExpiresIn   time.Time
 }
 
 // Login

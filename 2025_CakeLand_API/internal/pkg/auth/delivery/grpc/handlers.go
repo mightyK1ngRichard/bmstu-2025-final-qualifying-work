@@ -3,7 +3,7 @@ package grpcAuth
 import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/auth"
-	generatedAuth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
+	genAuth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
 	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"context"
 	"github.com/pkg/errors"
@@ -14,7 +14,7 @@ import (
 
 type AuthGrpcHandler struct {
 	usecase auth.IAuthUsecase
-	generatedAuth.UnimplementedAuthServer
+	genAuth.UnimplementedAuthServer
 }
 
 func NewGrpcAuthHandler(usecase auth.IAuthUsecase) *AuthGrpcHandler {
@@ -23,7 +23,7 @@ func NewGrpcAuthHandler(usecase auth.IAuthUsecase) *AuthGrpcHandler {
 	}
 }
 
-func (h *AuthGrpcHandler) Register(ctx context.Context, req *generatedAuth.RegisterRequest) (*generatedAuth.RegisterResponse, error) {
+func (h *AuthGrpcHandler) Register(ctx context.Context, req *genAuth.RegisterRequest) (*genAuth.RegisterResponse, error) {
 	fingerprint, err := getFingerprintFromMetadata(ctx)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
@@ -43,14 +43,14 @@ func (h *AuthGrpcHandler) Register(ctx context.Context, req *generatedAuth.Regis
 		return nil, err
 	}
 
-	return &generatedAuth.RegisterResponse{
+	return &genAuth.RegisterResponse{
 		AccessToken:  res.AccessToken,
 		RefreshToken: res.RefreshToken,
 		ExpiresIn:    res.ExpiresIn.Unix(),
 	}, nil
 }
 
-func (h *AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginRequest) (*generatedAuth.LoginResponse, error) {
+func (h *AuthGrpcHandler) Login(ctx context.Context, req *genAuth.LoginRequest) (*genAuth.LoginResponse, error) {
 	fingerprint, err := getFingerprintFromMetadata(ctx)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
@@ -74,15 +74,41 @@ func (h *AuthGrpcHandler) Login(ctx context.Context, req *generatedAuth.LoginReq
 		return nil, status.Error(codes.Internal, "внутренняя ошибка сервера")
 	}
 
-	return &generatedAuth.LoginResponse{
+	return &genAuth.LoginResponse{
 		AccessToken:  res.AccessToken,
 		RefreshToken: res.RefreshToken,
 		ExpiresIn:    res.ExpiresIn.Unix(),
 	}, nil
 }
 
-func (h *AuthGrpcHandler) Logout(context.Context, *generatedAuth.LogoutRequest) (*generatedAuth.LogoutResponse, error) {
+func (h *AuthGrpcHandler) Logout(context.Context, *genAuth.LogoutRequest) (*genAuth.LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+}
+
+func (h *AuthGrpcHandler) UpdateAccessToken(ctx context.Context, req *genAuth.UpdateAccessTokenRequest) (*genAuth.UpdateAccessTokenResponse, error) {
+	fingerprint, err := getFingerprintFromMetadata(ctx)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
+	}
+	if req.RefreshToken == "" {
+		return nil, status.Error(codes.InvalidArgument, "refreshToken обязателен")
+	}
+
+	res, err := h.usecase.UpdateAccessToken(ctx, umodels.UpdateAccessTokenReq{
+		RefreshToken: req.RefreshToken,
+		Fingerprint:  fingerprint,
+	})
+	if err != nil {
+		if errors.Is(err, models.ErrInvalidRefreshToken) {
+			return nil, status.Errorf(codes.InvalidArgument, "%v", err)
+		}
+		return nil, err
+	}
+
+	return &genAuth.UpdateAccessTokenResponse{
+		AccessToken: res.AccessToken,
+		ExpiresIn:   res.ExpiresIn.Unix(),
+	}, nil
 }
 
 func getFingerprintFromMetadata(ctx context.Context) (string, error) {
