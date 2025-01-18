@@ -14,6 +14,7 @@ const (
 	createUserCommand              = `INSERT INTO "user" (userID, email, passwordHash, refreshTokensMap) VALUES ($1, $2, $3, $4);`
 	getUserByEmailCommand          = `SELECT userID, email, name, refreshTokensMap, passwordHash FROM "user" WHERE email = $1;`
 	updateUserRefreshTokensCommand = `UPDATE "user" SET refreshTokensMap = $1 WHERE userid = $2;`
+	getUserRefreshTokensCommand    = `SELECT refreshtokensmap FROM "user" where userid = $1`
 )
 
 type AuthRepository struct {
@@ -34,7 +35,7 @@ func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) 
 		return errors.Wrap(err, "ошибка при проверке существования пользователя")
 	}
 	if exists {
-		return errors.New("пользователь с таким email уже существует")
+		return models.ErrUserAlreadyExists
 	}
 
 	// Сериализация RefreshTokensMap в JSON
@@ -94,7 +95,7 @@ func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in repo.Up
 
 func (r *AuthRepository) GetUserRefreshTokens(ctx context.Context, in repo.GetUserRefreshTokensReq) (*repo.GetUserRefreshTokensRes, error) {
 	var refreshTokens []byte
-	row := r.db.QueryRowContext(ctx, `SELECT refreshtokensmap FROM "user" where userid = $1`, in.UserID)
+	row := r.db.QueryRowContext(ctx, getUserRefreshTokensCommand, in.UserID)
 	if err := row.Scan(&refreshTokens); err != nil {
 		return nil, errors.New(`refreshtokensmap not found`)
 	}

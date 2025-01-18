@@ -24,10 +24,10 @@ message LoginResponse {
 }
 
 message LogoutRequest {
-  string token = 1;
+  string refreshToken = 1;
 }
 message LogoutResponse {
-  bool success = 1;
+  string message = 1;
 }
 
 message UpdateAccessTokenRequest {

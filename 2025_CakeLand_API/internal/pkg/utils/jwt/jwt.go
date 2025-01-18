@@ -22,7 +22,7 @@ func GenerateAccessToken(userUID string) (*models.JWTTokenPayload, error) {
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
 	accessTokenString, err := accessToken.SignedString(accessSecret)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(models.InternalError, err.Error())
 	}
 
 	return &models.JWTTokenPayload{
@@ -42,8 +42,9 @@ func GenerateRefreshToken(userUID string) (*models.JWTTokenPayload, error) {
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
 	refreshTokenString, err := refreshToken.SignedString(refreshSecret)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(models.InternalError, err.Error())
 	}
+
 	return &models.JWTTokenPayload{
 		UserUID:   userUID,
 		Token:     refreshTokenString,
@@ -72,6 +73,7 @@ func IsTokenExpired(tokenString string, isRefresh bool) (bool, error) {
 		}
 		return false, nil // Токен действителен
 	}
+
 	return false, errors.New("expiration time (exp) not found in token")
 }
 
@@ -80,7 +82,7 @@ func GetUserIDFromRefreshToken(tokenString string) (string, error) {
 	// Извлечение claims и валидация токена
 	claims, err := getTokenClaims(tokenString, refreshSecret)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "ошибка получения claims")
 	}
 
 	exp, ok := claims["exp"].(float64)

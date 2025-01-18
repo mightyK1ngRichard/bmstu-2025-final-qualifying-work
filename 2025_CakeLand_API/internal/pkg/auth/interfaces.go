@@ -9,6 +9,7 @@ import (
 type IAuthUsecase interface {
 	Register(context.Context, umodels.RegisterReq) (*umodels.RegisterRes, error)
 	Login(context.Context, umodels.LoginReq) (*umodels.LoginRes, error)
+	Logout(context.Context, umodels.LogoutReq) (*umodels.LogoutRes, error)
 	UpdateAccessToken(context.Context, umodels.UpdateAccessTokenReq) (*umodels.UpdateAccessTokenRes, error)
 }
 

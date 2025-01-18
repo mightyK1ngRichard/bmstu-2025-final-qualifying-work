@@ -2,15 +2,17 @@ package models
 
 import "time"
 
-// UpdateAccessToken
+// Register
 
-type UpdateAccessTokenReq struct {
-	RefreshToken string
-	Fingerprint  string
+type RegisterReq struct {
+	Email       string
+	Password    string
+	Fingerprint string
 }
-type UpdateAccessTokenRes struct {
-	AccessToken string
-	ExpiresIn   time.Time
+type RegisterRes struct {
+	AccessToken  string
+	RefreshToken string
+	ExpiresIn    time.Time
 }
 
 // Login
@@ -26,15 +28,23 @@ type LoginRes struct {
 	ExpiresIn    time.Time
 }
 
-// Register
+// UpdateAccessToken
 
-type RegisterReq struct {
-	Email       string
-	Password    string
-	Fingerprint string
-}
-type RegisterRes struct {
-	AccessToken  string
+type UpdateAccessTokenReq struct {
 	RefreshToken string
-	ExpiresIn    time.Time
+	Fingerprint  string
+}
+type UpdateAccessTokenRes struct {
+	AccessToken string
+	ExpiresIn   time.Time
+}
+
+// Logout
+
+type LogoutReq struct {
+	RefreshToken string
+	Fingerprint  string
+}
+type LogoutRes struct {
+	Message string
 }

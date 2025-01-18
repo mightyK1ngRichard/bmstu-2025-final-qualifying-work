@@ -6,6 +6,7 @@ import (
 	"2025_CakeLand_API/internal/pkg/auth/repo"
 	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"2025_CakeLand_API/internal/pkg/utils/jwt"
+	"2025_CakeLand_API/internal/pkg/utils/sl"
 	"context"
 	"fmt"
 	"github.com/google/uuid"
@@ -34,7 +35,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 	if err != nil {
 		u.log.Error("[Usecase.Login] ошибка получения пользователя по email",
 			slog.String("email", in.Email),
-			slog.Any("error", err),
+			sl.Err(err),
 		)
 		return nil, errors.Wrap(err, "ошибка получения пользователя в Login")
 	}
@@ -47,7 +48,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 	// Создаём новый access токен
 	accessToken, err := jwt.GenerateAccessToken(res.User.ID.String())
 	if err != nil {
-		u.log.Error("[Usecase.Login] Ошибка генерации access токена", slog.Any("error", err))
+		u.log.Error("[Usecase.Login] Ошибка генерации access токена", sl.Err(err))
 		return nil, err
 	}
 
@@ -57,7 +58,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 		isExpired, expErr := jwt.IsTokenExpired(oldRefreshToken, true)
 		if expErr != nil {
 			// Если не вышло декодировать токен, создадим новый токен
-			u.log.Error("[Usecase.Login] ошибка декодирования oldRefreshToken", slog.Any("error", expErr))
+			u.log.Error("[Usecase.Login] ошибка декодирования oldRefreshToken", sl.Err(expErr))
 		} else if !isExpired {
 			// Если токен не устарел, создаём только access токен
 			u.log.Debug("[Usecase.Login] сгенерирован только новый access token. refresh остаётся старым")
@@ -72,18 +73,18 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 	// Создаём новый рефреш токен
 	newRefreshToken, err := jwt.GenerateRefreshToken(res.User.ID.String())
 	if err != nil {
-		u.log.Error(`[Usecase.Login] ошибка генерации newRefreshToken`, slog.Any("error", err))
+		u.log.Error(`[Usecase.Login] ошибка генерации newRefreshToken`, sl.Err(err))
 		return nil, errors.Wrap(err, "ошибка генерации refresh токена")
 	}
 
 	// Сохраняем или обновляем токены в бд
 	res.User.RefreshTokensMap[in.Fingerprint] = newRefreshToken.Token
 	err = u.repo.UpdateUserRefreshTokens(ctx, repo.UpdateUserRefreshTokensReq{
-		UserID:           res.User.ID,
+		UserID:           res.User.ID.String(),
 		RefreshTokensMap: res.User.RefreshTokensMap,
 	})
 	if err != nil {
-		u.log.Error(`[Usecase.Login] ошибка обновления RefreshTokensMap в бд`, slog.Any("error", err))
+		u.log.Error(`[Usecase.Login] ошибка обновления RefreshTokensMap в бд`, sl.Err(err))
 		return nil, errors.Wrap(err, "ошибка перезаписи рефреш токена в базе данных")
 	}
 
@@ -97,7 +98,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 func (u *AuthUseсase) Register(ctx context.Context, in umodels.RegisterReq) (*umodels.RegisterRes, error) {
 	hashedPassword, err := generatePasswordHash(in.Password)
 	if err != nil {
-		u.log.Error(`[Usecase.Register] ошибка хэширования пароля`, slog.Any("error", err))
+		u.log.Error(`[Usecase.Register] ошибка хэширования пароля`, sl.Err(err))
 		return nil, err
 	}
 
@@ -106,10 +107,10 @@ func (u *AuthUseсase) Register(ctx context.Context, in umodels.RegisterReq) (*u
 	accessToken, errAccess := jwt.GenerateAccessToken(userID.String())
 	refreshToken, errRefresh := jwt.GenerateRefreshToken(userID.String())
 	if errAccess != nil {
-		u.log.Error(`[Usecase.Register] ошибка генерации access токена`, slog.Any("error", errAccess))
+		u.log.Error(`[Usecase.Register] ошибка генерации access токена`, sl.Err(errAccess))
 		return nil, errAccess
 	} else if errRefresh != nil {
-		u.log.Error(`[Usecase.Register] ошибка генерации refresh токена`, slog.Any("error", errRefresh))
+		u.log.Error(`[Usecase.Register] ошибка генерации refresh токена`, sl.Err(errRefresh))
 		return nil, errRefresh
 	}
 
@@ -146,14 +147,14 @@ func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in umodels.UpdateA
 		UserID: userID,
 	})
 	if err != nil {
-		u.log.Error(`[Usecase.UpdateAccessToken] ошибка бд`, slog.Any("error", err))
+		u.log.Error(`[Usecase.UpdateAccessToken] ошибка бд`, sl.Err(err))
 		return nil, err
 	}
 
 	// Ищем refresh токен для заданного fingerprint
 	oldRefreshToken, exists := res.RefreshTokensMap[in.Fingerprint]
 	if !exists {
-		u.log.Error(`[Usecase.UpdateAccessToken] refresh токен не найден в бд`, slog.Any("error", err))
+		u.log.Error(`[Usecase.UpdateAccessToken] refresh токен не найден в бд`, sl.Err(err))
 		return nil, models.NoToken
 	}
 
@@ -166,13 +167,42 @@ func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in umodels.UpdateA
 	// Генерируем новый access токен
 	accessToken, err := jwt.GenerateAccessToken(userID)
 	if err != nil {
-		u.log.Error("[Usecase.UpdateAccessToken] ошибка генерации access токена", slog.Any("error", err))
+		u.log.Error("[Usecase.UpdateAccessToken] ошибка генерации access токена", sl.Err(err))
 		return nil, err
 	}
 
 	return &umodels.UpdateAccessTokenRes{
 		AccessToken: accessToken.Token,
 		ExpiresIn:   accessToken.ExpiresIn,
+	}, nil
+}
+
+func (u *AuthUseсase) Logout(ctx context.Context, in umodels.LogoutReq) (*umodels.LogoutRes, error) {
+	userID, err := jwt.GetUserIDFromRefreshToken(in.RefreshToken)
+	if err != nil {
+		u.log.Error(`[Usecase.Logout] ошибка декодирования токена`, sl.Err(err))
+		return nil, err
+	}
+	res, err := u.repo.GetUserRefreshTokens(ctx, repo.GetUserRefreshTokensReq{
+		UserID: userID,
+	})
+	if err != nil {
+		u.log.Error(`[Usecase.Logout] ошибка получения токенов пользователя`, sl.Err(err))
+		return nil, err
+	}
+
+	delete(res.RefreshTokensMap, in.Fingerprint)
+	err = u.repo.UpdateUserRefreshTokens(ctx, repo.UpdateUserRefreshTokensReq{
+		UserID:           userID,
+		RefreshTokensMap: res.RefreshTokensMap,
+	})
+	if err != nil {
+		u.log.Error(`[Usecase.Logout] ошибка обноваления RefreshTokensMap в бд`, sl.Err(err))
+		return nil, err
+	}
+
+	return &umodels.LogoutRes{
+		Message: "Logged out successfully",
 	}, nil
 }
 

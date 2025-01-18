@@ -6,6 +6,7 @@ import (
 	genAuth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
 	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"context"
+	"fmt"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -40,6 +41,9 @@ func (h *AuthGrpcHandler) Register(ctx context.Context, req *genAuth.RegisterReq
 	}
 	res, err := h.usecase.Register(ctx, registerUser)
 	if err != nil {
+		if errors.Is(err, models.ErrUserAlreadyExists) {
+			return nil, status.Error(codes.AlreadyExists, fmt.Sprintf(`%v`, err))
+		}
 		return nil, err
 	}
 
@@ -81,8 +85,25 @@ func (h *AuthGrpcHandler) Login(ctx context.Context, req *genAuth.LoginRequest) 
 	}, nil
 }
 
-func (h *AuthGrpcHandler) Logout(context.Context, *genAuth.LogoutRequest) (*genAuth.LogoutResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+func (h *AuthGrpcHandler) Logout(ctx context.Context, req *genAuth.LogoutRequest) (*genAuth.LogoutResponse, error) {
+	fingerprint, err := getFingerprintFromMetadata(ctx)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
+	}
+	if req.RefreshToken == "" {
+		return nil, status.Error(codes.InvalidArgument, "refreshToken обязателен")
+	}
+	res, err := h.usecase.Logout(ctx, umodels.LogoutReq{
+		Fingerprint:  fingerprint,
+		RefreshToken: req.RefreshToken,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &genAuth.LogoutResponse{
+		Message: res.Message,
+	}, nil
 }
 
 func (h *AuthGrpcHandler) UpdateAccessToken(ctx context.Context, req *genAuth.UpdateAccessTokenRequest) (*genAuth.UpdateAccessTokenResponse, error) {
