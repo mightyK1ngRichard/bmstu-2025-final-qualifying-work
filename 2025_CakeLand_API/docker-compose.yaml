@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:12
+    volumes:
+      - type: volume
+        source: postgresdb-data
+        target: /var/utils/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "mightyK1ngRichard"
+      POSTGRES_DB: "CakeLandDatabase"
+      POSTGRES_PASSWORD: "kingPassword"
+
+volumes:
+  postgresdb-data:
+    driver: local
