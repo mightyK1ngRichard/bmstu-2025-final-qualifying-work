@@ -10,11 +10,11 @@ import (
 )
 
 const (
-	isUserExistsCommand            = `SELECT EXISTS(SELECT 1 FROM "user" WHERE email = $1);`
-	createUserCommand              = `INSERT INTO "user" (userID, email, passwordHash, refreshTokensMap) VALUES ($1, $2, $3, $4);`
-	getUserByEmailCommand          = `SELECT userID, email, name, refreshTokensMap, passwordHash FROM "user" WHERE email = $1;`
-	updateUserRefreshTokensCommand = `UPDATE "user" SET refreshTokensMap = $1 WHERE userid = $2;`
-	getUserRefreshTokensCommand    = `SELECT refreshtokensmap FROM "user" where userid = $1`
+	isUserExistsCommand            = `SELECT EXISTS(SELECT 1 FROM "user" WHERE mail = $1);`
+	createUserCommand              = `INSERT INTO "user" (id, nickname, mail, password_hash, refresh_tokens_map) VALUES ($1, $2, $3, $4, $5);`
+	getUserByEmailCommand          = `SELECT id, mail, refresh_tokens_map, password_hash FROM "user" WHERE mail = $1;`
+	updateUserRefreshTokensCommand = `UPDATE "user" SET refresh_tokens_map = $1 WHERE id = $2;`
+	getUserRefreshTokensCommand    = `SELECT refresh_tokens_map FROM "user" where id = $1`
 )
 
 type AuthRepository struct {
@@ -45,14 +45,14 @@ func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) 
 	}
 
 	// Выполнение команды создания пользователя
-	_, err = r.db.ExecContext(ctx,
+	if _, err = r.db.ExecContext(ctx,
 		createUserCommand,
 		in.UUID,
+		in.UUID, // изначельно username пользователя равен его id
 		in.Email,
 		in.PasswordHash,
 		refreshTokensJSON,
-	)
-	if err != nil {
+	); err != nil {
 		return errors.Wrap(err, "ошибка выполнения команды создания пользователя в базе данных")
 	}
 
@@ -61,21 +61,19 @@ func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) 
 
 func (r *AuthRepository) GetUserByEmail(ctx context.Context, in repo.GetUserByEmailReq) (*repo.GetUserByEmailRes, error) {
 	row := r.db.QueryRowContext(ctx, getUserByEmailCommand, in.Email)
-	var user models.User
+	var res repo.GetUserByEmailRes
 	var refreshTokensMap []byte
-	if err := row.Scan(&user.ID, &user.Email, &user.Nickname, &refreshTokensMap, &user.PasswordHash); err != nil {
+	if err := row.Scan(&res.ID, &res.Email, &refreshTokensMap, &res.PasswordHash); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, models.ErrUserNotFound
 		}
 		return nil, errors.Wrap(err, "ошибка получения данных пользователя из базы данных")
 	}
-	if err := json.Unmarshal(refreshTokensMap, &user.RefreshTokensMap); err != nil {
+	if err := json.Unmarshal(refreshTokensMap, &res.RefreshTokensMap); err != nil {
 		return nil, errors.Wrapf(err, "ошибка декодирования JSON refreshTokensMap для пользователя с email %s", in.Email)
 	}
 
-	return &repo.GetUserByEmailRes{
-		User: user,
-	}, nil
+	return &res, nil
 }
 
 func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in repo.UpdateUserRefreshTokensReq) error {
@@ -97,7 +95,7 @@ func (r *AuthRepository) GetUserRefreshTokens(ctx context.Context, in repo.GetUs
 	var refreshTokens []byte
 	row := r.db.QueryRowContext(ctx, getUserRefreshTokensCommand, in.UserID)
 	if err := row.Scan(&refreshTokens); err != nil {
-		return nil, errors.New(`refreshtokensmap not found`)
+		return nil, errors.New(`refresh_tokens_map not found`)
 	}
 	var refreshTokensMap map[string]string
 	if err := json.Unmarshal(refreshTokens, &refreshTokensMap); err != nil {

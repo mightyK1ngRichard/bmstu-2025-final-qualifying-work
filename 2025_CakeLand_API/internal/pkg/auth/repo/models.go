@@ -1,7 +1,6 @@
 package repo
 
 import (
-	"2025_CakeLand_API/internal/models"
 	"github.com/google/uuid"
 )
 
@@ -20,7 +19,10 @@ type GetUserByEmailReq struct {
 	Email string
 }
 type GetUserByEmailRes struct {
-	User models.User
+	ID               uuid.UUID
+	Email            string
+	PasswordHash     []byte
+	RefreshTokensMap map[string]string // key: fingerprint, value: refreshToken
 }
 
 // UpdateUserRefreshTokens

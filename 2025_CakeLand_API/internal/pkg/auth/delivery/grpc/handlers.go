@@ -98,6 +98,9 @@ func (h *AuthGrpcHandler) Logout(ctx context.Context, req *genAuth.LogoutRequest
 		RefreshToken: req.RefreshToken,
 	})
 	if err != nil {
+		if errors.Is(err, models.NoToken) {
+			return nil, status.Error(codes.InvalidArgument, "неверный refresh токен")
+		}
 		return nil, err
 	}
 

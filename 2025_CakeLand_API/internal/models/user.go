@@ -7,8 +7,13 @@ import (
 
 type User struct {
 	ID               uuid.UUID
-	Nickname         null.String
-	Email            string
+	FIO              null.String
+	Address          null.String
+	Nickname         string
+	ImageURL         null.String
+	Mail             string
 	PasswordHash     []byte
+	Phone            null.String
+	CardNumber       null.String
 	RefreshTokensMap map[string]string // key: fingerprint, value: refreshToken
 }

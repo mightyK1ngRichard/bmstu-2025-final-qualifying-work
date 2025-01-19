@@ -41,18 +41,18 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 	}
 
 	// Проверяем пароль пользователя
-	if !checkPassword(in.Password, res.User.PasswordHash) {
+	if !checkPassword(in.Password, res.PasswordHash) {
 		return nil, models.ErrInvalidPassword
 	}
 
 	// Создаём новый access токен
-	accessToken, err := jwt.GenerateAccessToken(res.User.ID.String())
+	accessToken, err := jwt.GenerateAccessToken(res.ID.String())
 	if err != nil {
 		u.log.Error("[Usecase.Login] Ошибка генерации access токена", sl.Err(err))
 		return nil, err
 	}
 
-	oldRefreshToken, exists := res.User.RefreshTokensMap[in.Fingerprint]
+	oldRefreshToken, exists := res.RefreshTokensMap[in.Fingerprint]
 	// Если токен уже сущестувет, проверим его срок годности. Если ещё валиден, тогда генерируем только access token
 	if exists {
 		isExpired, expErr := jwt.IsTokenExpired(oldRefreshToken, true)
@@ -71,17 +71,17 @@ func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels
 	}
 
 	// Создаём новый рефреш токен
-	newRefreshToken, err := jwt.GenerateRefreshToken(res.User.ID.String())
+	newRefreshToken, err := jwt.GenerateRefreshToken(res.ID.String())
 	if err != nil {
 		u.log.Error(`[Usecase.Login] ошибка генерации newRefreshToken`, sl.Err(err))
 		return nil, errors.Wrap(err, "ошибка генерации refresh токена")
 	}
 
 	// Сохраняем или обновляем токены в бд
-	res.User.RefreshTokensMap[in.Fingerprint] = newRefreshToken.Token
+	res.RefreshTokensMap[in.Fingerprint] = newRefreshToken.Token
 	err = u.repo.UpdateUserRefreshTokens(ctx, repo.UpdateUserRefreshTokensReq{
-		UserID:           res.User.ID.String(),
-		RefreshTokensMap: res.User.RefreshTokensMap,
+		UserID:           res.ID.String(),
+		RefreshTokensMap: res.RefreshTokensMap,
 	})
 	if err != nil {
 		u.log.Error(`[Usecase.Login] ошибка обновления RefreshTokensMap в бд`, sl.Err(err))
@@ -189,6 +189,12 @@ func (u *AuthUseсase) Logout(ctx context.Context, in umodels.LogoutReq) (*umode
 	if err != nil {
 		u.log.Error(`[Usecase.Logout] ошибка получения токенов пользователя`, sl.Err(err))
 		return nil, err
+	}
+
+	// Проверяем, верный ли refresh токен
+	dbRefreshToken := res.RefreshTokensMap[in.Fingerprint]
+	if dbRefreshToken != in.RefreshToken {
+		return nil, models.NoToken
 	}
 
 	delete(res.RefreshTokensMap, in.Fingerprint)

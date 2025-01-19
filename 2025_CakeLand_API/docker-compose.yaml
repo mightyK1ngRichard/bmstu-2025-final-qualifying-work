@@ -8,11 +8,11 @@ services:
         source: postgresdb-data
         target: /var/utils/postgresql/data
     ports:
-      - "5432:5432"
+      - "${dbPort}:5432"
     environment:
-      POSTGRES_USER: "mightyK1ngRichard"
-      POSTGRES_DB: "CakeLandDatabase"
-      POSTGRES_PASSWORD: "kingPassword"
+      POSTGRES_USER: ${dbUser}
+      POSTGRES_DB: ${dbName}
+      POSTGRES_PASSWORD: ${dbPassword}
 
 volumes:
   postgresdb-data:

@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
 	"os"
 	"time"
 )
@@ -40,6 +41,10 @@ func NewConfig() (*Config, error) {
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
 		return nil, fmt.Errorf("ошибка чтения файла конфигурации: %s", err.Error())
 	}
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("Ошибка при загрузке .env файла:", err)
+	}
 	return &cfg, nil
 }
 
@@ -51,7 +56,7 @@ func fetchConfigPath() string {
 	flag.StringVar(&res, "config", "", "путь к конфигурационному файлу")
 	flag.Parse()
 	if res == "" {
-		res = os.Getenv("CONFIG_PATH")
+		res = "./config/localConfig.yaml"
 	}
 	return res
 }
