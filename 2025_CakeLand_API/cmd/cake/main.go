@@ -1,10 +1,10 @@
 package main
 
 import (
-	"2025_CakeLand_API/internal/pkg/auth/delivery/grpc"
-	"2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
-	"2025_CakeLand_API/internal/pkg/auth/repo/postgres"
-	"2025_CakeLand_API/internal/pkg/auth/usecase"
+	cake "2025_CakeLand_API/internal/pkg/cake/delivery/grpc"
+	"2025_CakeLand_API/internal/pkg/cake/delivery/grpc/generated"
+	"2025_CakeLand_API/internal/pkg/cake/repo/postgres"
+	"2025_CakeLand_API/internal/pkg/cake/usecase"
 	"2025_CakeLand_API/internal/pkg/config"
 	"2025_CakeLand_API/internal/pkg/utils"
 	"2025_CakeLand_API/internal/pkg/utils/logger"
@@ -44,10 +44,10 @@ func run() error {
 		return err
 	}
 	grpcServer := grpc.NewServer()
-	repo := postgres.NewAuthRepository(db)
-	authUsecase := usecase.NewAuthUsecase(log, repo)
-	grpcAuthHandler := auth.NewGrpcAuthHandler(authUsecase)
-	generated.RegisterAuthServer(grpcServer, grpcAuthHandler)
-	log.Info("Starting gRPC server", slog.String("port", fmt.Sprintf(":%d", conf.GRPC.Port)))
+	repo := postgres.NewCakeRepository(db)
+	usecase := usecase.NewCakeUsecase(log, repo)
+	handler := cake.NewCakeHandler(log, usecase)
+	generated.RegisterCakeServiceServer(grpcServer, handler)
+	log.Info("Starting gRPC cake service", slog.String("port", fmt.Sprintf(":%d", conf.GRPC.Port)))
 	return grpcServer.Serve(listener)
 }

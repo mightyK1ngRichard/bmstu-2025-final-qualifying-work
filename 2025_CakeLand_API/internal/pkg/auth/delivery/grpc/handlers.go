@@ -1,9 +1,9 @@
-package grpcAuth
+package auth
 
 import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/auth"
-	genAuth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
+	gen "2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
 	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"context"
 	"fmt"
@@ -13,18 +13,18 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type AuthGrpcHandler struct {
+type GrpcAuthHandler struct {
 	usecase auth.IAuthUsecase
-	genAuth.UnimplementedAuthServer
+	gen.UnimplementedAuthServer
 }
 
-func NewGrpcAuthHandler(usecase auth.IAuthUsecase) *AuthGrpcHandler {
-	return &AuthGrpcHandler{
+func NewGrpcAuthHandler(usecase auth.IAuthUsecase) *GrpcAuthHandler {
+	return &GrpcAuthHandler{
 		usecase: usecase,
 	}
 }
 
-func (h *AuthGrpcHandler) Register(ctx context.Context, req *genAuth.RegisterRequest) (*genAuth.RegisterResponse, error) {
+func (h *GrpcAuthHandler) Register(ctx context.Context, req *gen.RegisterRequest) (*gen.RegisterResponse, error) {
 	fingerprint, err := getFingerprintFromMetadata(ctx)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
@@ -47,14 +47,14 @@ func (h *AuthGrpcHandler) Register(ctx context.Context, req *genAuth.RegisterReq
 		return nil, err
 	}
 
-	return &genAuth.RegisterResponse{
+	return &gen.RegisterResponse{
 		AccessToken:  res.AccessToken,
 		RefreshToken: res.RefreshToken,
 		ExpiresIn:    res.ExpiresIn.Unix(),
 	}, nil
 }
 
-func (h *AuthGrpcHandler) Login(ctx context.Context, req *genAuth.LoginRequest) (*genAuth.LoginResponse, error) {
+func (h *GrpcAuthHandler) Login(ctx context.Context, req *gen.LoginRequest) (*gen.LoginResponse, error) {
 	fingerprint, err := getFingerprintFromMetadata(ctx)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
@@ -78,14 +78,14 @@ func (h *AuthGrpcHandler) Login(ctx context.Context, req *genAuth.LoginRequest) 
 		return nil, status.Error(codes.Internal, "внутренняя ошибка сервера")
 	}
 
-	return &genAuth.LoginResponse{
+	return &gen.LoginResponse{
 		AccessToken:  res.AccessToken,
 		RefreshToken: res.RefreshToken,
 		ExpiresIn:    res.ExpiresIn.Unix(),
 	}, nil
 }
 
-func (h *AuthGrpcHandler) Logout(ctx context.Context, req *genAuth.LogoutRequest) (*genAuth.LogoutResponse, error) {
+func (h *GrpcAuthHandler) Logout(ctx context.Context, req *gen.LogoutRequest) (*gen.LogoutResponse, error) {
 	fingerprint, err := getFingerprintFromMetadata(ctx)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
@@ -104,12 +104,12 @@ func (h *AuthGrpcHandler) Logout(ctx context.Context, req *genAuth.LogoutRequest
 		return nil, err
 	}
 
-	return &genAuth.LogoutResponse{
+	return &gen.LogoutResponse{
 		Message: res.Message,
 	}, nil
 }
 
-func (h *AuthGrpcHandler) UpdateAccessToken(ctx context.Context, req *genAuth.UpdateAccessTokenRequest) (*genAuth.UpdateAccessTokenResponse, error) {
+func (h *GrpcAuthHandler) UpdateAccessToken(ctx context.Context, req *gen.UpdateAccessTokenRequest) (*gen.UpdateAccessTokenResponse, error) {
 	fingerprint, err := getFingerprintFromMetadata(ctx)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "fingerprint отсутствует в метаданных")
@@ -129,7 +129,7 @@ func (h *AuthGrpcHandler) UpdateAccessToken(ctx context.Context, req *genAuth.Up
 		return nil, err
 	}
 
-	return &genAuth.UpdateAccessTokenResponse{
+	return &gen.UpdateAccessTokenResponse{
 		AccessToken: res.AccessToken,
 		ExpiresIn:   res.ExpiresIn.Unix(),
 	}, nil

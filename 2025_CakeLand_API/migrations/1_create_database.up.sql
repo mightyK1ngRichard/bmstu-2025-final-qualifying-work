@@ -55,9 +55,9 @@ CREATE TABLE "cake_category"
     id            UUID PRIMARY KEY,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     category_id   UUID NOT NULL,
-    user_id       UUID NOT NULL,
+    cake_id       UUID NOT NULL,
     FOREIGN KEY (category_id) REFERENCES "category" (id),
-    FOREIGN KEY (user_id) REFERENCES "user" (id)
+    FOREIGN KEY (cake_id) REFERENCES "cake" (id)
 );
 
 -- Начинка
