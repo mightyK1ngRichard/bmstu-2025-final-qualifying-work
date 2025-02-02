@@ -18,7 +18,7 @@ func NewCakeRepository(db *sql.DB) *CakeRepository {
 	}
 }
 
-func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakesListReq) (*repo.GetCakesListRes, error) {
+func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakeReq) (*repo.GetCakesRes, error) {
 	query := `
         SELECT c.id, c.name, c.image_url, c.kg_price, c.rating, c.description, c.mass, c.is_open_for_sale,
                u.id AS owner_id, u.fio, u.nickname, u.mail,
@@ -29,7 +29,7 @@ func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakesListRe
                  LEFT JOIN "user" u ON c.owner_id = u.id
                  LEFT JOIN "cake_filling" cf ON c.id = cf.cake_id
                  LEFT JOIN "filling" f ON cf.filling_id = f.id
-                 LEFT JOIN "cake_category" cc ON c.id = cc.id
+                 LEFT JOIN "cake_category" cc ON c.id = cc.cake_id
                  LEFT JOIN "category" cat ON cc.category_id = cat.id
         WHERE c.id = $1;
     `
@@ -53,8 +53,8 @@ func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakesListRe
 
 		// Read data
 		err := rows.Scan(
-			&cake.ID, &cake.Name, &cake.ImageURL, &cake.KgPrice, &cake.Rating, &cake.Description, &cake.Mass, &cake.IsOpenForSale,
-			&owner.ID, &owner.FIO, &owner.Nickname, &owner.Mail,
+			&cake.ID, &cake.Name, &cake.ImageURL, &cake.KgPrice, &cake.Rating, &cake.Description, &cake.Mass,
+			&cake.IsOpenForSale, &owner.ID, &owner.FIO, &owner.Nickname, &owner.Mail,
 			&filling.ID, &filling.Name, &filling.ImageURL, &filling.Content, &filling.KgPrice, &filling.Description,
 			&category.ID, &category.Name, &category.ImageURL,
 		)
@@ -84,7 +84,7 @@ func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakesListRe
 		return nil, err
 	}
 
-	return &repo.GetCakesListRes{
+	return &repo.GetCakesRes{
 		Cake: cake,
 	}, nil
 }

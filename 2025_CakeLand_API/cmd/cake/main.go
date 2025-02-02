@@ -16,7 +16,7 @@ import (
 	"os"
 )
 
-// go run cmd/auth/main.go --config=./config/localConfig.yaml
+// go run cmd/cake/main.go --config=./config/localConfig.yaml
 func main() {
 	if err := run(); err != nil {
 		fmt.Print(err)

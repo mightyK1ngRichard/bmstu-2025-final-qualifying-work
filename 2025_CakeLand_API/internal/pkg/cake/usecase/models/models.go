@@ -1,16 +1,16 @@
-package repo
+package models
 
 import (
 	"2025_CakeLand_API/internal/models"
 	"github.com/google/uuid"
 )
 
-// GetCakeByID
+// Cake
 
 type GetCakeReq struct {
 	CakeID uuid.UUID
 }
 
-type GetCakesRes struct {
+type GetCakeRes struct {
 	Cake models.Cake
 }
