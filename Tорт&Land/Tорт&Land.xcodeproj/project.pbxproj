@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E571EC892D5AB43E0038C730 /* CGRPCZlib in Frameworks */ = {isa = PBXBuildFile; productRef = E571EC882D5AB43E0038C730 /* CGRPCZlib */; };
+		E571EC8B2D5AB43E0038C730 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = E571EC8A2D5AB43E0038C730 /* GRPC */; };
+		E571EC8D2D5AB43E0038C730 /* GRPCReflectionService in Frameworks */ = {isa = PBXBuildFile; productRef = E571EC8C2D5AB43E0038C730 /* GRPCReflectionService */; };
+		E571EC902D5AB44A0038C730 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = E571EC8F2D5AB44A0038C730 /* SwiftProtobuf */; };
+		E571EC922D5AB44A0038C730 /* SwiftProtobufPluginLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = E571EC912D5AB44A0038C730 /* SwiftProtobufPluginLibrary */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E5A5F5B32D1647E600140551 /* Tорт&Land.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tорт&Land.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +31,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E571EC8D2D5AB43E0038C730 /* GRPCReflectionService in Frameworks */,
+				E571EC8B2D5AB43E0038C730 /* GRPC in Frameworks */,
+				E571EC922D5AB44A0038C730 /* SwiftProtobufPluginLibrary in Frameworks */,
+				E571EC892D5AB43E0038C730 /* CGRPCZlib in Frameworks */,
+				E571EC902D5AB44A0038C730 /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +78,11 @@
 			);
 			name = "Tорт&Land";
 			packageProductDependencies = (
+				E571EC882D5AB43E0038C730 /* CGRPCZlib */,
+				E571EC8A2D5AB43E0038C730 /* GRPC */,
+				E571EC8C2D5AB43E0038C730 /* GRPCReflectionService */,
+				E571EC8F2D5AB44A0038C730 /* SwiftProtobuf */,
+				E571EC912D5AB44A0038C730 /* SwiftProtobufPluginLibrary */,
 			);
 			productName = "Tорт&Land";
 			productReference = E5A5F5B32D1647E600140551 /* Tорт&Land.app */;
@@ -95,6 +113,10 @@
 			);
 			mainGroup = E5A5F5AA2D1647E600140551;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E571EC872D5AB43E0038C730 /* XCRemoteSwiftPackageReference "grpc-swift" */,
+				E571EC8E2D5AB44A0038C730 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E5A5F5B42D1647E600140551 /* Products */;
 			projectDirPath = "";
@@ -337,6 +359,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E571EC872D5AB43E0038C730 /* XCRemoteSwiftPackageReference "grpc-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.24.2;
+			};
+		};
+		E571EC8E2D5AB44A0038C730 /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-protobuf/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.28.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E571EC882D5AB43E0038C730 /* CGRPCZlib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E571EC872D5AB43E0038C730 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = CGRPCZlib;
+		};
+		E571EC8A2D5AB43E0038C730 /* GRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E571EC872D5AB43E0038C730 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPC;
+		};
+		E571EC8C2D5AB43E0038C730 /* GRPCReflectionService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E571EC872D5AB43E0038C730 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPCReflectionService;
+		};
+		E571EC8F2D5AB44A0038C730 /* SwiftProtobuf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E571EC8E2D5AB44A0038C730 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			productName = SwiftProtobuf;
+		};
+		E571EC912D5AB44A0038C730 /* SwiftProtobufPluginLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E571EC8E2D5AB44A0038C730 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			productName = SwiftProtobufPluginLibrary;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E5A5F5AB2D1647E600140551 /* Project object */;
 }
