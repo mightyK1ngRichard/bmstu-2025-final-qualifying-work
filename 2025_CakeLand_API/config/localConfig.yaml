@@ -1,0 +1,11 @@
+env: "local"
+grpc:
+  port: 44044
+  timeout: 5s
+database:
+  host: "0.0.0.0"
+  dbName: "CakeLandDatabase"
+  port: 5432
+  user: "mightyK1ngRichard"
+  password: "kingPassword"
+  sslmode: disable
