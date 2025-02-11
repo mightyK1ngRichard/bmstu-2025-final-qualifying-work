@@ -21,19 +21,19 @@ extension AuthServiceModel.Register {
         let password: String
     }
 
-    struct Response {
+    struct Response: GrpcConvertable {
         let accessToken: String
         let refreshToken: String
         let expiresIn: Int
     }
 }
 
-extension RegisterResponse {
-    func convertToRegisterDataGRPC() -> AuthServiceModel.Register.Response {
-        .init(
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiresIn: Int(expiresIn)
+extension AuthServiceModel.Register.Response {
+    init(from model: RegisterResponse) {
+        self = .init(
+            accessToken: model.accessToken,
+            refreshToken: model.refreshToken,
+            expiresIn: Int(model.expiresIn)
         )
     }
 }
@@ -46,19 +46,19 @@ extension AuthServiceModel.Login {
         let password: String
     }
 
-    struct Response {
+    struct Response: GrpcConvertable {
         let accessToken: String
         let refreshToken: String
         let expiresIn: Int
     }
 }
 
-extension LoginResponse {
-    func convertToLoginDataGRPC() -> AuthServiceModel.Login.Response {
-        .init(
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiresIn: Int(expiresIn)
+extension AuthServiceModel.Login.Response {
+    init(from model: LoginResponse) {
+        self = .init(
+            accessToken: model.accessToken,
+            refreshToken: model.refreshToken,
+            expiresIn: Int(model.expiresIn)
         )
     }
 }
@@ -70,17 +70,17 @@ extension AuthServiceModel.UpdateAccessToken {
         let refreshToken: String
     }
 
-    struct Response {
+    struct Response: GrpcConvertable {
         let accessToken: String
         let expiresIn: Int
     }
 }
 
-extension UpdateAccessTokenResponse {
-    func convertToLoginDataGRPC() -> AuthServiceModel.UpdateAccessToken.Response {
-        .init(
-            accessToken: accessToken,
-            expiresIn: Int(expiresIn)
+extension AuthServiceModel.UpdateAccessToken.Response {
+    init(from model: UpdateAccessTokenResponse) {
+        self = .init(
+            accessToken: model.accessToken,
+            expiresIn: Int(model.expiresIn)
         )
     }
 }

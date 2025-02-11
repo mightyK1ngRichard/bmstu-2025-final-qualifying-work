@@ -35,13 +35,7 @@ final class AuthGrpcServiceImpl: AuthService {
                 port: configuration.port,
                 numberOfThreads: 1
             )
-            let options = ConfigProvider.makeDefaultCallOptions()
-
-            self.client = AuthAsyncClient(
-                channel: channel,
-                defaultCallOptions: options,
-                interceptors: nil
-            )
+            self.client = AuthAsyncClient(channel: channel, interceptors: nil)
             self.channel = channel
             self.networkService = networkService
         } catch {
@@ -64,9 +58,7 @@ extension AuthGrpcServiceImpl {
         return try await networkService.performAndLog(
             call: client.register,
             with: request,
-            mapping: {
-                .init(accessToken: $0.accessToken, refreshToken: $0.refreshToken, expiresIn: Int($0.expiresIn))
-            }
+            mapping: { .init(from: $0) }
         )
     }
 
@@ -75,16 +67,22 @@ extension AuthGrpcServiceImpl {
             $0.email = req.email
             $0.password = req.password
         }
-        return try await client.login(request)
-            .convertToLoginDataGRPC()
+        return try await networkService.performAndLog(
+            call: client.login,
+            with: request,
+            mapping: { .init(from: $0) }
+        )
     }
 
     func updateAccessToken(req: AuthServiceModel.UpdateAccessToken.Request) async throws -> AuthServiceModel.UpdateAccessToken.Response {
         let request = UpdateAccessTokenRequest.with {
             $0.refreshToken = req.refreshToken
         }
-        return try await client.updateAccessToken(request)
-            .convertToLoginDataGRPC()
+        return try await networkService.performAndLog(
+            call: client.updateAccessToken,
+            with: request,
+            mapping: { .init(from: $0) }
+        )
     }
 
     func closeConnection() {
