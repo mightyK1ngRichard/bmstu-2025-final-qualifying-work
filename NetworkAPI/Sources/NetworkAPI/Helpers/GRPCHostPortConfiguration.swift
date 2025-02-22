@@ -3,24 +3,25 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 11.02.2025.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
 
 // MARK: - GRPCHostPortConfiguration
 
-protocol GRPCHostPortConfiguration {
+public protocol GRPCHostPortConfiguration {
     var hostName: String { get }
     var port: Int { get }
 }
 
 // MARK: - AppHosts
 
-enum AppHosts: GRPCHostPortConfiguration {
+public enum AppHosts: GRPCHostPortConfiguration {
     case auth
 }
 
-extension AppHosts {
+public extension AppHosts {
     var hostName: String {
         switch self {
         case .auth:

@@ -3,6 +3,7 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 11.02.2025.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
@@ -10,6 +11,7 @@ import GRPC
 import NIO
 
 final class ConfigProvider: Sendable {
+    @MainActor
     static func makeDefaultCallOptions() -> CallOptions {
         let device = "\(SystemInfo.modelName)" + " (\(SystemInfo.systemVersion))"
         let requestId = UUID().uuidString

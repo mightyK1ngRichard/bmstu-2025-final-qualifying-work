@@ -3,6 +3,7 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 11.02.2025.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
@@ -10,7 +11,7 @@ import GRPC
 
 // MARK: - NetworkService
 
-protocol NetworkService {
+public protocol NetworkService {
     func performAndLog<Request, Response: Sendable, MappedResponse>(
         call: (Request, CallOptions?) async throws -> Response,
         with: Request,
@@ -48,19 +49,20 @@ extension NetworkService {
 
 // MARK: - NetworkServiceImpl
 
-final class NetworkServiceImpl: NetworkService {
+public final class NetworkServiceImpl: NetworkService {
     private let lock = NSLock()
     private var _callOptions: CallOptions
-    var callOptions: CallOptions {
+    public var callOptions: CallOptions {
         get { lock.withLock { _callOptions } }
         set { lock.withLock { _callOptions = newValue } }
     }
 
-    required init() {
+    @MainActor
+    public required init() {
         self._callOptions = ConfigProvider.makeDefaultCallOptions()
     }
 
-    func performAndLog<Request, Response: Sendable, MappedResponse>(
+    public func performAndLog<Request, Response: Sendable, MappedResponse>(
         call: (Request, CallOptions?) async throws -> Response,
         with request: Request,
         options: CallOptions = CallOptions(),

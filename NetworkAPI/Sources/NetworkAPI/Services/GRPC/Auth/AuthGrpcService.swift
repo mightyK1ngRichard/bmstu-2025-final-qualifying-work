@@ -3,6 +3,7 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 11.02.2025.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
@@ -11,7 +12,7 @@ import NIO
 
 // MARK: - AuthService
 
-protocol AuthService {
+public protocol AuthService {
     func register(req: AuthServiceModel.Register.Request) async throws -> AuthServiceModel.Register.Response
     func login(req: AuthServiceModel.Login.Request) async throws -> AuthServiceModel.Login.Response
     func updateAccessToken(req: AuthServiceModel.UpdateAccessToken.Request) async throws -> AuthServiceModel.UpdateAccessToken.Response
@@ -20,12 +21,12 @@ protocol AuthService {
 
 // MARK: - AuthGrpcServiceImpl
 
-final class AuthGrpcServiceImpl: AuthService {
+public final class AuthGrpcServiceImpl: AuthService {
     private let client: AuthAsyncClientProtocol
     private let channel: GRPCChannel
     private let networkService: NetworkService
 
-    init(
+    public init(
         configuration: GRPCHostPortConfiguration,
         networkService: NetworkService
     ) {
@@ -49,7 +50,7 @@ final class AuthGrpcServiceImpl: AuthService {
     }
 }
 
-extension AuthGrpcServiceImpl {
+public extension AuthGrpcServiceImpl {
     func register(req: AuthServiceModel.Register.Request) async throws -> AuthServiceModel.Register.Response {
         let request = RegisterRequest.with {
             $0.email = req.email

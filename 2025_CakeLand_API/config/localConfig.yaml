@@ -6,6 +6,6 @@ database:
   host: "0.0.0.0"
   dbName: "CakeLandDatabase"
   port: 5432
-  user: "mightyK1ngRichard"
+  user: "   "
   password: "kingPassword"
   sslmode: disable

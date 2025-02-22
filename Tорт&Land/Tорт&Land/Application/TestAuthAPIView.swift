@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NetworkAPI
 import SwiftUI
 
 #Preview {

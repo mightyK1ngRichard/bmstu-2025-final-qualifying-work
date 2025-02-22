@@ -3,32 +3,38 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 11.02.2025.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
 
-enum AuthServiceModel {
-    enum Register {}
-    enum Login {}
-    enum UpdateAccessToken {}
+public enum AuthServiceModel {
+    public enum Register {}
+    public enum Login {}
+    public enum UpdateAccessToken {}
 }
 
 // MARK: - Register
 
-extension AuthServiceModel.Register {
+public extension AuthServiceModel.Register {
     struct Request {
         let email: String
         let password: String
+
+        public init(email: String, password: String) {
+            self.email = email
+            self.password = password
+        }
     }
 
-    struct Response: GrpcConvertable {
+    struct Response: Sendable {
         let accessToken: String
         let refreshToken: String
         let expiresIn: Int
     }
 }
 
-extension AuthServiceModel.Register.Response {
+extension AuthServiceModel.Register.Response: GrpcConvertable {
     init(from model: RegisterResponse) {
         self = .init(
             accessToken: model.accessToken,
@@ -40,20 +46,25 @@ extension AuthServiceModel.Register.Response {
 
 // MARK: - Login
 
-extension AuthServiceModel.Login {
+public extension AuthServiceModel.Login {
     struct Request {
         let email: String
         let password: String
+
+        public init(email: String, password: String) {
+            self.email = email
+            self.password = password
+        }
     }
 
-    struct Response: GrpcConvertable {
+    struct Response: Sendable {
         let accessToken: String
         let refreshToken: String
         let expiresIn: Int
     }
 }
 
-extension AuthServiceModel.Login.Response {
+extension AuthServiceModel.Login.Response: GrpcConvertable {
     init(from model: LoginResponse) {
         self = .init(
             accessToken: model.accessToken,
@@ -65,18 +76,22 @@ extension AuthServiceModel.Login.Response {
 
 // MARK: - UpdateAccessToken
 
-extension AuthServiceModel.UpdateAccessToken {
+public extension AuthServiceModel.UpdateAccessToken {
     struct Request {
         let refreshToken: String
+
+        public init(refreshToken: String) {
+            self.refreshToken = refreshToken
+        }
     }
 
-    struct Response: GrpcConvertable {
+    struct Response: Sendable {
         let accessToken: String
         let expiresIn: Int
     }
 }
 
-extension AuthServiceModel.UpdateAccessToken.Response {
+extension AuthServiceModel.UpdateAccessToken.Response: GrpcConvertable {
     init(from model: UpdateAccessTokenResponse) {
         self = .init(
             accessToken: model.accessToken,
