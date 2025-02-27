@@ -1,9 +1,10 @@
 package com.git.mightyK1ngRichard.feedback
 
 import com.git.mightyK1ngRichard.feedback.models.AddFeedback
+import com.git.mightyK1ngRichard.feedback.models.toFeedbackContent
 import com.git.mightyK1ngRichard.feedback.models.toFeedbackDTO
-import com.git.mightyK1ngRichard.utils.DatabaseException
-import com.git.mightyK1ngRichard.utils.ErrorResponse
+import com.git.mightyK1ngRichard.models.*
+import com.git.mightyK1ngRichard.utils.JWTManager
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -22,17 +23,9 @@ class FeedbackControllerImpl(private val useCase: FeedbackUseCase) : FeedbackCon
             val dataDTO = data.map { it.toFeedbackDTO() }
             call.respond(dataDTO)
         } catch (e: DatabaseException) {
-            val errorMessage = "Database error: ${e.message}"
-            call.respond(
-                HttpStatusCode.InternalServerError,
-                ErrorResponse(message = errorMessage)
-            )
+            callAndLogError(call, "Database error: ${e.message}")
         } catch (e: Exception) {
-            val errorMessage = "Unexpected error: ${e.message}"
-            call.respond(
-                HttpStatusCode.InternalServerError,
-                ErrorResponse(message = errorMessage)
-            )
+            callAndLogError(call, "Unexpected error: ${e.message}")
         }
     }
 
@@ -40,20 +33,26 @@ class FeedbackControllerImpl(private val useCase: FeedbackUseCase) : FeedbackCon
         val request = call.receive<AddFeedback.Request>()
 
         try {
-            val feedbackUUID = useCase.addFeedback(request)
-            call.respond(feedbackUUID)
+            // Достаём данные из jwt
+            val decodedJWT = JWTManager.getDecodedJWT(call)
+            val userID = decodedJWT.getClaim("user_id").asString()
+            val expiresIn = decodedJWT.getClaim("exp").asLong()
+            val feedbackUID = useCase.addFeedback(request.toFeedbackContent(authorUid = userID, expiresIn = expiresIn))
+            call.respond(feedbackUID)
         } catch (e: DatabaseException) {
-            val errorMessage = "Database error: ${e.message}"
-            call.respond(
-                HttpStatusCode.InternalServerError,
-                ErrorResponse(message = errorMessage)
-            )
+            callAndLogError(call, "Database error: ${e.message}")
+        } catch (e: UnauthorizedException) {
+            callAndLogError(call, "bad request: ${e.message}", e.code)
         } catch (e: Exception) {
-            val errorMessage = "Unexpected error: ${e.message}"
-            call.respond(
-                HttpStatusCode.InternalServerError,
-                ErrorResponse(message = errorMessage)
-            )
+            callAndLogError(call, "Unexpected error: ${e.message}")
         }
     }
+}
+
+private suspend fun callAndLogError(
+    call: ApplicationCall,
+    errorMessage: String,
+    code: HttpStatusCode = HttpStatusCode.InternalServerError
+) {
+    call.respond(code, ErrorResponse(message = errorMessage))
 }

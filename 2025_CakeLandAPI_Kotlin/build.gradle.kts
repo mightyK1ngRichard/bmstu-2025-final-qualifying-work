@@ -38,6 +38,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:$hikari_version")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation("com.auth0:java-jwt:3.18.2")
     implementation("com.google.protobuf:protobuf-kotlin:4.28.2")
     api("io.grpc:grpc-protobuf:1.44.0")
     api("com.google.protobuf:protobuf-java-util:3.19.4")

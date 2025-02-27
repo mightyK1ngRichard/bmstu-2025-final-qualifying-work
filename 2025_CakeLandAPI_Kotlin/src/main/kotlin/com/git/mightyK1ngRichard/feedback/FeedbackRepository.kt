@@ -3,7 +3,7 @@ package com.git.mightyK1ngRichard.feedback
 import com.git.mightyK1ngRichard.feedback.models.AddFeedback
 import com.git.mightyK1ngRichard.feedback.models.Author
 import com.git.mightyK1ngRichard.feedback.models.Feedback
-import com.git.mightyK1ngRichard.utils.DatabaseException
+import com.git.mightyK1ngRichard.models.DatabaseException
 import com.git.mightyK1ngRichard.utils.DatabaseFactory
 import java.sql.SQLException
 import java.util.*
@@ -56,7 +56,7 @@ class FeedbackRepositoryImpl : FeedbackRepository {
         }
     }
 
-    override suspend fun addFeedback(req: AddFeedback.Request): AddFeedback.Response {
+    override suspend fun addFeedback(req: AddFeedback.FeedbackContent): AddFeedback.Response {
         val connection = DatabaseFactory.getConnection()
         try {
             val feedbackUid = UUID.randomUUID().toString()

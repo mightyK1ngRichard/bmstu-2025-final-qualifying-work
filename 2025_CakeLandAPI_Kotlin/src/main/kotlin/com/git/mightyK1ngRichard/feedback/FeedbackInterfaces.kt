@@ -11,10 +11,10 @@ interface FeedbackController {
 
 interface FeedbackUseCase {
     suspend fun getProductFeedbacks(productID: String): List<Feedback>
-    suspend fun addFeedback(req: AddFeedback.Request): AddFeedback.Response
+    suspend fun addFeedback(req: AddFeedback.FeedbackContent): AddFeedback.Response
 }
 
 interface FeedbackRepository {
     suspend fun getProductFeedbacks(productID: String): List<Feedback>
-    suspend fun addFeedback(req: AddFeedback.Request): AddFeedback.Response
+    suspend fun addFeedback(req: AddFeedback.FeedbackContent): AddFeedback.Response
 }
