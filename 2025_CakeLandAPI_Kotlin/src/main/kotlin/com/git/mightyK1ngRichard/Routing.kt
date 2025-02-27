@@ -1,23 +1,23 @@
 package com.git.mightyK1ngRichard
 
-import com.git.mightyK1ngRichard.user.*
-import com.git.mightyK1ngRichard.utils.DatabaseFactory
+import com.git.mightyK1ngRichard.feedback.*
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import java.sql.Connection
 
 fun Application.configureRouting() {
+
     routing {
-        get("/users") {
-            val userController = getUserController()
-            userController.getAllUsers(call)
+        route("/feedbacks") {
+            val controller = getFeedbackController()
+            get { controller.getProductFeedbacks(call) }
+            post { controller.addFeedback(call) }
         }
     }
 }
 
-private fun getUserController(): UserController {
-    val userRepository: UserRepository = UserRepositoryImpl()
-    val userUseCase: UserUseCase = UserUseCaseImpl(userRepository)
-    val userController = UserControllerImpl(userUseCase)
-    return userController
+private fun getFeedbackController(): FeedbackController {
+    val repo = FeedbackRepositoryImpl()
+    val useCase = FeedbackUseCaseImpl(repo)
+    val controller = FeedbackControllerImpl(useCase)
+    return controller
 }

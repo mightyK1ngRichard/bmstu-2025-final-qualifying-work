@@ -8,6 +8,7 @@ plugins {
     kotlin("jvm") version "2.1.10"
     id("io.ktor.plugin") version "3.0.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
+    id("com.google.protobuf") version "0.9.4"
 }
 
 group = "com.git.mightyK1ngRichard"
@@ -37,4 +38,35 @@ dependencies {
     implementation("com.zaxxer:HikariCP:$hikari_version")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation("com.google.protobuf:protobuf-kotlin:4.28.2")
+    api("io.grpc:grpc-protobuf:1.44.0")
+    api("com.google.protobuf:protobuf-java-util:3.19.4")
+    api("com.google.protobuf:protobuf-kotlin:3.19.4")
+    api("io.grpc:grpc-kotlin-stub:1.2.1")
+    api("io.grpc:grpc-stub:1.44.0")
 }
+
+//protobuf {
+//    protoc {
+//        artifact = "com.google.protobuf:protoc:3.19.4"
+//    }
+//    plugins {
+//        id("grpc") {
+//            artifact = "io.grpc:protoc-gen-grpc-java:1.44.0"
+//        }
+//        id("grpckt") {
+//            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.2.1:jdk7@jar"
+//        }
+//    }
+//    generateProtoTasks {
+//        all().forEach {
+//            it.plugins {
+//                id("grpc")
+//                id("grpckt")
+//            }
+//            it.builtins {
+//                id("kotlin")
+//            }
+//        }
+//    }
+//}
