@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+/*
+protoc --go_out=./../internal/pkg/auth/delivery/grpc/generated \
+--go-grpc_out=./../internal/pkg/auth/delivery/grpc/generated \
+--go-grpc_opt=paths=source_relative \
+--go_opt=paths=source_relative \
+auth.proto
+*/
+
+option go_package = "internal/pkg/auth/delivery/grpc/generated";
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+message RegisterResponse {
+  string accessToken = 1;
+  string refreshToken = 2;
+  int64 expiresIn = 3;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+message LoginResponse {
+  string accessToken = 1;
+  string refreshToken = 2;
+  int64 expiresIn = 3;
+}
+
+message LogoutRequest {
+  string refreshToken = 1;
+}
+message LogoutResponse {
+  string message = 1;
+}
+
+message UpdateAccessTokenRequest {
+  string refreshToken = 1;
+}
+message UpdateAccessTokenResponse {
+  string accessToken = 1;
+  int64 expiresIn = 2;
+}
+
+service Auth {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc UpdateAccessToken(UpdateAccessTokenRequest) returns (UpdateAccessTokenResponse);
+  rpc Logout (LogoutRequest) returns (LogoutResponse);
+}
