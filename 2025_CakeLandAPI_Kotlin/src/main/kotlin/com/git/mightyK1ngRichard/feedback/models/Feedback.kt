@@ -8,14 +8,14 @@ data class Feedback(
     val text: String,
     val dateCreation: Instant,
     val rating: Int,
-    val author: Author,
-)
-
-data class Author(
-    val id: String,
-    val fio: String?,
-    val imageURL: String?,
-)
+    val author: Author
+) {
+    data class Author(
+        val id: String,
+        val fio: String?,
+        val imageURL: String?,
+    )
+}
 
 // MARK: - DTO model
 
@@ -35,7 +35,7 @@ data class AuthorDTO(
     val imageURL: String?,
 )
 
-fun Author.toAuthorDTO() = AuthorDTO(uid = id, fio = fio, imageURL = imageURL)
+fun Feedback.Author.toAuthorDTO() = AuthorDTO(uid = id, fio = fio, imageURL = imageURL)
 
 fun Feedback.toFeedbackDTO() = FeedbackDTO(
     uid = uid,

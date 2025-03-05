@@ -8,16 +8,20 @@ import com.git.mightyK1ngRichard.order.OrderController
 import com.git.mightyK1ngRichard.order.OrderControllerImpl
 import com.git.mightyK1ngRichard.order.OrderRepositoryImpl
 import com.git.mightyK1ngRichard.order.OrderUseCaseImpl
-import io.ktor.server.application.*
-import io.ktor.server.plugins.calllogging.*
-import io.ktor.server.request.*
-import org.slf4j.event.*
 import java.sql.Connection
 
-fun Application.configureMonitoring() {
-    install(CallLogging) {
-        level = Level.INFO
-        filter { call -> call.request.path().startsWith("/") }
+object Assembly {
+    fun makeFeedbackController(connection: Connection): FeedbackController {
+        val repo = FeedbackRepositoryImpl(connection)
+        val useCase = FeedbackUseCaseImpl(repo)
+        val controller = FeedbackControllerImpl(useCase)
+        return controller
     }
-    log.debug("")
+
+    fun makeOrderController(connection: Connection): OrderController {
+        val repo = OrderRepositoryImpl(connection)
+        val useCase = OrderUseCaseImpl(repo)
+        val controller = OrderControllerImpl(useCase)
+        return controller
+    }
 }

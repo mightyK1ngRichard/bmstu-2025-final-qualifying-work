@@ -1,14 +1,14 @@
 package com.git.mightyK1ngRichard.feedback
 
 import com.git.mightyK1ngRichard.feedback.models.AddFeedback
-import com.git.mightyK1ngRichard.feedback.models.Author
 import com.git.mightyK1ngRichard.feedback.models.Feedback
 import com.git.mightyK1ngRichard.models.DatabaseException
 import com.git.mightyK1ngRichard.utils.DatabaseFactory
 import java.sql.SQLException
+import java.sql.Connection
 import java.util.*
 
-class FeedbackRepositoryImpl : FeedbackRepository {
+class FeedbackRepositoryImpl(private val connection: Connection) : FeedbackRepository {
     companion object {
         private const val SELECT_ALL_FEEDBACKS = """
             SELECT f.id, f.text, f.date_creation, f.rating, 
@@ -24,7 +24,6 @@ class FeedbackRepositoryImpl : FeedbackRepository {
     }
 
     override suspend fun getProductFeedbacks(productID: String): List<Feedback> {
-        val connection = DatabaseFactory.getConnection()
         val feedbacks = mutableListOf<Feedback>()
         try {
             connection.prepareStatement(SELECT_ALL_FEEDBACKS).use { statement ->
@@ -37,7 +36,7 @@ class FeedbackRepositoryImpl : FeedbackRepository {
                             text = resultSet.getString("text"),
                             dateCreation = resultSet.getTimestamp("date_creation").toInstant(),
                             rating = resultSet.getInt("rating"),
-                            author = Author(
+                            author = Feedback.Author(
                                 id = resultSet.getString("user_id"),
                                 fio = resultSet.getString("fio"),
                                 imageURL = resultSet.getString("image_url"),
@@ -51,8 +50,6 @@ class FeedbackRepositoryImpl : FeedbackRepository {
             throw DatabaseException("Error executing query: ${e.message}", e)
         } catch (e: Exception) {
             throw e
-        } finally {
-            connection.close()
         }
     }
 

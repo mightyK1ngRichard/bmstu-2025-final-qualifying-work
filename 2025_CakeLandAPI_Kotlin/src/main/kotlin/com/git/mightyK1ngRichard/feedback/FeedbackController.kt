@@ -23,9 +23,9 @@ class FeedbackControllerImpl(private val useCase: FeedbackUseCase) : FeedbackCon
             val dataDTO = data.map { it.toFeedbackDTO() }
             call.respond(dataDTO)
         } catch (e: DatabaseException) {
-            callAndLogError(call, "Database error: ${e.message}")
+            call.errorResponse(HttpStatusCode.InternalServerError, "Database exception: ${e.message}")
         } catch (e: Exception) {
-            callAndLogError(call, "Unexpected error: ${e.message}")
+            call.errorResponse(HttpStatusCode.InternalServerError, "Unexpected exception: ${e.message}")
         }
     }
 
@@ -38,21 +38,13 @@ class FeedbackControllerImpl(private val useCase: FeedbackUseCase) : FeedbackCon
             val userID = decodedJWT.getClaim("user_id").asString()
             val expiresIn = decodedJWT.getClaim("exp").asLong()
             val feedbackUID = useCase.addFeedback(request.toFeedbackContent(authorUid = userID, expiresIn = expiresIn))
-            call.respond(feedbackUID)
+            call.respond(HttpStatusCode.Created, feedbackUID)
         } catch (e: DatabaseException) {
-            callAndLogError(call, "Database error: ${e.message}")
+            call.errorResponse(HttpStatusCode.InternalServerError, "Database exception: ${e.message}")
         } catch (e: UnauthorizedException) {
-            callAndLogError(call, "bad request: ${e.message}", e.code)
+            call.errorResponse(e.code, "Unauthorized exception: ${e.message}")
         } catch (e: Exception) {
-            callAndLogError(call, "Unexpected error: ${e.message}")
+            call.errorResponse(HttpStatusCode.InternalServerError, "Unexpected exception: ${e.message}")
         }
     }
-}
-
-private suspend fun callAndLogError(
-    call: ApplicationCall,
-    errorMessage: String,
-    code: HttpStatusCode = HttpStatusCode.InternalServerError
-) {
-    call.respond(code, ErrorResponse(message = errorMessage))
 }
