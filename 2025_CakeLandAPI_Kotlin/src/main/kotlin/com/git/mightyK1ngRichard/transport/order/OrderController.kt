@@ -1,10 +1,10 @@
-package com.git.mightyK1ngRichard.order
+package com.git.mightyK1ngRichard.transport.order
 
 import com.git.mightyK1ngRichard.models.DatabaseException
 import com.git.mightyK1ngRichard.models.UnauthorizedException
-import com.git.mightyK1ngRichard.models.errorResponse
-import com.git.mightyK1ngRichard.order.models.OrderModel
-import com.git.mightyK1ngRichard.utils.JWTManager
+import com.git.mightyK1ngRichard.pkg.extensions.errorResponse
+import com.git.mightyK1ngRichard.transport.order.models.OrderModel
+import com.git.mightyK1ngRichard.pkg.managers.JWTManager
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

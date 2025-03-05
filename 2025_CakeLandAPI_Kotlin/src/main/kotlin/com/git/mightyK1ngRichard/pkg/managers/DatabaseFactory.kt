@@ -1,4 +1,4 @@
-package com.git.mightyK1ngRichard.utils
+package com.git.mightyK1ngRichard.pkg.managers
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource

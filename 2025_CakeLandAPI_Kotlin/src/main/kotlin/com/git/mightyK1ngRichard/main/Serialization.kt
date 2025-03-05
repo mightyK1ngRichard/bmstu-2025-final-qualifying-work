@@ -1,4 +1,4 @@
-package com.git.mightyK1ngRichard
+package com.git.mightyK1ngRichard.main
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

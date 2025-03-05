@@ -1,7 +1,7 @@
-package com.git.mightyK1ngRichard.feedback
+package com.git.mightyK1ngRichard.transport.feedback
 
-import com.git.mightyK1ngRichard.feedback.models.AddFeedback
-import com.git.mightyK1ngRichard.feedback.models.Feedback
+import com.git.mightyK1ngRichard.transport.feedback.models.AddFeedback
+import com.git.mightyK1ngRichard.transport.feedback.models.Feedback
 import io.ktor.server.application.*
 
 interface FeedbackController {

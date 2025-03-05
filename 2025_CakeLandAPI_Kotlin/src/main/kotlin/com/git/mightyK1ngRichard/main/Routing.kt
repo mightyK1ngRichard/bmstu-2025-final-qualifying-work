@@ -1,6 +1,6 @@
-package com.git.mightyK1ngRichard
+package com.git.mightyK1ngRichard.main
 
-import com.git.mightyK1ngRichard.utils.DatabaseFactory
+import com.git.mightyK1ngRichard.pkg.managers.DatabaseFactory
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

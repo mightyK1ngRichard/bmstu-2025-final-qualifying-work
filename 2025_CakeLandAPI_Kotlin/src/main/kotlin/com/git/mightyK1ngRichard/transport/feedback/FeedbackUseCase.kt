@@ -1,7 +1,7 @@
-package com.git.mightyK1ngRichard.feedback
+package com.git.mightyK1ngRichard.transport.feedback
 
-import com.git.mightyK1ngRichard.extensions.isExpired
-import com.git.mightyK1ngRichard.feedback.models.AddFeedback
+import com.git.mightyK1ngRichard.pkg.extensions.isExpired
+import com.git.mightyK1ngRichard.transport.feedback.models.AddFeedback
 import com.git.mightyK1ngRichard.models.UnauthorizedException
 import java.time.Instant
 

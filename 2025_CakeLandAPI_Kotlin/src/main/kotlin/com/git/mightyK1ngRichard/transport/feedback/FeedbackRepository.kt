@@ -1,9 +1,9 @@
-package com.git.mightyK1ngRichard.feedback
+package com.git.mightyK1ngRichard.transport.feedback
 
-import com.git.mightyK1ngRichard.feedback.models.AddFeedback
-import com.git.mightyK1ngRichard.feedback.models.Feedback
+import com.git.mightyK1ngRichard.transport.feedback.models.AddFeedback
+import com.git.mightyK1ngRichard.transport.feedback.models.Feedback
 import com.git.mightyK1ngRichard.models.DatabaseException
-import com.git.mightyK1ngRichard.utils.DatabaseFactory
+import com.git.mightyK1ngRichard.pkg.managers.DatabaseFactory
 import java.sql.SQLException
 import java.sql.Connection
 import java.util.*

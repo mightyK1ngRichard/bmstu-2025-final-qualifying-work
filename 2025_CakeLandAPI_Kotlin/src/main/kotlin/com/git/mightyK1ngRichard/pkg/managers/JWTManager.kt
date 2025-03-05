@@ -1,4 +1,4 @@
-package com.git.mightyK1ngRichard.utils
+package com.git.mightyK1ngRichard.pkg.managers
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.interfaces.DecodedJWT

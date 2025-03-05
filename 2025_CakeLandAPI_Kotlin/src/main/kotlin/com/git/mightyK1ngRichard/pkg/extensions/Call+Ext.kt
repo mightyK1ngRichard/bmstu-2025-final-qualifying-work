@@ -1,5 +1,6 @@
-package com.git.mightyK1ngRichard.models
+package com.git.mightyK1ngRichard.pkg.extensions
 
+import com.git.mightyK1ngRichard.models.ErrorResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

@@ -1,4 +1,4 @@
-package com.git.mightyK1ngRichard.feedback.models
+package com.git.mightyK1ngRichard.transport.feedback.models
 
 import java.time.Instant
 import kotlinx.serialization.Serializable

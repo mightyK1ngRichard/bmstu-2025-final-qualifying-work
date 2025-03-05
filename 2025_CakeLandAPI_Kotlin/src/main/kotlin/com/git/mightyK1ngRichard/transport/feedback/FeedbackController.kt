@@ -1,10 +1,12 @@
-package com.git.mightyK1ngRichard.feedback
+package com.git.mightyK1ngRichard.transport.feedback
 
-import com.git.mightyK1ngRichard.feedback.models.AddFeedback
-import com.git.mightyK1ngRichard.feedback.models.toFeedbackContent
-import com.git.mightyK1ngRichard.feedback.models.toFeedbackDTO
-import com.git.mightyK1ngRichard.models.*
-import com.git.mightyK1ngRichard.utils.JWTManager
+import com.git.mightyK1ngRichard.transport.feedback.models.AddFeedback
+import com.git.mightyK1ngRichard.transport.feedback.models.toFeedbackContent
+import com.git.mightyK1ngRichard.transport.feedback.models.toFeedbackDTO
+import com.git.mightyK1ngRichard.models.DatabaseException
+import com.git.mightyK1ngRichard.models.UnauthorizedException
+import com.git.mightyK1ngRichard.pkg.extensions.errorResponse
+import com.git.mightyK1ngRichard.pkg.managers.JWTManager
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

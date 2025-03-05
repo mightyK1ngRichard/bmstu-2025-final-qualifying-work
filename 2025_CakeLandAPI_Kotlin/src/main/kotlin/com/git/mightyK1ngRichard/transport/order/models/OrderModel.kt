@@ -1,4 +1,4 @@
-package com.git.mightyK1ngRichard.order.models
+package com.git.mightyK1ngRichard.transport.order.models
 
 import kotlinx.serialization.Serializable
 import java.time.LocalDate

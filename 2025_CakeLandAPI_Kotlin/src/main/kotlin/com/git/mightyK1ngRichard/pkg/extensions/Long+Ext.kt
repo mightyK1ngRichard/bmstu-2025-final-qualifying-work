@@ -1,4 +1,4 @@
-package com.git.mightyK1ngRichard.extensions
+package com.git.mightyK1ngRichard.pkg.extensions
 
 import java.time.Instant
 

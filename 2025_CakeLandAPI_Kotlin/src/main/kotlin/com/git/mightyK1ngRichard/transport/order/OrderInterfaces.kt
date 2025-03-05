@@ -1,6 +1,6 @@
-package com.git.mightyK1ngRichard.order
+package com.git.mightyK1ngRichard.transport.order
 
-import com.git.mightyK1ngRichard.order.models.OrderModel
+import com.git.mightyK1ngRichard.transport.order.models.OrderModel
 import io.ktor.server.application.*
 
 interface OrderController {

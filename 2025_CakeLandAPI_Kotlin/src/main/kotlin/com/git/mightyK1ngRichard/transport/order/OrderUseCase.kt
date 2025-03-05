@@ -1,8 +1,8 @@
-package com.git.mightyK1ngRichard.order
+package com.git.mightyK1ngRichard.transport.order
 
-import com.git.mightyK1ngRichard.extensions.isExpired
+import com.git.mightyK1ngRichard.pkg.extensions.isExpired
 import com.git.mightyK1ngRichard.models.UnauthorizedException
-import com.git.mightyK1ngRichard.order.models.OrderModel
+import com.git.mightyK1ngRichard.transport.order.models.OrderModel
 
 
 class OrderUseCaseImpl(private val repository: OrderRepository) : OrderUseCase {
