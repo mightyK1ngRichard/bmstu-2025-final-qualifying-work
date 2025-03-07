@@ -104,7 +104,7 @@ iOSInjectionProject/
 # vendor/
 
 2025_CakeLand_API/*.env
-2025_CakeLand_API/*.idea
+*.idea
 *.pem
 
 *.out.tmp
