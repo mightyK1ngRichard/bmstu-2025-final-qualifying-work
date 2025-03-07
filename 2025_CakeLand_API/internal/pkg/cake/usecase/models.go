@@ -1,4 +1,4 @@
-package models
+package usecase
 
 import (
 	"2025_CakeLand_API/internal/models"

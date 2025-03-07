@@ -1,8 +1,7 @@
-package postgres
+package repo
 
 import (
 	"2025_CakeLand_API/internal/models"
-	"2025_CakeLand_API/internal/pkg/cake/repo"
 	"context"
 	"database/sql"
 	"github.com/google/uuid"
@@ -18,7 +17,7 @@ func NewCakeRepository(db *sql.DB) *CakeRepository {
 	}
 }
 
-func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakeReq) (*repo.GetCakesRes, error) {
+func (r *CakeRepository) GetCakeByID(ctx context.Context, in GetCakeReq) (*GetCakesRes, error) {
 	query := `
         SELECT c.id, c.name, c.image_url, c.kg_price, c.rating, c.description, c.mass, c.is_open_for_sale,
                u.id AS owner_id, u.fio, u.nickname, u.mail,
@@ -84,7 +83,7 @@ func (r *CakeRepository) GetCakeByID(ctx context.Context, in repo.GetCakeReq) (*
 		return nil, err
 	}
 
-	return &repo.GetCakesRes{
+	return &GetCakesRes{
 		Cake: cake,
 	}, nil
 }

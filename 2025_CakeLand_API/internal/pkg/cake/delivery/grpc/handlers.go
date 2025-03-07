@@ -4,7 +4,7 @@ import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/cake"
 	"2025_CakeLand_API/internal/pkg/cake/delivery/grpc/generated"
-	umodels "2025_CakeLand_API/internal/pkg/cake/usecase/models"
+	umodels "2025_CakeLand_API/internal/pkg/cake/usecase"
 	"context"
 	"fmt"
 	"github.com/google/uuid"

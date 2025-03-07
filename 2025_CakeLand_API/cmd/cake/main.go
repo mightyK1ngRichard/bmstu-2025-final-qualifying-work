@@ -3,7 +3,7 @@ package main
 import (
 	cake "2025_CakeLand_API/internal/pkg/cake/delivery/grpc"
 	"2025_CakeLand_API/internal/pkg/cake/delivery/grpc/generated"
-	"2025_CakeLand_API/internal/pkg/cake/repo/postgres"
+	"2025_CakeLand_API/internal/pkg/cake/repo"
 	"2025_CakeLand_API/internal/pkg/cake/usecase"
 	"2025_CakeLand_API/internal/pkg/config"
 	"2025_CakeLand_API/internal/pkg/utils"
@@ -44,7 +44,7 @@ func run() error {
 		return err
 	}
 	grpcServer := grpc.NewServer()
-	repo := postgres.NewCakeRepository(db)
+	repo := repo.NewCakeRepository(db)
 	usecase := usecase.NewCakeUsecase(log, repo)
 	handler := cake.NewCakeHandler(log, usecase)
 	generated.RegisterCakeServiceServer(grpcServer, handler)
