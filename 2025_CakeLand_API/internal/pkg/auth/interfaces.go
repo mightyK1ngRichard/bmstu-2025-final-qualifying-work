@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"2025_CakeLand_API/internal/pkg/auth/repo"
+	rmodels "2025_CakeLand_API/internal/pkg/auth/repo/models"
 	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"context"
 )
@@ -14,8 +14,8 @@ type IAuthUsecase interface {
 }
 
 type IAuthRepository interface {
-	CreateUser(context.Context, repo.CreateUserReq) error
-	GetUserByEmail(context.Context, repo.GetUserByEmailReq) (*repo.GetUserByEmailRes, error)
-	UpdateUserRefreshTokens(context.Context, repo.UpdateUserRefreshTokensReq) error
-	GetUserRefreshTokens(context.Context, repo.GetUserRefreshTokensReq) (*repo.GetUserRefreshTokensRes, error)
+	CreateUser(context.Context, rmodels.CreateUserReq) error
+	GetUserByEmail(context.Context, rmodels.GetUserByEmailReq) (*rmodels.GetUserByEmailRes, error)
+	UpdateUserRefreshTokens(context.Context, rmodels.UpdateUserRefreshTokensReq) error
+	GetUserRefreshTokens(context.Context, rmodels.GetUserRefreshTokensReq) (*rmodels.GetUserRefreshTokensRes, error)
 }

@@ -1,15 +1,14 @@
 package cake
 
 import (
-	"2025_CakeLand_API/internal/pkg/cake/repo"
-	"2025_CakeLand_API/internal/pkg/cake/usecase"
+	"2025_CakeLand_API/internal/pkg/cake/models"
 	"context"
 )
 
 type ICakeUsecase interface {
-	Cake(context.Context, usecase.GetCakeReq) (*usecase.GetCakeRes, error)
+	Cake(context.Context, models.GetCakeReq) (*models.GetCakeRes, error)
 }
 
 type ICakeRepository interface {
-	GetCakeByID(context.Context, repo.GetCakeReq) (*repo.GetCakesRes, error)
+	GetCakeByID(context.Context, models.GetCakeReq) (*models.GetCakeRes, error)
 }

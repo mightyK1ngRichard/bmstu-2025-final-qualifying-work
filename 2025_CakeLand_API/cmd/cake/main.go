@@ -44,9 +44,9 @@ func run() error {
 		return err
 	}
 	grpcServer := grpc.NewServer()
-	repo := repo.NewCakeRepository(db)
-	usecase := usecase.NewCakeUsecase(log, repo)
-	handler := cake.NewCakeHandler(log, usecase)
+	repository := repo.NewCakeRepository(db)
+	useCase := usecase.NewCakeUsecase(log, repository)
+	handler := cake.NewCakeHandler(log, useCase)
 	generated.RegisterCakeServiceServer(grpcServer, handler)
 	log.Info("Starting gRPC cake service", slog.String("port", fmt.Sprintf(":%d", conf.GRPC.Port)))
 	return grpcServer.Serve(listener)

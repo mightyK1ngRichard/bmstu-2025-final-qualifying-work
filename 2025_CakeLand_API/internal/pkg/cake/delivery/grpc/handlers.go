@@ -1,10 +1,10 @@
-package cake
+package handler
 
 import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/cake"
 	"2025_CakeLand_API/internal/pkg/cake/delivery/grpc/generated"
-	umodels "2025_CakeLand_API/internal/pkg/cake/usecase"
+	umodels "2025_CakeLand_API/internal/pkg/cake/models"
 	"context"
 	"fmt"
 	"github.com/google/uuid"

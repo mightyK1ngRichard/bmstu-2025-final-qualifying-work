@@ -1,8 +1,8 @@
-package postgres
+package repo
 
 import (
 	"2025_CakeLand_API/internal/models"
-	"2025_CakeLand_API/internal/pkg/auth/repo"
+	models2 "2025_CakeLand_API/internal/pkg/auth/repo/models"
 	"context"
 	"database/sql"
 	"encoding/json"
@@ -27,7 +27,7 @@ func NewAuthRepository(db *sql.DB) *AuthRepository {
 	}
 }
 
-func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) error {
+func (r *AuthRepository) CreateUser(ctx context.Context, in models2.CreateUserReq) error {
 	// Проверка существования пользователя с таким email
 	var exists bool
 	err := r.db.QueryRowContext(ctx, isUserExistsCommand, in.Email).Scan(&exists)
@@ -48,7 +48,7 @@ func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) 
 	if _, err = r.db.ExecContext(ctx,
 		createUserCommand,
 		in.UUID,
-		in.UUID, // изначельно username пользователя равен его id
+		in.UUID, // изначально username пользователя равен его id
 		in.Email,
 		in.PasswordHash,
 		refreshTokensJSON,
@@ -59,9 +59,9 @@ func (r *AuthRepository) CreateUser(ctx context.Context, in repo.CreateUserReq) 
 	return nil
 }
 
-func (r *AuthRepository) GetUserByEmail(ctx context.Context, in repo.GetUserByEmailReq) (*repo.GetUserByEmailRes, error) {
+func (r *AuthRepository) GetUserByEmail(ctx context.Context, in models2.GetUserByEmailReq) (*models2.GetUserByEmailRes, error) {
 	row := r.db.QueryRowContext(ctx, getUserByEmailCommand, in.Email)
-	var res repo.GetUserByEmailRes
+	var res models2.GetUserByEmailRes
 	var refreshTokensMap []byte
 	if err := row.Scan(&res.ID, &res.Email, &refreshTokensMap, &res.PasswordHash); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -76,7 +76,7 @@ func (r *AuthRepository) GetUserByEmail(ctx context.Context, in repo.GetUserByEm
 	return &res, nil
 }
 
-func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in repo.UpdateUserRefreshTokensReq) error {
+func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in models2.UpdateUserRefreshTokensReq) error {
 	// Сериализация RefreshTokensMap в JSON
 	refreshTokensJSON, err := json.Marshal(in.RefreshTokensMap)
 	if err != nil {
@@ -91,7 +91,7 @@ func (r *AuthRepository) UpdateUserRefreshTokens(ctx context.Context, in repo.Up
 	return nil
 }
 
-func (r *AuthRepository) GetUserRefreshTokens(ctx context.Context, in repo.GetUserRefreshTokensReq) (*repo.GetUserRefreshTokensRes, error) {
+func (r *AuthRepository) GetUserRefreshTokens(ctx context.Context, in models2.GetUserRefreshTokensReq) (*models2.GetUserRefreshTokensRes, error) {
 	var refreshTokens []byte
 	row := r.db.QueryRowContext(ctx, getUserRefreshTokensCommand, in.UserID)
 	if err := row.Scan(&refreshTokens); err != nil {
@@ -101,7 +101,7 @@ func (r *AuthRepository) GetUserRefreshTokens(ctx context.Context, in repo.GetUs
 	if err := json.Unmarshal(refreshTokens, &refreshTokensMap); err != nil {
 		return nil, errors.Wrapf(err, `ошибка декодирования JSON refreshTokensMap`)
 	}
-	return &repo.GetUserRefreshTokensRes{
+	return &models2.GetUserRefreshTokensRes{
 		RefreshTokensMap: refreshTokensMap,
 	}, nil
 }
