@@ -21,6 +21,7 @@ jobs:
           go-version: "1.23"
 
       - name: Install dependencies
+        working-directory: ./2025_CakeLand_API
         run: go mod tidy
 
       - name: Run tests
