@@ -93,15 +93,25 @@ CREATE TABLE "message"
     FOREIGN KEY (receiver_id) REFERENCES "user" (id)
 );
 
+-- Статус заказа
+CREATE TYPE order_status AS ENUM (
+    'pending', -- Ожидает выполнения
+    'shipped', -- Отправлен
+    'delivered', -- Доставлен
+    'cancelled' -- Отменён
+    );
+
 -- Заказ
 CREATE TABLE "order"
 (
+    id               uuid PRIMARY KEY,
     price            DOUBLE PRECISION CHECK (price > 0),
     delivery_address TEXT,
     delivery_date    DATE,
-    customer_id      UUID NOT NULL,
-    seller_id        UUID NOT NULL,
-    cake_id          UUID NOT NULL,
+    customer_id      UUID         NOT NULL,
+    seller_id        UUID         NOT NULL,
+    cake_id          UUID         NOT NULL,
+    status           order_status NOT NULL DEFAULT 'pending',
     FOREIGN KEY (cake_id) REFERENCES "cake" (id),
     FOREIGN KEY (customer_id) REFERENCES "user" (id),
     FOREIGN KEY (seller_id) REFERENCES "user" (id)

@@ -3,8 +3,7 @@ package usecase
 import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/cake"
-	"2025_CakeLand_API/internal/pkg/cake/repo"
-	umodels "2025_CakeLand_API/internal/pkg/cake/usecase/models"
+	cmodels "2025_CakeLand_API/internal/pkg/cake/models"
 	"2025_CakeLand_API/internal/pkg/utils/sl"
 	"context"
 	"fmt"
@@ -23,10 +22,8 @@ func NewCakeUsecase(log *slog.Logger, repo cake.ICakeRepository) *CakeUseсase {
 	}
 }
 
-func (u *CakeUseсase) Cake(ctx context.Context, in umodels.GetCakeReq) (*umodels.GetCakeRes, error) {
-	res, err := u.repo.GetCakeByID(ctx, repo.GetCakeReq{
-		CakeID: in.CakeID,
-	})
+func (u *CakeUseсase) Cake(ctx context.Context, in cmodels.GetCakeReq) (*cmodels.GetCakeRes, error) {
+	res, err := u.repo.GetCakeByID(ctx, in)
 	if err != nil {
 		u.log.Error("[Usecase.Cake] ошибка получения торта по id из бд",
 			slog.String("cakeID", fmt.Sprintf("%s", in.CakeID)),
@@ -35,7 +32,7 @@ func (u *CakeUseсase) Cake(ctx context.Context, in umodels.GetCakeReq) (*umodel
 		return nil, models.NotFound
 	}
 
-	return &umodels.GetCakeRes{
+	return &cmodels.GetCakeRes{
 		Cake: res.Cake,
 	}, nil
 }
