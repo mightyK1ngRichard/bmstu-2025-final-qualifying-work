@@ -25,4 +25,5 @@ jobs:
         run: go mod tidy
 
       - name: Run tests
+        working-directory: ./2025_CakeLand_API
         run: make tests
