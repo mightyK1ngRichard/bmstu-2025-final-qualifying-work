@@ -3,8 +3,8 @@ package usecase
 import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/auth"
-	models3 "2025_CakeLand_API/internal/pkg/auth/repo/models"
-	models2 "2025_CakeLand_API/internal/pkg/auth/usecase/models"
+	rmodels "2025_CakeLand_API/internal/pkg/auth/repo/models"
+	umodels "2025_CakeLand_API/internal/pkg/auth/usecase/models"
 	"2025_CakeLand_API/internal/pkg/utils/jwt"
 	"2025_CakeLand_API/internal/pkg/utils/sl"
 	"context"
@@ -16,20 +16,27 @@ import (
 )
 
 type AuthUseсase struct {
-	log  *slog.Logger
-	repo auth.IAuthRepository
+	log       *slog.Logger
+	validator *Validator
+	repo      auth.IAuthRepository
 }
 
-func NewAuthUsecase(log *slog.Logger, repo auth.IAuthRepository) *AuthUseсase {
+func NewAuthUsecase(log *slog.Logger, validator *Validator, repo auth.IAuthRepository) *AuthUseсase {
 	return &AuthUseсase{
-		log:  log,
-		repo: repo,
+		log:       log,
+		validator: validator,
+		repo:      repo,
 	}
 }
 
-func (u *AuthUseсase) Login(ctx context.Context, in models2.LoginReq) (*models2.LoginRes, error) {
+func (u *AuthUseсase) Login(ctx context.Context, in umodels.LoginReq) (*umodels.LoginRes, error) {
+	// Валидация
+	if err := u.validator.validateEmail(in.Email); err != nil {
+		return nil, err
+	}
+
 	// Получаем данные пользователя
-	res, err := u.repo.GetUserByEmail(ctx, models3.GetUserByEmailReq{
+	res, err := u.repo.GetUserByEmail(ctx, rmodels.GetUserByEmailReq{
 		Email: in.Email,
 	})
 	if err != nil {
@@ -53,7 +60,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in models2.LoginReq) (*models2
 	}
 
 	oldRefreshToken, exists := res.RefreshTokensMap[in.Fingerprint]
-	// Если токен уже сущестувет, проверим его срок годности. Если ещё валиден, тогда генерируем только access token
+	// Если токен уже существует, проверим его срок годности. Если ещё валиден, тогда генерируем только access token
 	if exists {
 		isExpired, expErr := jwt.IsTokenExpired(oldRefreshToken, true)
 		if expErr != nil {
@@ -62,7 +69,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in models2.LoginReq) (*models2
 		} else if !isExpired {
 			// Если токен не устарел, создаём только access токен
 			u.log.Debug("[Usecase.Login] сгенерирован только новый access token. refresh остаётся старым")
-			return &models2.LoginRes{
+			return &umodels.LoginRes{
 				AccessToken:  accessToken.Token,
 				RefreshToken: oldRefreshToken,
 				ExpiresIn:    accessToken.ExpiresIn,
@@ -70,7 +77,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in models2.LoginReq) (*models2
 		}
 	}
 
-	// Создаём новый рефреш токен
+	// Создаём новый refresh токен
 	newRefreshToken, err := jwt.GenerateRefreshToken(res.ID.String())
 	if err != nil {
 		u.log.Error(`[Usecase.Login] ошибка генерации newRefreshToken`, sl.Err(err))
@@ -79,7 +86,7 @@ func (u *AuthUseсase) Login(ctx context.Context, in models2.LoginReq) (*models2
 
 	// Сохраняем или обновляем токены в бд
 	res.RefreshTokensMap[in.Fingerprint] = newRefreshToken.Token
-	err = u.repo.UpdateUserRefreshTokens(ctx, models3.UpdateUserRefreshTokensReq{
+	err = u.repo.UpdateUserRefreshTokens(ctx, rmodels.UpdateUserRefreshTokensReq{
 		UserID:           res.ID.String(),
 		RefreshTokensMap: res.RefreshTokensMap,
 	})
@@ -88,14 +95,21 @@ func (u *AuthUseсase) Login(ctx context.Context, in models2.LoginReq) (*models2
 		return nil, errors.Wrap(err, "ошибка перезаписи рефреш токена в базе данных")
 	}
 
-	return &models2.LoginRes{
+	return &umodels.LoginRes{
 		AccessToken:  accessToken.Token,
 		RefreshToken: newRefreshToken.Token,
 		ExpiresIn:    accessToken.ExpiresIn,
 	}, nil
 }
 
-func (u *AuthUseсase) Register(ctx context.Context, in models2.RegisterReq) (*models2.RegisterRes, error) {
+func (u *AuthUseсase) Register(ctx context.Context, in umodels.RegisterReq) (*umodels.RegisterRes, error) {
+	// Валидация
+	if err := u.validator.validateEmail(in.Email); err != nil {
+		return nil, err
+	} else if err := u.validator.validatePassword(in.Password); err != nil {
+		return nil, err
+	}
+
 	hashedPassword, err := generatePasswordHash(in.Password)
 	if err != nil {
 		u.log.Error(`[Usecase.Register] ошибка хэширования пароля`, sl.Err(err))
@@ -115,7 +129,7 @@ func (u *AuthUseсase) Register(ctx context.Context, in models2.RegisterReq) (*m
 	}
 
 	// Создаём пользователя
-	if err = u.repo.CreateUser(ctx, models3.CreateUserReq{
+	if err = u.repo.CreateUser(ctx, rmodels.CreateUserReq{
 		UUID:         userID,
 		Email:        in.Email,
 		PasswordHash: hashedPassword,
@@ -127,14 +141,14 @@ func (u *AuthUseсase) Register(ctx context.Context, in models2.RegisterReq) (*m
 		return nil, err
 	}
 
-	return &models2.RegisterRes{
+	return &umodels.RegisterRes{
 		AccessToken:  accessToken.Token,
 		RefreshToken: refreshToken.Token,
 		ExpiresIn:    accessToken.ExpiresIn,
 	}, nil
 }
 
-func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in models2.UpdateAccessTokenReq) (*models2.UpdateAccessTokenRes, error) {
+func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in umodels.UpdateAccessTokenReq) (*umodels.UpdateAccessTokenRes, error) {
 	// Получаем userID пользателя из refresh токена
 	userID, err := jwt.GetUserIDFromRefreshToken(in.RefreshToken)
 	if err != nil {
@@ -143,7 +157,7 @@ func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in models2.UpdateA
 	}
 
 	// Получаем все refresh токены пользователя
-	res, err := u.repo.GetUserRefreshTokens(ctx, models3.GetUserRefreshTokensReq{
+	res, err := u.repo.GetUserRefreshTokens(ctx, rmodels.GetUserRefreshTokensReq{
 		UserID: userID,
 	})
 	if err != nil {
@@ -171,19 +185,19 @@ func (u *AuthUseсase) UpdateAccessToken(ctx context.Context, in models2.UpdateA
 		return nil, err
 	}
 
-	return &models2.UpdateAccessTokenRes{
+	return &umodels.UpdateAccessTokenRes{
 		AccessToken: accessToken.Token,
 		ExpiresIn:   accessToken.ExpiresIn,
 	}, nil
 }
 
-func (u *AuthUseсase) Logout(ctx context.Context, in models2.LogoutReq) (*models2.LogoutRes, error) {
+func (u *AuthUseсase) Logout(ctx context.Context, in umodels.LogoutReq) (*umodels.LogoutRes, error) {
 	userID, err := jwt.GetUserIDFromRefreshToken(in.RefreshToken)
 	if err != nil {
 		u.log.Error(`[Usecase.Logout] ошибка декодирования токена`, sl.Err(err))
 		return nil, err
 	}
-	res, err := u.repo.GetUserRefreshTokens(ctx, models3.GetUserRefreshTokensReq{
+	res, err := u.repo.GetUserRefreshTokens(ctx, rmodels.GetUserRefreshTokensReq{
 		UserID: userID,
 	})
 	if err != nil {
@@ -198,7 +212,7 @@ func (u *AuthUseсase) Logout(ctx context.Context, in models2.LogoutReq) (*model
 	}
 
 	delete(res.RefreshTokensMap, in.Fingerprint)
-	err = u.repo.UpdateUserRefreshTokens(ctx, models3.UpdateUserRefreshTokensReq{
+	err = u.repo.UpdateUserRefreshTokens(ctx, rmodels.UpdateUserRefreshTokensReq{
 		UserID:           userID,
 		RefreshTokensMap: res.RefreshTokensMap,
 	})
@@ -207,7 +221,7 @@ func (u *AuthUseсase) Logout(ctx context.Context, in models2.LogoutReq) (*model
 		return nil, err
 	}
 
-	return &models2.LogoutRes{
+	return &umodels.LogoutRes{
 		Message: "Logged out successfully",
 	}, nil
 }

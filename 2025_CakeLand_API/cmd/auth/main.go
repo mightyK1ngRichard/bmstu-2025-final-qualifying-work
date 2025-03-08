@@ -1,7 +1,7 @@
 package main
 
 import (
-	"2025_CakeLand_API/internal/pkg/auth/delivery/grpc"
+	auth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc"
 	"2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
 	"2025_CakeLand_API/internal/pkg/auth/repo"
 	"2025_CakeLand_API/internal/pkg/auth/usecase"
@@ -44,9 +44,12 @@ func run() error {
 		return err
 	}
 	grpcServer := grpc.NewServer()
-	repo := repo.NewAuthRepository(db)
-	authUsecase := usecase.NewAuthUsecase(log, repo)
+
+	rep := repo.NewAuthRepository(db)
+	validator := usecase.NewValidator()
+	authUsecase := usecase.NewAuthUsecase(log, validator, rep)
 	grpcAuthHandler := auth.NewGrpcAuthHandler(authUsecase)
+
 	generated.RegisterAuthServer(grpcServer, grpcAuthHandler)
 	log.Info("Starting gRPC server", slog.String("port", fmt.Sprintf(":%d", conf.GRPC.Port)))
 	return grpcServer.Serve(listener)

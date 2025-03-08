@@ -6,6 +6,8 @@ import (
 	"context"
 )
 
+// mockgen -source=internal/pkg/auth/interfaces.go -destination=internal/pkg/auth/mocks/mock_auth.go -package=mocks
+
 type IAuthUsecase interface {
 	Register(context.Context, umodels.RegisterReq) (*umodels.RegisterRes, error)
 	Login(context.Context, umodels.LoginReq) (*umodels.LoginRes, error)
