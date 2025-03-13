@@ -22,7 +22,7 @@ final class ConfigProvider: Sendable {
                 StringConst.agent: device,
                 StringConst.fingerprint: StringConst.ios,
             ],
-            timeLimit: .timeout(.seconds(2))
+            timeLimit: .timeout(.seconds(8))
         )
     }
 

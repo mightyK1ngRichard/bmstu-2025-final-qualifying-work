@@ -9,14 +9,15 @@ import (
 	"2025_CakeLand_API/internal/pkg/utils"
 	"2025_CakeLand_API/internal/pkg/utils/logger"
 	"fmt"
-	_ "github.com/lib/pq"
-	"google.golang.org/grpc"
 	"log/slog"
 	"net"
 	"os"
+
+	_ "github.com/lib/pq"
+	"google.golang.org/grpc"
 )
 
-// go run cmd/auth/main.go --config=./config/localConfig.yaml
+// go run cmd/auth/main.go --config=./config/config.yaml
 func main() {
 	if err := run(); err != nil {
 		fmt.Print(err)
@@ -33,7 +34,7 @@ func run() error {
 	// Создаём Logger
 	log := logger.NewLogger(conf.Env)
 	// Подключаем базу данных
-	db, err := utils.ConnectPostgres(conf)
+	db, err := utils.ConnectPostgres(&conf.DB)
 	if err != nil {
 		return err
 	}

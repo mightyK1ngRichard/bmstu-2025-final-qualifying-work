@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 /*
 protoc --go_out=./../internal/pkg/cake/delivery/grpc/generated \
 --go-grpc_out=./../internal/pkg/cake/delivery/grpc/generated \
@@ -10,15 +12,81 @@ cake.proto
 
 option go_package = "internal/pkg/cake/delivery/grpc/generated";
 
+/* ############### Cake ############### */
+
 message CakeRequest {
-  string cakeID = 1;
+  string cake_id = 1;
 }
+
 message CakeResponse {
   Cake cake = 1; // Информация о торте
 }
 
+/* ############### CreateCake ############### */
+
+message CreateCakeRequest {
+  string name = 1;                   // Название торта
+  bytes image_data = 2;              // Данные изображения торта
+  double kg_price = 3;               // Цена за кг
+  int32 rating = 4;                  // Рейтинг (0-5)
+  string description = 5;            // Описание торта
+  double mass = 6;                   // Масса торта
+  bool is_open_for_sale = 7;         // Доступен ли для продажи
+  string owner_id = 8;               // ID владельца
+  repeated string filling_ids = 9;   // Список ID начинок
+  repeated string category_ids = 10; // Список ID категорий
+}
+
+message CreateCakeResponse {
+  string cake_id = 1; // ID созданного торта
+}
+
+/* ############### CreateFilling ############### */
+
+message CreateFillingRequest {
+  string name = 1;        // Название начинки
+  bytes image_data = 2;   // Данные изображения начинки
+  string content = 3;     // Состав начинки
+  double kg_price = 4;    // Цена за кг
+  string description = 5; // Описание начинки
+}
+
+message CreateFillingResponse {
+  Filling filling = 1; // Созданная начинка
+}
+
+/* ############### CreateCategory ############### */
+
+message CreateCategoryRequest {
+  string name = 1;
+  bytes image_data = 2;
+}
+
+message CreateCategoryResponse {
+  Category category = 1;
+}
+
+/* ############### CategoriesResponse ############### */
+
+message CategoriesResponse {
+  repeated Category categories = 1;
+}
+
+/* ############### FillingsResponse ############### */
+
+message FillingsResponse {
+  repeated Filling fillings = 1;
+}
+
+/* ############### CakeService ############### */
+
 service CakeService {
   rpc Cake (CakeRequest) returns (CakeResponse);
+  rpc CreateCake (CreateCakeRequest) returns (CreateCakeResponse);
+  rpc CreateFilling (CreateFillingRequest) returns (CreateFillingResponse);
+  rpc CreateCategory (CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc Categories (google.protobuf.Empty) returns (CategoriesResponse);
+  rpc Fillings (google.protobuf.Empty) returns (FillingsResponse);
 }
 
 // Информация о торте
@@ -46,17 +114,17 @@ message User {
 
 // Информация о начинке
 message Filling {
-  string id = 1; // ID начинки
-  string name = 2; // Название начинки
-  string image_url = 3; // URL изображения начинки
-  string content = 4; // Состав начинки
-  double kg_price = 5; // Цена за кг
+  string id = 1;          // ID начинки
+  string name = 2;        // Название начинки
+  string image_url = 3;   // URL изображения начинки
+  string content = 4;     // Состав начинки
+  double kg_price = 5;    // Цена за кг
   string description = 6; // Описание начинки
 }
 
 // Информация о категории
 message Category {
-  string id = 1; // ID категории
-  string name = 2; // Название категории
+  string id = 1;        // ID категории
+  string name = 2;      // Название категории
   string image_url = 3; // URL изображения категории
 }

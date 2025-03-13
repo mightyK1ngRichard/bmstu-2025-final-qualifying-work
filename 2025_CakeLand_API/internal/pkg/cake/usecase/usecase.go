@@ -3,36 +3,120 @@ package usecase
 import (
 	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/cake"
-	cmodels "2025_CakeLand_API/internal/pkg/cake/models"
+	en "2025_CakeLand_API/internal/pkg/cake/entities"
 	"2025_CakeLand_API/internal/pkg/utils/sl"
 	"context"
-	"fmt"
 	"log/slog"
+
+	"github.com/google/uuid"
 )
 
 type CakeUseсase struct {
-	log  *slog.Logger
-	repo cake.ICakeRepository
+	log        *slog.Logger
+	repo       cake.ICakeRepository
+	imageStore cake.IImageStorage
+	bucketName string
 }
 
-func NewCakeUsecase(log *slog.Logger, repo cake.ICakeRepository) *CakeUseсase {
+func NewCakeUsecase(
+	log *slog.Logger,
+	repo cake.ICakeRepository,
+	imageStore cake.IImageStorage,
+	bucketName string,
+) *CakeUseсase {
 	return &CakeUseсase{
-		log:  log,
-		repo: repo,
+		log:        log,
+		repo:       repo,
+		imageStore: imageStore,
+		bucketName: bucketName,
 	}
 }
 
-func (u *CakeUseсase) Cake(ctx context.Context, in cmodels.GetCakeReq) (*cmodels.GetCakeRes, error) {
+func (u *CakeUseсase) Cake(ctx context.Context, in en.GetCakeReq) (*en.GetCakeRes, error) {
 	res, err := u.repo.GetCakeByID(ctx, in)
 	if err != nil {
 		u.log.Error("[Usecase.Cake] ошибка получения торта по id из бд",
-			slog.String("cakeID", fmt.Sprintf("%s", in.CakeID)),
+			slog.String("cakeID", in.CakeID.String()),
 			sl.Err(err),
 		)
 		return nil, models.NotFound
 	}
 
-	return &cmodels.GetCakeRes{
+	return &en.GetCakeRes{
 		Cake: res.Cake,
 	}, nil
+}
+
+func (u *CakeUseсase) CreateCake(ctx context.Context, in en.CreateCakeReq) (*en.CreateCakeRes, error) {
+	cakeID := uuid.New()
+	// Добавляем изображение в хранилище
+	imageURL, err := u.imageStore.SaveImage(ctx, u.bucketName, cakeID.String(), in.ImageData)
+	if err != nil {
+		return nil, err
+	}
+
+	// Создаём торт в бд
+	if err := u.repo.CreateCake(ctx, in.ConvertToCreateCakeDBReq(cakeID.String(), imageURL)); err != nil {
+		return nil, err
+	}
+
+	return &en.CreateCakeRes{
+		CakeID: cakeID.String(),
+	}, nil
+}
+
+func (u *CakeUseсase) CreateFilling(ctx context.Context, in en.CreateFillingReq) (*en.CreateFillingRes, error) {
+	fillingID := uuid.New()
+	imageURL, err := u.imageStore.SaveImage(ctx, u.bucketName, fillingID.String(), in.ImageData)
+	if err != nil {
+		u.log.Error("[Usecase.CreateFilling] ошибка загрузки изображения в хранилище", sl.Err(err))
+		return nil, models.InternalError
+	}
+
+	filling := models.Filling{
+		ID:          fillingID,
+		Name:        in.Name,
+		ImageURL:    imageURL,
+		Content:     in.Content,
+		KgPrice:     in.KgPrice,
+		Description: in.Description,
+	}
+	err = u.repo.CreateFilling(ctx, filling)
+	if err != nil {
+		return nil, err
+	}
+
+	return &en.CreateFillingRes{
+		Filling: filling,
+	}, nil
+}
+
+func (u *CakeUseсase) CreateCategory(ctx context.Context, in *en.CreateCategoryReq) (*en.CreateCategoryRes, error) {
+	categoryUUID := uuid.New()
+	imageURL, err := u.imageStore.SaveImage(ctx, u.bucketName, categoryUUID.String(), in.ImageData)
+	if err != nil {
+		u.log.Error("[Usecase.CreateCategory] ошибка загрузки изображения в хранилище", sl.Err(err))
+		return nil, models.InternalError
+	}
+
+	newCategory := models.Category{
+		ID:       categoryUUID,
+		Name:     in.Name,
+		ImageURL: imageURL,
+	}
+	if err := u.repo.CreateCategory(ctx, &newCategory); err != nil {
+		return nil, err
+	}
+
+	return &en.CreateCategoryRes{
+		Category: newCategory,
+	}, nil
+}
+
+func (u *CakeUseсase) Categories(ctx context.Context) (*[]models.Category, error) {
+	return u.repo.Categories(ctx)
+}
+
+func (u *CakeUseсase) Fillings(ctx context.Context) (*[]models.Filling, error) {
+	return u.repo.Fillings(ctx)
 }
