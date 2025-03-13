@@ -6,7 +6,7 @@ import (
 	"2025_CakeLand_API/internal/pkg/cake/repo"
 	"2025_CakeLand_API/internal/pkg/cake/usecase"
 	"2025_CakeLand_API/internal/pkg/config"
-	minio_storage "2025_CakeLand_API/internal/pkg/s3storage"
+	minioStorage "2025_CakeLand_API/internal/pkg/s3storage"
 	"2025_CakeLand_API/internal/pkg/utils"
 	"2025_CakeLand_API/internal/pkg/utils/logger"
 	"fmt"
@@ -34,7 +34,7 @@ func run() error {
 	}
 
 	// Создаём S3 хранилище
-	minioClient, err := minio_storage.NewMinioClient(&conf.MinIO)
+	minioClient, err := minioStorage.NewMinioClient(&conf.MinIO)
 	if err != nil {
 		return err
 	}

@@ -43,8 +43,8 @@ const (
 		INSERT INTO "cake_filling" (id, cake_id, filling_id)
 		VALUES (?, ?, ?);
     `
-	categories = `SELECT * FROM "category";`
-	fillings   = `SELECT * FROM "filling";`
+	categories = `SELECT id, name, image_url FROM "category";`
+	fillings   = `SELECT id, name, image_url, content, kg_price, description FROM "filling";`
 )
 
 type CakeRepository struct {
@@ -190,7 +190,7 @@ func (r *CakeRepository) Categories(ctx context.Context) (*[]models.Category, er
 	var categories []models.Category
 	for rows.Next() {
 		var category models.Category
-		if err := rows.Scan(&category.ID, &category.Name); err != nil {
+		if err := rows.Scan(&category.ID, &category.Name, &category.ImageURL); err != nil {
 			return nil, err
 		}
 		categories = append(categories, category)
@@ -215,7 +215,10 @@ func (r *CakeRepository) Fillings(ctx context.Context) (*[]models.Filling, error
 	var fillings []models.Filling
 	for rows.Next() {
 		var filling models.Filling
-		if err := rows.Scan(&filling.ID, &filling.Name); err != nil {
+		if err := rows.Scan(
+			&filling.ID, &filling.Name, &filling.ImageURL,
+			&filling.Content, &filling.KgPrice, &filling.Description,
+		); err != nil {
 			return nil, err
 		}
 		fillings = append(fillings, filling)
