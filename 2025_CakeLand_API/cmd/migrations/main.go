@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
+	"os"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -12,13 +14,20 @@ import (
 
 // go run ./cmd/migrations/main.go
 func main() {
+	// Загружаем переменные из .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Ошибка загрузки .env файла: %v", err)
+	}
+
+	// Формируем DSN строку
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
-		"mightyK1ngRichard",
-		"kingPassword",
-		"0.0.0.0",
-		"5432",
-		"CakeLandDatabase",
-		"disable",
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("PASSWORD"),
+		os.Getenv("HOST"),
+		os.Getenv("PORT"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("SSL_MODE"),
 	)
 
 	// Настройка источника миграций
