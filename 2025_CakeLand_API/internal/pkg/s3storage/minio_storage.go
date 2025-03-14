@@ -1,6 +1,7 @@
 package minio_storage
 
 import (
+	"2025_CakeLand_API/internal/models"
 	"2025_CakeLand_API/internal/pkg/config"
 	"bytes"
 	"context"
@@ -53,17 +54,17 @@ func (m *MinioClient) ensureBucketExists(ctx context.Context, bucketName string,
 // SaveImage сохраняет изображение в MinIO бакет и возвращает URL объекта
 func (m *MinioClient) SaveImage(ctx context.Context, bucketName, objectName string, imageData []byte) (string, error) {
 	// Проверяем существование бакета
-	err := m.ensureBucketExists(ctx, bucketName, m.conf.Region)
-	if err != nil {
-		return "", fmt.Errorf("ошибка при проверке или создании бакета: %w", err)
+	if err := m.ensureBucketExists(ctx, bucketName, m.conf.Region); err != nil {
+		return "", models.NewImageStorageError(fmt.Sprintf("ошибка при проверке или создании бакета %s", bucketName), err)
 	}
 
 	// Загружаем изображение в бакет
-	_, err = m.client.PutObject(ctx, bucketName, objectName, bytes.NewReader(imageData), int64(len(imageData)), minio.PutObjectOptions{
+	if _, err := m.client.PutObject(ctx, bucketName, objectName, bytes.NewReader(imageData), int64(len(imageData)), minio.PutObjectOptions{
 		ContentType: "image/jpeg",
-	})
-	if err != nil {
-		return "", fmt.Errorf("ошибка при загрузке изображения в MinIO: %w", err)
+	}); err != nil {
+		return "", models.NewImageStorageError(
+			fmt.Sprintf("ошибка при загрузке изображения в MinIO в бакет %s с объектом %s", bucketName, objectName), err,
+		)
 	}
 
 	// Формируем URL для объекта

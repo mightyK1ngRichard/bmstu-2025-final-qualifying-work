@@ -33,13 +33,13 @@ func NewCakeUsecase(
 }
 
 func (u *CakeUseсase) Cake(ctx context.Context, in en.GetCakeReq) (*en.GetCakeRes, error) {
-	res, err := u.repo.GetCakeByID(ctx, in)
+	res, err := u.repo.CakeByID(ctx, in)
 	if err != nil {
 		u.log.Error("[Usecase.Cake] ошибка получения торта по id из бд",
 			slog.String("cakeID", in.CakeID.String()),
 			sl.Err(err),
 		)
-		return nil, models.NotFound
+		return nil, err
 	}
 
 	return &en.GetCakeRes{
@@ -119,4 +119,8 @@ func (u *CakeUseсase) Categories(ctx context.Context) (*[]models.Category, erro
 
 func (u *CakeUseсase) Fillings(ctx context.Context) (*[]models.Filling, error) {
 	return u.repo.Fillings(ctx)
+}
+
+func (u *CakeUseсase) Cakes(ctx context.Context) (*[]models.Cake, error) {
+	return u.repo.Cakes(ctx)
 }

@@ -13,15 +13,17 @@ type ICakeUsecase interface {
 	CreateCategory(context.Context, *entities.CreateCategoryReq) (*entities.CreateCategoryRes, error)
 	Categories(context.Context) (*[]models.Category, error)
 	Fillings(ctx context.Context) (*[]models.Filling, error)
+	Cakes(ctx context.Context) (*[]models.Cake, error)
 }
 
 type ICakeRepository interface {
-	GetCakeByID(context.Context, entities.GetCakeReq) (*entities.GetCakeRes, error)
+	CakeByID(context.Context, entities.GetCakeReq) (*entities.GetCakeRes, error)
 	CreateCake(context.Context, entities.CreateCakeDBReq) error
 	CreateFilling(context.Context, models.Filling) error
 	CreateCategory(context.Context, *models.Category) error
 	Categories(context.Context) (*[]models.Category, error)
 	Fillings(context.Context) (*[]models.Filling, error)
+	Cakes(ctx context.Context) (*[]models.Cake, error)
 }
 
 type IImageStorage interface {

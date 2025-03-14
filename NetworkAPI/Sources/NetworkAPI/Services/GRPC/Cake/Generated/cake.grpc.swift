@@ -45,6 +45,11 @@ internal protocol CakeServiceClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>
+
+  func cakes(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>
 }
 
 extension CakeServiceClientProtocol {
@@ -159,6 +164,24 @@ extension CakeServiceClientProtocol {
       interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
     )
   }
+
+  /// Unary call to Cakes
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to Cakes.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func cakes(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse> {
+    return self.makeUnaryCall(
+      path: CakeServiceClientMetadata.Methods.cakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+    )
+  }
 }
 
 @available(*, deprecated)
@@ -252,6 +275,11 @@ internal protocol CakeServiceAsyncClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>
+
+  func makeCakesCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -335,6 +363,18 @@ extension CakeServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
     )
   }
+
+  internal func makeCakesCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse> {
+    return self.makeAsyncUnaryCall(
+      path: CakeServiceClientMetadata.Methods.cakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -410,6 +450,18 @@ extension CakeServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
     )
   }
+
+  internal func cakes(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> CakesResponse {
+    return try await self.performAsyncUnaryCall(
+      path: CakeServiceClientMetadata.Methods.cakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -448,6 +500,9 @@ internal protocol CakeServiceClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'fillings'.
   func makeFillingsInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'cakes'.
+  func makeCakesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>]
 }
 
 internal enum CakeServiceClientMetadata {
@@ -461,6 +516,7 @@ internal enum CakeServiceClientMetadata {
       CakeServiceClientMetadata.Methods.createCategory,
       CakeServiceClientMetadata.Methods.categories,
       CakeServiceClientMetadata.Methods.fillings,
+      CakeServiceClientMetadata.Methods.cakes,
     ]
   )
 
@@ -500,6 +556,12 @@ internal enum CakeServiceClientMetadata {
       path: "/CakeService/Fillings",
       type: GRPCCallType.unary
     )
+
+    internal static let cakes = GRPCMethodDescriptor(
+      name: "Cakes",
+      path: "/CakeService/Cakes",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -518,6 +580,8 @@ internal protocol CakeServiceProvider: CallHandlerProvider {
   func categories(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<CategoriesResponse>
 
   func fillings(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<FillingsResponse>
+
+  func cakes(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<CakesResponse>
 }
 
 extension CakeServiceProvider {
@@ -586,6 +650,15 @@ extension CakeServiceProvider {
         userFunction: self.fillings(request:context:)
       )
 
+    case "Cakes":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<CakesResponse>(),
+        interceptors: self.interceptors?.makeCakesInterceptors() ?? [],
+        userFunction: self.cakes(request:context:)
+      )
+
     default:
       return nil
     }
@@ -627,6 +700,11 @@ internal protocol CakeServiceAsyncProvider: CallHandlerProvider, Sendable {
     request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
   ) async throws -> FillingsResponse
+
+  func cakes(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> CakesResponse
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -702,6 +780,15 @@ extension CakeServiceAsyncProvider {
         wrapping: { try await self.fillings(request: $0, context: $1) }
       )
 
+    case "Cakes":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<CakesResponse>(),
+        interceptors: self.interceptors?.makeCakesInterceptors() ?? [],
+        wrapping: { try await self.cakes(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -733,6 +820,10 @@ internal protocol CakeServiceServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'fillings'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeFillingsInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>]
+
+  /// - Returns: Interceptors to use when handling 'cakes'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeCakesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>]
 }
 
 internal enum CakeServiceServerMetadata {
@@ -746,6 +837,7 @@ internal enum CakeServiceServerMetadata {
       CakeServiceServerMetadata.Methods.createCategory,
       CakeServiceServerMetadata.Methods.categories,
       CakeServiceServerMetadata.Methods.fillings,
+      CakeServiceServerMetadata.Methods.cakes,
     ]
   )
 
@@ -783,6 +875,12 @@ internal enum CakeServiceServerMetadata {
     internal static let fillings = GRPCMethodDescriptor(
       name: "Fillings",
       path: "/CakeService/Fillings",
+      type: GRPCCallType.unary
+    )
+
+    internal static let cakes = GRPCMethodDescriptor(
+      name: "Cakes",
+      path: "/CakeService/Cakes",
       type: GRPCCallType.unary
     )
   }

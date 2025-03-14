@@ -11,7 +11,6 @@ import (
 	"log/slog"
 
 	"github.com/google/uuid"
-	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -40,43 +39,13 @@ func (h *GrpcCakeHandler) Cake(ctx context.Context, in *gen.CakeRequest) (*gen.C
 	res, err := h.usecase.Cake(ctx, en.GetCakeReq{
 		CakeID: cakeID,
 	})
-	if err != nil {
-		if errors.Is(err, models.NoToken) {
-			return nil, status.Error(codes.NotFound, fmt.Sprintf(`%v`, err))
-		}
+	if err = models.HandleError(err); err != nil {
 		return nil, err
-	}
-
-	// Маппинг User -> generated.User
-	owner := res.Cake.Owner.ConvertToUserGRPC()
-
-	// Маппинг Filling -> generated.Filling
-	fillings := make([]*gen.Filling, len(res.Cake.Fillings))
-	for i, f := range res.Cake.Fillings {
-		fillings[i] = f.ConvertToFillingGRPC()
-	}
-
-	// Маппинг Category -> generated.Category
-	categories := make([]*gen.Category, len(res.Cake.Categories))
-	for i, c := range res.Cake.Categories {
-		categories[i] = c.ConvertToCategoryGRPC()
 	}
 
 	// Формируем CakeResponse
 	return &gen.CakeResponse{
-		Cake: &gen.Cake{
-			Id:            res.Cake.ID.String(),
-			Name:          res.Cake.Name,
-			ImageUrl:      res.Cake.ImageURL,
-			KgPrice:       res.Cake.KgPrice,
-			Rating:        int32(res.Cake.Rating),
-			Description:   res.Cake.Description,
-			Mass:          res.Cake.Mass,
-			IsOpenForSale: res.Cake.IsOpenForSale,
-			Owner:         owner,
-			Fillings:      fillings,
-			Categories:    categories,
-		},
+		Cake: res.Cake.ConvertToCakeGRPC(),
 	}, nil
 }
 
@@ -93,7 +62,7 @@ func (h *GrpcCakeHandler) CreateCake(ctx context.Context, in *gen.CreateCakeRequ
 		FillingIDs:    in.FillingIds,
 		CategoryIDs:   in.CategoryIds,
 	})
-	if err != nil {
+	if err = models.HandleError(err); err != nil {
 		return nil, err
 	}
 
@@ -110,7 +79,7 @@ func (h *GrpcCakeHandler) CreateFilling(ctx context.Context, in *gen.CreateFilli
 		KgPrice:     in.KgPrice,
 		Description: in.Description,
 	})
-	if err != nil {
+	if err = models.HandleError(err); err != nil {
 		return nil, err
 	}
 
@@ -124,7 +93,7 @@ func (h *GrpcCakeHandler) CreateCategory(ctx context.Context, in *gen.CreateCate
 		Name:      in.Name,
 		ImageData: in.ImageData,
 	})
-	if err != nil {
+	if err = models.HandleError(err); err != nil {
 		return nil, err
 	}
 
@@ -135,7 +104,7 @@ func (h *GrpcCakeHandler) CreateCategory(ctx context.Context, in *gen.CreateCate
 
 func (h *GrpcCakeHandler) Categories(ctx context.Context, _ *emptypb.Empty) (*gen.CategoriesResponse, error) {
 	categories, err := h.usecase.Categories(ctx)
-	if err != nil {
+	if err = models.HandleError(err); err != nil {
 		return nil, err
 	}
 
@@ -151,7 +120,7 @@ func (h *GrpcCakeHandler) Categories(ctx context.Context, _ *emptypb.Empty) (*ge
 
 func (h *GrpcCakeHandler) Fillings(ctx context.Context, _ *emptypb.Empty) (*gen.FillingsResponse, error) {
 	fillings, err := h.usecase.Fillings(ctx)
-	if err != nil {
+	if err = models.HandleError(err); err != nil {
 		return nil, err
 	}
 
@@ -162,5 +131,21 @@ func (h *GrpcCakeHandler) Fillings(ctx context.Context, _ *emptypb.Empty) (*gen.
 
 	return &gen.FillingsResponse{
 		Fillings: fillingsGRPC,
+	}, nil
+}
+
+func (h *GrpcCakeHandler) Cakes(ctx context.Context, _ *emptypb.Empty) (*gen.CakesResponse, error) {
+	cakes, err := h.usecase.Cakes(ctx)
+	if err = models.HandleError(err); err != nil {
+		return nil, err
+	}
+
+	cakesGRPC := make([]*gen.Cake, len(*cakes))
+	for i, it := range *cakes {
+		cakesGRPC[i] = it.ConvertToCakeGRPC()
+	}
+
+	return &gen.CakesResponse{
+		Cakes: cakesGRPC,
 	}, nil
 }

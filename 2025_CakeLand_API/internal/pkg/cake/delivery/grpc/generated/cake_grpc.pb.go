@@ -26,6 +26,7 @@ const (
 	CakeService_CreateCategory_FullMethodName = "/CakeService/CreateCategory"
 	CakeService_Categories_FullMethodName     = "/CakeService/Categories"
 	CakeService_Fillings_FullMethodName       = "/CakeService/Fillings"
+	CakeService_Cakes_FullMethodName          = "/CakeService/Cakes"
 )
 
 // CakeServiceClient is the client API for CakeService service.
@@ -38,6 +39,7 @@ type CakeServiceClient interface {
 	CreateCategory(ctx context.Context, in *CreateCategoryRequest, opts ...grpc.CallOption) (*CreateCategoryResponse, error)
 	Categories(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CategoriesResponse, error)
 	Fillings(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*FillingsResponse, error)
+	Cakes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CakesResponse, error)
 }
 
 type cakeServiceClient struct {
@@ -108,6 +110,16 @@ func (c *cakeServiceClient) Fillings(ctx context.Context, in *emptypb.Empty, opt
 	return out, nil
 }
 
+func (c *cakeServiceClient) Cakes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CakesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CakesResponse)
+	err := c.cc.Invoke(ctx, CakeService_Cakes_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CakeServiceServer is the server API for CakeService service.
 // All implementations must embed UnimplementedCakeServiceServer
 // for forward compatibility.
@@ -118,6 +130,7 @@ type CakeServiceServer interface {
 	CreateCategory(context.Context, *CreateCategoryRequest) (*CreateCategoryResponse, error)
 	Categories(context.Context, *emptypb.Empty) (*CategoriesResponse, error)
 	Fillings(context.Context, *emptypb.Empty) (*FillingsResponse, error)
+	Cakes(context.Context, *emptypb.Empty) (*CakesResponse, error)
 	mustEmbedUnimplementedCakeServiceServer()
 }
 
@@ -145,6 +158,9 @@ func (UnimplementedCakeServiceServer) Categories(context.Context, *emptypb.Empty
 }
 func (UnimplementedCakeServiceServer) Fillings(context.Context, *emptypb.Empty) (*FillingsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Fillings not implemented")
+}
+func (UnimplementedCakeServiceServer) Cakes(context.Context, *emptypb.Empty) (*CakesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Cakes not implemented")
 }
 func (UnimplementedCakeServiceServer) mustEmbedUnimplementedCakeServiceServer() {}
 func (UnimplementedCakeServiceServer) testEmbeddedByValue()                     {}
@@ -275,6 +291,24 @@ func _CakeService_Fillings_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CakeService_Cakes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CakeServiceServer).Cakes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CakeService_Cakes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CakeServiceServer).Cakes(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CakeService_ServiceDesc is the grpc.ServiceDesc for CakeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -305,6 +339,10 @@ var CakeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Fillings",
 			Handler:    _CakeService_Fillings_Handler,
+		},
+		{
+			MethodName: "Cakes",
+			Handler:    _CakeService_Cakes_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

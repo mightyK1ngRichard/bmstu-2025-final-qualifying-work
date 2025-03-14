@@ -78,6 +78,12 @@ message FillingsResponse {
   repeated Filling fillings = 1;
 }
 
+/* ############### CakesResponse ############### */
+
+message CakesResponse {
+  repeated Cake cakes = 1;
+}
+
 /* ############### CakeService ############### */
 
 service CakeService {
@@ -87,6 +93,7 @@ service CakeService {
   rpc CreateCategory (CreateCategoryRequest) returns (CreateCategoryResponse);
   rpc Categories (google.protobuf.Empty) returns (CategoriesResponse);
   rpc Fillings (google.protobuf.Empty) returns (FillingsResponse);
+  rpc Cakes (google.protobuf.Empty) returns (CakesResponse);
 }
 
 // Информация о торте
