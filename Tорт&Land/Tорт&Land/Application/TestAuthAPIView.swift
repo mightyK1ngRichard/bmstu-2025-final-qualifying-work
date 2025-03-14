@@ -10,47 +10,83 @@ import NetworkAPI
 import SwiftUI
 
 struct CategoryTestView: View {
-    let api = CakeGrpcServiceImpl(
+    let cakeAPI = CakeGrpcServiceImpl(
         configuration: AppHosts.cake,
         networkService: NetworkServiceImpl()
     )
-    @State var imageURL: String? = "http://localhost:9000/cake-land-server/630483c2-f7c4-473a-8860-53f54863b789"
+    @State private var categoriesData: [CakeServiceModel.FetchCategories.Response] = []
 
     var body: some View {
         VStack {
-            if let imageString = imageURL, let url = URL(string: imageString) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 200, height: 200)
-                        .clipShape(.rect(cornerRadius: 20))
-                } placeholder: {
-                    RoundedRectangle(cornerRadius: 20)
-                        .frame(width: 200, height: 200)
-                }
-            } else {
-                Text("ERROR")
-            }
+            categories
 
-            Button("Create Category") {
-                Task {
-                    guard let imageData = UIImage.wedding.pngData() else {
-                        print("[DEBUG]: error create image data")
-                        return
-                    }
-
-                    do {
-                        let res = try await api.createCategory(
-                            req: .init(name: "Свадебные торты", imageData: imageData)
-                        )
-                        imageURL = res.imageURL
-                    } catch {
-
-                    }
-                }
+            Button("Создать категории") {
+                createCategories()
             }
             .buttonStyle(.borderedProminent)
+
+            Button("Получить категории") {
+                fetchCategories()
+            }
+            .buttonStyle(.borderedProminent)
+        }
+    }
+
+    private func createCategories() {
+        [
+            ("Свадебные", UIImage.categ1.pngData()!),
+            ("Спортивные", UIImage.categ2.pngData()!),
+            ("Новогодние", UIImage.categ3.pngData()!),
+            ("Фруктовые", UIImage.categ4.pngData()!),
+            ("Шоколадные", UIImage.categ5.pngData()!),
+        ].forEach { category in
+            Task {
+                do {
+                    _ = try await cakeAPI.createCategory(
+                        req: .init(
+                            name: category.0,
+                            imageData: category.1
+                        )
+                    )
+                } catch {
+                    print("[DEBUG]: \(error)")
+                }
+            }
+        }
+    }
+
+    private func fetchCategories() {
+        Task {
+            do {
+                categoriesData = try await cakeAPI.fetchCategories()
+            } catch {
+                print("[DEBUG]: \(error)")
+            }
+        }
+    }
+}
+
+private extension CategoryTestView {
+
+    var categories: some View {
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(categoriesData, id: \.id) { cat in
+                    VStack {
+                        AsyncImage(url: URL(string: cat.imageURL)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50)
+                        } placeholder: {
+                            ProgressView()
+                        }
+
+                        Text(cat.name)
+                            .font(.headline)
+                    }
+                }
+            }
         }
     }
 }

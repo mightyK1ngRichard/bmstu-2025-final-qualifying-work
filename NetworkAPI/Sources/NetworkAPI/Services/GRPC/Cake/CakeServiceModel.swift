@@ -17,7 +17,7 @@ public enum CakeServiceModel {
 // MARK: - CreateCategory
 
 public extension CakeServiceModel.CreateCategory {
-    struct Request {
+    struct Request: Sendable {
         let name: String
         let imageData: Data
 
@@ -37,7 +37,7 @@ public extension CakeServiceModel.CreateCategory {
 // MARK: - CreateFilling
 
 public extension CakeServiceModel.CreateFilling {
-    struct Request {
+    struct Request: Sendable {
         let name: String
         let imageData: Data
         let content: String
@@ -60,12 +60,12 @@ public extension CakeServiceModel.CreateFilling {
     }
 
     struct Response: Sendable {
-        let id: String
-        let name: String
-        let imageURL: String
-        let content: String
-        let kgPrice: Double
-        let description: String
+        public let id: String
+        public let name: String
+        public let imageURL: String
+        public let content: String
+        public let kgPrice: Double
+        public let description: String
     }
 }
 
@@ -73,12 +73,12 @@ public extension CakeServiceModel.CreateFilling {
 
 public extension CakeServiceModel.FetchFilling {
     struct Response: Sendable {
-        let id: String
-        let name: String
-        let imageURL: String
-        let content: String
-        let kgPrice: Double
-        let description: String
+        public let id: String
+        public let name: String
+        public let imageURL: String
+        public let content: String
+        public let kgPrice: Double
+        public let description: String
     }
 }
 
@@ -86,8 +86,8 @@ public extension CakeServiceModel.FetchFilling {
 
 public extension CakeServiceModel.FetchCategories {
     struct Response: Sendable {
-        let id: String
-        let name: String
-        let imageURL: String
+        public let id: String
+        public let name: String
+        public let imageURL: String
     }
 }
