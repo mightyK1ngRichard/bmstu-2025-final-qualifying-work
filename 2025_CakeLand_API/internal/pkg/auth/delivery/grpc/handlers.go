@@ -1,4 +1,4 @@
-package auth
+package handler
 
 import (
 	"2025_CakeLand_API/internal/models"

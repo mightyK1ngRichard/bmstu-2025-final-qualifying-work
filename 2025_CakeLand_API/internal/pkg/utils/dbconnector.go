@@ -6,10 +6,10 @@ import (
 	"fmt"
 )
 
-func ConnectPostgres(cfg *config.Config) (*sql.DB, error) {
+func ConnectPostgres(cfg *config.DatabaseConfig) (*sql.DB, error) {
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%d/%s?sslmode=%s",
-		cfg.DB.User, cfg.DB.Password, cfg.DB.Host, cfg.DB.Port, cfg.DB.DBName, cfg.DB.SSLMode,
+		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SSLMode,
 	)
 
 	db, err := sql.Open("postgres", dsn)

@@ -11,11 +11,13 @@ import GRPC
 
 // MARK: - NetworkService
 
-public protocol NetworkService {
+public protocol NetworkService: Sendable {
     func performAndLog<Request, Response: Sendable, MappedResponse>(
         call: (Request, CallOptions?) async throws -> Response,
         with: Request,
         options: CallOptions,
+        showRequestLog: Bool,
+        showResponseLog: Bool,
         fileName: String,
         function: String,
         line: Int,
@@ -30,6 +32,8 @@ extension NetworkService {
         call: (Request, CallOptions?) async throws -> Response,
         with request: Request,
         options: CallOptions = CallOptions(),
+        showRequestLog: Bool = false,
+        showResponseLog: Bool = false,
         fileName: String = #file,
         function: String = #function,
         line: Int = #line,
@@ -39,6 +43,8 @@ extension NetworkService {
             call: call,
             with: request,
             options: options,
+            showRequestLog: showRequestLog,
+            showResponseLog: showResponseLog,
             fileName: fileName,
             function: function,
             line: line,
@@ -49,7 +55,7 @@ extension NetworkService {
 
 // MARK: - NetworkServiceImpl
 
-public final class NetworkServiceImpl: NetworkService {
+public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     private let lock = NSLock()
     private var _callOptions: CallOptions
     public var callOptions: CallOptions {
@@ -66,16 +72,20 @@ public final class NetworkServiceImpl: NetworkService {
         call: (Request, CallOptions?) async throws -> Response,
         with request: Request,
         options: CallOptions = CallOptions(),
+        showRequestLog: Bool = false,
+        showResponseLog: Bool = false,
         fileName: String = #file,
         function: String = #function,
         line: Int = #line,
         mapping: (Response) -> MappedResponse
     ) async throws -> MappedResponse {
-        Logger.log("💛 Request:\n\(request)", fileName: fileName, function: function, line: line)
+        Logger.log(showRequestLog ? "💛 Request:\n\(request)" : "💛 Request", fileName: fileName, function: function, line: line)
+
         do {
             let allOptions = createCallOptions(additional: options)
             let res = try await call(request, allOptions)
-            Logger.log("💚 Response:\n\(res)")
+
+            Logger.log(showResponseLog ? "💚 Response:\n\(res)" : "💚 Response")
             return mapping(res)
         } catch {
             Logger.log(kind: .error, "❤️ Error:\n\(error)")

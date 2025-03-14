@@ -1,22 +1,23 @@
 package main
 
 import (
-	"2025_CakeLand_API/internal/pkg/auth/delivery/grpc"
+	auth "2025_CakeLand_API/internal/pkg/auth/delivery/grpc"
 	"2025_CakeLand_API/internal/pkg/auth/delivery/grpc/generated"
-	"2025_CakeLand_API/internal/pkg/auth/repo/postgres"
+	"2025_CakeLand_API/internal/pkg/auth/repo"
 	"2025_CakeLand_API/internal/pkg/auth/usecase"
 	"2025_CakeLand_API/internal/pkg/config"
 	"2025_CakeLand_API/internal/pkg/utils"
 	"2025_CakeLand_API/internal/pkg/utils/logger"
 	"fmt"
-	_ "github.com/lib/pq"
-	"google.golang.org/grpc"
 	"log/slog"
 	"net"
 	"os"
+
+	_ "github.com/lib/pq"
+	"google.golang.org/grpc"
 )
 
-// go run cmd/auth/main.go --config=./config/localConfig.yaml
+// go run cmd/auth/main.go --config=./config/config.yaml
 func main() {
 	if err := run(); err != nil {
 		fmt.Print(err)
@@ -33,7 +34,7 @@ func run() error {
 	// Создаём Logger
 	log := logger.NewLogger(conf.Env)
 	// Подключаем базу данных
-	db, err := utils.ConnectPostgres(conf)
+	db, err := utils.ConnectPostgres(&conf.DB)
 	if err != nil {
 		return err
 	}
@@ -44,9 +45,12 @@ func run() error {
 		return err
 	}
 	grpcServer := grpc.NewServer()
-	repo := postgres.NewAuthRepository(db)
-	authUsecase := usecase.NewAuthUsecase(log, repo)
+
+	rep := repo.NewAuthRepository(db)
+	validator := usecase.NewValidator()
+	authUsecase := usecase.NewAuthUsecase(log, validator, rep)
 	grpcAuthHandler := auth.NewGrpcAuthHandler(authUsecase)
+
 	generated.RegisterAuthServer(grpcServer, grpcAuthHandler)
 	log.Info("Starting gRPC server", slog.String("port", fmt.Sprintf(":%d", conf.GRPC.Port)))
 	return grpcServer.Serve(listener)
