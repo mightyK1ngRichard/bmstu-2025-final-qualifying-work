@@ -8,6 +8,7 @@
 import Foundation
 
 public enum CakeServiceModel {
+    public enum CreateCake {}
     public enum CreateCategory {}
     public enum CreateFilling {}
     public enum FetchFilling {}
@@ -89,5 +90,47 @@ public extension CakeServiceModel.FetchCategories {
         public let id: String
         public let name: String
         public let imageURL: String
+    }
+}
+
+// MARK: - CreateCake
+
+public extension CakeServiceModel.CreateCake {
+    struct Request: Sendable {
+        let name: String
+        let imageData: Data
+        let kgPrice: Double
+        let rating: Int
+        let description: String
+        let mass: Double
+        let isOpenForSale: Bool
+        let fillingIDs: [String]
+        let categoryIDs: [String]
+
+        public init(
+            name: String,
+            imageData: Data,
+            kgPrice: Double,
+            rating: Int,
+            description: String,
+            mass: Double,
+            isOpenForSale: Bool,
+            fillingIDs: [String],
+            categoryIDs: [String]
+        ) {
+            self.name = name
+            self.imageData = imageData
+            self.kgPrice = kgPrice
+            self.rating = rating
+            self.description = description
+            self.mass = mass
+            self.isOpenForSale = isOpenForSale
+            self.fillingIDs = fillingIDs
+            self.categoryIDs = categoryIDs
+        }
+    }
+
+    struct Response: Sendable {
+        public let cakeID: String
     }
 }

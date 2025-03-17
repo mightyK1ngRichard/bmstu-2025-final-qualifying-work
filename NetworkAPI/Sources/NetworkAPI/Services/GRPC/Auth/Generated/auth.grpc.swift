@@ -27,14 +27,14 @@ internal protocol AuthClientProtocol: GRPCClient {
   ) -> UnaryCall<LoginRequest, LoginResponse>
 
   func updateAccessToken(
-    _ request: UpdateAccessTokenRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
-  ) -> UnaryCall<UpdateAccessTokenRequest, UpdateAccessTokenResponse>
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, UpdateAccessTokenResponse>
 
   func logout(
-    _ request: LogoutRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
-  ) -> UnaryCall<LogoutRequest, LogoutResponse>
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, LogoutResponse>
 }
 
 extension AuthClientProtocol {
@@ -85,9 +85,9 @@ extension AuthClientProtocol {
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
   internal func updateAccessToken(
-    _ request: UpdateAccessTokenRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<UpdateAccessTokenRequest, UpdateAccessTokenResponse> {
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, UpdateAccessTokenResponse> {
     return self.makeUnaryCall(
       path: AuthClientMetadata.Methods.updateAccessToken.path,
       request: request,
@@ -103,9 +103,9 @@ extension AuthClientProtocol {
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
   internal func logout(
-    _ request: LogoutRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<LogoutRequest, LogoutResponse> {
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, LogoutResponse> {
     return self.makeUnaryCall(
       path: AuthClientMetadata.Methods.logout.path,
       request: request,
@@ -188,14 +188,14 @@ internal protocol AuthAsyncClientProtocol: GRPCClient {
   ) -> GRPCAsyncUnaryCall<LoginRequest, LoginResponse>
 
   func makeUpdateAccessTokenCall(
-    _ request: UpdateAccessTokenRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<UpdateAccessTokenRequest, UpdateAccessTokenResponse>
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, UpdateAccessTokenResponse>
 
   func makeLogoutCall(
-    _ request: LogoutRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<LogoutRequest, LogoutResponse>
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, LogoutResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -233,9 +233,9 @@ extension AuthAsyncClientProtocol {
   }
 
   internal func makeUpdateAccessTokenCall(
-    _ request: UpdateAccessTokenRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<UpdateAccessTokenRequest, UpdateAccessTokenResponse> {
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, UpdateAccessTokenResponse> {
     return self.makeAsyncUnaryCall(
       path: AuthClientMetadata.Methods.updateAccessToken.path,
       request: request,
@@ -245,9 +245,9 @@ extension AuthAsyncClientProtocol {
   }
 
   internal func makeLogoutCall(
-    _ request: LogoutRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<LogoutRequest, LogoutResponse> {
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, LogoutResponse> {
     return self.makeAsyncUnaryCall(
       path: AuthClientMetadata.Methods.logout.path,
       request: request,
@@ -284,7 +284,7 @@ extension AuthAsyncClientProtocol {
   }
 
   internal func updateAccessToken(
-    _ request: UpdateAccessTokenRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
   ) async throws -> UpdateAccessTokenResponse {
     return try await self.performAsyncUnaryCall(
@@ -296,7 +296,7 @@ extension AuthAsyncClientProtocol {
   }
 
   internal func logout(
-    _ request: LogoutRequest,
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
   ) async throws -> LogoutResponse {
     return try await self.performAsyncUnaryCall(
@@ -334,10 +334,10 @@ internal protocol AuthClientInterceptorFactoryProtocol: Sendable {
   func makeLoginInterceptors() -> [ClientInterceptor<LoginRequest, LoginResponse>]
 
   /// - Returns: Interceptors to use when invoking 'updateAccessToken'.
-  func makeUpdateAccessTokenInterceptors() -> [ClientInterceptor<UpdateAccessTokenRequest, UpdateAccessTokenResponse>]
+  func makeUpdateAccessTokenInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, UpdateAccessTokenResponse>]
 
   /// - Returns: Interceptors to use when invoking 'logout'.
-  func makeLogoutInterceptors() -> [ClientInterceptor<LogoutRequest, LogoutResponse>]
+  func makeLogoutInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, LogoutResponse>]
 }
 
 internal enum AuthClientMetadata {
@@ -387,9 +387,9 @@ internal protocol AuthProvider: CallHandlerProvider {
 
   func login(request: LoginRequest, context: StatusOnlyCallContext) -> EventLoopFuture<LoginResponse>
 
-  func updateAccessToken(request: UpdateAccessTokenRequest, context: StatusOnlyCallContext) -> EventLoopFuture<UpdateAccessTokenResponse>
+  func updateAccessToken(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<UpdateAccessTokenResponse>
 
-  func logout(request: LogoutRequest, context: StatusOnlyCallContext) -> EventLoopFuture<LogoutResponse>
+  func logout(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<LogoutResponse>
 }
 
 extension AuthProvider {
@@ -425,7 +425,7 @@ extension AuthProvider {
     case "UpdateAccessToken":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<UpdateAccessTokenRequest>(),
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
         responseSerializer: ProtobufSerializer<UpdateAccessTokenResponse>(),
         interceptors: self.interceptors?.makeUpdateAccessTokenInterceptors() ?? [],
         userFunction: self.updateAccessToken(request:context:)
@@ -434,7 +434,7 @@ extension AuthProvider {
     case "Logout":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<LogoutRequest>(),
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
         responseSerializer: ProtobufSerializer<LogoutResponse>(),
         interceptors: self.interceptors?.makeLogoutInterceptors() ?? [],
         userFunction: self.logout(request:context:)
@@ -463,12 +463,12 @@ internal protocol AuthAsyncProvider: CallHandlerProvider, Sendable {
   ) async throws -> LoginResponse
 
   func updateAccessToken(
-    request: UpdateAccessTokenRequest,
+    request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
   ) async throws -> UpdateAccessTokenResponse
 
   func logout(
-    request: LogoutRequest,
+    request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
   ) async throws -> LogoutResponse
 }
@@ -513,7 +513,7 @@ extension AuthAsyncProvider {
     case "UpdateAccessToken":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<UpdateAccessTokenRequest>(),
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
         responseSerializer: ProtobufSerializer<UpdateAccessTokenResponse>(),
         interceptors: self.interceptors?.makeUpdateAccessTokenInterceptors() ?? [],
         wrapping: { try await self.updateAccessToken(request: $0, context: $1) }
@@ -522,7 +522,7 @@ extension AuthAsyncProvider {
     case "Logout":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<LogoutRequest>(),
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
         responseSerializer: ProtobufSerializer<LogoutResponse>(),
         interceptors: self.interceptors?.makeLogoutInterceptors() ?? [],
         wrapping: { try await self.logout(request: $0, context: $1) }
@@ -546,11 +546,11 @@ internal protocol AuthServerInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when handling 'updateAccessToken'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeUpdateAccessTokenInterceptors() -> [ServerInterceptor<UpdateAccessTokenRequest, UpdateAccessTokenResponse>]
+  func makeUpdateAccessTokenInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, UpdateAccessTokenResponse>]
 
   /// - Returns: Interceptors to use when handling 'logout'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeLogoutInterceptors() -> [ServerInterceptor<LogoutRequest, LogoutResponse>]
+  func makeLogoutInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, LogoutResponse>]
 }
 
 internal enum AuthServerMetadata {
