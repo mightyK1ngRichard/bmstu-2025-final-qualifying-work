@@ -13,6 +13,7 @@ import SwiftProtobuf
 // MARK: - AuthService
 
 public protocol CakeGrpcService: Sendable {
+    func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response
     func fetchFillings() async throws -> [CakeServiceModel.CreateFilling.Response]
@@ -126,6 +127,33 @@ public extension CakeGrpcServiceImpl {
                     )
                 }
             }
+        )
+    }
+
+    func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
+        let request = CreateCakeRequest.with {
+            $0.name = $0.name
+            $0.imageData = req.imageData
+            $0.kgPrice = req.kgPrice
+            $0.rating = Int32(req.rating)
+            $0.description_p = req.description
+            $0.mass = req.mass
+            $0.isOpenForSale = req.isOpenForSale
+            $0.fillingIds = req.fillingIDs
+            $0.categoryIds = req.categoryIDs
+        }
+        var callOptions = CallOptions()
+        guard let accessToken = networkService.accessToken else {
+            throw NetworkError.missingAccessToken
+        }
+
+        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(accessToken)")
+
+        return try await networkService.performAndLog(
+            call: client.createCake,
+            with: request,
+            options: callOptions,
+            mapping: { .init(cakeID: $0.cakeID) }
         )
     }
 

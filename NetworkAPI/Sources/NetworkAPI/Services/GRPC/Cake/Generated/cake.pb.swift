@@ -81,9 +81,6 @@ struct CreateCakeRequest: @unchecked Sendable {
   /// Доступен ли для продажи
   var isOpenForSale: Bool = false
 
-  /// ID владельца
-  var ownerID: String = String()
-
   /// Список ID начинок
   var fillingIds: [String] = []
 
@@ -289,7 +286,14 @@ struct User: Sendable {
   var id: String = String()
 
   /// Полное имя
-  var fio: String = String()
+  var fio: SwiftProtobuf.Google_Protobuf_StringValue {
+    get {return _fio ?? SwiftProtobuf.Google_Protobuf_StringValue()}
+    set {_fio = newValue}
+  }
+  /// Returns true if `fio` has been explicitly set.
+  var hasFio: Bool {return self._fio != nil}
+  /// Clears the value of `fio`. Subsequent reads from it will return its default value.
+  mutating func clearFio() {self._fio = nil}
 
   /// Никнейм
   var nickname: String = String()
@@ -300,6 +304,8 @@ struct User: Sendable {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+
+  fileprivate var _fio: SwiftProtobuf.Google_Protobuf_StringValue? = nil
 }
 
 /// Информация о начинке
@@ -431,9 +437,8 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     5: .same(proto: "description"),
     6: .same(proto: "mass"),
     7: .standard(proto: "is_open_for_sale"),
-    8: .standard(proto: "owner_id"),
-    9: .standard(proto: "filling_ids"),
-    10: .standard(proto: "category_ids"),
+    8: .standard(proto: "filling_ids"),
+    9: .standard(proto: "category_ids"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -449,9 +454,8 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
       case 5: try { try decoder.decodeSingularStringField(value: &self.description_p) }()
       case 6: try { try decoder.decodeSingularDoubleField(value: &self.mass) }()
       case 7: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
-      case 8: try { try decoder.decodeSingularStringField(value: &self.ownerID) }()
-      case 9: try { try decoder.decodeRepeatedStringField(value: &self.fillingIds) }()
-      case 10: try { try decoder.decodeRepeatedStringField(value: &self.categoryIds) }()
+      case 8: try { try decoder.decodeRepeatedStringField(value: &self.fillingIds) }()
+      case 9: try { try decoder.decodeRepeatedStringField(value: &self.categoryIds) }()
       default: break
       }
     }
@@ -479,14 +483,11 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if self.isOpenForSale != false {
       try visitor.visitSingularBoolField(value: self.isOpenForSale, fieldNumber: 7)
     }
-    if !self.ownerID.isEmpty {
-      try visitor.visitSingularStringField(value: self.ownerID, fieldNumber: 8)
-    }
     if !self.fillingIds.isEmpty {
-      try visitor.visitRepeatedStringField(value: self.fillingIds, fieldNumber: 9)
+      try visitor.visitRepeatedStringField(value: self.fillingIds, fieldNumber: 8)
     }
     if !self.categoryIds.isEmpty {
-      try visitor.visitRepeatedStringField(value: self.categoryIds, fieldNumber: 10)
+      try visitor.visitRepeatedStringField(value: self.categoryIds, fieldNumber: 9)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -499,7 +500,6 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if lhs.description_p != rhs.description_p {return false}
     if lhs.mass != rhs.mass {return false}
     if lhs.isOpenForSale != rhs.isOpenForSale {return false}
-    if lhs.ownerID != rhs.ownerID {return false}
     if lhs.fillingIds != rhs.fillingIds {return false}
     if lhs.categoryIds != rhs.categoryIds {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -913,7 +913,7 @@ extension User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.fio) }()
+      case 2: try { try decoder.decodeSingularMessageField(value: &self._fio) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.nickname) }()
       case 4: try { try decoder.decodeSingularStringField(value: &self.mail) }()
       default: break
@@ -922,12 +922,16 @@ extension User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.id.isEmpty {
       try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
     }
-    if !self.fio.isEmpty {
-      try visitor.visitSingularStringField(value: self.fio, fieldNumber: 2)
-    }
+    try { if let v = self._fio {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    } }()
     if !self.nickname.isEmpty {
       try visitor.visitSingularStringField(value: self.nickname, fieldNumber: 3)
     }
@@ -939,7 +943,7 @@ extension User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
 
   static func ==(lhs: User, rhs: User) -> Bool {
     if lhs.id != rhs.id {return false}
-    if lhs.fio != rhs.fio {return false}
+    if lhs._fio != rhs._fio {return false}
     if lhs.nickname != rhs.nickname {return false}
     if lhs.mail != rhs.mail {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}

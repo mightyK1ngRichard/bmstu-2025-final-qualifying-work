@@ -24,6 +24,8 @@ public protocol NetworkService: Sendable {
         mapping: (Response) -> MappedResponse
     ) async throws -> MappedResponse
 
+    var accessToken: String? { get }
+    var refreshToken: String? { get }
     var callOptions: CallOptions { get set }
 }
 
@@ -57,6 +59,8 @@ extension NetworkService {
 
 public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     private let lock = NSLock()
+    public private(set) var accessToken: String? = nil
+    public private(set) var refreshToken: String? = nil
     private var _callOptions: CallOptions
     public var callOptions: CallOptions {
         get { lock.withLock { _callOptions } }
@@ -99,5 +103,13 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             options.customMetadata.replaceOrAdd(name: $0.name, value: $0.value)
         }
         return options
+    }
+
+    public func setAccessToken(_ token: String?) {
+        self.accessToken = token
+    }
+
+    public func setRefreshToken(_ token: String?) {
+        self.refreshToken = token
     }
 }

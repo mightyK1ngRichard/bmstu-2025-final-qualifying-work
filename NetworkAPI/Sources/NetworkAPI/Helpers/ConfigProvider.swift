@@ -37,6 +37,7 @@ final class ConfigProvider: Sendable {
             transportSecurity: .plaintext,
             eventLoopGroup: group
         )
+
         return channel
     }
 }

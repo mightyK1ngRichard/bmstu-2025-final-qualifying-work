@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftProtobuf
 import GRPC
 import NIO
 
@@ -76,12 +77,18 @@ public extension AuthGrpcServiceImpl {
     }
 
     func updateAccessToken(req: AuthServiceModel.UpdateAccessToken.Request) async throws -> AuthServiceModel.UpdateAccessToken.Response {
-        let request = UpdateAccessTokenRequest.with {
-            $0.refreshToken = req.refreshToken
+        let request = Google_Protobuf_Empty()
+        var callOptions = CallOptions()
+        guard let refresthToken = networkService.refreshToken else {
+            throw NetworkError.missingRefreshToken
         }
+
+        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(refresthToken)")
+
         return try await networkService.performAndLog(
             call: client.updateAccessToken,
             with: request,
+            options: callOptions,
             mapping: { .init(from: $0) }
         )
     }
