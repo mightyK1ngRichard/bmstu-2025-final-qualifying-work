@@ -8,21 +8,69 @@
 import SwiftUI
 
 struct TestAuthAPIView: View {
-    var body: some View {
-        Button("TestAuthAPIView") {
-            let api = AuthGrpcServiceImpl(
-                configuration: AppHosts.auth,
-                networkService: NetworkServiceImpl()
-            )
+    let api = CakeGrpcServiceImpl(
+        configuration: AppHosts.cake,
+        networkService: NetworkServiceImpl()
+    )
 
-            Task {
-                let _ = try? await api.login(
-                    req: .init(
-                        email: "dimapermyakov55@gmail.com",
-                        password: "12345678"
-                    )
-                )
+    @State private var urls: [String] = []
+    @State private var fillings: [String] = []
+
+    var body: some View {
+        VStack {
+            ScrollView(.horizontal) {
+                VStack {
+                    HStack {
+                        ForEach(urls, id: \.self) { urlString in
+                            AsyncImage(url: URL(string: urlString)) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .scaledToFill()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        }
+                    }
+
+                    HStack {
+                        ForEach(fillings, id: \.self) { fill in
+                            AsyncImage(url: URL(string: fill)) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .scaledToFill()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        }
+                    }
+                }
             }
+
+            Button("Fetch") {
+                Task {
+                    do {
+                        let res = try await api.fetchCategories()
+                        urls = res.map { $0.imageURL }
+                    } catch {
+                        print("[DEBUG]: \(error)")
+                    }
+                }
+            }
+            .buttonStyle(.borderedProminent)
+
+            Button("Fetch") {
+                Task {
+                    do {
+                        let res = try await api.fetchFillings()
+                        fillings = res.map { $0.imageURL }
+                    } catch {
+                        print("[DEBUG]: \(error)")
+                    }
+                }
+            }
+            .buttonStyle(.borderedProminent)
         }
     }
 }

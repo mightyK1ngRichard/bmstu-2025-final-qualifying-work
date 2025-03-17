@@ -11,17 +11,21 @@ import GRPC
 
 // MARK: - NetworkService
 
-public protocol NetworkService {
+public protocol NetworkService: Sendable {
     func performAndLog<Request, Response: Sendable, MappedResponse>(
         call: (Request, CallOptions?) async throws -> Response,
         with: Request,
         options: CallOptions,
+        showRequestLog: Bool,
+        showResponseLog: Bool,
         fileName: String,
         function: String,
         line: Int,
         mapping: (Response) -> MappedResponse
     ) async throws -> MappedResponse
 
+    var accessToken: String? { get }
+    var refreshToken: String? { get }
     var callOptions: CallOptions { get set }
 }
 
@@ -30,6 +34,8 @@ extension NetworkService {
         call: (Request, CallOptions?) async throws -> Response,
         with request: Request,
         options: CallOptions = CallOptions(),
+        showRequestLog: Bool = false,
+        showResponseLog: Bool = false,
         fileName: String = #file,
         function: String = #function,
         line: Int = #line,
@@ -39,6 +45,8 @@ extension NetworkService {
             call: call,
             with: request,
             options: options,
+            showRequestLog: showRequestLog,
+            showResponseLog: showResponseLog,
             fileName: fileName,
             function: function,
             line: line,
@@ -49,8 +57,10 @@ extension NetworkService {
 
 // MARK: - NetworkServiceImpl
 
-public final class NetworkServiceImpl: NetworkService {
+public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     private let lock = NSLock()
+    public private(set) var accessToken: String? = nil
+    public private(set) var refreshToken: String? = nil
     private var _callOptions: CallOptions
     public var callOptions: CallOptions {
         get { lock.withLock { _callOptions } }
@@ -66,16 +76,20 @@ public final class NetworkServiceImpl: NetworkService {
         call: (Request, CallOptions?) async throws -> Response,
         with request: Request,
         options: CallOptions = CallOptions(),
+        showRequestLog: Bool = false,
+        showResponseLog: Bool = false,
         fileName: String = #file,
         function: String = #function,
         line: Int = #line,
         mapping: (Response) -> MappedResponse
     ) async throws -> MappedResponse {
-        Logger.log("💛 Request:\n\(request)", fileName: fileName, function: function, line: line)
+        Logger.log(showRequestLog ? "💛 Request:\n\(request)" : "💛 Request", fileName: fileName, function: function, line: line)
+
         do {
             let allOptions = createCallOptions(additional: options)
             let res = try await call(request, allOptions)
-            Logger.log("💚 Response:\n\(res)")
+
+            Logger.log(showResponseLog ? "💚 Response:\n\(res)" : "💚 Response")
             return mapping(res)
         } catch {
             Logger.log(kind: .error, "❤️ Error:\n\(error)")
@@ -89,5 +103,13 @@ public final class NetworkServiceImpl: NetworkService {
             options.customMetadata.replaceOrAdd(name: $0.name, value: $0.value)
         }
         return options
+    }
+
+    public func setAccessToken(_ token: String?) {
+        self.accessToken = token
+    }
+
+    public func setRefreshToken(_ token: String?) {
+        self.refreshToken = token
     }
 }

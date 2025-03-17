@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - GRPCHostPortConfiguration
 
-public protocol GRPCHostPortConfiguration {
+public protocol GRPCHostPortConfiguration: Sendable {
     var hostName: String { get }
     var port: Int { get }
 }
@@ -19,12 +19,13 @@ public protocol GRPCHostPortConfiguration {
 
 public enum AppHosts: GRPCHostPortConfiguration {
     case auth
+    case cake
 }
 
 public extension AppHosts {
     var hostName: String {
         switch self {
-        case .auth:
+        case .auth, .cake:
         #if DEBUG
             return "localhost"
         #else
@@ -35,7 +36,7 @@ public extension AppHosts {
 
     var port: Int {
         switch self {
-        case .auth:
+        case .auth, .cake:
         #if DEBUG
             return 44044
         #else
