@@ -17,7 +17,7 @@ protocol CakesListDisplayData {
 
 protocol CakesListViewModelInput {
     func fetchData()
-    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration
     func configureShimmeringProductCard() -> TLProductCard.Configuration
     func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView
     func setEnvironmentObjects(coordinator: Coordinator)

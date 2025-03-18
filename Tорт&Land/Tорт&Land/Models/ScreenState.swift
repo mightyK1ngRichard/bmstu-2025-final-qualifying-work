@@ -12,5 +12,5 @@ enum ScreenState: Hashable {
     case initial
     case loading
     case finished
-    case error
+    case error(message: String)
 }

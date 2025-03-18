@@ -23,23 +23,13 @@ extension CakesListModel {
 
         enum Kind {
             case all, sale, new
-
-            var arrayIndex: Int {
-                switch self {
-                case .sale:
-                    return 0
-                case .new:
-                    return 1
-                case .all:
-                    return 2
-                }
-            }
         }
     }
 
     enum Screens: Hashable {
         case tags([CakeModel], ProductsGridModel.SectionKind)
     }
+
 }
 
 // MARK: - Section
@@ -56,6 +46,29 @@ extension CakesListModel.Section {
         }
     }
 
+    var cakes: [CakeModel] {
+        switch self {
+        case let .all(res), let .sale(res), let .new(res):
+            return res
+        }
+    }
+
+}
+
+// MARK: - Section Kind
+
+extension CakesListModel.Section.Kind {
+    var arrayIndex: Int {
+        switch self {
+        case .sale:
+            return 0
+        case .new:
+            return 1
+        case .all:
+            return 2
+        }
+    }
+
     var title: LocalizedStringResource {
         switch self {
         case .new:
@@ -64,13 +77,6 @@ extension CakesListModel.Section {
             return "Sale"
         case .all:
             return "All"
-        }
-    }
-
-    var cakes: [CakeModel] {
-        switch self {
-        case let .all(res), let .sale(res), let .new(res):
-            return res
         }
     }
 
@@ -84,4 +90,5 @@ extension CakesListModel.Section {
             return "You can buy it right now!"
         }
     }
+
 }

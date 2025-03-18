@@ -13,10 +13,6 @@ import Observation
 
 @Observable
 final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLogic, CakesListDisplayData {
-    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {
-
-    }
-    
     var bindingData = CakesListModel.BindingData()
     @ObservationIgnored
     private var delay: TimeInterval = 0
@@ -46,6 +42,9 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
     }
 
     func showError(message: String) {
+    }
+
+    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {
     }
 
     func didTapNewsAllButton(_ cakes: [CakeModel]) {
@@ -80,7 +79,7 @@ extension CakesListViewModelMock {
         .shimmering(imageHeight: 184)
     }
 
-    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
         model.configureProductCard()
     }
 }

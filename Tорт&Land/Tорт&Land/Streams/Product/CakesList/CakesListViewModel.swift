@@ -42,7 +42,7 @@ extension CakesListViewModel: CakesListDisplayLogic {
     }
 
     func showError(message: String) {
-        bindingData.screenState = .error
+        bindingData.screenState = .error(message: message)
 
         #if DEBUG
         MainActor.assertIsolated("Обновление не на главном потоке")
@@ -94,7 +94,7 @@ extension CakesListViewModel {
         .shimmering(imageHeight: 184)
     }
 
-    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
         return model.configureProductCard()
     }
 
