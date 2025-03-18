@@ -14,6 +14,7 @@ enum CommonMockData {
     static func generateMockCakeModel(id: Int, withDiscount: Bool = true) -> CakeModel {
         CakeModel(
             id: String(id),
+            previewImageState: .fetched(.uiImage(.cake1)),
             thumbnails: [
                 Thumbnail(imageState: .fetched(.uiImage(.cake1))),
                 Thumbnail(imageState: .fetched(.uiImage(.cake2))),
@@ -22,6 +23,7 @@ enum CommonMockData {
             cakeName: "Моковый торт #\(id)",
             price: 19.99,
             discountedPrice: withDiscount ? 15.99 : nil,
+            rating: 5,
             isSelected: Bool.random(),
             description: Constants.longDescription,
             establishmentDate: Date().description,

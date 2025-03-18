@@ -45,11 +45,11 @@ private extension CakesListView {
 
     var sectionsContainer: some View {
         VStack(spacing: 40) {
-            switch viewModel.screenState {
+            switch viewModel.bindingData.screenState {
             case .initial, .loading:
                 shimmeringContainer
             case .finished:
-                ForEach(viewModel.sections) { section in
+                ForEach(viewModel.bindingData.sections) { section in
                     sectionView(for: section)
                 }
             case .error:
@@ -166,6 +166,7 @@ private extension CakesListView {
                     ) { isSelected in
                         viewModel.didTapLikeButton(model: cakeModel, isSelected: isSelected)
                     }
+                    .frame(width: 148)
                     .onTapGesture {
                         viewModel.didTapCell(model: cakeModel)
                     }
@@ -195,6 +196,7 @@ private extension CakesListView {
                 ) { isSelected in
                     viewModel.didTapLikeButton(model: cakeModel, isSelected: isSelected)
                 }
+                .frame(width: 148)
                 .onTapGesture {
                     viewModel.didTapCell(model: cakeModel)
                 }
@@ -231,7 +233,7 @@ private extension CakesListView {
 
 #Preview("Mockable delay") {
     CakesListView(
-        viewModel: CakesListViewModelMock(delay: 5)
+        viewModel: CakesListViewModelMock(delay: 2)
     )
     .environment(Coordinator())
 }
@@ -239,7 +241,6 @@ private extension CakesListView {
 // MARK: - Constants
 
 private extension CakesListView {
-
     enum Constants {
         static let lookAllTitle = String(localized: "View all")
         static let bannerTitle = String(localized: "Торт&\nLand")

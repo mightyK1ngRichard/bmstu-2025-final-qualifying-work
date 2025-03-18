@@ -6,14 +6,35 @@
 //
 
 import Foundation
+import NetworkAPI
 
 enum CakesListModel {}
 
 extension CakesListModel {
-    enum Section: Identifiable {
+    struct BindingData: Hashable {
+        var sections: [CakesListModel.Section] = [.sale([]), .new([]), .all([])]
+        var screenState: ScreenState = .initial
+    }
+
+    enum Section: Identifiable, Hashable {
         case all([CakeModel])
         case sale([CakeModel])
         case new([CakeModel])
+
+        enum Kind {
+            case all, sale, new
+
+            var arrayIndex: Int {
+                switch self {
+                case .sale:
+                    return 0
+                case .new:
+                    return 1
+                case .all:
+                    return 2
+                }
+            }
+        }
     }
 
     enum Screens: Hashable {
@@ -43,6 +64,13 @@ extension CakesListModel.Section {
             return "Sale"
         case .all:
             return "All"
+        }
+    }
+
+    var cakes: [CakeModel] {
+        switch self {
+        case let .all(res), let .sale(res), let .new(res):
+            return res
         }
     }
 

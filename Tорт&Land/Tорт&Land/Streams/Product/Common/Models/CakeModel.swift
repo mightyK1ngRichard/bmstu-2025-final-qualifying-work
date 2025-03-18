@@ -7,10 +7,15 @@
 //
 
 import Foundation
+import NetworkAPI
+
+fileprivate let priceFormatter = PriceFormatterService.shared
 
 struct CakeModel: Identifiable, Hashable {
     /// Код торта
     let id: String
+    /// Изображение карточки товара
+    var previewImageState: ImageState
     /// Состояние изображения
     var thumbnails: [Thumbnail]
     /// Название торта
@@ -19,6 +24,8 @@ struct CakeModel: Identifiable, Hashable {
     let price: Double
     /// Цена со скидкой (если есть)
     let discountedPrice: Double?
+    /// Рейтинг торта (от 0 до 5)
+    let rating: Int
     /// Флаг любимого товара
     var isSelected: Bool
     /// Описание товара
@@ -33,9 +40,49 @@ struct CakeModel: Identifiable, Hashable {
     var seller: UserModel
 }
 
+// MARK: - PreviewCakeEntity
+
+extension CakeModel {
+
+    init(from model: PreviewCakeEntity) {
+        // 1000 ₽/кг * 2 кг = 2000 ₽
+        let cakePrice = model.kgPrice * model.mass
+        let discountedPrice: Double? = {
+            guard let discount = model.discountKgPrice else {
+                return nil
+            }
+            return discount * model.mass
+        }()
+
+        self = CakeModel(
+            id: model.id,
+            previewImageState: .loading,
+            thumbnails: [],
+            cakeName: model.name,
+            price: cakePrice,
+            discountedPrice: discountedPrice,
+            rating: model.rating,
+            isSelected: false,
+            description: model.description,
+            establishmentDate: model.dateCreation.description,
+            similarCakes: [],
+            comments: [],
+            seller: UserModel(
+                id: model.owner.id,
+                name: model.owner.fio ?? StringConstants.anonimeUserName,
+                mail: model.owner.mail,
+                avatarImage: .empty,
+                headerImage: .empty,
+                cakes: []
+            )
+        )
+    }
+}
+
 // MARK: - TLProductCard Configuration
 
 extension CakeModel {
+
     func configureProductCard() -> TLProductCard.Configuration {
         let badgeViewConfiguration: TLBadgeView.Configuration? = {
             let (badgeText, badgeKind) = badgeInfo
@@ -45,19 +92,19 @@ extension CakeModel {
             return .basic(text: badgeText, kind: badgeKind)
         }()
         let productDiscountedPrice: String? = {
-            guard let discountedPrice = discountedPrice else {
+            guard let discountedPrice else {
                 return nil
             }
-            return "\(discountedPrice)$"
+            return priceFormatter.formatPrice(discountedPrice)
         }()
 
         return .basic(
-            imageState: thumbnails.first?.imageState ?? .empty,
+            imageState: previewImageState,
             imageHeight: 184,
             productText: .init(
                 seller: seller.name,
                 productName: cakeName,
-                productPrice: "\(price)$",
+                productPrice: priceFormatter.formatPrice(price),
                 productDiscountedPrice: productDiscountedPrice
             ),
             badgeViewConfiguration: badgeViewConfiguration,
@@ -68,7 +115,7 @@ extension CakeModel {
 
     var starsConfiguration: TLStarsView.Configuration {
         .basic(
-            kind: .init(rawValue: Int(comments.averageRating)) ?? .zero,
+            kind: .init(rawValue: rating) ?? .zero,
             feedbackCount: comments.count
         )
     }
@@ -77,6 +124,7 @@ extension CakeModel {
         guard let productDate = establishmentDate.dateRedescription else {
             return false
         }
+
         let componentsDif = Calendar.current.dateComponents(
             [.year, .month, .day],
             from: productDate,
@@ -85,16 +133,18 @@ extension CakeModel {
         guard componentsDif.month == 0 && componentsDif.year == 0 else {
             return false
         }
+
         // Получаем разницу нынешней даты и даты создания объявления
         guard let difDay = componentsDif.day else {
             return false
         }
+
         // Если разница меньше 8, объявление считается новым
         return difDay < 8
     }
 
     private var badgeInfo: (String?, TLBadgeView.Configuration.Kind?) {
-        guard let discountedPrice = discountedPrice else {
+        guard let discountedPrice else {
             if isNew {
                 return ("NEW", .dark)
             }
@@ -108,15 +158,16 @@ extension CakeModel {
 // MARK: - TLProductDescriptionView Configuration
 
 extension CakeModel {
+
     func configureDescriptionView() -> TLProductDescriptionView.Configuration {
         .basic(
             title: cakeName,
-            price: "$\(price)",
+            price: priceFormatter.formatPrice(price),
             discountedPrice: {
                 guard let discountedPrice else {
                     return nil
                 }
-                return "$\(discountedPrice)"
+                return priceFormatter.formatPrice(discountedPrice)
             }(),
             subtitle: seller.name,
             description: description,

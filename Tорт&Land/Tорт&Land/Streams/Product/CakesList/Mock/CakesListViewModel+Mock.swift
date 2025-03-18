@@ -3,6 +3,7 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 21.12.2024.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 #if DEBUG
@@ -11,9 +12,12 @@ import Foundation
 import Observation
 
 @Observable
-final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOutput {
-    private(set) var sections: [CakesListModel.Section] = []
-    private(set) var screenState: ScreenState = .initial
+final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLogic, CakesListDisplayData {
+    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {
+
+    }
+    
+    var bindingData = CakesListModel.BindingData()
     @ObservationIgnored
     private var delay: TimeInterval = 0
     @ObservationIgnored
@@ -24,18 +28,24 @@ final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOut
     }
 
     func fetchData() {
-        screenState = .loading
+        bindingData.screenState = .loading
         Task {
             try? await Task.sleep(for: .seconds(delay))
             await MainActor.run {
-                sections = [
+                bindingData.sections = [
                     .sale(MockData.saleCakes),
                     .new(MockData.newCakes),
                     .all(MockData.allCakes)
                 ]
-                screenState = .finished
+                bindingData.screenState = .finished
             }
         }
+    }
+
+    func didFetchSections(with sections: [CakesListModel.Section]) {
+    }
+
+    func showError(message: String) {
     }
 
     func didTapNewsAllButton(_ cakes: [CakeModel]) {

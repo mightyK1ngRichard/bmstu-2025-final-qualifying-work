@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CakesListView: View {
-    @State var viewModel: CakesListDisplayLogic & CakesListViewModelOutput
+    @State var viewModel: CakesListDisplayData & CakesListViewModelInput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
@@ -36,11 +36,20 @@ private extension CakesListView {
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Mockable") {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
         CakesListView(viewModel: CakesListViewModelMock(delay: 2))
+    }
+    .environment(coordinator)
+}
+
+#Preview("Network") {
+    @Previewable
+    @State var coordinator = Coordinator()
+    NavigationStack(path: $coordinator.navPath) {
+        CakesListAssembler.assemble()
     }
     .environment(coordinator)
 }

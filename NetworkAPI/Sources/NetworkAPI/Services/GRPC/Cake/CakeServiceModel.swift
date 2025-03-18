@@ -11,8 +11,9 @@ public enum CakeServiceModel {
     public enum CreateCake {}
     public enum CreateCategory {}
     public enum CreateFilling {}
-    public enum FetchFilling {}
+    public enum FetchFillings {}
     public enum FetchCategories {}
+    public enum FetchCakes {}
 }
 
 // MARK: - CreateCategory
@@ -29,9 +30,7 @@ public extension CakeServiceModel.CreateCategory {
     }
 
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
+        public let category: CategoryEntity
     }
 }
 
@@ -61,25 +60,15 @@ public extension CakeServiceModel.CreateFilling {
     }
 
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
-        public let content: String
-        public let kgPrice: Double
-        public let description: String
+        public let filling: FillingEntity
     }
 }
 
-// MARK: - FetchFilling
+// MARK: - FetchFillings
 
-public extension CakeServiceModel.FetchFilling {
+public extension CakeServiceModel.FetchFillings {
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
-        public let content: String
-        public let kgPrice: Double
-        public let description: String
+        public let fillings: [FillingEntity]
     }
 }
 
@@ -87,9 +76,7 @@ public extension CakeServiceModel.FetchFilling {
 
 public extension CakeServiceModel.FetchCategories {
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
+        public let categories: [CategoryEntity]
     }
 }
 
@@ -132,5 +119,13 @@ public extension CakeServiceModel.CreateCake {
 
     struct Response: Sendable {
         public let cakeID: String
+    }
+}
+
+// MARK: - FetchCakes
+
+public extension CakeServiceModel.FetchCakes {
+    struct Response: Sendable {
+        public let cakes: [PreviewCakeEntity]
     }
 }

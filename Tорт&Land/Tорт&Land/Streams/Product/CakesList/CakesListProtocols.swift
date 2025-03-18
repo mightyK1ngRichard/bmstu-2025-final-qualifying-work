@@ -3,13 +3,16 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 21.12.2024.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import Foundation
+import NetworkAPI
 
-protocol CakesListDisplayLogic: CakesListViewModelInput {
-    var sections: [CakesListModel.Section] { get }
-    var screenState: ScreenState { get }
+// MARK: - View Model
+
+protocol CakesListDisplayData {
+    var bindingData: CakesListModel.BindingData { get }
 }
 
 protocol CakesListViewModelInput {
@@ -17,12 +20,29 @@ protocol CakesListViewModelInput {
     func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration
     func configureShimmeringProductCard() -> TLProductCard.Configuration
     func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView
-    func didTapCell(model: CakeModel)
     func setEnvironmentObjects(coordinator: Coordinator)
-}
-
-protocol CakesListViewModelOutput {
+    func didTapCell(model: CakeModel)
     func didTapNewsAllButton(_ cakes: [CakeModel])
     func didTapSalesAllButton(_ cakes: [CakeModel])
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
+}
+
+@MainActor
+protocol CakesListDisplayLogic {
+    func didFetchSections(with sections: [CakesListModel.Section])
+    func showError(message: String)
+    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind)
+}
+
+// MARK: - Business Logic
+
+protocol CakesListBusinessLogic {
+    func fetchCakes()
+}
+
+// MARK: - Presentation
+
+protocol CakesListPresenterInput {
+    func didFetchCakes(result: Result<[CakesListModel.Section.Kind: [PreviewCakeEntity]], Error>) async
+    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) async
 }

@@ -15,12 +15,12 @@ struct CategoryTestView: View {
         networkService: {
             let networkImpl = NetworkServiceImpl()
             networkImpl.setAccessToken(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIxNjQ4NzgsInVzZXJJRCI6IjRkYzkwOGM0LWEwYzEtNDMyNi1iMWY5LTI3Y2MzNzg2MDJiNCJ9.o505EF2mBVD-EmmPc_gzRn-KeJv5cuGKS1uOtLAuSQM"
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMDcyODEsInVzZXJJRCI6IjA1ZmVlMDhlLTFiMzAtNGJmNy05N2RjLWY4MjNjYzcyMzJiZSJ9.MuHA1gBekKhD50sDzLgSo5w4t8TynUAahfxlHL4xLDs"
             )
             return networkImpl
         }()
     )
-    @State private var categoriesData: [CakeServiceModel.FetchCategories.Response] = []
+    @State private var categoriesData: [CategoryEntity] = []
 
     var body: some View {
         VStack {
@@ -33,7 +33,7 @@ struct CategoryTestView: View {
             .tint(.red)
 
             Button("Получить торты") {
-                fetchCake()
+                fetchCakes()
             }
             .buttonStyle(.borderedProminent)
 
@@ -54,7 +54,7 @@ struct CategoryTestView: View {
             .buttonStyle(.borderedProminent)
             .tint(.red)
 
-            Button("Получить начинка") {
+            Button("Получить начинки") {
                 fetchFillings()
             }
             .buttonStyle(.borderedProminent)
@@ -66,20 +66,20 @@ struct CategoryTestView: View {
             do {
                 let res = try await cakeAPI.createCake(
                     req: .init(
-                        name: "Моковый клубничный торт",
-                        imageData: UIImage.cake2.pngData()!,
+                        name: "Моковый шоколадный торт",
+                        imageData: UIImage.cake1.pngData()!,
                         kgPrice: 1200,
                         rating: 0,
                         description: "Это просто описание мокового торта",
                         mass: 3000,
                         isOpenForSale: true,
                         fillingIDs: [
-                            "09771d07-f9e1-4dc0-8a54-d58aa584c2b3",
-                            "785617a2-03ae-4209-b878-529535a4dc4c"
+                            "5d97ee9c-0223-4f03-888e-b6e3d2c7f614",
+                            "756cbbc6-ecbe-4ff8-9b4c-1f3a35c5051a"
                         ],
                         categoryIDs: [
-                            "ad7af6f9-9c29-4b49-b854-f13e42e5729d",
-                            "fd45f8b9-fcf8-482c-a56b-213fbc639752",
+                            "212e0218-3d36-470e-ac4b-f4ad04d1d162",
+                            "eea41ae2-f1a7-412e-9795-0ebf79f59d74",
                         ]
                     )
                 )
@@ -91,12 +91,14 @@ struct CategoryTestView: View {
         }
     }
 
-    private func fetchCake() {
+    private func fetchCakes() {
         Task {
-//            do {
-//            } catch {
-//                print("[DEBUG]: \(error)")
-//            }
+            do {
+                let res = try await cakeAPI.fetchCakes()
+                print("[DEBUG]: \(res)")
+            } catch {
+                print("[DEBUG]: \(error)")
+            }
         }
     }
 
@@ -162,8 +164,10 @@ struct CategoryTestView: View {
     private func fetchCategories() {
         Task {
             do {
-                categoriesData = try await cakeAPI.fetchCategories()
-                print("id: \(categoriesData.map { $0.id })\n")
+                categoriesData = try await cakeAPI.fetchCategories().categories
+                categoriesData.forEach {
+                    print("[DEBUG]: \($0.id)")
+                }
             } catch {
                 print("[DEBUG]: \(error)")
             }

@@ -224,56 +224,116 @@ struct CakesResponse: Sendable {
 }
 
 /// Информация о торте
-struct Cake: Sendable {
+struct Cake: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   /// ID торта
-  var id: String = String()
+  var id: String {
+    get {return _storage._id}
+    set {_uniqueStorage()._id = newValue}
+  }
 
   /// Название торта
-  var name: String = String()
+  var name: String {
+    get {return _storage._name}
+    set {_uniqueStorage()._name = newValue}
+  }
 
   /// URL изображения торта
-  var imageURL: String = String()
+  var imageURL: String {
+    get {return _storage._imageURL}
+    set {_uniqueStorage()._imageURL = newValue}
+  }
 
   /// Цена за кг
-  var kgPrice: Double = 0
+  var kgPrice: Double {
+    get {return _storage._kgPrice}
+    set {_uniqueStorage()._kgPrice = newValue}
+  }
 
   /// Рейтинг (0-5)
-  var rating: Int32 = 0
+  var rating: Int32 {
+    get {return _storage._rating}
+    set {_uniqueStorage()._rating = newValue}
+  }
 
   /// Описание торта
-  var description_p: String = String()
+  var description_p: String {
+    get {return _storage._description_p}
+    set {_uniqueStorage()._description_p = newValue}
+  }
 
   /// Масса торта
-  var mass: Double = 0
+  var mass: Double {
+    get {return _storage._mass}
+    set {_uniqueStorage()._mass = newValue}
+  }
 
   /// Доступен ли для продажи
-  var isOpenForSale: Bool = false
+  var isOpenForSale: Bool {
+    get {return _storage._isOpenForSale}
+    set {_uniqueStorage()._isOpenForSale = newValue}
+  }
 
   /// Информация о владельце
   var owner: User {
-    get {return _owner ?? User()}
-    set {_owner = newValue}
+    get {return _storage._owner ?? User()}
+    set {_uniqueStorage()._owner = newValue}
   }
   /// Returns true if `owner` has been explicitly set.
-  var hasOwner: Bool {return self._owner != nil}
+  var hasOwner: Bool {return _storage._owner != nil}
   /// Clears the value of `owner`. Subsequent reads from it will return its default value.
-  mutating func clearOwner() {self._owner = nil}
+  mutating func clearOwner() {_uniqueStorage()._owner = nil}
 
   /// Список начинок
-  var fillings: [Filling] = []
+  var fillings: [Filling] {
+    get {return _storage._fillings}
+    set {_uniqueStorage()._fillings = newValue}
+  }
 
   /// Список категорий
-  var categories: [Category] = []
+  var categories: [Category] {
+    get {return _storage._categories}
+    set {_uniqueStorage()._categories = newValue}
+  }
+
+  /// Скидочная цена за кг
+  var discountKgPrice: Double {
+    get {return _storage._discountKgPrice ?? 0}
+    set {_uniqueStorage()._discountKgPrice = newValue}
+  }
+  /// Returns true if `discountKgPrice` has been explicitly set.
+  var hasDiscountKgPrice: Bool {return _storage._discountKgPrice != nil}
+  /// Clears the value of `discountKgPrice`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountKgPrice() {_uniqueStorage()._discountKgPrice = nil}
+
+  /// Время окончания акции (ISO 8601)
+  var discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _storage._discountEndTime ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_uniqueStorage()._discountEndTime = newValue}
+  }
+  /// Returns true if `discountEndTime` has been explicitly set.
+  var hasDiscountEndTime: Bool {return _storage._discountEndTime != nil}
+  /// Clears the value of `discountEndTime`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountEndTime() {_uniqueStorage()._discountEndTime = nil}
+
+  /// Дата создания торта (ISO 8601)
+  var dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _storage._dateCreation ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_uniqueStorage()._dateCreation = newValue}
+  }
+  /// Returns true if `dateCreation` has been explicitly set.
+  var hasDateCreation: Bool {return _storage._dateCreation != nil}
+  /// Clears the value of `dateCreation`. Subsequent reads from it will return its default value.
+  mutating func clearDateCreation() {_uniqueStorage()._dateCreation = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
-  fileprivate var _owner: User? = nil
+  fileprivate var _storage = _StorageClass.defaultInstance
 }
 
 /// Информация о владельце
@@ -815,83 +875,167 @@ extension Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     9: .same(proto: "owner"),
     10: .same(proto: "fillings"),
     11: .same(proto: "categories"),
+    12: .standard(proto: "discount_kg_price"),
+    13: .standard(proto: "discount_end_time"),
+    14: .standard(proto: "date_creation"),
   ]
 
+  fileprivate class _StorageClass {
+    var _id: String = String()
+    var _name: String = String()
+    var _imageURL: String = String()
+    var _kgPrice: Double = 0
+    var _rating: Int32 = 0
+    var _description_p: String = String()
+    var _mass: Double = 0
+    var _isOpenForSale: Bool = false
+    var _owner: User? = nil
+    var _fillings: [Filling] = []
+    var _categories: [Category] = []
+    var _discountKgPrice: Double? = nil
+    var _discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+    var _dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+
+    #if swift(>=5.10)
+      // This property is used as the initial default value for new instances of the type.
+      // The type itself is protecting the reference to its storage via CoW semantics.
+      // This will force a copy to be made of this reference when the first mutation occurs;
+      // hence, it is safe to mark this as `nonisolated(unsafe)`.
+      static nonisolated(unsafe) let defaultInstance = _StorageClass()
+    #else
+      static let defaultInstance = _StorageClass()
+    #endif
+
+    private init() {}
+
+    init(copying source: _StorageClass) {
+      _id = source._id
+      _name = source._name
+      _imageURL = source._imageURL
+      _kgPrice = source._kgPrice
+      _rating = source._rating
+      _description_p = source._description_p
+      _mass = source._mass
+      _isOpenForSale = source._isOpenForSale
+      _owner = source._owner
+      _fillings = source._fillings
+      _categories = source._categories
+      _discountKgPrice = source._discountKgPrice
+      _discountEndTime = source._discountEndTime
+      _dateCreation = source._dateCreation
+    }
+  }
+
+  fileprivate mutating func _uniqueStorage() -> _StorageClass {
+    if !isKnownUniquelyReferenced(&_storage) {
+      _storage = _StorageClass(copying: _storage)
+    }
+    return _storage
+  }
+
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.imageURL) }()
-      case 4: try { try decoder.decodeSingularDoubleField(value: &self.kgPrice) }()
-      case 5: try { try decoder.decodeSingularInt32Field(value: &self.rating) }()
-      case 6: try { try decoder.decodeSingularStringField(value: &self.description_p) }()
-      case 7: try { try decoder.decodeSingularDoubleField(value: &self.mass) }()
-      case 8: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
-      case 9: try { try decoder.decodeSingularMessageField(value: &self._owner) }()
-      case 10: try { try decoder.decodeRepeatedMessageField(value: &self.fillings) }()
-      case 11: try { try decoder.decodeRepeatedMessageField(value: &self.categories) }()
-      default: break
+    _ = _uniqueStorage()
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      while let fieldNumber = try decoder.nextFieldNumber() {
+        // The use of inline closures is to circumvent an issue where the compiler
+        // allocates stack space for every case branch when no optimizations are
+        // enabled. https://github.com/apple/swift-protobuf/issues/1034
+        switch fieldNumber {
+        case 1: try { try decoder.decodeSingularStringField(value: &_storage._id) }()
+        case 2: try { try decoder.decodeSingularStringField(value: &_storage._name) }()
+        case 3: try { try decoder.decodeSingularStringField(value: &_storage._imageURL) }()
+        case 4: try { try decoder.decodeSingularDoubleField(value: &_storage._kgPrice) }()
+        case 5: try { try decoder.decodeSingularInt32Field(value: &_storage._rating) }()
+        case 6: try { try decoder.decodeSingularStringField(value: &_storage._description_p) }()
+        case 7: try { try decoder.decodeSingularDoubleField(value: &_storage._mass) }()
+        case 8: try { try decoder.decodeSingularBoolField(value: &_storage._isOpenForSale) }()
+        case 9: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
+        case 10: try { try decoder.decodeRepeatedMessageField(value: &_storage._fillings) }()
+        case 11: try { try decoder.decodeRepeatedMessageField(value: &_storage._categories) }()
+        case 12: try { try decoder.decodeSingularDoubleField(value: &_storage._discountKgPrice) }()
+        case 13: try { try decoder.decodeSingularMessageField(value: &_storage._discountEndTime) }()
+        case 14: try { try decoder.decodeSingularMessageField(value: &_storage._dateCreation) }()
+        default: break
+        }
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    if !self.id.isEmpty {
-      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
-    }
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 2)
-    }
-    if !self.imageURL.isEmpty {
-      try visitor.visitSingularStringField(value: self.imageURL, fieldNumber: 3)
-    }
-    if self.kgPrice.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.kgPrice, fieldNumber: 4)
-    }
-    if self.rating != 0 {
-      try visitor.visitSingularInt32Field(value: self.rating, fieldNumber: 5)
-    }
-    if !self.description_p.isEmpty {
-      try visitor.visitSingularStringField(value: self.description_p, fieldNumber: 6)
-    }
-    if self.mass.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.mass, fieldNumber: 7)
-    }
-    if self.isOpenForSale != false {
-      try visitor.visitSingularBoolField(value: self.isOpenForSale, fieldNumber: 8)
-    }
-    try { if let v = self._owner {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
-    } }()
-    if !self.fillings.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.fillings, fieldNumber: 10)
-    }
-    if !self.categories.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.categories, fieldNumber: 11)
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
+      if !_storage._id.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._id, fieldNumber: 1)
+      }
+      if !_storage._name.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._name, fieldNumber: 2)
+      }
+      if !_storage._imageURL.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._imageURL, fieldNumber: 3)
+      }
+      if _storage._kgPrice.bitPattern != 0 {
+        try visitor.visitSingularDoubleField(value: _storage._kgPrice, fieldNumber: 4)
+      }
+      if _storage._rating != 0 {
+        try visitor.visitSingularInt32Field(value: _storage._rating, fieldNumber: 5)
+      }
+      if !_storage._description_p.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._description_p, fieldNumber: 6)
+      }
+      if _storage._mass.bitPattern != 0 {
+        try visitor.visitSingularDoubleField(value: _storage._mass, fieldNumber: 7)
+      }
+      if _storage._isOpenForSale != false {
+        try visitor.visitSingularBoolField(value: _storage._isOpenForSale, fieldNumber: 8)
+      }
+      try { if let v = _storage._owner {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
+      } }()
+      if !_storage._fillings.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._fillings, fieldNumber: 10)
+      }
+      if !_storage._categories.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._categories, fieldNumber: 11)
+      }
+      try { if let v = _storage._discountKgPrice {
+        try visitor.visitSingularDoubleField(value: v, fieldNumber: 12)
+      } }()
+      try { if let v = _storage._discountEndTime {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 13)
+      } }()
+      try { if let v = _storage._dateCreation {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 14)
+      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Cake, rhs: Cake) -> Bool {
-    if lhs.id != rhs.id {return false}
-    if lhs.name != rhs.name {return false}
-    if lhs.imageURL != rhs.imageURL {return false}
-    if lhs.kgPrice != rhs.kgPrice {return false}
-    if lhs.rating != rhs.rating {return false}
-    if lhs.description_p != rhs.description_p {return false}
-    if lhs.mass != rhs.mass {return false}
-    if lhs.isOpenForSale != rhs.isOpenForSale {return false}
-    if lhs._owner != rhs._owner {return false}
-    if lhs.fillings != rhs.fillings {return false}
-    if lhs.categories != rhs.categories {return false}
+    if lhs._storage !== rhs._storage {
+      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
+        let _storage = _args.0
+        let rhs_storage = _args.1
+        if _storage._id != rhs_storage._id {return false}
+        if _storage._name != rhs_storage._name {return false}
+        if _storage._imageURL != rhs_storage._imageURL {return false}
+        if _storage._kgPrice != rhs_storage._kgPrice {return false}
+        if _storage._rating != rhs_storage._rating {return false}
+        if _storage._description_p != rhs_storage._description_p {return false}
+        if _storage._mass != rhs_storage._mass {return false}
+        if _storage._isOpenForSale != rhs_storage._isOpenForSale {return false}
+        if _storage._owner != rhs_storage._owner {return false}
+        if _storage._fillings != rhs_storage._fillings {return false}
+        if _storage._categories != rhs_storage._categories {return false}
+        if _storage._discountKgPrice != rhs_storage._discountKgPrice {return false}
+        if _storage._discountEndTime != rhs_storage._discountEndTime {return false}
+        if _storage._dateCreation != rhs_storage._dateCreation {return false}
+        return true
+      }
+      if !storagesAreEqual {return false}
+    }
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -95,6 +95,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
+				ORGANIZATIONNAME = "https://github.com/mightyK1ngRichard";
 				TargetAttributes = {
 					E5A5F5B22D1647E600140551 = {
 						CreatedOnToolsVersion = 16.2;

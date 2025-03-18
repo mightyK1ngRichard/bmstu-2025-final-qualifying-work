@@ -16,8 +16,9 @@ public protocol CakeGrpcService: Sendable {
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response
-    func fetchFillings() async throws -> [CakeServiceModel.CreateFilling.Response]
-    func fetchCategories() async throws -> [CakeServiceModel.FetchCategories.Response]
+    func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response
+    func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response
+    func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
     func closeConnection()
 }
 
@@ -62,7 +63,9 @@ public extension CakeGrpcServiceImpl {
         return try await networkService.performAndLog(
             call: client.createCategory,
             with: request,
-            mapping: { .init(id: $0.category.id, name: $0.category.name, imageURL: $0.category.imageURL) }
+            mapping: {
+                .init(category: CategoryEntity(from: $0.category))
+            }
         )
     }
 
@@ -79,53 +82,35 @@ public extension CakeGrpcServiceImpl {
             call: client.createFilling,
             with: request,
             mapping: {
-                .init(
-                    id: $0.filling.id,
-                    name: $0.filling.name,
-                    imageURL: $0.filling.imageURL,
-                    content: $0.filling.content,
-                    kgPrice: $0.filling.kgPrice,
-                    description: $0.filling.description_p
-                )
+                .init(filling: FillingEntity(from: $0.filling))
             }
         )
     }
 
-    func fetchFillings() async throws -> [CakeServiceModel.CreateFilling.Response] {
+    func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response {
         let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
             call: client.fillings,
             with: request,
             mapping: {
-                $0.fillings.map {
-                    .init(
-                        id: $0.id,
-                        name: $0.name,
-                        imageURL: $0.imageURL,
-                        content: $0.content,
-                        kgPrice: $0.kgPrice,
-                        description: $0.description_p
-                    )
-                }
+                .init(
+                    fillings: $0.fillings.map { FillingEntity(from: $0) }
+                )
             }
         )
     }
 
-    func fetchCategories() async throws -> [CakeServiceModel.FetchCategories.Response] {
+    func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response {
         let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
             call: client.categories,
             with: request,
             mapping: {
-                $0.categories.map {
-                    .init(
-                        id: $0.id,
-                        name: $0.name,
-                        imageURL: $0.imageURL
-                    )
-                }
+                .init(
+                    categories: $0.categories.map { CategoryEntity(from: $0) }
+                )
             }
         )
     }
@@ -154,6 +139,18 @@ public extension CakeGrpcServiceImpl {
             with: request,
             options: callOptions,
             mapping: { .init(cakeID: $0.cakeID) }
+        )
+    }
+
+    func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response {
+        let request = Google_Protobuf_Empty()
+
+        return try await networkService.performAndLog(
+            call: client.cakes,
+            with: request,
+            mapping: {
+                .init(cakes: $0.cakes.map { PreviewCakeEntity(from: $0) })
+            }
         )
     }
 
