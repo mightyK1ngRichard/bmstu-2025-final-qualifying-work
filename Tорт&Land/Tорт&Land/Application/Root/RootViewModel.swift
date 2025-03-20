@@ -1,55 +1,52 @@
 //
-//  RootViewModel+Mock.swift
+//  RootViewModel.swift
 //  Tорт&Land
 //
-//  Created by Dmitriy Permyakov on 04.01.2025.
+//  Created by Dmitriy Permyakov on 21.03.2025.
 //  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
-
-#if DEBUG
 
 import Foundation
 import Observation
 
 @Observable
-final class RootViewModelMock: RootDisplayData & RootViewModelOutput {
-    // Inner values
+final class RootViewModel: RootDisplayData & RootViewModelOutput {
+    // MARK: Inner values
     var uiProperties = RootModel.UIProperties()
-    // Computed values
+
+    // MARK: Computed values
     var screenKind: StartScreenKind {
         startScreenControl?.screenKind ?? .initial
     }
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
-    // Private values
-    private(set) var currentUser: UserModel
+
+    // MARK: Private values
+    private(set) var currentUser: UserModel?
     private var startScreenControl: StartScreenControl?
     private var coordinator: Coordinator?
 
-    init(currentUser: UserModel = MockData.mockCurrentUser) {
+    init(currentUser: UserModel? = nil) {
         self.currentUser = currentUser
-    }
-
-    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
-        self.coordinator = coordinator
-        self.startScreenControl = startScreenControl
-    }
-
-    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
-        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
-        return CakeDetailsView(viewModel: viewModel)
-    }
-
-    func assemblyProfileView(userModel: UserModel) -> ProfileView {
-        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser.id)
-        return ProfileView(viewModel: viewModel)
     }
 }
 
 // MARK: - Screens
 
-extension RootViewModelMock: @preconcurrency RootViewModelInput {
+extension RootViewModel: @preconcurrency RootViewModelInput {
+    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
+        // FIXME: Заменить моки
+        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
+        return CakeDetailsView(viewModel: viewModel)
+    }
+
+    func assemblyProfileView(userModel: UserModel) -> ProfileView {
+        // FIXME: Заменить моки
+        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser?.id)
+        return ProfileView(viewModel: viewModel)
+    }
+
     @MainActor
     func assemblyCakeListView() -> CakesListView {
         CakesListAssembler.assemble()
@@ -80,16 +77,16 @@ extension RootViewModelMock: @preconcurrency RootViewModelInput {
     }
 }
 
-// MARK: - Mock Data
+// MARK: - Setters
 
-private extension RootViewModelMock {
-    enum MockData {
-        static let mockCurrentUser = CommonMockData.generateMockUserModel(
-            id: 1,
-            name: "Дмитрий Пермяков",
-            avatar: .fetched(.uiImage(.king))
-        )
+extension RootViewModel {
+    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
+        if self.coordinator == nil {
+            self.coordinator = coordinator
+        }
+
+        if self.startScreenControl == nil {
+            self.startScreenControl = startScreenControl
+        }
     }
 }
-
-#endif

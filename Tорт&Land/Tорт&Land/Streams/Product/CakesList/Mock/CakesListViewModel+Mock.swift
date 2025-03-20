@@ -47,14 +47,9 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {
     }
 
-    func didTapNewsAllButton(_ cakes: [CakeModel]) {
-        print("[DEBUG]: Нажали секцию news")
-        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, .new))
-    }
-
-    func didTapSalesAllButton(_ cakes: [CakeModel]) {
-        print("[DEBUG]: Нажали секцию sales")
-        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, .sales))
+    func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind) {
+        print("[DEBUG]: Нажали кнопку смотреть все")
+        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, section))
     }
 
     func didTapCell(model: CakeModel) {

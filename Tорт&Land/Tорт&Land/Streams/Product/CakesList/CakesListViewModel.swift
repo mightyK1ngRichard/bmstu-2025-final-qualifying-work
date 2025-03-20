@@ -85,9 +85,7 @@ extension CakesListViewModel {
         cakes: [CakeModel],
         sectionKind: ProductsGridModel.SectionKind
     ) -> ProductsGridView {
-//        let viewModel = ProductsGridViewModelMock(cakes: cakes, sectionKind: sectionKind)
-//        return ProductsGridView(viewModel: viewModel)
-        fatalError()
+        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: sectionKind)
     }
 
     func configureShimmeringProductCard() -> TLProductCard.Configuration {
@@ -103,13 +101,18 @@ extension CakesListViewModel {
 // MARK: - Actions
 
 extension CakesListViewModel {
+    
+    /// Нажали на карточку товара
+    func didTapCell(model: CakeModel) {
+        coordinator.addScreen(RootModel.Screens.details(model))
+    }
 
-    func didTapCell(model: CakeModel) {}
-
-    func didTapNewsAllButton(_ cakes: [CakeModel]) {}
-
-    func didTapSalesAllButton(_ cakes: [CakeModel]) {}
-
+    /// Нажали кнопку `смотреть все`
+    func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind) {
+        coordinator.addScreen(CakesListModel.Screens.tags(cakes, section))
+    }
+    
+    /// Нажали на лайк карточки товара
     func didTapLikeButton(model: CakeModel, isSelected: Bool) {}
 
 }

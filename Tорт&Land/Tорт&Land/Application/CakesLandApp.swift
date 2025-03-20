@@ -12,7 +12,11 @@ import SwiftUI
 struct CakesLandApp: App {
     var body: some Scene {
         WindowGroup {
-            RootView(viewModel: RootViewModelMock())
+            #if DEBUG
+            RootAssembler.assembleMock()
+            #else
+            RootAssembler.assemble()
+            #endif
         }
     }
 }

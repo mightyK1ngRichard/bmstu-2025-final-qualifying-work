@@ -35,46 +35,16 @@ private extension RootView {
     var allTabBarViews: some View {
         switch viewModel.activeTab {
         case .house:
-            cakeListScreen
+            viewModel.assemblyCakeListView()
         case .categories:
-            categoriesScreen
+            viewModel.assemblyCategoriesView()
         case .chat:
-            chatScreen
+            viewModel.assemblyChatListView()
         case .notifications:
-            notificationsScreen
+            viewModel.assemblyNotificationsListView()
         case .profile:
-            profileScreen
+            viewModel.assemblyProfileView()
         }
-    }
-
-    @ViewBuilder
-    var cakeListScreen: some View {
-        let viewModel = CakesListViewModelMock(delay: 3)
-        CakesListView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var categoriesScreen: some View {
-        let viewModel = CategoriesViewModelMock()
-        CategoriesView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var chatScreen: some View {
-        let viewModel = ChatListViewModelMock(delay: 3)
-        ChatListView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var notificationsScreen: some View {
-        let viewModel = NotificationsListViewModelMock(delay: 3)
-        NotificationsListView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var profileScreen: some View {
-        let viewModel = ProfileViewModelMock(isCurrentUser: true)
-        ProfileView(viewModel: viewModel)
     }
 }
 

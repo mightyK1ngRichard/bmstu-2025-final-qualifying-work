@@ -15,7 +15,7 @@ struct CategoryTestView: View {
         networkService: {
             let networkImpl = NetworkServiceImpl()
             networkImpl.setAccessToken(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIyMDcyODEsInVzZXJJRCI6IjA1ZmVlMDhlLTFiMzAtNGJmNy05N2RjLWY4MjNjYzcyMzJiZSJ9.MuHA1gBekKhD50sDzLgSo5w4t8TynUAahfxlHL4xLDs"
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDI0NjgzMTAsInVzZXJJRCI6IjA1ZmVlMDhlLTFiMzAtNGJmNy05N2RjLWY4MjNjYzcyMzJiZSJ9.CZLwuZjfTZud3-T6ay64vVe8hjMXxNwLiIY-vv02RGg"
             )
             return networkImpl
         }()
@@ -66,16 +66,15 @@ struct CategoryTestView: View {
             do {
                 let res = try await cakeAPI.createCake(
                     req: .init(
-                        name: "Моковый шоколадный торт",
-                        imageData: UIImage.cake1.pngData()!,
-                        kgPrice: 1200,
-                        rating: 0,
+                        name: "Моковый орешковый шоколадный торт",
+                        imageData: UIImage.cake3.pngData()!,
+                        kgPrice: 1600,
+                        rating: 4,
                         description: "Это просто описание мокового торта",
-                        mass: 3000,
+                        mass: 2,
                         isOpenForSale: true,
                         fillingIDs: [
-                            "5d97ee9c-0223-4f03-888e-b6e3d2c7f614",
-                            "756cbbc6-ecbe-4ff8-9b4c-1f3a35c5051a"
+                            "5d97ee9c-0223-4f03-888e-b6e3d2c7f614"
                         ],
                         categoryIDs: [
                             "212e0218-3d36-470e-ac4b-f4ad04d1d162",

@@ -71,6 +71,7 @@ private extension CakesListView {
                 .tint(Color.primary)
         }
         .padding()
+        .frame(maxWidth: .infinity)
     }
 
     var shimmeringContainer: some View {
@@ -120,11 +121,11 @@ private extension CakesListView {
         switch section {
         case let .new(cakeModels):
             cakesSectionView(section: .new, models: cakeModels) {
-                viewModel.didTapNewsAllButton(cakeModels)
+                viewModel.didTapAllButton(cakeModels, section: .new)
             }
         case let .sale(cakeModels):
             cakesSectionView(section: .sale, models: cakeModels) {
-                viewModel.didTapSalesAllButton(cakeModels)
+                viewModel.didTapAllButton(cakeModels, section: .sales)
             }
         case let .all(cakeModels):
             cakesSectionView(section: .all, models: cakeModels)

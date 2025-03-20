@@ -22,8 +22,7 @@ protocol CakesListViewModelInput {
     func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView
     func setEnvironmentObjects(coordinator: Coordinator)
     func didTapCell(model: CakeModel)
-    func didTapNewsAllButton(_ cakes: [CakeModel])
-    func didTapSalesAllButton(_ cakes: [CakeModel])
+    func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind)
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
 }
 

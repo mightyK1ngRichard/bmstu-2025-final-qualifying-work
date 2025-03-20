@@ -11,7 +11,7 @@ import NetworkAPI
 
 final class CakesListAssembler {
     @MainActor
-    static func assemble() -> some View {
+    static func assemble() -> CakesListView {
         let viewModel = CakesListViewModel()
         let cakeService = CakeGrpcServiceImpl(configuration: AppHosts.cake, networkService: NetworkServiceImpl())
         let imageProvider = ImageLoaderProviderImpl()

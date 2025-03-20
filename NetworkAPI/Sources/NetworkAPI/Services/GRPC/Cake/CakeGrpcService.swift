@@ -117,7 +117,7 @@ public extension CakeGrpcServiceImpl {
 
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
         let request = CreateCakeRequest.with {
-            $0.name = $0.name
+            $0.name = req.name
             $0.imageData = req.imageData
             $0.kgPrice = req.kgPrice
             $0.rating = Int32(req.rating)

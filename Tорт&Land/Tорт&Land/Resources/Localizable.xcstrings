@@ -288,6 +288,9 @@
         }
       }
     },
+    "Reload" : {
+
+    },
     "Repeat Password" : {
       "localizations" : {
         "ru" : {
@@ -375,6 +378,7 @@
 
     },
     "There was an error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {

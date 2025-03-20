@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RootView: View {
-    @State var viewModel: RootDisplayLogic & RootViewModelOutput
+    @State var viewModel: RootDisplayData & RootViewModelInput
     @State private var startScreenControl = StartScreenControl()
     @State private var coordinator = Coordinator()
 
