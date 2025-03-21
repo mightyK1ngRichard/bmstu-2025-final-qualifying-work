@@ -45,8 +45,6 @@ private extension RootView {
 // MARK: - Preview
 
 #Preview {
-    RootView(
-        viewModel: RootViewModelMock()
-    )
-    .environment(Coordinator())
+    RootAssembler.assembleMock()
+        .environment(Coordinator())
 }

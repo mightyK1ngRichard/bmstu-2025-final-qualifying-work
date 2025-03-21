@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import SwiftUI
+import NetworkAPI
 import Observation
 
 @Observable
@@ -25,10 +27,13 @@ final class RootViewModel: RootDisplayData & RootViewModelOutput {
     // MARK: Private values
     private(set) var currentUser: UserModel?
     private var startScreenControl: StartScreenControl?
+    private var cakeService: CakeGrpcService
     private var coordinator: Coordinator?
 
-    init(currentUser: UserModel? = nil) {
-        self.currentUser = currentUser
+    init(cakeService: CakeGrpcService) {
+        self.cakeService = cakeService
+        // FIXME: Сделать UserDefauls
+        // currentUser = UserDefaults
     }
 }
 
@@ -36,9 +41,11 @@ final class RootViewModel: RootDisplayData & RootViewModelOutput {
 
 extension RootViewModel: @preconcurrency RootViewModelInput {
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
-        // FIXME: Заменить моки
-        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
-        return CakeDetailsView(viewModel: viewModel)
+        CakeDetailsAssembler.assemble(
+            cakeModel: model,
+            isOwnedByUser: model.seller.id == currentUser?.id,
+            cakeService: cakeService
+        )
     }
 
     func assemblyProfileView(userModel: UserModel) -> ProfileView {
@@ -49,7 +56,7 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
 
     @MainActor
     func assemblyCakeListView() -> CakesListView {
-        CakesListAssembler.assemble()
+        CakesListAssembler.assemble(cakeService: cakeService)
     }
 
     func assemblyCategoriesView() -> CategoriesView {

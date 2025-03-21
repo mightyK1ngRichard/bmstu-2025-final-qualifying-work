@@ -9,17 +9,21 @@
 import SwiftUI
 import NetworkAPI
 
+@MainActor
 final class CakesListAssembler {
-    @MainActor
-    static func assemble() -> CakesListView {
+    static func assemble(cakeService: CakeGrpcService) -> CakesListView {
         let viewModel = CakesListViewModel()
-        let cakeService = CakeGrpcServiceImpl(configuration: AppHosts.cake, networkService: NetworkServiceImpl())
         let imageProvider = ImageLoaderProviderImpl()
         let interactor = CakesListInteractor(cakeService: cakeService, imageProvider: imageProvider)
         let presenter = CakesListPresenter()
         interactor.presenter = presenter
         viewModel.interactor = interactor
         presenter.viewModel = viewModel
+        return CakesListView(viewModel: viewModel)
+    }
+
+    static func assembleMock() -> CakesListView {
+        let viewModel = CakesListViewModelMock(delay: 3)
         return CakesListView(viewModel: viewModel)
     }
 }

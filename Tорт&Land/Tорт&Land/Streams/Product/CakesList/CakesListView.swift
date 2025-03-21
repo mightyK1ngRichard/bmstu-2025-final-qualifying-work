@@ -36,11 +36,14 @@ private extension CakesListView {
 
 // MARK: - Preview
 
+#if DEBUG
+import NetworkAPI
+
 #Preview("Mockable") {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
-        CakesListView(viewModel: CakesListViewModelMock(delay: 2))
+        CakesListAssembler.assembleMock()
     }
     .environment(coordinator)
 }
@@ -49,7 +52,13 @@ private extension CakesListView {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
-        CakesListAssembler.assemble()
+        CakesListAssembler.assemble(
+            cakeService: CakeGrpcServiceImpl(
+                configuration: AppHosts.cake,
+                networkService: NetworkServiceImpl()
+            )
+        )
     }
     .environment(coordinator)
 }
+#endif

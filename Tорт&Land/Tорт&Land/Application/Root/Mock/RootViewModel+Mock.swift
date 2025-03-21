@@ -35,16 +35,6 @@ final class RootViewModelMock: RootDisplayData & RootViewModelOutput {
         self.coordinator = coordinator
         self.startScreenControl = startScreenControl
     }
-
-    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
-        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
-        return CakeDetailsView(viewModel: viewModel)
-    }
-
-    func assemblyProfileView(userModel: UserModel) -> ProfileView {
-        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser.id)
-        return ProfileView(viewModel: viewModel)
-    }
 }
 
 // MARK: - Screens
@@ -52,30 +42,39 @@ final class RootViewModelMock: RootDisplayData & RootViewModelOutput {
 extension RootViewModelMock: @preconcurrency RootViewModelInput {
     @MainActor
     func assemblyCakeListView() -> CakesListView {
-        CakesListAssembler.assemble()
+        CakesListAssembler.assembleMock()
     }
 
     func assemblyCategoriesView() -> CategoriesView {
-        // FIXME: Убрать моки
+        // FIXME: Assembler моки
         let viewModel = CategoriesViewModelMock()
         return CategoriesView(viewModel: viewModel)
     }
 
     func assemblyChatListView() -> ChatListView {
-        // FIXME: Убрать моки
+        // FIXME: Assembler моки
         let viewModel = ChatListViewModelMock(delay: 3)
         return ChatListView(viewModel: viewModel)
     }
 
     func assemblyNotificationsListView() -> NotificationsListView {
-        // FIXME: Убрать моки
+        // FIXME: Assembler моки
         let viewModel = NotificationsListViewModelMock(delay: 3)
         return NotificationsListView(viewModel: viewModel)
     }
 
     func assemblyProfileView() -> ProfileView {
-        // FIXME: Убрать моки
-        let viewModel = ProfileViewModelMock(isCurrentUser: true)
+        // FIXME: Assembler моки
+        let viewModel = ProfileViewModelMock(user: currentUser, isCurrentUser: true)
+        return ProfileView(viewModel: viewModel)
+    }
+
+    func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
+        CakeDetailsAssembler.assembleMock(cakeModel: model)
+    }
+
+    func assemblyProfileView(userModel: UserModel) -> ProfileView {
+        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser.id)
         return ProfileView(viewModel: viewModel)
     }
 }

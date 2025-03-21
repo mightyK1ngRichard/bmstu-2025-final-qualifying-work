@@ -7,24 +7,26 @@
 
 import Foundation
 
-protocol CakeDetailsDisplayLogic: CakeDetailsViewModelInput {
+protocol CakeDetailsDisplayData {
     var cakeModel: CakeModel { get }
     var isOwnedByUser: Bool { get }
-    var currentUser: UserModel { get }
 }
 
 protocol CakeDetailsViewModelInput {
+    func fetchCakeDetails(cakeUID: String)
+
     func setEnvironmentObjects(coordinator: Coordinator)
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration
     func assemblyRatingReviewsView() -> RatingReviewsView
-}
 
-protocol CakeDetailsViewModelOutput {
     func didTapSellerInfoButton()
     func didTapRatingReviewsButton()
     func didTapBackButton()
     func didTapSimilarCake(model: CakeModel)
     func didTapCakeLike(model: CakeModel, isSelected: Bool)
+}
+
+protocol CakeDetailsViewModelOutput {
 }

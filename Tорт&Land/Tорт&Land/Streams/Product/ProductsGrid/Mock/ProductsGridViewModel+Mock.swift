@@ -12,7 +12,7 @@ import Foundation
 import Observation
 
 @Observable
-final class ProductsGridViewModelMock: ProductsGridDisplayData & ProductsGridViewModelInput & ProductsGridDisplayLogic {
+final class ProductsGridViewModelMock: ProductsGridDisplayData & ProductsGridViewModelInput {
     var uiProperties = ProductsGridModel.UIProperties()
     private(set) var cakes: [CakeModel]
     private(set) var sectionKind: ProductsGridModel.SectionKind

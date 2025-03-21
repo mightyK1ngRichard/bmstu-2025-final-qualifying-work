@@ -9,20 +9,17 @@
 
 import Foundation
 
-final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewModelOutput {
-    let currentUser: UserModel
-    var isOwnedByUser: Bool {
-        cakeModel.seller.id == currentUser.id
-    }
+final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewModelInput {
+    private(set) var isOwnedByUser: Bool
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
 
     init(
-        currentUser: UserModel? = nil,
+        isOwnedByUser: Bool,
         cakeModel: CakeModel = CommonMockData.generateMockCakeModel(id: 23)
     ) {
-        self.currentUser = currentUser ?? CommonMockData.generateMockUserModel(id: 1, name: "Дмитрий Пермяков")
+        self.isOwnedByUser = isOwnedByUser
         self.cakeModel = cakeModel
     }
 
@@ -50,6 +47,8 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
     }
 
     func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
+
+    func fetchCakeDetails(cakeUID: String) {}
 }
 
 // MARK: - Configure
@@ -69,9 +68,8 @@ extension CakeDetailsViewModelMock {
     }
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
-        return model.configureProductCard()
+        model.configureProductCard()
     }
-
 }
 
 #endif

@@ -7,10 +7,17 @@
 //
 
 import Foundation
+import NetworkAPI
 
 final class RootAssembler {
+    @MainActor
     static func assemble() -> RootView {
-        let viewModel = RootViewModel()
+        let networkService = NetworkServiceImpl()
+        let cakeService = CakeGrpcServiceImpl(
+            configuration: AppHosts.cake,
+            networkService: networkService
+        )
+        let viewModel = RootViewModel(cakeService: cakeService)
         return RootView(viewModel: viewModel)
     }
 

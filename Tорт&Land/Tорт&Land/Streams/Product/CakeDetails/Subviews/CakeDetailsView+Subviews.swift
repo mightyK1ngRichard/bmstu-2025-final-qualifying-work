@@ -23,13 +23,7 @@ extension CakeDetailsView {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    viewModel.didTapBackButton()
-                } label: {
-                    Image(.chevronLeft)
-                        .renderingMode(.template)
-                        .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
-                }
+                backButton
             }
         }
     }
@@ -38,6 +32,16 @@ extension CakeDetailsView {
 // MARK: - Private UI Subviews
 
 private extension CakeDetailsView {
+    var backButton: some View {
+        Button {
+            viewModel.didTapBackButton()
+        } label: {
+            Image(.chevronLeft)
+                .renderingMode(.template)
+                .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
+        }
+    }
+
     var imagesCarousel: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 4) {
@@ -134,7 +138,7 @@ private extension CakeDetailsView {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
-        CakeDetailsView(viewModel: CakeDetailsViewModelMock())
+        CakeDetailsView(viewModel: CakeDetailsViewModelMock(isOwnedByUser: false))
     }
     .environment(coordinator)
 }
