@@ -16,9 +16,9 @@ enum CommonMockData {
             id: String(id),
             previewImageState: .fetched(.uiImage(.cake1)),
             thumbnails: [
-                Thumbnail(imageState: .fetched(.uiImage(.cake1))),
-                Thumbnail(imageState: .fetched(.uiImage(.cake2))),
-                Thumbnail(imageState: .fetched(.uiImage(.cake3))),
+                Thumbnail(id: "1", imageState: .fetched(.uiImage(.cake1)), url: ""),
+                Thumbnail(id: "2", imageState: .fetched(.uiImage(.cake2)), url: ""),
+                Thumbnail(id: "3", imageState: .fetched(.uiImage(.cake3)), url: ""),
             ].shuffled(),
             cakeName: "Моковый торт #\(id)",
             price: 19.99,
@@ -37,6 +37,8 @@ enum CommonMockData {
                     countFillStars: (1...5).randomElement() ?? 1
                 )
             },
+            categories: [],
+            fillings: [],
             seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
         )
     }

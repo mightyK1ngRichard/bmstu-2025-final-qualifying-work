@@ -17,6 +17,9 @@ extension CakeDetailsView {
                 similarProductsContainer
             }
         }
+        .overlay {
+            progressView
+        }
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .navigationTitle(viewModel.cakeModel.cakeName)
         .navigationBarTitleDisplayMode(.inline)
@@ -32,6 +35,18 @@ extension CakeDetailsView {
 // MARK: - Private UI Subviews
 
 private extension CakeDetailsView {
+    @ViewBuilder
+    var progressView: some View {
+        if viewModel.bindingData.isLoading {
+            ZStack {
+                Color.black.opacity(0.35)
+                    .ignoresSafeArea(edges: [.bottom])
+                ProgressView()
+                    .tint(.white)
+            }
+        }
+    }
+
     var backButton: some View {
         Button {
             viewModel.didTapBackButton()
@@ -102,7 +117,7 @@ private extension CakeDetailsView {
             moreInfoCell(text: Constants.ratingReviewsTitle) {
                 viewModel.didTapRatingReviewsButton()
             }
-            if !viewModel.isOwnedByUser {
+            if viewModel.showOwnerButton {
                 moreInfoCell(text: Constants.sellerInfoTitle) {
                     viewModel.didTapSellerInfoButton()
                 }

@@ -19,6 +19,7 @@ public protocol CakeGrpcService: Sendable {
     func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response
     func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response
     func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
+    func fetchCakeDetails(cakeID: String) async throws -> CakeEntity
     func closeConnection()
 }
 
@@ -118,7 +119,7 @@ public extension CakeGrpcServiceImpl {
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
         let request = CreateCakeRequest.with {
             $0.name = req.name
-            $0.imageData = req.imageData
+            $0.previewImageData = req.previewImageData
             $0.kgPrice = req.kgPrice
             $0.rating = Int32(req.rating)
             $0.description_p = req.description
@@ -126,13 +127,14 @@ public extension CakeGrpcServiceImpl {
             $0.isOpenForSale = req.isOpenForSale
             $0.fillingIds = req.fillingIDs
             $0.categoryIds = req.categoryIDs
+            $0.images = req.imagesData
         }
         var callOptions = CallOptions()
-        guard let accessToken = networkService.accessToken else {
-            throw NetworkError.missingAccessToken
-        }
-
-        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(accessToken)")
+//        guard let accessToken = networkService.accessToken else {
+//            throw NetworkError.missingAccessToken
+//        }
+//
+//        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(accessToken)")
 
         return try await networkService.performAndLog(
             call: client.createCake,
@@ -151,6 +153,18 @@ public extension CakeGrpcServiceImpl {
             mapping: {
                 .init(cakes: $0.cakes.map { PreviewCakeEntity(from: $0) })
             }
+        )
+    }
+
+    func fetchCakeDetails(cakeID: String) async throws -> CakeEntity {
+        let request = CakeRequest.with {
+            $0.cakeID = cakeID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.cake,
+            with: request,
+            mapping: { CakeEntity(from: $0.cake) }
         )
     }
 

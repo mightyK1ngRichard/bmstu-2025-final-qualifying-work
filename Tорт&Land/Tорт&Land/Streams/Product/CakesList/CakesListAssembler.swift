@@ -11,9 +11,8 @@ import NetworkAPI
 
 @MainActor
 final class CakesListAssembler {
-    static func assemble(cakeService: CakeGrpcService) -> CakesListView {
+    static func assemble(cakeService: CakeGrpcService, imageProvider: ImageLoaderProvider) -> CakesListView {
         let viewModel = CakesListViewModel()
-        let imageProvider = ImageLoaderProviderImpl()
         let interactor = CakesListInteractor(cakeService: cakeService, imageProvider: imageProvider)
         let presenter = CakesListPresenter()
         interactor.presenter = presenter

@@ -13,11 +13,12 @@ final class RootAssembler {
     @MainActor
     static func assemble() -> RootView {
         let networkService = NetworkServiceImpl()
+        let imageProvider = ImageLoaderProviderImpl()
         let cakeService = CakeGrpcServiceImpl(
             configuration: AppHosts.cake,
             networkService: networkService
         )
-        let viewModel = RootViewModel(cakeService: cakeService)
+        let viewModel = RootViewModel(cakeService: cakeService, imageProvider: imageProvider)
         return RootView(viewModel: viewModel)
     }
 

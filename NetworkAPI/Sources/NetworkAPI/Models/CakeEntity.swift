@@ -1,0 +1,82 @@
+//
+//  CakeEntity.swift
+//  NetworkAPI
+//
+//  Created by Dmitriy Permyakov on 23.03.2025.
+//
+
+import Foundation
+
+/// Подробная информация о торте
+public struct CakeEntity: Sendable {
+    /// Код торта
+    public let id: String
+    /// Название
+    public let name: String
+    /// Картинка
+    public let imageURL: String
+    /// Цена за кг
+    public let kgPrice: Double
+    /// Рейтинг (от 0 до 5)
+    public let rating: Int
+    /// Описание
+    public let description: String
+    /// Масса торта
+    public let mass: Double
+    /// Флаг возможности продажи торта
+    public let isOpenForSale: Bool
+    /// Дата создания торта
+    public let dateCreation: Date
+    /// Скидочная цена за кг
+    public let discountKgPrice: Double?
+    /// Дата окончания скидки
+    public let discountEndTime: Date?
+    /// Владелец
+    public let owner: UserEntity
+    /// Начинки торта
+    public let fillings: [FillingEntity]
+    /// Категории торта
+    public let categories: [CategoryEntity]
+    /// Фотографии торта
+    public let images: [CakeImageEntity]
+}
+
+public extension CakeEntity {
+    /// Изображения торта
+    struct CakeImageEntity: Sendable {
+        /// Код изображения
+        public let id: String
+        /// Ссылка на изображение
+        public let imageURL: String
+    }
+}
+
+// MARK: - Cake
+
+extension CakeEntity {
+    init(from model: Cake) {
+        self = CakeEntity(
+            id: model.id,
+            name: model.name,
+            imageURL: model.imageURL,
+            kgPrice: model.kgPrice,
+            rating: Int(model.rating),
+            description: model.description_p,
+            mass: model.mass,
+            isOpenForSale: model.isOpenForSale,
+            dateCreation: model.dateCreation.date,
+            discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice : nil,
+            discountEndTime: model.hasDiscountEndTime ? model.discountEndTime.date : nil,
+            owner: UserEntity(from: model.owner),
+            fillings:  model.fillings.map(FillingEntity.init(from:)),
+            categories: model.categories.map(CategoryEntity.init(from:)),
+            images: model.images.map(CakeImageEntity.init(from:))
+        )
+    }
+}
+
+extension CakeEntity.CakeImageEntity {
+    init(from model: Cake.CakeImage) {
+        self = .init(id: model.id, imageURL: model.imageURL)
+    }
+}

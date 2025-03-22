@@ -11,29 +11,78 @@ import NetworkAPI
 
 @Observable
 final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelInput {
+    var bindingData = CakeDetailsModel.BindingData()
     var cakeModel: CakeModel
-    var isOwnedByUser: Bool
+    @ObservationIgnored
+    private(set) var showOwnerButton: Bool
+    @ObservationIgnored
     private let cakeService: CakeGrpcService
+    @ObservationIgnored
+    private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private var coordinator: Coordinator!
 
     init(
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
-        cakeService: CakeGrpcService
+        cakeService: CakeGrpcService,
+        imageProvider: ImageLoaderProvider
     ) {
         self.cakeModel = cakeModel
-        self.isOwnedByUser = isOwnedByUser
+        self.showOwnerButton = !isOwnedByUser
         self.cakeService = cakeService
+        self.imageProvider = imageProvider
     }
 }
 
 // MARK: - Network
 
 extension CakeDetailsViewModel {
-    func fetchCakeDetails(cakeUID: String) {
-        Task {
-            // Получение инфы о торте
+    func fetchCakeDetails() {
+        bindingData.isLoading = true
+        Task { @MainActor in
+            let res = try await cakeService.fetchCakeDetails(cakeID: cakeModel.id)
+            cakeModel = cakeModel.applyDetails(res)
+            bindingData.isLoading = false
+            fetchThumbnails(cakeImages: cakeModel.thumbnails)
+            fetchCategoriesImages(categories: res.categories)
+            fetchFillingsImages(fillings: res.fillings)
+        }
+    }
+
+    /// Получаем изображения торта
+    private func fetchThumbnails(cakeImages: [Thumbnail]) {
+        for thumbnail in cakeImages {
+            Task { @MainActor in
+                let imageState = try await imageProvider.fetchImage(for: thumbnail.url)
+                if let index = cakeModel.thumbnails.firstIndex(where: { $0.id == thumbnail.id }) {
+                    cakeModel.thumbnails[index].imageState = imageState
+                }
+            }
+        }
+    }
+
+    /// Получаем изображения категорий торта
+    private func fetchCategoriesImages(categories: [CategoryEntity]) {
+        for category in categories {
+            Task { @MainActor in
+                let imageState = try await imageProvider.fetchImage(for: category.imageURL)
+                if let index = cakeModel.categories.firstIndex(where: { $0.id == category.id }) {
+                    cakeModel.categories[index].imageState = imageState
+                }
+            }
+        }
+    }
+
+    /// Получаем изображения начинок торта
+    private func fetchFillingsImages(fillings: [FillingEntity]) {
+        for filling in fillings {
+            Task { @MainActor in
+                let imageState = try await imageProvider.fetchImage(for: filling.imageURL)
+                if let index = cakeModel.fillings.firstIndex(where: { $0.id == filling.id }) {
+                    cakeModel.fillings[index].imageState = imageState
+                }
+            }
         }
     }
 }

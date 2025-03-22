@@ -8,12 +8,13 @@
 import Foundation
 
 protocol CakeDetailsDisplayData {
+    var bindingData: CakeDetailsModel.BindingData { get set }
     var cakeModel: CakeModel { get }
-    var isOwnedByUser: Bool { get }
+    var showOwnerButton: Bool { get }
 }
 
 protocol CakeDetailsViewModelInput {
-    func fetchCakeDetails(cakeUID: String)
+    func fetchCakeDetails()
 
     func setEnvironmentObjects(coordinator: Coordinator)
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration

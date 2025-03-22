@@ -56,7 +56,8 @@ import NetworkAPI
             cakeService: CakeGrpcServiceImpl(
                 configuration: AppHosts.cake,
                 networkService: NetworkServiceImpl()
-            )
+            ),
+            imageProvider: ImageLoaderProviderImpl()
         )
     }
     .environment(coordinator)

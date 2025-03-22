@@ -10,17 +10,24 @@
 import Foundation
 
 final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewModelInput {
-    private(set) var isOwnedByUser: Bool
+    var bindingData: CakeDetailsModel.BindingData
+    private(set) var showOwnerButton: Bool
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
 
     init(
+        bindingData: CakeDetailsModel.BindingData = .init(),
         isOwnedByUser: Bool,
         cakeModel: CakeModel = CommonMockData.generateMockCakeModel(id: 23)
     ) {
-        self.isOwnedByUser = isOwnedByUser
+        self.bindingData = bindingData
+        self.showOwnerButton = !isOwnedByUser
         self.cakeModel = cakeModel
+    }
+
+    func fetchCakeDetails() {
+
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {

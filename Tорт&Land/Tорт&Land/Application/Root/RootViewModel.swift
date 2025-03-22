@@ -27,11 +27,16 @@ final class RootViewModel: RootDisplayData & RootViewModelOutput {
     // MARK: Private values
     private(set) var currentUser: UserModel?
     private var startScreenControl: StartScreenControl?
-    private var cakeService: CakeGrpcService
+    @ObservationIgnored
+    private let cakeService: CakeGrpcService
+    @ObservationIgnored
+    private let imageProvider: ImageLoaderProvider
+    @ObservationIgnored
     private var coordinator: Coordinator?
 
-    init(cakeService: CakeGrpcService) {
+    init(cakeService: CakeGrpcService, imageProvider: ImageLoaderProvider) {
         self.cakeService = cakeService
+        self.imageProvider = imageProvider
         // FIXME: Сделать UserDefauls
         // currentUser = UserDefaults
     }
@@ -44,7 +49,8 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
         CakeDetailsAssembler.assemble(
             cakeModel: model,
             isOwnedByUser: model.seller.id == currentUser?.id,
-            cakeService: cakeService
+            cakeService: cakeService,
+            imageProvider: imageProvider
         )
     }
 
@@ -56,7 +62,7 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
 
     @MainActor
     func assemblyCakeListView() -> CakesListView {
-        CakesListAssembler.assemble(cakeService: cakeService)
+        CakesListAssembler.assemble(cakeService: cakeService, imageProvider: imageProvider)
     }
 
     func assemblyCategoriesView() -> CategoriesView {

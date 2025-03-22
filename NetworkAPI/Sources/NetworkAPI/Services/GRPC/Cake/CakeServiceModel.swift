@@ -85,7 +85,7 @@ public extension CakeServiceModel.FetchCategories {
 public extension CakeServiceModel.CreateCake {
     struct Request: Sendable {
         let name: String
-        let imageData: Data
+        let previewImageData: Data
         let kgPrice: Double
         let rating: Int
         let description: String
@@ -93,20 +93,22 @@ public extension CakeServiceModel.CreateCake {
         let isOpenForSale: Bool
         let fillingIDs: [String]
         let categoryIDs: [String]
+        let imagesData: [Data]
 
         public init(
             name: String,
-            imageData: Data,
+            previewImageData: Data,
             kgPrice: Double,
             rating: Int,
             description: String,
             mass: Double,
             isOpenForSale: Bool,
             fillingIDs: [String],
-            categoryIDs: [String]
+            categoryIDs: [String],
+            imagesData: [Data]
         ) {
             self.name = name
-            self.imageData = imageData
+            self.previewImageData = previewImageData
             self.kgPrice = kgPrice
             self.rating = rating
             self.description = description
@@ -114,6 +116,7 @@ public extension CakeServiceModel.CreateCake {
             self.isOpenForSale = isOpenForSale
             self.fillingIDs = fillingIDs
             self.categoryIDs = categoryIDs
+            self.imagesData = imagesData
         }
     }
 

@@ -99,6 +99,9 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
 
     private func createCallOptions(additional: CallOptions) -> CallOptions {
         var options = callOptions
+        if let accessToken {
+            options.customMetadata.add(name: "authorization", value: "Bearer \(accessToken)")
+        }
         additional.customMetadata.forEach {
             options.customMetadata.replaceOrAdd(name: $0.name, value: $0.value)
         }

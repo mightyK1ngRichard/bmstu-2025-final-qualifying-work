@@ -16,16 +16,16 @@ struct CakeModel: Identifiable, Hashable {
     let id: String
     /// Изображение карточки товара
     var previewImageState: ImageState
-    /// Состояние изображения
+    /// Состояние изображений
     var thumbnails: [Thumbnail]
     /// Название торта
-    let cakeName: String
+    var cakeName: String
     /// Цена торта (без скидки)
-    let price: Double
+    var price: Double
     /// Цена со скидкой (если есть)
-    let discountedPrice: Double?
+    var discountedPrice: Double?
     /// Рейтинг торта (от 0 до 5)
-    let rating: Int
+    var rating: Int
     /// Флаг любимого товара
     var isSelected: Bool
     /// Описание товара
@@ -35,7 +35,11 @@ struct CakeModel: Identifiable, Hashable {
     /// Схожие товары
     var similarCakes: [CakeModel]
     /// Комментарии
-    var comments: [CommentInfo] = []
+    var comments: [CommentInfo]
+    /// Категории торта
+    var categories: [Category]
+    /// Начинки торта
+    var fillings: [Filling]
     /// Продовец
     var seller: UserModel
 }
@@ -67,6 +71,8 @@ extension CakeModel {
             establishmentDate: model.dateCreation.description,
             similarCakes: [],
             comments: [],
+            categories: [],
+            fillings: [],
             seller: UserModel(
                 id: model.owner.id,
                 name: model.owner.fio ?? StringConstants.anonimeUserName,
@@ -76,6 +82,14 @@ extension CakeModel {
                 cakes: []
             )
         )
+    }
+
+    func applyDetails(_ cakeEntity: CakeEntity) -> CakeModel {
+        var cakeCopy = self
+        cakeCopy.thumbnails = cakeEntity.images.map { Thumbnail(id: $0.id, imageState: .loading, url: $0.imageURL) }
+        cakeCopy.categories = cakeEntity.categories.map(Category.init(from:))
+        cakeCopy.fillings = cakeEntity.fillings.map(Filling.init(from:))
+        return cakeCopy
     }
 }
 

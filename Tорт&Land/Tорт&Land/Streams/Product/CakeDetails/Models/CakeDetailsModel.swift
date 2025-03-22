@@ -7,7 +7,11 @@
 
 import Foundation
 
-enum CakeDetailsModel {}
+enum CakeDetailsModel {
+    struct BindingData: Hashable {
+        var isLoading = false
+    }
+}
 
 extension CakeDetailsModel {
     enum Screens: Hashable {

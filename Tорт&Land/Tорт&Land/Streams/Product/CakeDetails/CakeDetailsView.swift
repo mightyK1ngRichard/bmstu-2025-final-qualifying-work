@@ -14,6 +14,7 @@ struct CakeDetailsView: View {
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.fetchCakeDetails()
         }
         .navigationDestination(for: CakeDetailsModel.Screens.self) { screen in
             openNextScreen(screen)

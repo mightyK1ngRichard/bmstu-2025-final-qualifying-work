@@ -15,7 +15,7 @@ struct CategoryTestView: View {
         networkService: {
             let networkImpl = NetworkServiceImpl()
             networkImpl.setAccessToken(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDI0NjgzMTAsInVzZXJJRCI6IjA1ZmVlMDhlLTFiMzAtNGJmNy05N2RjLWY4MjNjYzcyMzJiZSJ9.CZLwuZjfTZud3-T6ay64vVe8hjMXxNwLiIY-vv02RGg"
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDI2ODYwNDEsInVzZXJJRCI6ImIyOWFkYmE5LTc3OWEtNDU0Ny1hNGJhLTlhNmM5ZGVjNjMzZCJ9.HURsDYckofT3oXFiXppUh3ybOxwSeI7dgU5cR3A4uBQ"
             )
             return networkImpl
         }()
@@ -25,6 +25,11 @@ struct CategoryTestView: View {
     var body: some View {
         VStack {
             categories
+
+            Button("Детали торта") {
+                fetchCake()
+            }
+            .buttonStyle(.borderedProminent)
 
             Button("Создать торт") {
                 createCake()
@@ -61,24 +66,36 @@ struct CategoryTestView: View {
         }
     }
 
+    private func fetchCake() {
+        Task {
+            let res = try await cakeAPI.fetchCakeDetails(cakeID: "980bd52d-0dda-4754-8457-a73ccc602a32")
+            print("[DEBUG]: \(res)")
+        }
+    }
+
     private func createCake() {
         Task {
             do {
                 let res = try await cakeAPI.createCake(
                     req: .init(
-                        name: "Моковый орешковый шоколадный торт",
-                        imageData: UIImage.cake3.pngData()!,
+                        name: "Торт - Китайский",
+                        previewImageData: UIImage.cake3.pngData()!,
                         kgPrice: 1600,
                         rating: 4,
-                        description: "Это просто описание мокового торта",
+                        description: "Это просто описание очено вкусного торта",
                         mass: 2,
                         isOpenForSale: true,
                         fillingIDs: [
-                            "5d97ee9c-0223-4f03-888e-b6e3d2c7f614"
+                            "2e66cf65-40af-4640-b591-27acb695b402",
+                            "edfb25c2-2170-44d8-bcfe-feeea52aab3d"
                         ],
                         categoryIDs: [
-                            "212e0218-3d36-470e-ac4b-f4ad04d1d162",
-                            "eea41ae2-f1a7-412e-9795-0ebf79f59d74",
+                            "6753cd50-1d19-491a-aa1a-1478dc3670ad",
+                            "415491d2-2b80-4c7f-850c-608484777961"
+                        ],
+                        imagesData: [
+                            UIImage.cake1.pngData()!,
+                            UIImage.cake2.pngData()!
                         ]
                     )
                 )
