@@ -12,6 +12,8 @@ protocol RootDisplayData {
     var uiProperties: RootModel.UIProperties { get set }
     var screenKind: StartScreenKind { get }
     var activeTab: TabBarItem { get }
+    var cakes: [CakeModel] { get }
+    var currentUser: UserModel? { get }
 }
 
 protocol RootViewModelInput {

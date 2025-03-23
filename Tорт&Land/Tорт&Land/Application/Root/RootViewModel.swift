@@ -12,33 +12,36 @@ import NetworkAPI
 import Observation
 
 @Observable
-final class RootViewModel: RootDisplayData & RootViewModelOutput {
+final class RootViewModel: RootDisplayData, RootViewModelOutput {
     // MARK: Inner values
     var uiProperties = RootModel.UIProperties()
 
-    // MARK: Computed values
-    var screenKind: StartScreenKind {
-        startScreenControl?.screenKind ?? .initial
-    }
-    var activeTab: TabBarItem {
-        coordinator?.activeTab ?? .house
-    }
-
     // MARK: Private values
     private(set) var currentUser: UserModel?
-    private var startScreenControl: StartScreenControl?
+    private(set) var cakes: [CakeModel] = []
+    private var startScreenControl: StartScreenControl!
+
     @ObservationIgnored
     private let cakeService: CakeGrpcService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
-    private var coordinator: Coordinator?
+    private var coordinator: Coordinator!
 
     init(cakeService: CakeGrpcService, imageProvider: ImageLoaderProvider) {
         self.cakeService = cakeService
         self.imageProvider = imageProvider
         // FIXME: Сделать UserDefauls
         // currentUser = UserDefaults
+    }
+}
+
+extension RootViewModel {
+    var screenKind: StartScreenKind {
+        startScreenControl.screenKind
+    }
+    var activeTab: TabBarItem {
+        coordinator?.activeTab ?? .house
     }
 }
 

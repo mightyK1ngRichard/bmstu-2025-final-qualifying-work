@@ -15,6 +15,7 @@ import Observation
 final class RootViewModelMock: RootDisplayData & RootViewModelOutput {
     // Inner values
     var uiProperties = RootModel.UIProperties()
+
     // Computed values
     var screenKind: StartScreenKind {
         startScreenControl?.screenKind ?? .initial
@@ -22,8 +23,10 @@ final class RootViewModelMock: RootDisplayData & RootViewModelOutput {
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
+
     // Private values
-    private(set) var currentUser: UserModel
+    private(set) var cakes: [CakeModel] = []
+    private(set) var currentUser: UserModel?
     private var startScreenControl: StartScreenControl?
     private var coordinator: Coordinator?
 
@@ -74,7 +77,7 @@ extension RootViewModelMock: @preconcurrency RootViewModelInput {
     }
 
     func assemblyProfileView(userModel: UserModel) -> ProfileView {
-        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser.id)
+        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser?.id)
         return ProfileView(viewModel: viewModel)
     }
 }

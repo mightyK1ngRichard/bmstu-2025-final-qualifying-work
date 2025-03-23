@@ -20,6 +20,7 @@ protocol CakeDetailsViewModelInput {
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration
+    func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration
     func assemblyRatingReviewsView() -> RatingReviewsView
 
     func didTapSellerInfoButton()
@@ -27,6 +28,7 @@ protocol CakeDetailsViewModelInput {
     func didTapBackButton()
     func didTapSimilarCake(model: CakeModel)
     func didTapCakeLike(model: CakeModel, isSelected: Bool)
+    func didTapFilling(with filling: Filling)
 }
 
 protocol CakeDetailsViewModelOutput {

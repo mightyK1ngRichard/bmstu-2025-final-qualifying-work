@@ -129,17 +129,10 @@ public extension CakeGrpcServiceImpl {
             $0.categoryIds = req.categoryIDs
             $0.images = req.imagesData
         }
-        var callOptions = CallOptions()
-//        guard let accessToken = networkService.accessToken else {
-//            throw NetworkError.missingAccessToken
-//        }
-//
-//        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(accessToken)")
 
         return try await networkService.performAndLog(
             call: client.createCake,
             with: request,
-            options: callOptions,
             mapping: { .init(cakeID: $0.cakeID) }
         )
     }

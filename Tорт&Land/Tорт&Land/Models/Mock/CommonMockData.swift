@@ -27,7 +27,8 @@ enum CommonMockData {
             isSelected: Bool.random(),
             description: Constants.longDescription,
             establishmentDate: Date().description,
-            similarCakes: [],
+            similarCakes: [
+            ],
             comments: (1...10).map {
                 CommentInfo(
                     id: String($0),
@@ -37,8 +38,28 @@ enum CommonMockData {
                     countFillStars: (1...5).randomElement() ?? 1
                 )
             },
-            categories: [],
-            fillings: [],
+            categories: [
+                .init(id: "1", name: "Свадебный торт", imageState: .fetched(.uiImage(.categ1))),
+                .init(id: "2", name: "Шоколадный торт", imageState: .fetched(.uiImage(.categ5))),
+            ],
+            fillings: [
+                .init(
+                    id: "1",
+                    name: "Шоколадная начинка",
+                    imageState: .fetched(.uiImage(.filling2)),
+                    content: "Шоколад, сливки, витамин G",
+                    kgPrice: 200,
+                    description: "Это очень вкусный коржик"
+                ),
+                .init(
+                    id: "2",
+                    name: "Клубничная начинка начинка начинка",
+                    imageState: .fetched(.uiImage(.filling1)),
+                    content: "Клабника, сливки, витамин L",
+                    kgPrice: 200,
+                    description: "Это очень вкусный коржик"
+                )
+            ],
             seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
         )
     }

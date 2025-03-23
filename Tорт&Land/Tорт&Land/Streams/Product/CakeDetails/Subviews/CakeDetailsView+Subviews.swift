@@ -13,17 +13,27 @@ extension CakeDetailsView {
             VStack(spacing: 22) {
                 imagesCarousel
                 descriptionContainer
+                fillingsContainer
                 moreInfoContainer
                 similarProductsContainer
             }
-        }
-        .overlay {
-            progressView
         }
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .navigationTitle(viewModel.cakeModel.cakeName)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
+        .overlay {
+            progressView
+        }
+        .blurredSheet(
+            .init(TLColor<BackgroundPalette>.bgMainColor.color),
+            show: $viewModel.bindingData.showSheet,
+            onDismiss: {
+                viewModel.bindingData.selectedFilling = nil
+            }
+        ) {
+            fillingDetailsView
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 backButton
@@ -34,7 +44,7 @@ extension CakeDetailsView {
 
 // MARK: - Private UI Subviews
 
-private extension CakeDetailsView {
+extension CakeDetailsView {
     @ViewBuilder
     var progressView: some View {
         if viewModel.bindingData.isLoading {
@@ -75,6 +85,54 @@ private extension CakeDetailsView {
         TLProductDescriptionView(
             configuration: viewModel.configureProductDescriptionConfiguration()
         )
+    }
+
+    @ViewBuilder
+    var fillingDetailsView: some View {
+        if let filling = viewModel.bindingData.selectedFilling {
+            ScrollView {
+                FillingDetailView(
+                    configuration: viewModel.configureFillingDetails(for: filling)
+                )
+            }
+            .presentationDetents([.medium])
+        }
+    }
+
+    var fillingsContainer: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(Constants.fillingsBlockHeaderTitle)
+                .style(18, .semibold)
+                .padding(.leading, 16)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 8) {
+                    ForEach(viewModel.cakeModel.fillings) { filling in
+                        VStack {
+                            TLImageView(
+                                configuration: .init(imageState: filling.imageState)
+                            )
+                            .frame(height: 100)
+                            .clipShape(.rect(cornerRadius: 8))
+
+                            Text(filling.name)
+                                .style(16, .semibold)
+                                .lineLimit(1)
+                        }
+                        .containerRelativeFrame(.horizontal) { dimenstion, _ in
+                            let width = (dimenstion - 8) / 2
+                            return width > 0 ? width : 200
+                        }
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            viewModel.didTapFilling(with: filling)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .scrollIndicators(.hidden)
+        }
     }
 
     @ViewBuilder
@@ -162,6 +220,7 @@ private extension CakeDetailsView {
 
 private extension CakeDetailsView {
     enum Constants {
+        static let fillingsBlockHeaderTitle = String(localized: "Fillings")
         static let similarBlockHeaderTitle = String(localized: "You can also like this")
         static let ratingReviewsTitle = String(localized: "Rating&Reviews")
         static let sellerInfoTitle = String(localized: "Seller Info")

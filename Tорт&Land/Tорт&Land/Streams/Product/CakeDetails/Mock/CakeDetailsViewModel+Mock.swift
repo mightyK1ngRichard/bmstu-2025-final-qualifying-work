@@ -9,12 +9,14 @@
 
 import Foundation
 
+@Observable
 final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewModelInput {
     var bindingData: CakeDetailsModel.BindingData
     private(set) var showOwnerButton: Bool
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
+    private let priceFormatter = PriceFormatterService.shared
 
     init(
         bindingData: CakeDetailsModel.BindingData = .init(),
@@ -27,7 +29,7 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewMo
     }
 
     func fetchCakeDetails() {
-
+        cakeModel.similarCakes = (1...10).map { CommonMockData.generateMockCakeModel(id: $0) }
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
@@ -56,6 +58,11 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewMo
     func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
 
     func fetchCakeDetails(cakeUID: String) {}
+
+    func didTapFilling(with filling: Filling) {
+        bindingData.selectedFilling = filling
+        bindingData.showSheet = true
+    }
 }
 
 // MARK: - Configure
@@ -76,6 +83,16 @@ extension CakeDetailsViewModelMock {
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
         model.configureProductCard()
+    }
+
+    func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration {
+        .init(
+            name: filling.name,
+            imageState: filling.imageState,
+            content: filling.content,
+            kgPrice: priceFormatter.formatKgPrice(filling.kgPrice),
+            description: filling.description
+        )
     }
 }
 

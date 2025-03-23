@@ -50,17 +50,6 @@
         }
       }
     },
-    "Chat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Чат"
-          }
-        }
-      }
-    },
     "Chats" : {
       "localizations" : {
         "ru" : {
@@ -82,7 +71,14 @@
       }
     },
     "Customer" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Покупатель"
+          }
+        }
+      }
     },
     "Delete product" : {
       "localizations" : {
@@ -95,7 +91,14 @@
       }
     },
     "Delivery address" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес доставки"
+          }
+        }
+      }
     },
     "Don't have account?" : {
       "localizations" : {
@@ -120,6 +123,16 @@
         }
       }
     },
+    "Fillings" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начинки"
+          }
+        }
+      }
+    },
     "Home" : {
       "localizations" : {
         "ru" : {
@@ -131,7 +144,14 @@
       }
     },
     "ID: %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Код: %@"
+          }
+        }
+      }
     },
     "kids" : {
       "localizations" : {
@@ -217,10 +237,24 @@
       }
     },
     "OK" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хорошо"
+          }
+        }
+      }
     },
     "Order" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заказ"
+          }
+        }
+      }
     },
     "Order date" : {
 
@@ -246,7 +280,14 @@
       }
     },
     "Product" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продукт"
+          }
+        }
+      }
     },
     "Profile" : {
       "localizations" : {
@@ -289,7 +330,14 @@
       }
     },
     "Reload" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторить"
+          }
+        }
+      }
     },
     "Repeat Password" : {
       "localizations" : {
@@ -332,7 +380,14 @@
       }
     },
     "Seller" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продавец"
+          }
+        }
+      }
     },
     "Seller Info" : {
       "localizations" : {
@@ -375,21 +430,24 @@
       }
     },
     "The chat history is empty" : {
-
-    },
-    "There was an error" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Произошла ошибка"
+            "value" : "История чата пустая"
           }
         }
       }
     },
     "User address not found" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес пользователя не найден"
+          }
+        }
+      }
     },
     "View all" : {
       "localizations" : {

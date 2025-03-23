@@ -10,6 +10,8 @@ import Foundation
 enum CakeDetailsModel {
     struct BindingData: Hashable {
         var isLoading = false
+        var showSheet = false
+        var selectedFilling: Filling?
     }
 }
 

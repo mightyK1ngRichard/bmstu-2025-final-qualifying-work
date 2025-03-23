@@ -21,6 +21,8 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private var coordinator: Coordinator!
+    @ObservationIgnored
+    private let priceFormatter = PriceFormatterService.shared
 
     init(
         cakeModel: CakeModel,
@@ -107,6 +109,8 @@ extension CakeDetailsViewModel {
     }
 
     func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
+
+    func didTapFilling(with filling: Filling) {}
 }
 
 // MARK: - Configuration
@@ -128,6 +132,16 @@ extension CakeDetailsViewModel {
         // FIXME: Убрать моки
         let viewModel = RatingReviewsViewModelMock(comments: cakeModel.comments)
         return RatingReviewsView(viewModel: viewModel)
+    }
+
+    func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration {
+        .init(
+            name: filling.name,
+            imageState: filling.imageState,
+            content: filling.content,
+            kgPrice: priceFormatter.formatKgPrice(filling.kgPrice),
+            description: filling.description
+        )
     }
 }
 

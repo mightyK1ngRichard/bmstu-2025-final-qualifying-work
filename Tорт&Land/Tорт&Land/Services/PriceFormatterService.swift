@@ -27,4 +27,9 @@ final class PriceFormatterService {
 
         return "\(formattedPrice) ₽"
     }
+
+    func formatKgPrice(_ price: Double) -> String {
+        let formattedPrice = formatPrice(price)
+        return "\(formattedPrice)/кг"
+    }
 }
