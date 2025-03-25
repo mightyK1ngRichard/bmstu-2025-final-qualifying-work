@@ -93,6 +93,41 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
     }
 }
 
+// MARK: - RootViewModelOutput
+
+extension RootViewModel {
+
+    func setCakes(_ newCakes: [CakeModel]) {
+        var newCakesDict = Dictionary(uniqueKeysWithValues: newCakes.map { ($0.id, $0) })
+        // Обновляем существующие торты
+        for (index, cake) in cakes.enumerated() {
+            if let newCake = newCakesDict[cake.id] {
+                if newCake != cake {
+                    cakes[index] = newCake
+                }
+                newCakesDict.removeValue(forKey: cake.id)
+            }
+        }
+
+        // Добавляем новые торты
+        cakes.append(contentsOf: newCakesDict.values)
+    }
+
+    func foo(_ newCakes: [CakeModel]) {
+        for cake in newCakes {
+            guard let index = cakes.firstIndex(where: { cake.id == $0.id }) else {
+                self.cakes.append(cake)
+                continue
+            }
+
+            if self.cakes[index] != cake {
+                cakes[index] = cake
+            }
+        }
+    }
+
+}
+
 // MARK: - Setters
 
 extension RootViewModel {

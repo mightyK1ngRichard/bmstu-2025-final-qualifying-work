@@ -12,7 +12,7 @@ import Foundation
 import Observation
 
 @Observable
-final class RootViewModelMock: RootDisplayData & RootViewModelOutput {
+final class RootViewModelMock: RootDisplayData {
     // Inner values
     var uiProperties = RootModel.UIProperties()
 

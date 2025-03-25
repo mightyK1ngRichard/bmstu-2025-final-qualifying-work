@@ -10,15 +10,31 @@
 		E5EE25922D5FEDD100632DCC /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5EE25912D5FEDD100632DCC /* NetworkAPI */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E5FA81902D936452004047DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5A5F5AB2D1647E600140551 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E5A5F5B22D1647E600140551;
+			remoteInfo = "Tорт&Land";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E5A5F5B32D1647E600140551 /* Tорт&Land.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tорт&Land.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5EE258F2D5FEDC800632DCC /* NetworkAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NetworkAPI; path = ../NetworkAPI; sourceTree = SOURCE_ROOT; };
+		E5FA818C2D936452004047DE /* Tорт&LandTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tорт&LandTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E5A5F5B52D1647E600140551 /* Tорт&Land */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Tорт&Land";
+			sourceTree = "<group>";
+		};
+		E5FA818D2D936452004047DE /* Tорт&LandTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Tорт&LandTests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +48,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5FA81892D936452004047DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -40,6 +63,7 @@
 			children = (
 				E5EE258F2D5FEDC800632DCC /* NetworkAPI */,
 				E5A5F5B52D1647E600140551 /* Tорт&Land */,
+				E5FA818D2D936452004047DE /* Tорт&LandTests */,
 				E5EE25902D5FEDD100632DCC /* Frameworks */,
 				E5A5F5B42D1647E600140551 /* Products */,
 			);
@@ -49,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				E5A5F5B32D1647E600140551 /* Tорт&Land.app */,
+				E5FA818C2D936452004047DE /* Tорт&LandTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,6 +111,29 @@
 			productReference = E5A5F5B32D1647E600140551 /* Tорт&Land.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E5FA818B2D936452004047DE /* Tорт&LandTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5FA81942D936452004047DE /* Build configuration list for PBXNativeTarget "Tорт&LandTests" */;
+			buildPhases = (
+				E5FA81882D936452004047DE /* Sources */,
+				E5FA81892D936452004047DE /* Frameworks */,
+				E5FA818A2D936452004047DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E5FA81912D936452004047DE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E5FA818D2D936452004047DE /* Tорт&LandTests */,
+			);
+			name = "Tорт&LandTests";
+			packageProductDependencies = (
+			);
+			productName = "Tорт&LandTests";
+			productReference = E5FA818C2D936452004047DE /* Tорт&LandTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -99,6 +147,11 @@
 				TargetAttributes = {
 					E5A5F5B22D1647E600140551 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					E5FA818B2D936452004047DE = {
+						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1620;
+						TestTargetID = E5A5F5B22D1647E600140551;
 					};
 				};
 			};
@@ -120,12 +173,20 @@
 			projectRoot = "";
 			targets = (
 				E5A5F5B22D1647E600140551 /* Tорт&Land */,
+				E5FA818B2D936452004047DE /* Tорт&LandTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E5A5F5B12D1647E600140551 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5FA818A2D936452004047DE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -142,7 +203,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5FA81882D936452004047DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E5FA81912D936452004047DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E5A5F5B22D1647E600140551 /* Tорт&Land */;
+			targetProxy = E5FA81902D936452004047DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E5A5F5BF2D1647E700140551 /* Debug */ = {
@@ -334,6 +410,47 @@
 			};
 			name = Release;
 		};
+		E5FA81922D936452004047DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.git.mightyK1ngRichard.T----LandTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Tорт&LandTests/Tорт&LandTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tорт&Land.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tорт&Land";
+			};
+			name = Debug;
+		};
+		E5FA81932D936452004047DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.git.mightyK1ngRichard.T----LandTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Tорт&LandTests/Tорт&LandTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tорт&Land.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tорт&Land";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -351,6 +468,15 @@
 			buildConfigurations = (
 				E5A5F5C22D1647E700140551 /* Debug */,
 				E5A5F5C32D1647E700140551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E5FA81942D936452004047DE /* Build configuration list for PBXNativeTarget "Tорт&LandTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5FA81922D936452004047DE /* Debug */,
+				E5FA81932D936452004047DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

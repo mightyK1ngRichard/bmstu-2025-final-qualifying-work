@@ -27,4 +27,6 @@ protocol RootViewModelInput {
     func assemblyProfileView() -> ProfileView
 }
 
-protocol RootViewModelOutput {}
+protocol RootViewModelOutput {
+    func setCakes(_ newCakes: [CakeModel])
+}

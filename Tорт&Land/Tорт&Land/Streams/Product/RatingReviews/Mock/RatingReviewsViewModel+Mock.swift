@@ -38,7 +38,7 @@ final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic & RatingReview
         return .basic(
             imageState: {
                 comment.author.avatarImage == .empty
-                    ? ImageState.fetched(.uiImage(.mockUser))
+                    ? ImageState.fetched(.uiImage(.king))
                     : comment.author.avatarImage
             }(),
             userName: comment.author.name,
