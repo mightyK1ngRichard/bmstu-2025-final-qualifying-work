@@ -11,24 +11,28 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Swift
-        uses: apple/actions/setup-swift@v2
-        with:
-          swift-version: '6.0.3'
+    # Install xcode-install gem to use xcversion
+    - name: Install xcode-install
+      run: |
+        sudo gem install xcode-install
 
-      - name: Install dependencies
-        run: |
-          swift package resolve
+    # Set up Xcode
+    - name: Set up Xcode
+      uses: sinoru/actions-setup-xcode@v2
+      with:
+        xcode-version: '16.2'
+        apple-id: 'dimapermyakov55@icloud.com'
+        apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
 
-      - name: Build project
-        run: |
-          swift build
+    # Install dependencies
+    - name: Install dependencies
+      run: gem install fastlane
 
-      - name: Run tests
-        working-directory: ./Tорт&Land
-        run: |
-          xcodebuild clean test -scheme "Tорт&Land" -destination 'platform=iOS Simulator,name=iPhone 16'
-
+    # Run tests using fastlane
+    - name: Run Tests with Fastlane
+      working-directory: ./Tорт&Land
+      run: fastlane scan --project "Tорт&Land.xcodeproj" --scheme "Tорт&Land" --device "iPhone 16 Pro Max"
