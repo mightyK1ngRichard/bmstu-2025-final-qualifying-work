@@ -18,6 +18,8 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
     private var delay: TimeInterval = 0
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter = PriceFormatterService.shared
 
     init(delay: TimeInterval) {
         self.delay = delay
@@ -75,7 +77,7 @@ extension CakesListViewModelMock {
     }
 
     func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
-        model.configureProductCard()
+        model.configureProductCard(priceFormatter: priceFormatter)
     }
 }
 

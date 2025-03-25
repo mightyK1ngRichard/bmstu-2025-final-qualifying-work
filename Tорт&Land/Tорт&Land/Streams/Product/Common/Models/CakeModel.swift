@@ -9,8 +9,6 @@
 import Foundation
 import NetworkAPI
 
-fileprivate let priceFormatter = PriceFormatterService.shared
-
 struct CakeModel: Identifiable, Hashable {
     /// Код торта
     let id: String
@@ -97,7 +95,7 @@ extension CakeModel {
 
 extension CakeModel {
 
-    func configureProductCard() -> TLProductCard.Configuration {
+    func configureProductCard(priceFormatter: PriceFormatterService) -> TLProductCard.Configuration {
         let badgeViewConfiguration: TLBadgeView.Configuration? = {
             let (badgeText, badgeKind) = badgeInfo
             guard let badgeText, let badgeKind else {
@@ -173,7 +171,7 @@ extension CakeModel {
 
 extension CakeModel {
 
-    func configureDescriptionView() -> TLProductDescriptionView.Configuration {
+    func configureDescriptionView(priceFormatter: PriceFormatterService) -> TLProductDescriptionView.Configuration {
         .basic(
             title: cakeName,
             price: priceFormatter.formatPrice(price),

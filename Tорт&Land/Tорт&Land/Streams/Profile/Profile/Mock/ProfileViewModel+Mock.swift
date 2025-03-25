@@ -18,6 +18,8 @@ final class ProfileViewModelMock: ProfileDisplayLogic & ProfileViewModelOutput {
     private(set) var isCurrentUser: Bool
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter = PriceFormatterService.shared
 
     init(user: UserModel? = nil, isCurrentUser: Bool = false) {
         var userInfo = CommonMockData.generateMockUserModel(
@@ -82,7 +84,7 @@ extension ProfileViewModelMock {
     }
 
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {
-        cake.configureProductCard()
+        cake.configureProductCard(priceFormatter: priceFormatter)
     }
 }
 

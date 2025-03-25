@@ -22,18 +22,20 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
     @ObservationIgnored
     private var coordinator: Coordinator!
     @ObservationIgnored
-    private let priceFormatter = PriceFormatterService.shared
+    private let priceFormatter: PriceFormatterService
 
     init(
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeGrpcService,
-        imageProvider: ImageLoaderProvider
+        imageProvider: ImageLoaderProvider,
+        priceFormatter: PriceFormatterService = .shared
     ) {
         self.cakeModel = cakeModel
         self.showOwnerButton = !isOwnedByUser
         self.cakeService = cakeService
         self.imageProvider = imageProvider
+        self.priceFormatter = priceFormatter
     }
 }
 
@@ -121,11 +123,11 @@ extension CakeDetailsViewModel {
     }
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
-        model.configureProductCard()
+        model.configureProductCard(priceFormatter: priceFormatter)
     }
 
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration {
-        cakeModel.configureDescriptionView()
+        cakeModel.configureDescriptionView(priceFormatter: priceFormatter)
     }
 
     func assemblyRatingReviewsView() -> RatingReviewsView {

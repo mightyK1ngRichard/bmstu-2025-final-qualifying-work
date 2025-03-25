@@ -15,6 +15,12 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
     private(set) var bindingData = CakesListModel.BindingData()
     @ObservationIgnored
     private var coordinator: Coordinator!
+    @ObservationIgnored
+    private let priceFormatter: PriceFormatterService
+
+    init(priceFormatter: PriceFormatterService = .shared) {
+        self.priceFormatter = priceFormatter
+    }
 }
 
 // MARK: - Network
@@ -93,7 +99,7 @@ extension CakesListViewModel {
     }
 
     func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
-        return model.configureProductCard()
+        return model.configureProductCard(priceFormatter: priceFormatter)
     }
 
 }

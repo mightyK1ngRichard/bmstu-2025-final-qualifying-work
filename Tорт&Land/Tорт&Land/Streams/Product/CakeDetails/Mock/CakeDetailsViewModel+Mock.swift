@@ -16,6 +16,7 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewMo
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
     private let priceFormatter = PriceFormatterService.shared
 
     init(
@@ -78,11 +79,11 @@ extension CakeDetailsViewModelMock {
     }
 
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration {
-        cakeModel.configureDescriptionView()
+        cakeModel.configureDescriptionView(priceFormatter: priceFormatter)
     }
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
-        model.configureProductCard()
+        model.configureProductCard(priceFormatter: priceFormatter)
     }
 
     func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration {

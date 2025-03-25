@@ -18,13 +18,17 @@ final class ProductsGridViewModelMock: ProductsGridDisplayData & ProductsGridVie
     private(set) var sectionKind: ProductsGridModel.SectionKind
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter: PriceFormatterService
 
     init(
         cakes: [CakeModel] = MockData.cakes,
-        sectionKind: ProductsGridModel.SectionKind = .sales
+        sectionKind: ProductsGridModel.SectionKind = .sales,
+        priceFormatter: PriceFormatterService = .shared
     ) {
         self.cakes = cakes
         self.sectionKind = sectionKind
+        self.priceFormatter = priceFormatter
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
@@ -38,7 +42,7 @@ final class ProductsGridViewModelMock: ProductsGridDisplayData & ProductsGridVie
     func didTapProductLikeButton(cake: CakeModel, isSelected: Bool) {}
 
     func configureProductCard(cake: CakeModel) -> TLProductCard.Configuration {
-        return cake.configureProductCard()
+        return cake.configureProductCard(priceFormatter: priceFormatter)
     }
 }
 

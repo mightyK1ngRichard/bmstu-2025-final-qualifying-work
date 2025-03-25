@@ -15,13 +15,17 @@ final class ProductsGridViewModel: ProductsGridDisplayData & ProductsGridViewMod
     private(set) var sectionKind: ProductsGridModel.SectionKind
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter: PriceFormatterService
 
     init(
         cakes: [CakeModel],
-        sectionKind: ProductsGridModel.SectionKind
+        sectionKind: ProductsGridModel.SectionKind,
+        priceFormatter: PriceFormatterService = .shared
     ) {
         self.cakes = cakes
         self.sectionKind = sectionKind
+        self.priceFormatter = priceFormatter
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
@@ -35,6 +39,6 @@ final class ProductsGridViewModel: ProductsGridDisplayData & ProductsGridViewMod
     func didTapProductLikeButton(cake: CakeModel, isSelected: Bool) {}
 
     func configureProductCard(cake: CakeModel) -> TLProductCard.Configuration {
-        cake.configureProductCard()
+        cake.configureProductCard(priceFormatter: priceFormatter)
     }
 }
