@@ -14,14 +14,17 @@ final class CakeDetailsAssembler {
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeGrpcService,
+        rootViewModel: RootViewModelOutput,
         imageProvider: ImageLoaderProvider
     ) -> CakeDetailsView {
         let viewModel = CakeDetailsViewModel(
             cakeModel: cakeModel,
             isOwnedByUser: isOwnedByUser,
             cakeService: cakeService,
-            imageProvider: imageProvider
+            imageProvider: imageProvider,
+            rootViewModel: rootViewModel
         )
+
         return CakeDetailsView(viewModel: viewModel)
     }
 

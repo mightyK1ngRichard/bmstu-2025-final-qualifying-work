@@ -10,12 +10,17 @@ import SwiftUI
 
 @main
 struct CakesLandApp: App {
+    @State private var startScreenControl = StartScreenControl()
+
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            RootAssembler.assembleMock()
+//            RootAssembler.assembleMock()
+            RootAssembler.assemble(startScreenControl: startScreenControl)
+                .environment(startScreenControl)
             #else
-            RootAssembler.assemble()
+            RootAssembler.assemble(startScreenControl: startScreenControl)
+                .environment(startScreenControl)
             #endif
         }
     }

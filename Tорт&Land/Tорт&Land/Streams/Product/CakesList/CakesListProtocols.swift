@@ -31,6 +31,7 @@ protocol CakesListDisplayLogic {
     func didFetchSections(with sections: [CakesListModel.Section])
     func showError(message: String)
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind)
+    func addCakesToRootViewModel(_ cakes: [CakeEntity])
 }
 
 // MARK: - Business Logic
@@ -42,6 +43,7 @@ protocol CakesListBusinessLogic {
 // MARK: - Presentation
 
 protocol CakesListPresenterInput {
+    func addCakesToRootViewModel(_ cakes: [CakeEntity]) async
     func didFetchCakes(result: Result<[CakesListModel.Section.Kind: [PreviewCakeEntity]], Error>) async
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) async
 }

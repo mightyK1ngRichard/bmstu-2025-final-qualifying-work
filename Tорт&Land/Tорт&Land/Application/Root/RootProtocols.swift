@@ -7,17 +7,18 @@
 //
 
 import Foundation
+import NetworkAPI
 
 protocol RootDisplayData {
     var uiProperties: RootModel.UIProperties { get set }
     var screenKind: StartScreenKind { get }
     var activeTab: TabBarItem { get }
-    var cakes: [CakeModel] { get }
+    var cakes: [CakeEntity] { get }
     var currentUser: UserModel? { get }
 }
 
 protocol RootViewModelInput {
-    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl)
+    func setEnvironmentObjects(_ coordinator: Coordinator)
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
     func assemblyProfileView(userModel: UserModel) -> ProfileView
     func assemblyCakeListView() -> CakesListView
@@ -28,5 +29,6 @@ protocol RootViewModelInput {
 }
 
 protocol RootViewModelOutput {
-    func setCakes(_ newCakes: [CakeModel])
+    func setCakes(_ newCakes: [CakeEntity])
+    func updateCake(_ cake: CakeEntity)
 }

@@ -9,6 +9,7 @@
 #if DEBUG
 
 import Foundation
+import NetworkAPI
 import Observation
 
 @Observable
@@ -40,14 +41,13 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
         }
     }
 
-    func didFetchSections(with sections: [CakesListModel.Section]) {
-    }
+    func didFetchSections(with sections: [CakesListModel.Section]) {}
 
-    func showError(message: String) {
-    }
+    func showError(message: String) {}
 
-    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {
-    }
+    func addCakesToRootViewModel(_ cakes: [CakeEntity]) {}
+
+    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {}
 
     func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind) {
         print("[DEBUG]: Нажали кнопку смотреть все")

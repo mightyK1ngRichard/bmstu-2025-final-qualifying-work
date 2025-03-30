@@ -15,7 +15,7 @@ struct CategoryTestView: View {
         networkService: {
             let networkImpl = NetworkServiceImpl()
             networkImpl.setAccessToken(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDI2ODYwNDEsInVzZXJJRCI6ImIyOWFkYmE5LTc3OWEtNDU0Ny1hNGJhLTlhNmM5ZGVjNjMzZCJ9.HURsDYckofT3oXFiXppUh3ybOxwSeI7dgU5cR3A4uBQ"
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDMyNjcyOTgsInVzZXJJRCI6ImIyOWFkYmE5LTc3OWEtNDU0Ny1hNGJhLTlhNmM5ZGVjNjMzZCJ9.wtPigjpjn-O2SzqOAVtXcu04ZlGHwB1H79c6oBUUWAo"
             )
             return networkImpl
         }()
@@ -25,6 +25,66 @@ struct CategoryTestView: View {
     var body: some View {
         VStack {
             categories
+
+            Button("Cake with categories") {
+                Task {
+                    async let fil1 = try cakeAPI.createFilling(
+                        req: .init(
+                            name: "Клубничная начинка",
+                            imageData: UIImage.filling1.jpegData(compressionQuality: 1)!,
+                            content: "Клубника, коржик, сливки",
+                            kgPrice: 1000,
+                            description: "Это очень вкусная клубничная начинка"
+                        )
+                    )
+
+                    async let fil2 = try cakeAPI.createFilling(
+                        req: .init(
+                            name: "Шоколадная начинка",
+                            imageData: UIImage.filling2.jpegData(compressionQuality: 1)!,
+                            content: "Шоколад, сироп, сливки",
+                            kgPrice: 1200,
+                            description: "Это очень вкусная шоколадная начинка"
+                        )
+                    )
+
+                    async let cat1 = try cakeAPI.createCategory(
+                        req: .init(name: "Свадебные", imageData: UIImage.categ1.jpegData(compressionQuality: 1)!)
+                    )
+
+                    async let cat2 = try cakeAPI.createCategory(
+                        req: .init(name: "Клубничные", imageData: UIImage.categ4.jpegData(compressionQuality: 1)!)
+                    )
+
+                    do {
+                        let (filRes1, filRes2, catRes1, catRes2) = try await (fil1, fil2, cat1, cat2)
+                        _ = try await cakeAPI.createCake(
+                            req: .init(
+                                name: "Торт Прага - свадебный",
+                                previewImageData: UIImage.cake1.jpegData(compressionQuality: 1)!,
+                                kgPrice: 3000,
+                                rating: 5,
+                                description: "Это очень вкусный торт прага, который буквально таит во рту",
+                                mass: 2,
+                                isOpenForSale: true,
+                                fillingIDs: [
+                                    filRes1.filling.id,
+                                    filRes2.filling.id,
+                                ],
+                                categoryIDs: [
+                                    catRes1.category.id,
+                                    catRes2.category.id,
+                                ],
+                                imagesData: [
+                                    UIImage.cake2.jpegData(compressionQuality: 1)!,
+                                    UIImage.cake3.jpegData(compressionQuality: 1)!,
+                                ]
+                            )
+                        )
+                    } catch {
+                    }
+                }
+            }
 
             Button("Детали торта") {
                 fetchCake()

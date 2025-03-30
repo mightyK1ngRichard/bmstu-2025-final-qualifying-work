@@ -9,34 +9,35 @@
 #if DEBUG
 
 import Foundation
+import NetworkAPI
 import Observation
 
 @Observable
-final class RootViewModelMock: RootDisplayData {
+final class RootViewModelMock: RootDisplayData, RootViewModelOutput {
     // Inner values
     var uiProperties = RootModel.UIProperties()
 
     // Computed values
     var screenKind: StartScreenKind {
-        startScreenControl?.screenKind ?? .initial
+        startScreenControl.screenKind
     }
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
 
     // Private values
-    private(set) var cakes: [CakeModel] = []
+    private(set) var cakes: [CakeEntity] = []
     private(set) var currentUser: UserModel?
-    private var startScreenControl: StartScreenControl?
+    private let startScreenControl: StartScreenControl
     private var coordinator: Coordinator?
 
-    init(currentUser: UserModel = MockData.mockCurrentUser) {
+    init(startScreenControl: StartScreenControl = .init(), currentUser: UserModel = MockData.mockCurrentUser) {
         self.currentUser = currentUser
+        self.startScreenControl = startScreenControl
     }
 
-    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
+    func setEnvironmentObjects(_ coordinator: Coordinator) {
         self.coordinator = coordinator
-        self.startScreenControl = startScreenControl
     }
 }
 
@@ -80,6 +81,10 @@ extension RootViewModelMock: @preconcurrency RootViewModelInput {
         let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser?.id)
         return ProfileView(viewModel: viewModel)
     }
+
+    func setCakes(_ newCakes: [CakeEntity]) {}
+
+    func updateCake(_ cake: CakeEntity) {}
 }
 
 // MARK: - Mock Data

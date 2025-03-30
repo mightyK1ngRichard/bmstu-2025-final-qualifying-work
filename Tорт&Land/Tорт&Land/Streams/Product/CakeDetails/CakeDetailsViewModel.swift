@@ -23,12 +23,15 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
     private var coordinator: Coordinator!
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
+    @ObservationIgnored
+    private let rootViewModel: RootViewModelOutput
 
     init(
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeGrpcService,
         imageProvider: ImageLoaderProvider,
+        rootViewModel: RootViewModelOutput,
         priceFormatter: PriceFormatterService = .shared
     ) {
         self.cakeModel = cakeModel
@@ -36,6 +39,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
         self.cakeService = cakeService
         self.imageProvider = imageProvider
         self.priceFormatter = priceFormatter
+        self.rootViewModel = rootViewModel
     }
 }
 
@@ -45,12 +49,20 @@ extension CakeDetailsViewModel {
     func fetchCakeDetails() {
         bindingData.isLoading = true
         Task { @MainActor in
-            let res = try await cakeService.fetchCakeDetails(cakeID: cakeModel.id)
-            cakeModel = cakeModel.applyDetails(res)
-            bindingData.isLoading = false
-            fetchThumbnails(cakeImages: cakeModel.thumbnails)
-            fetchCategoriesImages(categories: res.categories)
-            fetchFillingsImages(fillings: res.fillings)
+            do {
+                let cakeEntity = try await cakeService.fetchCakeDetails(cakeID: cakeModel.id)
+                cakeModel = cakeModel.applyDetails(cakeEntity)
+                bindingData.isLoading = false
+                fetchThumbnails(cakeImages: cakeModel.thumbnails)
+                fetchCategoriesImages(categories: cakeEntity.categories)
+                fetchFillingsImages(fillings: cakeEntity.fillings)
+
+                // Обновляем торт
+                rootViewModel.updateCake(cakeEntity)
+            } catch {
+                bindingData.isLoading = false
+                // TODO: Показать ошибку
+            }
         }
     }
 
@@ -58,9 +70,13 @@ extension CakeDetailsViewModel {
     private func fetchThumbnails(cakeImages: [Thumbnail]) {
         for thumbnail in cakeImages {
             Task { @MainActor in
-                let imageState = try await imageProvider.fetchImage(for: thumbnail.url)
-                if let index = cakeModel.thumbnails.firstIndex(where: { $0.id == thumbnail.id }) {
-                    cakeModel.thumbnails[index].imageState = imageState
+                do {
+                    let imageState = try await imageProvider.fetchImage(for: thumbnail.url)
+                    if let index = cakeModel.thumbnails.firstIndex(where: { $0.id == thumbnail.id }) {
+                        cakeModel.thumbnails[index].imageState = imageState
+                    }
+                } catch {
+                    
                 }
             }
         }
@@ -112,7 +128,10 @@ extension CakeDetailsViewModel {
 
     func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
 
-    func didTapFilling(with filling: Filling) {}
+    func didTapFilling(with filling: Filling) {
+        bindingData.selectedFilling = filling
+        bindingData.showSheet = true
+    }
 }
 
 // MARK: - Configuration

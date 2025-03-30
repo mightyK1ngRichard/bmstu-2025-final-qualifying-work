@@ -33,6 +33,10 @@ final class CakesListPresenter: CakesListPresenterInput {
         }
     }
 
+    func addCakesToRootViewModel(_ cakes: [CakeEntity]) async {
+        await viewModel?.addCakesToRootViewModel(cakes)
+    }
+
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) async {
         await viewModel.updateCakeCellImage(cakeID: cakeID, imageState: imageState, with: sectionKind)
     }

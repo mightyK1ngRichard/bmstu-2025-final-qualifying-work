@@ -31,7 +31,11 @@ extension CakesListInteractor {
                 // Определяем категории тортов
                 var sections: [CakesListModel.Section.Kind: [PreviewCakeEntity]] = [:]
                 var images: [(cake: PreviewCakeEntity, section: CakesListModel.Section.Kind, url: String)] = []
+
+                var cakeEntities: [CakeEntity] = []
+                cakeEntities.reserveCapacity(cakes.count)
                 for cake in cakes {
+                    cakeEntities.append(CakeEntity(from: cake))
                     let section = identifyСakeSection(for: cake)
                     sections[section, default: []].append(cake)
                     images.append((cake, section, cake.imageURL))
@@ -39,6 +43,8 @@ extension CakesListInteractor {
 
                 await presenter.didFetchCakes(result: .success(sections))
                 fetchImages(for: images)
+
+                await presenter.addCakesToRootViewModel(cakeEntities)
             } catch {
                 await presenter.didFetchCakes(result: .failure(error))
             }

@@ -8,7 +8,7 @@
 import Foundation
 
 /// Информация о категории
-public struct CategoryEntity: Sendable {
+public struct CategoryEntity: Sendable, Hashable {
     /// ID категории
     public let id: String
     /// Название категории

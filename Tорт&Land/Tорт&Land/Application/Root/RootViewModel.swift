@@ -16,21 +16,27 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     // MARK: Inner values
     var uiProperties = RootModel.UIProperties()
 
-    // MARK: Private values
+    // MARK: Private(set) values
     private(set) var currentUser: UserModel?
-    private(set) var cakes: [CakeModel] = []
-    private var startScreenControl: StartScreenControl!
+    @ObservationIgnored
+    private(set) var cakes: [CakeEntity] = []
 
+    // MARK: Private values
+    private let startScreenControl: StartScreenControl
     @ObservationIgnored
     private let cakeService: CakeGrpcService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
-    @ObservationIgnored
     private var coordinator: Coordinator!
 
-    init(cakeService: CakeGrpcService, imageProvider: ImageLoaderProvider) {
+    init(
+        cakeService: CakeGrpcService,
+        imageProvider: ImageLoaderProvider,
+        startScreenControl: StartScreenControl
+    ) {
         self.cakeService = cakeService
         self.imageProvider = imageProvider
+        self.startScreenControl = startScreenControl
         // FIXME: Сделать UserDefauls
         // currentUser = UserDefaults
     }
@@ -40,6 +46,7 @@ extension RootViewModel {
     var screenKind: StartScreenKind {
         startScreenControl.screenKind
     }
+
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
@@ -53,6 +60,7 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
             cakeModel: model,
             isOwnedByUser: model.seller.id == currentUser?.id,
             cakeService: cakeService,
+            rootViewModel: self,
             imageProvider: imageProvider
         )
     }
@@ -65,7 +73,11 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
 
     @MainActor
     func assemblyCakeListView() -> CakesListView {
-        CakesListAssembler.assemble(cakeService: cakeService, imageProvider: imageProvider)
+        CakesListAssembler.assemble(
+            rootViewModel: self,
+            cakeService: cakeService,
+            imageProvider: imageProvider
+        )
     }
 
     func assemblyCategoriesView() -> CategoriesView {
@@ -97,8 +109,9 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
 
 extension RootViewModel {
 
-    func setCakes(_ newCakes: [CakeModel]) {
+    func setCakes(_ newCakes: [CakeEntity]) {
         var newCakesDict = Dictionary(uniqueKeysWithValues: newCakes.map { ($0.id, $0) })
+
         // Обновляем существующие торты
         for (index, cake) in cakes.enumerated() {
             if let newCake = newCakesDict[cake.id] {
@@ -111,19 +124,20 @@ extension RootViewModel {
 
         // Добавляем новые торты
         cakes.append(contentsOf: newCakesDict.values)
+
+        // TODO: Сделать кэширование в SwiftData
     }
 
-    func foo(_ newCakes: [CakeModel]) {
-        for cake in newCakes {
-            guard let index = cakes.firstIndex(where: { cake.id == $0.id }) else {
-                self.cakes.append(cake)
-                continue
-            }
-
-            if self.cakes[index] != cake {
-                cakes[index] = cake
-            }
+    func updateCake(_ cake: CakeEntity) {
+        guard let index = cakes.firstIndex(where: { $0.id == cake.id }) else {
+            return
         }
+
+        if cakes[index] != cake {
+            cakes[index] = cake
+        }
+
+        // TODO: Сделать кэширование в SwiftData
     }
 
 }
@@ -131,13 +145,9 @@ extension RootViewModel {
 // MARK: - Setters
 
 extension RootViewModel {
-    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
+    func setEnvironmentObjects(_ coordinator: Coordinator) {
         if self.coordinator == nil {
             self.coordinator = coordinator
-        }
-
-        if self.startScreenControl == nil {
-            self.startScreenControl = startScreenControl
         }
     }
 }

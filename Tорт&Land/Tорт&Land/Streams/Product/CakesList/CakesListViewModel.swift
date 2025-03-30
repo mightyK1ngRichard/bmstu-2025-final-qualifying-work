@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NetworkAPI
 
 @Observable
 final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
@@ -17,9 +18,15 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
     private var coordinator: Coordinator!
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
+    @ObservationIgnored
+    private var rootViewModel: RootViewModelOutput
 
-    init(priceFormatter: PriceFormatterService = .shared) {
+    init(
+        priceFormatter: PriceFormatterService = .shared,
+        rootViewModel: RootViewModelOutput!
+    ) {
         self.priceFormatter = priceFormatter
+        self.rootViewModel = rootViewModel
     }
 }
 
@@ -53,6 +60,10 @@ extension CakesListViewModel: CakesListDisplayLogic {
         #if DEBUG
         MainActor.assertIsolated("Обновление не на главном потоке")
         #endif
+    }
+
+    func addCakesToRootViewModel(_ cakes: [CakeEntity]) {
+        rootViewModel.setCakes(cakes)
     }
 
     func updateCakeCellImage(

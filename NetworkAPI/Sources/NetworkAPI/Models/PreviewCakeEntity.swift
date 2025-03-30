@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PreviewCakeEntity: Sendable {
+public struct PreviewCakeEntity: Sendable, Hashable {
     /// ID торта
     public let id: String
     /// Название торта

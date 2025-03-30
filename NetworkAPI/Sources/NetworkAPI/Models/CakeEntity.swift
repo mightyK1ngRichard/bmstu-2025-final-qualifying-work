@@ -8,7 +8,7 @@
 import Foundation
 
 /// Подробная информация о торте
-public struct CakeEntity: Sendable {
+public struct CakeEntity: Sendable, Hashable {
     /// Код торта
     public let id: String
     /// Название
@@ -43,7 +43,7 @@ public struct CakeEntity: Sendable {
 
 public extension CakeEntity {
     /// Изображения торта
-    struct CakeImageEntity: Sendable {
+    struct CakeImageEntity: Sendable, Hashable {
         /// Код изображения
         public let id: String
         /// Ссылка на изображение
@@ -78,5 +78,29 @@ extension CakeEntity {
 extension CakeEntity.CakeImageEntity {
     init(from model: Cake.CakeImage) {
         self = .init(id: model.id, imageURL: model.imageURL)
+    }
+}
+
+// MARK: - CakeEntity
+
+public extension CakeEntity {
+    init(from model: PreviewCakeEntity) {
+        self = CakeEntity(
+            id: model.id,
+            name: model.name,
+            imageURL: model.imageURL,
+            kgPrice: model.kgPrice,
+            rating: model.rating,
+            description: model.description,
+            mass: model.mass,
+            isOpenForSale: model.isOpenForSale,
+            dateCreation: model.dateCreation,
+            discountKgPrice: model.discountKgPrice,
+            discountEndTime: model.discountEndTime,
+            owner: model.owner,
+            fillings: model.fillings,
+            categories: model.categories,
+            images: []
+        )
     }
 }

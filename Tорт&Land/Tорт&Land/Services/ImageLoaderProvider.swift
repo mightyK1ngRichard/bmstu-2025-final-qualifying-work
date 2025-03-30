@@ -67,14 +67,17 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
                 continue
             }
 
+            Logger.log("начал получать изображение изображение")
             group.enter()
             imageQueue.async {
                 self.fetchImageData(from: urlString) { result in
                     lock.lock()
                     switch result {
                     case let .success(uiImage):
+                        Logger.log("получил изображение")
                         results.append((urlString, .fetched(.uiImage(uiImage))))
                     case .failure:
+                        Logger.log(kind: .error, "начал получать изображение изображение")
                         results.append((urlString, .error(.systemImage())))
                     }
                     group.leave()
@@ -88,37 +91,42 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
         }
     }
 
-    func fetchImage(for urlString: String) async throws -> ImageState {
-        // Если есть в кэше, возвращаем
-        if let imageData = imageCache.object(forKey: urlString as NSString),
-            let uiImage = UIImage(data: imageData as Data) {
-            Logger.log(kind: .debug, "Получил изображение из кэша")
+    func fetchImage(for urlString: String) async -> ImageState {
+        do {
+            // Если есть в кэше, возвращаем
+            if let imageData = imageCache.object(forKey: urlString as NSString),
+               let uiImage = UIImage(data: imageData as Data) {
+                Logger.log(kind: .debug, "Получил изображение из кэша")
+                return .fetched(.uiImage(uiImage))
+            }
+
+            // Если есть в файловом хранилище
+            if let uiImage = fileManager.obtain(with: urlString) {
+                Logger.log(kind: .debug, "Получил изображение из файлового хранилища")
+                return .fetched(.uiImage(uiImage))
+            }
+
+            guard let url = URL(string: urlString) else {
+                throw ImageLoaderError.badURL
+            }
+
+            let (data, _) = try await session.data(for: URLRequest(url: url))
+            guard let uiImage = UIImage(data: data) else {
+                throw ImageLoaderError.DataIsNil
+            }
+
+            // Кэшируем
+            fileManager.save(uiImage: uiImage, for: urlString)
+            cacheQueue.sync {
+                self.imageCache.setObject(data as NSData, forKey: urlString as NSString)
+            }
+
+            Logger.log(kind: .debug, "Получил изображение из сети")
             return .fetched(.uiImage(uiImage))
+        } catch {
+            Logger.log(kind: .error, "Ошибка получения изображения: \(error)")
+            return .error(.systemImage())
         }
-
-        // Если есть в файловом хранилище
-        if let uiImage = fileManager.obtain(with: urlString) {
-            Logger.log(kind: .debug, "Получил изображение из файлового хранилища")
-            return .fetched(.uiImage(uiImage))
-        }
-
-        guard let url = URL(string: urlString) else {
-            throw ImageLoaderError.badURL
-        }
-
-        let (data, _) = try await session.data(for: URLRequest(url: url))
-        guard let uiImage = UIImage(data: data) else {
-            throw ImageLoaderError.DataIsNil
-        }
-
-        // Кэшируем
-        fileManager.save(uiImage: uiImage, for: urlString)
-        cacheQueue.sync {
-            self.imageCache.setObject(data as NSData, forKey: urlString as NSString)
-        }
-
-        Logger.log(kind: .debug, "Получил изображение из сети")
-        return .fetched(.uiImage(uiImage))
     }
 
 }

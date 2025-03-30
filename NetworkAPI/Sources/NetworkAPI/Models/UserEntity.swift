@@ -8,7 +8,7 @@
 import Foundation
 
 /// Информация о владельце
-public struct UserEntity: Sendable {
+public struct UserEntity: Sendable, Hashable {
     /// ID пользователя
     public let id: String
     /// Полное имя

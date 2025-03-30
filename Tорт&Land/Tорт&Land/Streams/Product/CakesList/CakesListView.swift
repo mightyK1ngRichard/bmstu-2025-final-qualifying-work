@@ -53,6 +53,7 @@ import NetworkAPI
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
         CakesListAssembler.assemble(
+            rootViewModel: RootViewModelMock(),
             cakeService: CakeGrpcServiceImpl(
                 configuration: AppHosts.cake,
                 networkService: NetworkServiceImpl()

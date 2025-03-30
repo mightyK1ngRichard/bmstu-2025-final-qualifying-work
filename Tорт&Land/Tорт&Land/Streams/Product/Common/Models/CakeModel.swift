@@ -69,8 +69,8 @@ extension CakeModel {
             establishmentDate: model.dateCreation.description,
             similarCakes: [],
             comments: [],
-            categories: [],
-            fillings: [],
+            categories: model.categories.map(Category.init(from:)),
+            fillings: model.fillings.map(Filling.init(from:)),
             seller: UserModel(
                 id: model.owner.id,
                 name: model.owner.fio ?? StringConstants.anonimeUserName,

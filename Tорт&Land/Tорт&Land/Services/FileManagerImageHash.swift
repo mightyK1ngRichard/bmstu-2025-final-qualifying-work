@@ -20,7 +20,11 @@ final class FileManagerImageHash {
 
     static let shared = FileManagerImageHash()
     private let fileManager = FileManager.default
-    private let saveQueue = DispatchQueue(label: "com.vk.FileManagerImageHash.saveImages", qos: .utility, attributes: [.concurrent])
+    private let saveQueue = DispatchQueue(
+        label: "com.vk.FileManagerImageHash.saveImages",
+        qos: .utility,
+        attributes: [.concurrent]
+    )
 
     private init() {}
 
@@ -50,7 +54,6 @@ extension FileManagerImageHash: FileManagerImageHashProtocol {
     }
 
     func obtain(with key: String) -> UIImage? {
-        print("[DEBUG]: \(#function): isMainThread: \(Thread.isMainThread)")
         do {
             guard let url = path else {
                 throw FileManagerImageHashError.invalidPath

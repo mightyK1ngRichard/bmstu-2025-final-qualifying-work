@@ -11,14 +11,18 @@ import NetworkAPI
 
 final class RootAssembler {
     @MainActor
-    static func assemble() -> RootView {
+    static func assemble(startScreenControl: StartScreenControl) -> RootView {
         let networkService = NetworkServiceImpl()
         let imageProvider = ImageLoaderProviderImpl()
         let cakeService = CakeGrpcServiceImpl(
             configuration: AppHosts.cake,
             networkService: networkService
         )
-        let viewModel = RootViewModel(cakeService: cakeService, imageProvider: imageProvider)
+        let viewModel = RootViewModel(
+            cakeService: cakeService,
+            imageProvider: imageProvider,
+            startScreenControl: startScreenControl
+        )
         return RootView(viewModel: viewModel)
     }
 

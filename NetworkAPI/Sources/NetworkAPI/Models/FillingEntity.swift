@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct FillingEntity: Sendable {
+public struct FillingEntity: Sendable, Hashable {
     /// ID начинки
     public let id: String
     /// Название начинки
