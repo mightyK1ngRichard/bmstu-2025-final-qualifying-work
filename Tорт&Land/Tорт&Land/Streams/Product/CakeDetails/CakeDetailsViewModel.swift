@@ -137,6 +137,10 @@ extension CakeDetailsViewModel {
 // MARK: - Configuration
 
 extension CakeDetailsViewModel {
+    func configurePreviewImageViewConfiguration() -> TLImageView.Configuration {
+        .init(imageState: cakeModel.previewImageState)
+    }
+
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration {
         .init(imageState: thumbnail.imageState)
     }

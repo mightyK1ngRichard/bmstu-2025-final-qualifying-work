@@ -20,12 +20,13 @@ public protocol GRPCHostPortConfiguration: Sendable {
 public enum AppHosts: GRPCHostPortConfiguration {
     case auth
     case cake
+    case profile
 }
 
 public extension AppHosts {
     var hostName: String {
         switch self {
-        case .auth, .cake:
+        case .auth, .cake, .profile:
         #if DEBUG
             return "localhost"
         #else
@@ -36,11 +37,23 @@ public extension AppHosts {
 
     var port: Int {
         switch self {
-        case .auth, .cake:
+        case .auth:
+        #if DEBUG
+            return 44045
+        #else
+            return 44045
+        #endif
+        case .cake:
         #if DEBUG
             return 44044
         #else
             return 44044
+        #endif
+        case .profile:
+        #if DEBUG
+            return 44046
+        #else
+            return 44046
         #endif
         }
     }

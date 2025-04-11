@@ -26,7 +26,7 @@ public protocol CakeGrpcService: Sendable {
 // MARK: - AuthGrpcServiceImpl
 
 public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
-    private let client: CakeServiceAsyncClientProtocol
+    private let client: Cake_CakeServiceAsyncClientProtocol
     private let channel: GRPCChannel
     private let networkService: NetworkService
 
@@ -40,7 +40,7 @@ public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
                 port: configuration.port,
                 numberOfThreads: 1
             )
-            self.client = CakeServiceAsyncClient(channel: channel, interceptors: nil)
+            self.client = Cake_CakeServiceAsyncClient(channel: channel, interceptors: nil)
             self.channel = channel
             self.networkService = networkService
         } catch {
@@ -56,7 +56,7 @@ public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
 
 public extension CakeGrpcServiceImpl {
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response {
-        let request = CreateCategoryRequest.with {
+        let request = Cake_CreateCategoryRequest.with {
             $0.name = req.name
             $0.imageData = req.imageData
         }
@@ -71,7 +71,7 @@ public extension CakeGrpcServiceImpl {
     }
 
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response {
-        let request = CreateFillingRequest.with {
+        let request = Cake_CreateFillingRequest.with {
             $0.name = req.name
             $0.imageData = req.imageData
             $0.content = req.content
@@ -117,7 +117,7 @@ public extension CakeGrpcServiceImpl {
     }
 
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
-        let request = CreateCakeRequest.with {
+        let request = Cake_CreateCakeRequest.with {
             $0.name = req.name
             $0.previewImageData = req.previewImageData
             $0.kgPrice = req.kgPrice
@@ -150,7 +150,7 @@ public extension CakeGrpcServiceImpl {
     }
 
     func fetchCakeDetails(cakeID: String) async throws -> CakeEntity {
-        let request = CakeRequest.with {
+        let request = Cake_CakeRequest.with {
             $0.cakeID = cakeID
         }
 

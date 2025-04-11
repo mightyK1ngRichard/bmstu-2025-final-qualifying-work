@@ -14,7 +14,7 @@ protocol ImageLoaderProvider: AnyObject {
         from urlsStrings: [String],
         completion: @escaping (ImageLoaderProviderImpl.GetImagesStatesResult) -> Void
     )
-    func fetchImage(for urlString: String) async throws -> ImageState
+    func fetchImage(for urlString: String) async -> ImageState
 }
 
 // MARK: - ImageLoaderProviderImpl

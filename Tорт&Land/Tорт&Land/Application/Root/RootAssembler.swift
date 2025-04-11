@@ -14,15 +14,28 @@ final class RootAssembler {
     static func assemble(startScreenControl: StartScreenControl) -> RootView {
         let networkService = NetworkServiceImpl()
         let imageProvider = ImageLoaderProviderImpl()
+        let authService = AuthGrpcServiceImpl(
+            configuration: AppHosts.auth,
+            networkService: networkService
+        )
         let cakeService = CakeGrpcServiceImpl(
             configuration: AppHosts.cake,
             networkService: networkService
         )
+        let profileService = ProfileGrpcServiceImpl(
+            configuration: AppHosts.profile,
+            authService: authService,
+            networkService: networkService
+        )
+
         let viewModel = RootViewModel(
+            authService: authService,
             cakeService: cakeService,
+            profileService: profileService,
             imageProvider: imageProvider,
             startScreenControl: startScreenControl
         )
+        
         return RootView(viewModel: viewModel)
     }
 

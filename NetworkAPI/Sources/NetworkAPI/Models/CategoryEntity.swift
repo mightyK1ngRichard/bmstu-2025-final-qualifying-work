@@ -20,7 +20,7 @@ public struct CategoryEntity: Sendable, Hashable {
 // MARK: - Category
 
 extension CategoryEntity {
-    init(from model: Category) {
+    init(from model: Cake_Category) {
         self = CategoryEntity(id: model.id, name: model.name, imageURL: model.imageURL)
     }
 }

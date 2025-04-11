@@ -10,6 +10,17 @@ import Foundation
 import GRPC
 import NIO
 
+enum UserDefaultsKeys: String {
+    case accessToken
+    case refreshToken
+    case expiresIn
+}
+
+struct JWTTokens {
+    var accessToken: String?
+    var refreshToken: String?
+}
+
 final class ConfigProvider: Sendable {
     @MainActor
     static func makeDefaultCallOptions() -> CallOptions {
@@ -24,6 +35,13 @@ final class ConfigProvider: Sendable {
             ],
             timeLimit: .timeout(.seconds(8))
         )
+    }
+
+    static func makeJWTTokens() -> JWTTokens {
+        let accessToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.accessToken.rawValue)
+        let refreshToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.refreshToken.rawValue)
+
+        return JWTTokens(accessToken: accessToken, refreshToken: refreshToken)
     }
 
     static func makeConection(

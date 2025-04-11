@@ -22,10 +22,10 @@ public struct FillingEntity: Sendable, Hashable {
     public let description: String
 }
 
-// MARK: - Filling
+// MARK: - Cake_Filling
 
 extension FillingEntity {
-    init(from model: Filling) {
+    init(from model: Cake_Filling) {
         self = FillingEntity(
             id: model.id,
             name: model.name,

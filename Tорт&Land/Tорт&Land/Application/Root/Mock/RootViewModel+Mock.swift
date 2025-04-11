@@ -10,6 +10,7 @@
 
 import Foundation
 import NetworkAPI
+import SwiftUI
 import Observation
 
 @Observable
@@ -44,6 +45,10 @@ final class RootViewModelMock: RootDisplayData, RootViewModelOutput {
 // MARK: - Screens
 
 extension RootViewModelMock: @preconcurrency RootViewModelInput {
+    func assemblyAuthView() -> AuthView {
+        AuthView(viewModel: AuthViewModelMock())
+    }
+
     @MainActor
     func assemblyCakeListView() -> CakesListView {
         CakesListAssembler.assembleMock()

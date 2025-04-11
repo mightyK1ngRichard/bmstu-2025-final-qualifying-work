@@ -42,6 +42,27 @@ struct CakeModel: Identifiable, Hashable {
     var seller: UserModel
 }
 
+extension CakeModel {
+    init(from model: ProfilePreviewCakeEntity) {
+        self = CakeModel(
+            id: model.id,
+            previewImageState: .loading,
+            thumbnails: [],
+            cakeName: model.name,
+            price: model.kgPrice,
+            rating: model.rating,
+            isSelected: false,
+            description: model.description ?? "",
+            establishmentDate: model.dateCreation.description,
+            similarCakes: [],
+            comments: [],
+            categories: [],
+            fillings: [],
+            seller: UserModel(from: model.owner)
+        )
+    }
+}
+
 // MARK: - PreviewCakeEntity
 
 extension CakeModel {
@@ -162,8 +183,8 @@ extension CakeModel {
             }
             return (nil, nil)
         }
-        let discountPercentage = (discountedPrice * 100) / price
-        return ("-\(Int(round(discountPercentage)))%", .red)
+        let discountPercentage = 100 - (discountedPrice * 100) / price
+        return ("-\(Int(discountPercentage))%", .red)
     }
 }
 

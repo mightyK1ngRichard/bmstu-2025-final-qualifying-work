@@ -13,16 +13,16 @@ import NIO
 
 // MARK: - AuthService
 
-public protocol AuthService {
+public protocol AuthService: Sendable {
     func register(req: AuthServiceModel.Register.Request) async throws -> AuthServiceModel.Register.Response
     func login(req: AuthServiceModel.Login.Request) async throws -> AuthServiceModel.Login.Response
-    func updateAccessToken(req: AuthServiceModel.UpdateAccessToken.Request) async throws -> AuthServiceModel.UpdateAccessToken.Response
+    func updateAccessToken() async throws -> AuthServiceModel.UpdateAccessToken.Response
     func closeConnection()
 }
 
 // MARK: - AuthGrpcServiceImpl
 
-public final class AuthGrpcServiceImpl: AuthService {
+public final class AuthGrpcServiceImpl: AuthService, Sendable {
     private let client: AuthAsyncClientProtocol
     private let channel: GRPCChannel
     private let networkService: NetworkService
@@ -57,10 +57,11 @@ public extension AuthGrpcServiceImpl {
             $0.email = req.email
             $0.password = req.password
         }
+
         return try await networkService.performAndLog(
             call: client.register,
             with: request,
-            mapping: { .init(from: $0) }
+            mapping: { AuthServiceModel.Register.Response(from: $0) }
         )
     }
 
@@ -69,21 +70,23 @@ public extension AuthGrpcServiceImpl {
             $0.email = req.email
             $0.password = req.password
         }
+
         return try await networkService.performAndLog(
             call: client.login,
             with: request,
-            mapping: { .init(from: $0) }
+            mapping: { AuthServiceModel.Login.Response(from: $0) }
         )
     }
 
-    func updateAccessToken(req: AuthServiceModel.UpdateAccessToken.Request) async throws -> AuthServiceModel.UpdateAccessToken.Response {
-        let request = Google_Protobuf_Empty()
-        var callOptions = CallOptions()
-        guard let refresthToken = networkService.refreshToken else {
+    func updateAccessToken() async throws -> AuthServiceModel.UpdateAccessToken.Response {
+        guard let refreshToken = networkService.refreshToken else {
             throw NetworkError.missingRefreshToken
         }
 
-        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(refresthToken)")
+        var callOptions = CallOptions()
+        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(refreshToken)")
+
+        let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
             call: client.updateAccessToken,

@@ -12,6 +12,10 @@ extension View {
     func onFirstAppear(perform action: @escaping () -> Void) -> some View {
         modifier(ViewFirstAppearModifier(perform: action))
     }
+
+    var asView: AnyView {
+        AnyView(self)
+    }
 }
 
 private struct ViewFirstAppearModifier: ViewModifier {

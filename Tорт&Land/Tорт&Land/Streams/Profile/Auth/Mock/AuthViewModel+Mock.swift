@@ -26,12 +26,12 @@ final class AuthViewModelMock: AuthDisplayLogic, AuthViewModelOutput {
 extension AuthViewModelMock {
 
     func didTapNextButton() {
-        if uiProperties.isRegister {
-            didTapRegisterButton()
-        } else {
-            didTapSignInButton()
-        }
-        startScreenControl?.update(with: .cakesList)
+//        if uiProperties.isRegister {
+//            didTapRegisterButton()
+//        } else {
+//            didTapSignInButton()
+//        }
+//        startScreenControl?.update(with: .cakesList)
     }
 
     func didTapToggleAuthMode() {

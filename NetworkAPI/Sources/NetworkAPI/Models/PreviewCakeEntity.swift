@@ -38,10 +38,10 @@ public struct PreviewCakeEntity: Sendable, Hashable {
     public let dateCreation: Date
 }
 
-// MARK: - Cake
+// MARK: - Cake_Cake
 
 extension PreviewCakeEntity {
-    init(from model: Cake) {
+    init(from model: Cake_Cake) {
         self = PreviewCakeEntity(
             id: model.id,
             name: model.name,

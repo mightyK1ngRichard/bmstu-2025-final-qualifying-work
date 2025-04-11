@@ -12,6 +12,7 @@ enum AuthModel {}
 
 extension AuthModel {
     struct UIProperties {
+        var isLoading = false
         var isRegister = false
         var showingAlert = false
         var nickName = ""

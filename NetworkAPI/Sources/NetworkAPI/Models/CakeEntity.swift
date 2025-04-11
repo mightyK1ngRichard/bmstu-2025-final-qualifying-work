@@ -54,7 +54,7 @@ public extension CakeEntity {
 // MARK: - Cake
 
 extension CakeEntity {
-    init(from model: Cake) {
+    init(from model: Cake_Cake) {
         self = CakeEntity(
             id: model.id,
             name: model.name,
@@ -76,7 +76,7 @@ extension CakeEntity {
 }
 
 extension CakeEntity.CakeImageEntity {
-    init(from model: Cake.CakeImage) {
+    init(from model: Cake_Cake.CakeImage) {
         self = .init(id: model.id, imageURL: model.imageURL)
     }
 }

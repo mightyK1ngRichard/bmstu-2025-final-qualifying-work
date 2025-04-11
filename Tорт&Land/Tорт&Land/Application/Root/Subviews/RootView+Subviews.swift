@@ -13,8 +13,7 @@ extension RootView {
     var mainContainer: some View {
         switch viewModel.screenKind {
         case .initial, .auth:
-            let viewModel = AuthViewModelMock()
-            AuthView(viewModel: viewModel)
+            viewModel.assemblyAuthView()
         case .cakesList:
             tabBarView
         }

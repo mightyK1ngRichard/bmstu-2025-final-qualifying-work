@@ -78,6 +78,7 @@ extension AuthView {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(Constants.textColor)
                 .padding(.top, 5)
+                .disabled(viewModel.uiProperties.isLoading)
 
             Divider()
         }
@@ -94,6 +95,7 @@ extension AuthView {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(Constants.textColor)
                 .padding(.top, 5)
+                .disabled(viewModel.uiProperties.isLoading)
 
             Divider()
         }
@@ -112,13 +114,19 @@ extension AuthView {
 
     var nextButtonView: some View {
         Button(action: viewModel.didTapNextButton, label: {
-            Image(systemName: "arrow.right")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(Constants.iconColor)
-                .padding()
-                .background(Constants.bgColor)
-                .clipShape(Circle())
-                .shadow(color: Color.gray.opacity(0.6), radius: 5, x: 0, y: 0)
+            Group {
+                if viewModel.uiProperties.isLoading {
+                    ProgressView()
+                } else {
+                    Image(systemName: "arrow.right")
+                }
+            }
+            .font(.system(size: 24, weight: .bold))
+            .foregroundStyle(Constants.iconColor)
+            .padding()
+            .background(Constants.bgColor)
+            .clipShape(Circle())
+            .shadow(color: Color.gray.opacity(0.6), radius: 5, x: 0, y: 0)
 
         })
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -130,6 +138,7 @@ extension AuthView {
 
 #Preview {
     AuthView(viewModel: AuthViewModelMock())
+        .environment(StartScreenControl())
 }
 
 // MARK: - Constants

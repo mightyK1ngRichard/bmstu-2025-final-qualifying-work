@@ -24,17 +24,25 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     // MARK: Private values
     private let startScreenControl: StartScreenControl
     @ObservationIgnored
+    private let authService: AuthService
+    @ObservationIgnored
     private let cakeService: CakeGrpcService
+    @ObservationIgnored
+    private let profileService: ProfileGrpcService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     private var coordinator: Coordinator!
 
     init(
+        authService: AuthService,
         cakeService: CakeGrpcService,
+        profileService: ProfileGrpcService,
         imageProvider: ImageLoaderProvider,
         startScreenControl: StartScreenControl
     ) {
+        self.authService = authService
         self.cakeService = cakeService
+        self.profileService = profileService
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
         // FIXME: Сделать UserDefauls
@@ -55,6 +63,10 @@ extension RootViewModel {
 // MARK: - Screens
 
 extension RootViewModel: @preconcurrency RootViewModelInput {
+    func assemblyAuthView() -> AuthView {
+        AuthAssembler.assemble(authService: authService)
+    }
+
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
         CakeDetailsAssembler.assemble(
             cakeModel: model,
@@ -66,9 +78,12 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
     }
 
     func assemblyProfileView(userModel: UserModel) -> ProfileView {
-        // FIXME: Заменить моки
-        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser?.id)
-        return ProfileView(viewModel: viewModel)
+        ProfileAssemler.assemble(
+            user: userModel,
+            imageProvider: imageProvider,
+            profileService: profileService,
+            isCurrentUser: currentUser?.id == userModel.id
+        )
     }
 
     @MainActor
@@ -99,15 +114,22 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
     }
 
     func assemblyProfileView() -> ProfileView {
-        // FIXME: Убрать моки
-        let viewModel = ProfileViewModelMock(isCurrentUser: true)
-        return ProfileView(viewModel: viewModel)
+        ProfileAssemler.assemble(
+            user: currentUser,
+            imageProvider: imageProvider,
+            profileService: profileService,
+            isCurrentUser: true
+        )
     }
 }
 
 // MARK: - RootViewModelOutput
 
 extension RootViewModel {
+
+    func updateCurrentUser(_ user: UserEntity) {
+        #warning("Сделать из экрана профиля")
+    }
 
     func setCakes(_ newCakes: [CakeEntity]) {
         var newCakesDict = Dictionary(uniqueKeysWithValues: newCakes.map { ($0.id, $0) })

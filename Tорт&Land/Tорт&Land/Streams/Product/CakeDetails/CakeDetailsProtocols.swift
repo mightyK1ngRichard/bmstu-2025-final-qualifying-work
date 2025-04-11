@@ -18,6 +18,7 @@ protocol CakeDetailsViewModelInput {
 
     func setEnvironmentObjects(coordinator: Coordinator)
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration
+    func configurePreviewImageViewConfiguration() -> TLImageView.Configuration
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration
     func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration

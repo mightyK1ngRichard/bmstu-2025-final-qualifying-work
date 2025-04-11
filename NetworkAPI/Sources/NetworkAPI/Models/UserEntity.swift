@@ -17,18 +17,24 @@ public struct UserEntity: Sendable, Hashable {
     public let nickname: String
     /// Электронная почта
     public let mail: String
+    /// Аватар пользователя
+    public let imageURL: String?
+    /// Шапка профиля
+    public let headerImageURL: String?
 }
 
-// MARK: - User
+// MARK: - Cake_User
 
 extension UserEntity {
-    init(from model: User) {
+    init(from model: Cake_User) {
         let fio = model.hasFio ? model.fio.value : nil
         self = UserEntity(
             id: model.id,
             fio: fio,
             nickname: model.nickname,
-            mail: model.mail
+            mail: model.mail,
+            imageURL: model.hasImageURL ? model.imageURL.value : nil,
+            headerImageURL: model.hasHeaderImageURL ? model.headerImageURL.value : nil
         )
     }
 }

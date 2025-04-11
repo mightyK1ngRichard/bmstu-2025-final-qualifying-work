@@ -70,6 +70,11 @@ extension CakeDetailsView {
     var imagesCarousel: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 4) {
+                TLImageView(
+                    configuration: viewModel.configurePreviewImageViewConfiguration()
+                )
+                .frame(width: 275, height: 473)
+
                 ForEach(viewModel.cakeModel.thumbnails) { thumbnail in
                     TLImageView(
                         configuration: viewModel.configureImageViewConfiguration(for: thumbnail)

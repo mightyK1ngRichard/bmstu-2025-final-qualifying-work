@@ -10,7 +10,7 @@ import Foundation
 
 protocol ProfileDisplayLogic: ProfileViewModelInput {
     var uiProperties: ProfileModel.UIProperties { get set }
-    var user: UserModel { get }
+    var user: UserModel? { get }
     var isCurrentUser: Bool { get }
 }
 
@@ -22,6 +22,7 @@ protocol ProfileViewModelInput {
 }
 
 protocol ProfileViewModelOutput {
+    func fetchUserData()
     func didTapCreateProduct()
     func didTapOpenSettings()
     func didTapOpenMap()

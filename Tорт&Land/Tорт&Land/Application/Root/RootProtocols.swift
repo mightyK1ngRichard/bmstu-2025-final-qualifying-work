@@ -21,6 +21,7 @@ protocol RootViewModelInput {
     func setEnvironmentObjects(_ coordinator: Coordinator)
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
     func assemblyProfileView(userModel: UserModel) -> ProfileView
+    func assemblyAuthView() -> AuthView
     func assemblyCakeListView() -> CakesListView
     func assemblyCategoriesView() -> CategoriesView
     func assemblyChatListView() -> ChatListView
