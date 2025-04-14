@@ -16,15 +16,19 @@ public protocol CakeGrpcService: Sendable {
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response
-    func fetchFillings() async throws -> [CakeServiceModel.CreateFilling.Response]
-    func fetchCategories() async throws -> [CakeServiceModel.FetchCategories.Response]
+    func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response
+    func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response
+    func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
+    func fetchCakeDetails(cakeID: String) async throws -> CakeEntity
+    func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response
+    func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
     func closeConnection()
 }
 
 // MARK: - AuthGrpcServiceImpl
 
 public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
-    private let client: CakeServiceAsyncClientProtocol
+    private let client: Cake_CakeServiceAsyncClientProtocol
     private let channel: GRPCChannel
     private let networkService: NetworkService
 
@@ -38,7 +42,7 @@ public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
                 port: configuration.port,
                 numberOfThreads: 1
             )
-            self.client = CakeServiceAsyncClient(channel: channel, interceptors: nil)
+            self.client = Cake_CakeServiceAsyncClient(channel: channel, interceptors: nil)
             self.channel = channel
             self.networkService = networkService
         } catch {
@@ -54,7 +58,7 @@ public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
 
 public extension CakeGrpcServiceImpl {
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response {
-        let request = CreateCategoryRequest.with {
+        let request = Cake_CreateCategoryRequest.with {
             $0.name = req.name
             $0.imageData = req.imageData
         }
@@ -62,12 +66,14 @@ public extension CakeGrpcServiceImpl {
         return try await networkService.performAndLog(
             call: client.createCategory,
             with: request,
-            mapping: { .init(id: $0.category.id, name: $0.category.name, imageURL: $0.category.imageURL) }
+            mapping: {
+                .init(category: CategoryEntity(from: $0.category))
+            }
         )
     }
 
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response {
-        let request = CreateFillingRequest.with {
+        let request = Cake_CreateFillingRequest.with {
             $0.name = req.name
             $0.imageData = req.imageData
             $0.content = req.content
@@ -79,61 +85,43 @@ public extension CakeGrpcServiceImpl {
             call: client.createFilling,
             with: request,
             mapping: {
-                .init(
-                    id: $0.filling.id,
-                    name: $0.filling.name,
-                    imageURL: $0.filling.imageURL,
-                    content: $0.filling.content,
-                    kgPrice: $0.filling.kgPrice,
-                    description: $0.filling.description_p
-                )
+                .init(filling: FillingEntity(from: $0.filling))
             }
         )
     }
 
-    func fetchFillings() async throws -> [CakeServiceModel.CreateFilling.Response] {
+    func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response {
         let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
             call: client.fillings,
             with: request,
             mapping: {
-                $0.fillings.map {
-                    .init(
-                        id: $0.id,
-                        name: $0.name,
-                        imageURL: $0.imageURL,
-                        content: $0.content,
-                        kgPrice: $0.kgPrice,
-                        description: $0.description_p
-                    )
-                }
+                .init(
+                    fillings: $0.fillings.map { FillingEntity(from: $0) }
+                )
             }
         )
     }
 
-    func fetchCategories() async throws -> [CakeServiceModel.FetchCategories.Response] {
+    func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response {
         let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
             call: client.categories,
             with: request,
             mapping: {
-                $0.categories.map {
-                    .init(
-                        id: $0.id,
-                        name: $0.name,
-                        imageURL: $0.imageURL
-                    )
-                }
+                .init(
+                    categories: $0.categories.map { CategoryEntity(from: $0) }
+                )
             }
         )
     }
 
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
-        let request = CreateCakeRequest.with {
-            $0.name = $0.name
-            $0.imageData = req.imageData
+        let request = Cake_CreateCakeRequest.with {
+            $0.name = req.name
+            $0.previewImageData = req.previewImageData
             $0.kgPrice = req.kgPrice
             $0.rating = Int32(req.rating)
             $0.description_p = req.description
@@ -141,19 +129,61 @@ public extension CakeGrpcServiceImpl {
             $0.isOpenForSale = req.isOpenForSale
             $0.fillingIds = req.fillingIDs
             $0.categoryIds = req.categoryIDs
+            $0.images = req.imagesData
         }
-        var callOptions = CallOptions()
-        guard let accessToken = networkService.accessToken else {
-            throw NetworkError.missingAccessToken
-        }
-
-        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(accessToken)")
 
         return try await networkService.performAndLog(
             call: client.createCake,
             with: request,
-            options: callOptions,
             mapping: { .init(cakeID: $0.cakeID) }
+        )
+    }
+
+    func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response {
+        let request = Google_Protobuf_Empty()
+
+        return try await networkService.performAndLog(
+            call: client.cakes,
+            with: request,
+            mapping: {
+                .init(cakes: $0.cakes.map { PreviewCakeEntity(from: $0) })
+            }
+        )
+    }
+
+    func fetchCakeDetails(cakeID: String) async throws -> CakeEntity {
+        let request = Cake_CakeRequest.with {
+            $0.cakeID = cakeID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.cake,
+            with: request,
+            mapping: { CakeEntity(from: $0.cake) }
+        )
+    }
+
+    func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response {
+        let request = Cake_GetCategoriesByGenderNameReq.with {
+            $0.categoryGender = gender.convertToGrpcModel()
+        }
+
+        return try await networkService.performAndLog(
+            call: client.getCategoriesByGenderName,
+            with: request,
+            mapping: { .init(categories: $0.categories.map(CategoryEntity.init(from:))) }
+        )
+    }
+
+    func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response {
+        let request = Cake_CategoryPreviewCakesReq.with {
+            $0.categoryID = categoryID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.categoryPreviewCakes,
+            with: request,
+            mapping: { .init(cakes: $0.previewCakes.map(ProfilePreviewCakeEntity.init(from:))) }
         )
     }
 

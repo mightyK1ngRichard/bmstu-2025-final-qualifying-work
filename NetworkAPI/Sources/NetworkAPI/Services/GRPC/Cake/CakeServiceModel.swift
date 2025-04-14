@@ -11,8 +11,11 @@ public enum CakeServiceModel {
     public enum CreateCake {}
     public enum CreateCategory {}
     public enum CreateFilling {}
-    public enum FetchFilling {}
+    public enum FetchFillings {}
     public enum FetchCategories {}
+    public enum FetchCakes {}
+    public enum FetchCategoriesByGenderName {}
+    public enum FetchCategoryCakes {}
 }
 
 // MARK: - CreateCategory
@@ -29,9 +32,7 @@ public extension CakeServiceModel.CreateCategory {
     }
 
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
+        public let category: CategoryEntity
     }
 }
 
@@ -61,25 +62,15 @@ public extension CakeServiceModel.CreateFilling {
     }
 
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
-        public let content: String
-        public let kgPrice: Double
-        public let description: String
+        public let filling: FillingEntity
     }
 }
 
-// MARK: - FetchFilling
+// MARK: - FetchFillings
 
-public extension CakeServiceModel.FetchFilling {
+public extension CakeServiceModel.FetchFillings {
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
-        public let content: String
-        public let kgPrice: Double
-        public let description: String
+        public let fillings: [FillingEntity]
     }
 }
 
@@ -87,9 +78,7 @@ public extension CakeServiceModel.FetchFilling {
 
 public extension CakeServiceModel.FetchCategories {
     struct Response: Sendable {
-        public let id: String
-        public let name: String
-        public let imageURL: String
+        public let categories: [CategoryEntity]
     }
 }
 
@@ -98,7 +87,7 @@ public extension CakeServiceModel.FetchCategories {
 public extension CakeServiceModel.CreateCake {
     struct Request: Sendable {
         let name: String
-        let imageData: Data
+        let previewImageData: Data
         let kgPrice: Double
         let rating: Int
         let description: String
@@ -106,20 +95,22 @@ public extension CakeServiceModel.CreateCake {
         let isOpenForSale: Bool
         let fillingIDs: [String]
         let categoryIDs: [String]
+        let imagesData: [Data]
 
         public init(
             name: String,
-            imageData: Data,
+            previewImageData: Data,
             kgPrice: Double,
             rating: Int,
             description: String,
             mass: Double,
             isOpenForSale: Bool,
             fillingIDs: [String],
-            categoryIDs: [String]
+            categoryIDs: [String],
+            imagesData: [Data]
         ) {
             self.name = name
-            self.imageData = imageData
+            self.previewImageData = previewImageData
             self.kgPrice = kgPrice
             self.rating = rating
             self.description = description
@@ -127,10 +118,35 @@ public extension CakeServiceModel.CreateCake {
             self.isOpenForSale = isOpenForSale
             self.fillingIDs = fillingIDs
             self.categoryIDs = categoryIDs
+            self.imagesData = imagesData
         }
     }
 
     struct Response: Sendable {
         public let cakeID: String
+    }
+}
+
+// MARK: - FetchCakes
+
+public extension CakeServiceModel.FetchCakes {
+    struct Response: Sendable {
+        public let cakes: [PreviewCakeEntity]
+    }
+}
+
+// MARK: - FetchCategoriesByGenderName
+
+public extension CakeServiceModel.FetchCategoriesByGenderName {
+    struct Response: Sendable {
+        public let categories: [CategoryEntity]
+    }
+}
+
+// MARK: - FetchCategoryCakes
+
+public extension CakeServiceModel.FetchCategoryCakes {
+    struct Response: Sendable {
+        public let cakes: [ProfilePreviewCakeEntity]
     }
 }

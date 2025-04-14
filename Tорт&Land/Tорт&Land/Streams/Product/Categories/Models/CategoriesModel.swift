@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NetworkAPI
 
 enum CategoriesModel {}
 
@@ -15,10 +16,12 @@ extension CategoriesModel {
         var tabBarProgess: CGFloat = .zero
         var selectedTab: Tab? = .women
         var searchText = ""
+        var errorMessage: String?
         var showSearchBar = false
+        var showLoading = false
     }
 
-    enum Tab: String, CaseIterable {
+    enum Tab: String, Hashable, CaseIterable {
         case women
         case men
         case kids
@@ -28,6 +31,10 @@ extension CategoriesModel {
         case men([CategoryCardModel])
         case women([CategoryCardModel])
         case kids([CategoryCardModel])
+    }
+
+    enum Screens: Hashable {
+        case cakes([CakeModel])
     }
 }
 
@@ -42,6 +49,17 @@ extension CategoriesModel.Tab {
             return "women"
         case .kids:
             return "kids"
+        }
+    }
+
+    func convertToCategoryGender() -> CategoryGender {
+        switch self {
+        case .women:
+            return .female
+        case .men:
+            return .male
+        case .kids:
+            return .child
         }
     }
 }

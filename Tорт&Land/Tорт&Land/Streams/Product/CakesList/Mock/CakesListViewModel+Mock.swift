@@ -3,49 +3,55 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 21.12.2024.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 #if DEBUG
 
 import Foundation
+import NetworkAPI
 import Observation
 
 @Observable
-final class CakesListViewModelMock: CakesListDisplayLogic, CakesListViewModelOutput {
-    private(set) var sections: [CakesListModel.Section] = []
-    private(set) var screenState: ScreenState = .initial
+final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLogic, CakesListDisplayData {
+    var bindingData = CakesListModel.BindingData()
     @ObservationIgnored
     private var delay: TimeInterval = 0
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter = PriceFormatterService.shared
 
     init(delay: TimeInterval) {
         self.delay = delay
     }
 
     func fetchData() {
-        screenState = .loading
+        bindingData.screenState = .loading
         Task {
             try? await Task.sleep(for: .seconds(delay))
             await MainActor.run {
-                sections = [
+                bindingData.sections = [
                     .sale(MockData.saleCakes),
                     .new(MockData.newCakes),
                     .all(MockData.allCakes)
                 ]
-                screenState = .finished
+                bindingData.screenState = .finished
             }
         }
     }
 
-    func didTapNewsAllButton(_ cakes: [CakeModel]) {
-        print("[DEBUG]: Нажали секцию news")
-        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, .new))
-    }
+    func didFetchSections(with sections: [CakesListModel.Section]) {}
 
-    func didTapSalesAllButton(_ cakes: [CakeModel]) {
-        print("[DEBUG]: Нажали секцию sales")
-        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, .sales))
+    func showError(message: String) {}
+
+    func addCakesToRootViewModel(_ cakes: [CakeEntity]) {}
+
+    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {}
+
+    func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind) {
+        print("[DEBUG]: Нажали кнопку смотреть все")
+        coordinator?.addScreen(CakesListModel.Screens.tags(cakes, section))
     }
 
     func didTapCell(model: CakeModel) {
@@ -70,8 +76,8 @@ extension CakesListViewModelMock {
         .shimmering(imageHeight: 184)
     }
 
-    func configureProductCard(model: CakeModel, section: CakesListModel.Section) -> TLProductCard.Configuration {
-        model.configureProductCard()
+    func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
+        model.configureProductCard(priceFormatter: priceFormatter)
     }
 }
 

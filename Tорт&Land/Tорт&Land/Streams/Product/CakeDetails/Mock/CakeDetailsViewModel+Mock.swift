@@ -9,21 +9,28 @@
 
 import Foundation
 
-final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewModelOutput {
-    let currentUser: UserModel
-    var isOwnedByUser: Bool {
-        cakeModel.seller.id == currentUser.id
-    }
+@Observable
+final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewModelInput {
+    var bindingData: CakeDetailsModel.BindingData
+    private(set) var showOwnerButton: Bool
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter = PriceFormatterService.shared
 
     init(
-        currentUser: UserModel? = nil,
+        bindingData: CakeDetailsModel.BindingData = .init(),
+        isOwnedByUser: Bool,
         cakeModel: CakeModel = CommonMockData.generateMockCakeModel(id: 23)
     ) {
-        self.currentUser = currentUser ?? CommonMockData.generateMockUserModel(id: 1, name: "Дмитрий Пермяков")
+        self.bindingData = bindingData
+        self.showOwnerButton = !isOwnedByUser
         self.cakeModel = cakeModel
+    }
+
+    func fetchCakeDetails() {
+        cakeModel.similarCakes = (1...10).map { CommonMockData.generateMockCakeModel(id: $0) }
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
@@ -50,6 +57,13 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayLogic, CakeDetailsViewMo
     }
 
     func didTapCakeLike(model: CakeModel, isSelected: Bool) {}
+
+    func fetchCakeDetails(cakeUID: String) {}
+
+    func didTapFilling(with filling: Filling) {
+        bindingData.selectedFilling = filling
+        bindingData.showSheet = true
+    }
 }
 
 // MARK: - Configure
@@ -60,18 +74,31 @@ extension CakeDetailsViewModelMock {
         return RatingReviewsView(viewModel: viewModel)
     }
 
+    func configurePreviewImageViewConfiguration() -> TLImageView.Configuration {
+        .init(imageState: cakeModel.previewImageState)
+    }
+
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration {
         .init(imageState: thumbnail.imageState)
     }
 
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration {
-        cakeModel.configureDescriptionView()
+        cakeModel.configureDescriptionView(priceFormatter: priceFormatter)
     }
 
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration {
-        return model.configureProductCard()
+        model.configureProductCard(priceFormatter: priceFormatter)
     }
 
+    func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration {
+        .init(
+            name: filling.name,
+            imageState: filling.imageState,
+            content: filling.content,
+            kgPrice: priceFormatter.formatKgPrice(filling.kgPrice),
+            description: filling.description
+        )
+    }
 }
 
 #endif

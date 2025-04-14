@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ProductsGridView: View {
-    @State var viewModel: ProductsGridDisplayLogic & ProductsGridViewModelOutput
+    @State var viewModel: ProductsGridDisplayData & ProductsGridViewModelInput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {

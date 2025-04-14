@@ -21,7 +21,49 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-struct CakeRequest: Sendable {
+enum Cake_CategoryGender: SwiftProtobuf.Enum, Swift.CaseIterable {
+  typealias RawValue = Int
+  case unspecified // = 0
+  case male // = 1
+  case female // = 2
+  case child // = 3
+  case UNRECOGNIZED(Int)
+
+  init() {
+    self = .unspecified
+  }
+
+  init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .unspecified
+    case 1: self = .male
+    case 2: self = .female
+    case 3: self = .child
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  var rawValue: Int {
+    switch self {
+    case .unspecified: return 0
+    case .male: return 1
+    case .female: return 2
+    case .child: return 3
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static let allCases: [Cake_CategoryGender] = [
+    .unspecified,
+    .male,
+    .female,
+    .child,
+  ]
+
+}
+
+struct Cake_CakeRequest: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -33,14 +75,14 @@ struct CakeRequest: Sendable {
   init() {}
 }
 
-struct CakeResponse: Sendable {
+struct Cake_CakeResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   /// Информация о торте
-  var cake: Cake {
-    get {return _cake ?? Cake()}
+  var cake: Cake_Cake {
+    get {return _cake ?? Cake_Cake()}
     set {_cake = newValue}
   }
   /// Returns true if `cake` has been explicitly set.
@@ -52,10 +94,10 @@ struct CakeResponse: Sendable {
 
   init() {}
 
-  fileprivate var _cake: Cake? = nil
+  fileprivate var _cake: Cake_Cake? = nil
 }
 
-struct CreateCakeRequest: @unchecked Sendable {
+struct Cake_CreateCakeRequest: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -63,8 +105,8 @@ struct CreateCakeRequest: @unchecked Sendable {
   /// Название торта
   var name: String = String()
 
-  /// Данные изображения торта
-  var imageData: Data = Data()
+  /// Данные preview изображения торта
+  var previewImageData: Data = Data()
 
   /// Цена за кг
   var kgPrice: Double = 0
@@ -87,12 +129,15 @@ struct CreateCakeRequest: @unchecked Sendable {
   /// Список ID категорий
   var categoryIds: [String] = []
 
+  /// Все фотографии торта
+  var images: [Data] = []
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
-struct CreateCakeResponse: Sendable {
+struct Cake_CreateCakeResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -105,7 +150,7 @@ struct CreateCakeResponse: Sendable {
   init() {}
 }
 
-struct CreateFillingRequest: @unchecked Sendable {
+struct Cake_CreateFillingRequest: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -130,14 +175,14 @@ struct CreateFillingRequest: @unchecked Sendable {
   init() {}
 }
 
-struct CreateFillingResponse: Sendable {
+struct Cake_CreateFillingResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   /// Созданная начинка
-  var filling: Filling {
-    get {return _filling ?? Filling()}
+  var filling: Cake_Filling {
+    get {return _filling ?? Cake_Filling()}
     set {_filling = newValue}
   }
   /// Returns true if `filling` has been explicitly set.
@@ -149,10 +194,10 @@ struct CreateFillingResponse: Sendable {
 
   init() {}
 
-  fileprivate var _filling: Filling? = nil
+  fileprivate var _filling: Cake_Filling? = nil
 }
 
-struct CreateCategoryRequest: @unchecked Sendable {
+struct Cake_CreateCategoryRequest: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -166,13 +211,13 @@ struct CreateCategoryRequest: @unchecked Sendable {
   init() {}
 }
 
-struct CreateCategoryResponse: Sendable {
+struct Cake_CreateCategoryResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var category: Category {
-    get {return _category ?? Category()}
+  var category: Cake_Category {
+    get {return _category ?? Cake_Category()}
     set {_category = newValue}
   }
   /// Returns true if `category` has been explicitly set.
@@ -184,39 +229,87 @@ struct CreateCategoryResponse: Sendable {
 
   init() {}
 
-  fileprivate var _category: Category? = nil
+  fileprivate var _category: Cake_Category? = nil
 }
 
-struct CategoriesResponse: Sendable {
+struct Cake_CategoriesResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var categories: [Category] = []
+  var categories: [Cake_Category] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
-struct FillingsResponse: Sendable {
+struct Cake_FillingsResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var fillings: [Filling] = []
+  var fillings: [Cake_Filling] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
-struct CakesResponse: Sendable {
+struct Cake_CakesResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var cakes: [Cake] = []
+  var cakes: [Cake_Cake] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_GetCategoriesByGenderNameReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var categoryGender: Cake_CategoryGender = .unspecified
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_GetCategoriesByGenderNameRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var categories: [Cake_Category] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_CategoryPreviewCakesReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var categoryID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_CategoryPreviewCakesRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var previewCakes: [Cake_PreviewCake] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -224,60 +317,140 @@ struct CakesResponse: Sendable {
 }
 
 /// Информация о торте
-struct Cake: Sendable {
+struct Cake_Cake: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   /// ID торта
-  var id: String = String()
+  var id: String {
+    get {return _storage._id}
+    set {_uniqueStorage()._id = newValue}
+  }
 
   /// Название торта
-  var name: String = String()
+  var name: String {
+    get {return _storage._name}
+    set {_uniqueStorage()._name = newValue}
+  }
 
   /// URL изображения торта
-  var imageURL: String = String()
+  var imageURL: String {
+    get {return _storage._imageURL}
+    set {_uniqueStorage()._imageURL = newValue}
+  }
 
   /// Цена за кг
-  var kgPrice: Double = 0
+  var kgPrice: Double {
+    get {return _storage._kgPrice}
+    set {_uniqueStorage()._kgPrice = newValue}
+  }
 
   /// Рейтинг (0-5)
-  var rating: Int32 = 0
+  var rating: Int32 {
+    get {return _storage._rating}
+    set {_uniqueStorage()._rating = newValue}
+  }
 
   /// Описание торта
-  var description_p: String = String()
+  var description_p: String {
+    get {return _storage._description_p}
+    set {_uniqueStorage()._description_p = newValue}
+  }
 
   /// Масса торта
-  var mass: Double = 0
+  var mass: Double {
+    get {return _storage._mass}
+    set {_uniqueStorage()._mass = newValue}
+  }
 
   /// Доступен ли для продажи
-  var isOpenForSale: Bool = false
+  var isOpenForSale: Bool {
+    get {return _storage._isOpenForSale}
+    set {_uniqueStorage()._isOpenForSale = newValue}
+  }
 
   /// Информация о владельце
-  var owner: User {
-    get {return _owner ?? User()}
-    set {_owner = newValue}
+  var owner: Cake_User {
+    get {return _storage._owner ?? Cake_User()}
+    set {_uniqueStorage()._owner = newValue}
   }
   /// Returns true if `owner` has been explicitly set.
-  var hasOwner: Bool {return self._owner != nil}
+  var hasOwner: Bool {return _storage._owner != nil}
   /// Clears the value of `owner`. Subsequent reads from it will return its default value.
-  mutating func clearOwner() {self._owner = nil}
+  mutating func clearOwner() {_uniqueStorage()._owner = nil}
 
   /// Список начинок
-  var fillings: [Filling] = []
+  var fillings: [Cake_Filling] {
+    get {return _storage._fillings}
+    set {_uniqueStorage()._fillings = newValue}
+  }
 
   /// Список категорий
-  var categories: [Category] = []
+  var categories: [Cake_Category] {
+    get {return _storage._categories}
+    set {_uniqueStorage()._categories = newValue}
+  }
+
+  /// Скидочная цена за кг
+  var discountKgPrice: Double {
+    get {return _storage._discountKgPrice ?? 0}
+    set {_uniqueStorage()._discountKgPrice = newValue}
+  }
+  /// Returns true if `discountKgPrice` has been explicitly set.
+  var hasDiscountKgPrice: Bool {return _storage._discountKgPrice != nil}
+  /// Clears the value of `discountKgPrice`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountKgPrice() {_uniqueStorage()._discountKgPrice = nil}
+
+  /// Время окончания акции (ISO 8601)
+  var discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _storage._discountEndTime ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_uniqueStorage()._discountEndTime = newValue}
+  }
+  /// Returns true if `discountEndTime` has been explicitly set.
+  var hasDiscountEndTime: Bool {return _storage._discountEndTime != nil}
+  /// Clears the value of `discountEndTime`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountEndTime() {_uniqueStorage()._discountEndTime = nil}
+
+  /// Дата создания торта (ISO 8601)
+  var dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _storage._dateCreation ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_uniqueStorage()._dateCreation = newValue}
+  }
+  /// Returns true if `dateCreation` has been explicitly set.
+  var hasDateCreation: Bool {return _storage._dateCreation != nil}
+  /// Clears the value of `dateCreation`. Subsequent reads from it will return its default value.
+  mutating func clearDateCreation() {_uniqueStorage()._dateCreation = nil}
+
+  /// Фотографии торта
+  var images: [Cake_Cake.CakeImage] {
+    get {return _storage._images}
+    set {_uniqueStorage()._images = newValue}
+  }
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
+  struct CakeImage: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var id: String = String()
+
+    var imageURL: String = String()
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
   init() {}
 
-  fileprivate var _owner: User? = nil
+  fileprivate var _storage = _StorageClass.defaultInstance
 }
 
 /// Информация о владельце
-struct User: Sendable {
+struct Cake_User: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -301,15 +474,59 @@ struct User: Sendable {
   /// Электронная почта
   var mail: String = String()
 
+  /// Адрес
+  var address: SwiftProtobuf.Google_Protobuf_StringValue {
+    get {return _address ?? SwiftProtobuf.Google_Protobuf_StringValue()}
+    set {_address = newValue}
+  }
+  /// Returns true if `address` has been explicitly set.
+  var hasAddress: Bool {return self._address != nil}
+  /// Clears the value of `address`. Subsequent reads from it will return its default value.
+  mutating func clearAddress() {self._address = nil}
+
+  /// Телефон
+  var phone: SwiftProtobuf.Google_Protobuf_StringValue {
+    get {return _phone ?? SwiftProtobuf.Google_Protobuf_StringValue()}
+    set {_phone = newValue}
+  }
+  /// Returns true if `phone` has been explicitly set.
+  var hasPhone: Bool {return self._phone != nil}
+  /// Clears the value of `phone`. Subsequent reads from it will return its default value.
+  mutating func clearPhone() {self._phone = nil}
+
+  /// Аватарка
+  var imageURL: SwiftProtobuf.Google_Protobuf_StringValue {
+    get {return _imageURL ?? SwiftProtobuf.Google_Protobuf_StringValue()}
+    set {_imageURL = newValue}
+  }
+  /// Returns true if `imageURL` has been explicitly set.
+  var hasImageURL: Bool {return self._imageURL != nil}
+  /// Clears the value of `imageURL`. Subsequent reads from it will return its default value.
+  mutating func clearImageURL() {self._imageURL = nil}
+
+  /// Шапка профиля
+  var headerImageURL: SwiftProtobuf.Google_Protobuf_StringValue {
+    get {return _headerImageURL ?? SwiftProtobuf.Google_Protobuf_StringValue()}
+    set {_headerImageURL = newValue}
+  }
+  /// Returns true if `headerImageURL` has been explicitly set.
+  var hasHeaderImageURL: Bool {return self._headerImageURL != nil}
+  /// Clears the value of `headerImageURL`. Subsequent reads from it will return its default value.
+  mutating func clearHeaderImageURL() {self._headerImageURL = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
   fileprivate var _fio: SwiftProtobuf.Google_Protobuf_StringValue? = nil
+  fileprivate var _address: SwiftProtobuf.Google_Protobuf_StringValue? = nil
+  fileprivate var _phone: SwiftProtobuf.Google_Protobuf_StringValue? = nil
+  fileprivate var _imageURL: SwiftProtobuf.Google_Protobuf_StringValue? = nil
+  fileprivate var _headerImageURL: SwiftProtobuf.Google_Protobuf_StringValue? = nil
 }
 
 /// Информация о начинке
-struct Filling: Sendable {
+struct Cake_Filling: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -338,7 +555,7 @@ struct Filling: Sendable {
 }
 
 /// Информация о категории
-struct Category: Sendable {
+struct Cake_Category: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -352,15 +569,133 @@ struct Category: Sendable {
   /// URL изображения категории
   var imageURL: String = String()
 
+  /// Теги категории (по полу)
+  var genderTags: [Cake_CategoryGender] = []
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
+struct Cake_PreviewCake: @unchecked Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// UUID
+  var id: String {
+    get {return _storage._id}
+    set {_uniqueStorage()._id = newValue}
+  }
+
+  /// Название
+  var name: String {
+    get {return _storage._name}
+    set {_uniqueStorage()._name = newValue}
+  }
+
+  /// URL изображения
+  var previewImageURL: String {
+    get {return _storage._previewImageURL}
+    set {_uniqueStorage()._previewImageURL = newValue}
+  }
+
+  /// Цена за килограмм
+  var kgPrice: Double {
+    get {return _storage._kgPrice}
+    set {_uniqueStorage()._kgPrice = newValue}
+  }
+
+  /// Рейтинг
+  var rating: UInt32 {
+    get {return _storage._rating}
+    set {_uniqueStorage()._rating = newValue}
+  }
+
+  /// Описание (nullable)
+  var description_p: SwiftProtobuf.Google_Protobuf_StringValue {
+    get {return _storage._description_p ?? SwiftProtobuf.Google_Protobuf_StringValue()}
+    set {_uniqueStorage()._description_p = newValue}
+  }
+  /// Returns true if `description_p` has been explicitly set.
+  var hasDescription_p: Bool {return _storage._description_p != nil}
+  /// Clears the value of `description_p`. Subsequent reads from it will return its default value.
+  mutating func clearDescription_p() {_uniqueStorage()._description_p = nil}
+
+  /// Масса
+  var mass: Double {
+    get {return _storage._mass}
+    set {_uniqueStorage()._mass = newValue}
+  }
+
+  /// Скидочная цена за кг (nullable)
+  var discountKgPrice: SwiftProtobuf.Google_Protobuf_DoubleValue {
+    get {return _storage._discountKgPrice ?? SwiftProtobuf.Google_Protobuf_DoubleValue()}
+    set {_uniqueStorage()._discountKgPrice = newValue}
+  }
+  /// Returns true if `discountKgPrice` has been explicitly set.
+  var hasDiscountKgPrice: Bool {return _storage._discountKgPrice != nil}
+  /// Clears the value of `discountKgPrice`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountKgPrice() {_uniqueStorage()._discountKgPrice = nil}
+
+  /// Время окончания скидки (nullable)
+  var discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _storage._discountEndTime ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_uniqueStorage()._discountEndTime = newValue}
+  }
+  /// Returns true if `discountEndTime` has been explicitly set.
+  var hasDiscountEndTime: Bool {return _storage._discountEndTime != nil}
+  /// Clears the value of `discountEndTime`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountEndTime() {_uniqueStorage()._discountEndTime = nil}
+
+  /// Время создания
+  var dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _storage._dateCreation ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_uniqueStorage()._dateCreation = newValue}
+  }
+  /// Returns true if `dateCreation` has been explicitly set.
+  var hasDateCreation: Bool {return _storage._dateCreation != nil}
+  /// Clears the value of `dateCreation`. Subsequent reads from it will return its default value.
+  mutating func clearDateCreation() {_uniqueStorage()._dateCreation = nil}
+
+  /// Продается ли
+  var isOpenForSale: Bool {
+    get {return _storage._isOpenForSale}
+    set {_uniqueStorage()._isOpenForSale = newValue}
+  }
+
+  /// Владелец
+  var owner: Cake_User {
+    get {return _storage._owner ?? Cake_User()}
+    set {_uniqueStorage()._owner = newValue}
+  }
+  /// Returns true if `owner` has been explicitly set.
+  var hasOwner: Bool {return _storage._owner != nil}
+  /// Clears the value of `owner`. Subsequent reads from it will return its default value.
+  mutating func clearOwner() {_uniqueStorage()._owner = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _storage = _StorageClass.defaultInstance
+}
+
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-extension CakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CakeRequest"
+fileprivate let _protobuf_package = "cake"
+
+extension Cake_CategoryGender: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "CATEGORY_GENDER_UNSPECIFIED"),
+    1: .same(proto: "MALE"),
+    2: .same(proto: "FEMALE"),
+    3: .same(proto: "CHILD"),
+  ]
+}
+
+extension Cake_CakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CakeRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "cake_id"),
   ]
@@ -384,15 +719,15 @@ extension CakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CakeRequest, rhs: CakeRequest) -> Bool {
+  static func ==(lhs: Cake_CakeRequest, rhs: Cake_CakeRequest) -> Bool {
     if lhs.cakeID != rhs.cakeID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CakeResponse"
+extension Cake_CakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CakeResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "cake"),
   ]
@@ -420,18 +755,18 @@ extension CakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CakeResponse, rhs: CakeResponse) -> Bool {
+  static func ==(lhs: Cake_CakeResponse, rhs: Cake_CakeResponse) -> Bool {
     if lhs._cake != rhs._cake {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CreateCakeRequest"
+extension Cake_CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateCakeRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "name"),
-    2: .standard(proto: "image_data"),
+    2: .standard(proto: "preview_image_data"),
     3: .standard(proto: "kg_price"),
     4: .same(proto: "rating"),
     5: .same(proto: "description"),
@@ -439,6 +774,7 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     7: .standard(proto: "is_open_for_sale"),
     8: .standard(proto: "filling_ids"),
     9: .standard(proto: "category_ids"),
+    10: .same(proto: "images"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -448,7 +784,7 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 2: try { try decoder.decodeSingularBytesField(value: &self.imageData) }()
+      case 2: try { try decoder.decodeSingularBytesField(value: &self.previewImageData) }()
       case 3: try { try decoder.decodeSingularDoubleField(value: &self.kgPrice) }()
       case 4: try { try decoder.decodeSingularInt32Field(value: &self.rating) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.description_p) }()
@@ -456,6 +792,7 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
       case 7: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
       case 8: try { try decoder.decodeRepeatedStringField(value: &self.fillingIds) }()
       case 9: try { try decoder.decodeRepeatedStringField(value: &self.categoryIds) }()
+      case 10: try { try decoder.decodeRepeatedBytesField(value: &self.images) }()
       default: break
       }
     }
@@ -465,8 +802,8 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if !self.name.isEmpty {
       try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
     }
-    if !self.imageData.isEmpty {
-      try visitor.visitSingularBytesField(value: self.imageData, fieldNumber: 2)
+    if !self.previewImageData.isEmpty {
+      try visitor.visitSingularBytesField(value: self.previewImageData, fieldNumber: 2)
     }
     if self.kgPrice.bitPattern != 0 {
       try visitor.visitSingularDoubleField(value: self.kgPrice, fieldNumber: 3)
@@ -489,12 +826,15 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if !self.categoryIds.isEmpty {
       try visitor.visitRepeatedStringField(value: self.categoryIds, fieldNumber: 9)
     }
+    if !self.images.isEmpty {
+      try visitor.visitRepeatedBytesField(value: self.images, fieldNumber: 10)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CreateCakeRequest, rhs: CreateCakeRequest) -> Bool {
+  static func ==(lhs: Cake_CreateCakeRequest, rhs: Cake_CreateCakeRequest) -> Bool {
     if lhs.name != rhs.name {return false}
-    if lhs.imageData != rhs.imageData {return false}
+    if lhs.previewImageData != rhs.previewImageData {return false}
     if lhs.kgPrice != rhs.kgPrice {return false}
     if lhs.rating != rhs.rating {return false}
     if lhs.description_p != rhs.description_p {return false}
@@ -502,13 +842,14 @@ extension CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if lhs.isOpenForSale != rhs.isOpenForSale {return false}
     if lhs.fillingIds != rhs.fillingIds {return false}
     if lhs.categoryIds != rhs.categoryIds {return false}
+    if lhs.images != rhs.images {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CreateCakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CreateCakeResponse"
+extension Cake_CreateCakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateCakeResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "cake_id"),
   ]
@@ -532,15 +873,15 @@ extension CreateCakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CreateCakeResponse, rhs: CreateCakeResponse) -> Bool {
+  static func ==(lhs: Cake_CreateCakeResponse, rhs: Cake_CreateCakeResponse) -> Bool {
     if lhs.cakeID != rhs.cakeID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CreateFillingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CreateFillingRequest"
+extension Cake_CreateFillingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateFillingRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "name"),
     2: .standard(proto: "image_data"),
@@ -584,7 +925,7 @@ extension CreateFillingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CreateFillingRequest, rhs: CreateFillingRequest) -> Bool {
+  static func ==(lhs: Cake_CreateFillingRequest, rhs: Cake_CreateFillingRequest) -> Bool {
     if lhs.name != rhs.name {return false}
     if lhs.imageData != rhs.imageData {return false}
     if lhs.content != rhs.content {return false}
@@ -595,8 +936,8 @@ extension CreateFillingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
   }
 }
 
-extension CreateFillingResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CreateFillingResponse"
+extension Cake_CreateFillingResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateFillingResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "filling"),
   ]
@@ -624,15 +965,15 @@ extension CreateFillingResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CreateFillingResponse, rhs: CreateFillingResponse) -> Bool {
+  static func ==(lhs: Cake_CreateFillingResponse, rhs: Cake_CreateFillingResponse) -> Bool {
     if lhs._filling != rhs._filling {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CreateCategoryRequest"
+extension Cake_CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateCategoryRequest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "name"),
     2: .standard(proto: "image_data"),
@@ -661,7 +1002,7 @@ extension CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CreateCategoryRequest, rhs: CreateCategoryRequest) -> Bool {
+  static func ==(lhs: Cake_CreateCategoryRequest, rhs: Cake_CreateCategoryRequest) -> Bool {
     if lhs.name != rhs.name {return false}
     if lhs.imageData != rhs.imageData {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -669,8 +1010,8 @@ extension CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
   }
 }
 
-extension CreateCategoryResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CreateCategoryResponse"
+extension Cake_CreateCategoryResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateCategoryResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "category"),
   ]
@@ -698,15 +1039,15 @@ extension CreateCategoryResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CreateCategoryResponse, rhs: CreateCategoryResponse) -> Bool {
+  static func ==(lhs: Cake_CreateCategoryResponse, rhs: Cake_CreateCategoryResponse) -> Bool {
     if lhs._category != rhs._category {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CategoriesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CategoriesResponse"
+extension Cake_CategoriesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CategoriesResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "categories"),
   ]
@@ -730,15 +1071,15 @@ extension CategoriesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CategoriesResponse, rhs: CategoriesResponse) -> Bool {
+  static func ==(lhs: Cake_CategoriesResponse, rhs: Cake_CategoriesResponse) -> Bool {
     if lhs.categories != rhs.categories {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension FillingsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "FillingsResponse"
+extension Cake_FillingsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".FillingsResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "fillings"),
   ]
@@ -762,15 +1103,15 @@ extension FillingsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: FillingsResponse, rhs: FillingsResponse) -> Bool {
+  static func ==(lhs: Cake_FillingsResponse, rhs: Cake_FillingsResponse) -> Bool {
     if lhs.fillings != rhs.fillings {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension CakesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "CakesResponse"
+extension Cake_CakesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CakesResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "cakes"),
   ]
@@ -794,15 +1135,143 @@ extension CakesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: CakesResponse, rhs: CakesResponse) -> Bool {
+  static func ==(lhs: Cake_CakesResponse, rhs: Cake_CakesResponse) -> Bool {
     if lhs.cakes != rhs.cakes {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "Cake"
+extension Cake_GetCategoriesByGenderNameReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetCategoriesByGenderNameReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "categoryGender"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.categoryGender) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.categoryGender != .unspecified {
+      try visitor.visitSingularEnumField(value: self.categoryGender, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_GetCategoriesByGenderNameReq, rhs: Cake_GetCategoriesByGenderNameReq) -> Bool {
+    if lhs.categoryGender != rhs.categoryGender {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_GetCategoriesByGenderNameRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetCategoriesByGenderNameRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "categories"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.categories) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.categories.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.categories, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_GetCategoriesByGenderNameRes, rhs: Cake_GetCategoriesByGenderNameRes) -> Bool {
+    if lhs.categories != rhs.categories {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_CategoryPreviewCakesReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CategoryPreviewCakesReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "categoryID"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.categoryID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.categoryID.isEmpty {
+      try visitor.visitSingularStringField(value: self.categoryID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_CategoryPreviewCakesReq, rhs: Cake_CategoryPreviewCakesReq) -> Bool {
+    if lhs.categoryID != rhs.categoryID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_CategoryPreviewCakesRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CategoryPreviewCakesRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "previewCakes"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.previewCakes) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.previewCakes.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.previewCakes, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_CategoryPreviewCakesRes, rhs: Cake_CategoryPreviewCakesRes) -> Bool {
+    if lhs.previewCakes != rhs.previewCakes {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Cake"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "id"),
     2: .same(proto: "name"),
@@ -815,6 +1284,185 @@ extension Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     9: .same(proto: "owner"),
     10: .same(proto: "fillings"),
     11: .same(proto: "categories"),
+    12: .standard(proto: "discount_kg_price"),
+    13: .standard(proto: "discount_end_time"),
+    14: .standard(proto: "date_creation"),
+    15: .same(proto: "images"),
+  ]
+
+  fileprivate class _StorageClass {
+    var _id: String = String()
+    var _name: String = String()
+    var _imageURL: String = String()
+    var _kgPrice: Double = 0
+    var _rating: Int32 = 0
+    var _description_p: String = String()
+    var _mass: Double = 0
+    var _isOpenForSale: Bool = false
+    var _owner: Cake_User? = nil
+    var _fillings: [Cake_Filling] = []
+    var _categories: [Cake_Category] = []
+    var _discountKgPrice: Double? = nil
+    var _discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+    var _dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+    var _images: [Cake_Cake.CakeImage] = []
+
+    #if swift(>=5.10)
+      // This property is used as the initial default value for new instances of the type.
+      // The type itself is protecting the reference to its storage via CoW semantics.
+      // This will force a copy to be made of this reference when the first mutation occurs;
+      // hence, it is safe to mark this as `nonisolated(unsafe)`.
+      static nonisolated(unsafe) let defaultInstance = _StorageClass()
+    #else
+      static let defaultInstance = _StorageClass()
+    #endif
+
+    private init() {}
+
+    init(copying source: _StorageClass) {
+      _id = source._id
+      _name = source._name
+      _imageURL = source._imageURL
+      _kgPrice = source._kgPrice
+      _rating = source._rating
+      _description_p = source._description_p
+      _mass = source._mass
+      _isOpenForSale = source._isOpenForSale
+      _owner = source._owner
+      _fillings = source._fillings
+      _categories = source._categories
+      _discountKgPrice = source._discountKgPrice
+      _discountEndTime = source._discountEndTime
+      _dateCreation = source._dateCreation
+      _images = source._images
+    }
+  }
+
+  fileprivate mutating func _uniqueStorage() -> _StorageClass {
+    if !isKnownUniquelyReferenced(&_storage) {
+      _storage = _StorageClass(copying: _storage)
+    }
+    return _storage
+  }
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    _ = _uniqueStorage()
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      while let fieldNumber = try decoder.nextFieldNumber() {
+        // The use of inline closures is to circumvent an issue where the compiler
+        // allocates stack space for every case branch when no optimizations are
+        // enabled. https://github.com/apple/swift-protobuf/issues/1034
+        switch fieldNumber {
+        case 1: try { try decoder.decodeSingularStringField(value: &_storage._id) }()
+        case 2: try { try decoder.decodeSingularStringField(value: &_storage._name) }()
+        case 3: try { try decoder.decodeSingularStringField(value: &_storage._imageURL) }()
+        case 4: try { try decoder.decodeSingularDoubleField(value: &_storage._kgPrice) }()
+        case 5: try { try decoder.decodeSingularInt32Field(value: &_storage._rating) }()
+        case 6: try { try decoder.decodeSingularStringField(value: &_storage._description_p) }()
+        case 7: try { try decoder.decodeSingularDoubleField(value: &_storage._mass) }()
+        case 8: try { try decoder.decodeSingularBoolField(value: &_storage._isOpenForSale) }()
+        case 9: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
+        case 10: try { try decoder.decodeRepeatedMessageField(value: &_storage._fillings) }()
+        case 11: try { try decoder.decodeRepeatedMessageField(value: &_storage._categories) }()
+        case 12: try { try decoder.decodeSingularDoubleField(value: &_storage._discountKgPrice) }()
+        case 13: try { try decoder.decodeSingularMessageField(value: &_storage._discountEndTime) }()
+        case 14: try { try decoder.decodeSingularMessageField(value: &_storage._dateCreation) }()
+        case 15: try { try decoder.decodeRepeatedMessageField(value: &_storage._images) }()
+        default: break
+        }
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
+      if !_storage._id.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._id, fieldNumber: 1)
+      }
+      if !_storage._name.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._name, fieldNumber: 2)
+      }
+      if !_storage._imageURL.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._imageURL, fieldNumber: 3)
+      }
+      if _storage._kgPrice.bitPattern != 0 {
+        try visitor.visitSingularDoubleField(value: _storage._kgPrice, fieldNumber: 4)
+      }
+      if _storage._rating != 0 {
+        try visitor.visitSingularInt32Field(value: _storage._rating, fieldNumber: 5)
+      }
+      if !_storage._description_p.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._description_p, fieldNumber: 6)
+      }
+      if _storage._mass.bitPattern != 0 {
+        try visitor.visitSingularDoubleField(value: _storage._mass, fieldNumber: 7)
+      }
+      if _storage._isOpenForSale != false {
+        try visitor.visitSingularBoolField(value: _storage._isOpenForSale, fieldNumber: 8)
+      }
+      try { if let v = _storage._owner {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
+      } }()
+      if !_storage._fillings.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._fillings, fieldNumber: 10)
+      }
+      if !_storage._categories.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._categories, fieldNumber: 11)
+      }
+      try { if let v = _storage._discountKgPrice {
+        try visitor.visitSingularDoubleField(value: v, fieldNumber: 12)
+      } }()
+      try { if let v = _storage._discountEndTime {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 13)
+      } }()
+      try { if let v = _storage._dateCreation {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 14)
+      } }()
+      if !_storage._images.isEmpty {
+        try visitor.visitRepeatedMessageField(value: _storage._images, fieldNumber: 15)
+      }
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_Cake, rhs: Cake_Cake) -> Bool {
+    if lhs._storage !== rhs._storage {
+      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
+        let _storage = _args.0
+        let rhs_storage = _args.1
+        if _storage._id != rhs_storage._id {return false}
+        if _storage._name != rhs_storage._name {return false}
+        if _storage._imageURL != rhs_storage._imageURL {return false}
+        if _storage._kgPrice != rhs_storage._kgPrice {return false}
+        if _storage._rating != rhs_storage._rating {return false}
+        if _storage._description_p != rhs_storage._description_p {return false}
+        if _storage._mass != rhs_storage._mass {return false}
+        if _storage._isOpenForSale != rhs_storage._isOpenForSale {return false}
+        if _storage._owner != rhs_storage._owner {return false}
+        if _storage._fillings != rhs_storage._fillings {return false}
+        if _storage._categories != rhs_storage._categories {return false}
+        if _storage._discountKgPrice != rhs_storage._discountKgPrice {return false}
+        if _storage._discountEndTime != rhs_storage._discountEndTime {return false}
+        if _storage._dateCreation != rhs_storage._dateCreation {return false}
+        if _storage._images != rhs_storage._images {return false}
+        return true
+      }
+      if !storagesAreEqual {return false}
+    }
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_Cake.CakeImage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Cake_Cake.protoMessageName + ".CakeImage"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "id"),
+    2: .standard(proto: "image_url"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -824,86 +1472,41 @@ extension Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.imageURL) }()
-      case 4: try { try decoder.decodeSingularDoubleField(value: &self.kgPrice) }()
-      case 5: try { try decoder.decodeSingularInt32Field(value: &self.rating) }()
-      case 6: try { try decoder.decodeSingularStringField(value: &self.description_p) }()
-      case 7: try { try decoder.decodeSingularDoubleField(value: &self.mass) }()
-      case 8: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
-      case 9: try { try decoder.decodeSingularMessageField(value: &self._owner) }()
-      case 10: try { try decoder.decodeRepeatedMessageField(value: &self.fillings) }()
-      case 11: try { try decoder.decodeRepeatedMessageField(value: &self.categories) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.imageURL) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.id.isEmpty {
       try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
     }
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 2)
-    }
     if !self.imageURL.isEmpty {
-      try visitor.visitSingularStringField(value: self.imageURL, fieldNumber: 3)
-    }
-    if self.kgPrice.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.kgPrice, fieldNumber: 4)
-    }
-    if self.rating != 0 {
-      try visitor.visitSingularInt32Field(value: self.rating, fieldNumber: 5)
-    }
-    if !self.description_p.isEmpty {
-      try visitor.visitSingularStringField(value: self.description_p, fieldNumber: 6)
-    }
-    if self.mass.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.mass, fieldNumber: 7)
-    }
-    if self.isOpenForSale != false {
-      try visitor.visitSingularBoolField(value: self.isOpenForSale, fieldNumber: 8)
-    }
-    try { if let v = self._owner {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
-    } }()
-    if !self.fillings.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.fillings, fieldNumber: 10)
-    }
-    if !self.categories.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.categories, fieldNumber: 11)
+      try visitor.visitSingularStringField(value: self.imageURL, fieldNumber: 2)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Cake, rhs: Cake) -> Bool {
+  static func ==(lhs: Cake_Cake.CakeImage, rhs: Cake_Cake.CakeImage) -> Bool {
     if lhs.id != rhs.id {return false}
-    if lhs.name != rhs.name {return false}
     if lhs.imageURL != rhs.imageURL {return false}
-    if lhs.kgPrice != rhs.kgPrice {return false}
-    if lhs.rating != rhs.rating {return false}
-    if lhs.description_p != rhs.description_p {return false}
-    if lhs.mass != rhs.mass {return false}
-    if lhs.isOpenForSale != rhs.isOpenForSale {return false}
-    if lhs._owner != rhs._owner {return false}
-    if lhs.fillings != rhs.fillings {return false}
-    if lhs.categories != rhs.categories {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "User"
+extension Cake_User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".User"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "id"),
     2: .same(proto: "fio"),
     3: .same(proto: "nickname"),
     4: .same(proto: "mail"),
+    5: .same(proto: "address"),
+    6: .same(proto: "phone"),
+    7: .same(proto: "imageURL"),
+    8: .same(proto: "headerImageURL"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -916,6 +1519,10 @@ extension User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
       case 2: try { try decoder.decodeSingularMessageField(value: &self._fio) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.nickname) }()
       case 4: try { try decoder.decodeSingularStringField(value: &self.mail) }()
+      case 5: try { try decoder.decodeSingularMessageField(value: &self._address) }()
+      case 6: try { try decoder.decodeSingularMessageField(value: &self._phone) }()
+      case 7: try { try decoder.decodeSingularMessageField(value: &self._imageURL) }()
+      case 8: try { try decoder.decodeSingularMessageField(value: &self._headerImageURL) }()
       default: break
       }
     }
@@ -938,21 +1545,37 @@ extension User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase,
     if !self.mail.isEmpty {
       try visitor.visitSingularStringField(value: self.mail, fieldNumber: 4)
     }
+    try { if let v = self._address {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    } }()
+    try { if let v = self._phone {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+    } }()
+    try { if let v = self._imageURL {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
+    } }()
+    try { if let v = self._headerImageURL {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: User, rhs: User) -> Bool {
+  static func ==(lhs: Cake_User, rhs: Cake_User) -> Bool {
     if lhs.id != rhs.id {return false}
     if lhs._fio != rhs._fio {return false}
     if lhs.nickname != rhs.nickname {return false}
     if lhs.mail != rhs.mail {return false}
+    if lhs._address != rhs._address {return false}
+    if lhs._phone != rhs._phone {return false}
+    if lhs._imageURL != rhs._imageURL {return false}
+    if lhs._headerImageURL != rhs._headerImageURL {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Filling: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "Filling"
+extension Cake_Filling: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Filling"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "id"),
     2: .same(proto: "name"),
@@ -1001,7 +1624,7 @@ extension Filling: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBa
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Filling, rhs: Filling) -> Bool {
+  static func ==(lhs: Cake_Filling, rhs: Cake_Filling) -> Bool {
     if lhs.id != rhs.id {return false}
     if lhs.name != rhs.name {return false}
     if lhs.imageURL != rhs.imageURL {return false}
@@ -1013,12 +1636,13 @@ extension Filling: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBa
   }
 }
 
-extension Category: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "Category"
+extension Cake_Category: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Category"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "id"),
     2: .same(proto: "name"),
     3: .standard(proto: "image_url"),
+    4: .standard(proto: "gender_tags"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1030,6 +1654,7 @@ extension Category: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
       case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.name) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.imageURL) }()
+      case 4: try { try decoder.decodeRepeatedEnumField(value: &self.genderTags) }()
       default: break
       }
     }
@@ -1045,13 +1670,181 @@ extension Category: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     if !self.imageURL.isEmpty {
       try visitor.visitSingularStringField(value: self.imageURL, fieldNumber: 3)
     }
+    if !self.genderTags.isEmpty {
+      try visitor.visitPackedEnumField(value: self.genderTags, fieldNumber: 4)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Category, rhs: Category) -> Bool {
+  static func ==(lhs: Cake_Category, rhs: Cake_Category) -> Bool {
     if lhs.id != rhs.id {return false}
     if lhs.name != rhs.name {return false}
     if lhs.imageURL != rhs.imageURL {return false}
+    if lhs.genderTags != rhs.genderTags {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".PreviewCake"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "id"),
+    2: .same(proto: "name"),
+    3: .standard(proto: "preview_image_url"),
+    4: .standard(proto: "kg_price"),
+    5: .same(proto: "rating"),
+    6: .same(proto: "description"),
+    7: .same(proto: "mass"),
+    8: .standard(proto: "discount_kg_price"),
+    9: .standard(proto: "discount_end_time"),
+    10: .standard(proto: "date_creation"),
+    11: .standard(proto: "is_open_for_sale"),
+    12: .same(proto: "owner"),
+  ]
+
+  fileprivate class _StorageClass {
+    var _id: String = String()
+    var _name: String = String()
+    var _previewImageURL: String = String()
+    var _kgPrice: Double = 0
+    var _rating: UInt32 = 0
+    var _description_p: SwiftProtobuf.Google_Protobuf_StringValue? = nil
+    var _mass: Double = 0
+    var _discountKgPrice: SwiftProtobuf.Google_Protobuf_DoubleValue? = nil
+    var _discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+    var _dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+    var _isOpenForSale: Bool = false
+    var _owner: Cake_User? = nil
+
+    #if swift(>=5.10)
+      // This property is used as the initial default value for new instances of the type.
+      // The type itself is protecting the reference to its storage via CoW semantics.
+      // This will force a copy to be made of this reference when the first mutation occurs;
+      // hence, it is safe to mark this as `nonisolated(unsafe)`.
+      static nonisolated(unsafe) let defaultInstance = _StorageClass()
+    #else
+      static let defaultInstance = _StorageClass()
+    #endif
+
+    private init() {}
+
+    init(copying source: _StorageClass) {
+      _id = source._id
+      _name = source._name
+      _previewImageURL = source._previewImageURL
+      _kgPrice = source._kgPrice
+      _rating = source._rating
+      _description_p = source._description_p
+      _mass = source._mass
+      _discountKgPrice = source._discountKgPrice
+      _discountEndTime = source._discountEndTime
+      _dateCreation = source._dateCreation
+      _isOpenForSale = source._isOpenForSale
+      _owner = source._owner
+    }
+  }
+
+  fileprivate mutating func _uniqueStorage() -> _StorageClass {
+    if !isKnownUniquelyReferenced(&_storage) {
+      _storage = _StorageClass(copying: _storage)
+    }
+    return _storage
+  }
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    _ = _uniqueStorage()
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      while let fieldNumber = try decoder.nextFieldNumber() {
+        // The use of inline closures is to circumvent an issue where the compiler
+        // allocates stack space for every case branch when no optimizations are
+        // enabled. https://github.com/apple/swift-protobuf/issues/1034
+        switch fieldNumber {
+        case 1: try { try decoder.decodeSingularStringField(value: &_storage._id) }()
+        case 2: try { try decoder.decodeSingularStringField(value: &_storage._name) }()
+        case 3: try { try decoder.decodeSingularStringField(value: &_storage._previewImageURL) }()
+        case 4: try { try decoder.decodeSingularDoubleField(value: &_storage._kgPrice) }()
+        case 5: try { try decoder.decodeSingularUInt32Field(value: &_storage._rating) }()
+        case 6: try { try decoder.decodeSingularMessageField(value: &_storage._description_p) }()
+        case 7: try { try decoder.decodeSingularDoubleField(value: &_storage._mass) }()
+        case 8: try { try decoder.decodeSingularMessageField(value: &_storage._discountKgPrice) }()
+        case 9: try { try decoder.decodeSingularMessageField(value: &_storage._discountEndTime) }()
+        case 10: try { try decoder.decodeSingularMessageField(value: &_storage._dateCreation) }()
+        case 11: try { try decoder.decodeSingularBoolField(value: &_storage._isOpenForSale) }()
+        case 12: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
+        default: break
+        }
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
+      if !_storage._id.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._id, fieldNumber: 1)
+      }
+      if !_storage._name.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._name, fieldNumber: 2)
+      }
+      if !_storage._previewImageURL.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._previewImageURL, fieldNumber: 3)
+      }
+      if _storage._kgPrice.bitPattern != 0 {
+        try visitor.visitSingularDoubleField(value: _storage._kgPrice, fieldNumber: 4)
+      }
+      if _storage._rating != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._rating, fieldNumber: 5)
+      }
+      try { if let v = _storage._description_p {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+      } }()
+      if _storage._mass.bitPattern != 0 {
+        try visitor.visitSingularDoubleField(value: _storage._mass, fieldNumber: 7)
+      }
+      try { if let v = _storage._discountKgPrice {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
+      } }()
+      try { if let v = _storage._discountEndTime {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 9)
+      } }()
+      try { if let v = _storage._dateCreation {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
+      } }()
+      if _storage._isOpenForSale != false {
+        try visitor.visitSingularBoolField(value: _storage._isOpenForSale, fieldNumber: 11)
+      }
+      try { if let v = _storage._owner {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 12)
+      } }()
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_PreviewCake, rhs: Cake_PreviewCake) -> Bool {
+    if lhs._storage !== rhs._storage {
+      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
+        let _storage = _args.0
+        let rhs_storage = _args.1
+        if _storage._id != rhs_storage._id {return false}
+        if _storage._name != rhs_storage._name {return false}
+        if _storage._previewImageURL != rhs_storage._previewImageURL {return false}
+        if _storage._kgPrice != rhs_storage._kgPrice {return false}
+        if _storage._rating != rhs_storage._rating {return false}
+        if _storage._description_p != rhs_storage._description_p {return false}
+        if _storage._mass != rhs_storage._mass {return false}
+        if _storage._discountKgPrice != rhs_storage._discountKgPrice {return false}
+        if _storage._discountEndTime != rhs_storage._discountEndTime {return false}
+        if _storage._dateCreation != rhs_storage._dateCreation {return false}
+        if _storage._isOpenForSale != rhs_storage._isOpenForSale {return false}
+        if _storage._owner != rhs_storage._owner {return false}
+        return true
+      }
+      if !storagesAreEqual {return false}
+    }
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

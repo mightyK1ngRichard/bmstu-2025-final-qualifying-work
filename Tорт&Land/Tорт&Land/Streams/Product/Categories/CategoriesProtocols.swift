@@ -11,7 +11,7 @@ import Foundation
 protocol CategoriesDisplayLogic: CategoriesViewModelInput {
     var uiProperties: CategoriesModel.UIProperties { get set }
     var tabs: [CategoriesModel.Tab] { get }
-    var sections: [CategoriesModel.Section] { get }
+    var sections: [CategoriesModel.Tab: [CategoryCardModel]] { get }
 }
 
 protocol CategoriesViewModelInput {
@@ -20,7 +20,10 @@ protocol CategoriesViewModelInput {
 }
 
 protocol CategoriesViewModelOutput {
+    func onAppear()
     func didTapTab(tab: CategoriesModel.Tab)
     func didTapSearchToggle()
     func didTapSectionCell(section: CategoryCardModel)
+    func didUpdateSelectedTag(section: CategoriesModel.Tab)
+    func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView
 }

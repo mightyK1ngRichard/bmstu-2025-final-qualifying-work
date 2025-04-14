@@ -17,14 +17,19 @@ final class NotificationDetailViewModelMock: NotificationDetailDisplayLogic & No
     private(set) var orderData: NotificationDetailModel.OrderData
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter: PriceFormatterService
 
-    init(orderData: NotificationDetailModel.OrderData = MockData.mockOrderPurchaseData) {
+    init(
+        orderData: NotificationDetailModel.OrderData = MockData.mockOrderPurchaseData,
+        priceFormatter: PriceFormatterService = .shared
+    ) {
         self.orderData = orderData
-        self.uiProperties = uiProperties
+        self.priceFormatter = priceFormatter
     }
 
     func configureProductDescriptionConfiguration() -> TLProductDescriptionView.Configuration {
-        orderData.cake.configureDescriptionView()
+        orderData.cake.configureDescriptionView(priceFormatter: priceFormatter)
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {

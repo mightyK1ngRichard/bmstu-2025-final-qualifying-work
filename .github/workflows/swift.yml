@@ -1,0 +1,38 @@
+name: Swift CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Install xcode-install gem to use xcversion
+    - name: Install xcode-install
+      run: |
+        sudo gem install xcode-install
+
+    # Set up Xcode
+    - name: Set up Xcode
+      uses: sinoru/actions-setup-xcode@v2
+      with:
+        xcode-version: '16.2'
+        apple-id: 'dimapermyakov55@icloud.com'
+        apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
+
+    # Install dependencies
+    - name: Install dependencies
+      run: gem install fastlane
+
+    # Run tests using fastlane
+    - name: Run Tests with Fastlane
+      working-directory: ./Tорт&Land
+      run: fastlane scan --project "Tорт&Land.xcodeproj" --scheme "Tорт&Land" --device "iPhone 16 Pro Max"

@@ -77,14 +77,6 @@ extension AuthServiceModel.Login.Response: GrpcConvertable {
 // MARK: - UpdateAccessToken
 
 public extension AuthServiceModel.UpdateAccessToken {
-    struct Request {
-        let refreshToken: String
-
-        public init(refreshToken: String) {
-            self.refreshToken = refreshToken
-        }
-    }
-
     struct Response: Sendable {
         let accessToken: String
         let expiresIn: Int

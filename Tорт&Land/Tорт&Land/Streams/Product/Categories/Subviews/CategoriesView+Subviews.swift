@@ -14,9 +14,13 @@ extension CategoriesView {
             navigationBarBlock
             customTabBar
             sectionsBlock
+            errorView
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
+        .overlay {
+            loadingView
+        }
     }
 }
 
@@ -45,6 +49,10 @@ private extension CategoriesView {
             if viewModel.uiProperties.showSearchBar {
                 searchBar
             }
+        }
+        .onChange(of: viewModel.uiProperties.selectedTab) { oldValue, newValue in
+            guard let newValue, oldValue != newValue else { return }
+            viewModel.didUpdateSelectedTag(section: newValue)
         }
     }
 
@@ -96,25 +104,12 @@ private extension CategoriesView {
             let size = $0.size
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
-                    ForEach(viewModel.sections) { section in
-                        switch section {
-                        case let .women(categories):
+                    ForEach(viewModel.tabs, id: \.rawValue) { tab in
+                        if let categories = viewModel.sections[tab] {
                             scrollSections(
                                 items: viewModel.filterData(categories: categories)
                             )
-                            .id(CategoriesModel.Tab.women)
-                            .containerRelativeFrame(.horizontal)
-                        case let .men(categories):
-                            scrollSections(
-                                items: viewModel.filterData(categories: categories)
-                            )
-                            .id(CategoriesModel.Tab.men)
-                            .containerRelativeFrame(.horizontal)
-                        case let .kids(categories):
-                            scrollSections(
-                                items: viewModel.filterData(categories: categories)
-                            )
-                            .id(CategoriesModel.Tab.kids)
+                            .id(tab)
                             .containerRelativeFrame(.horizontal)
                         }
                     }
@@ -129,6 +124,22 @@ private extension CategoriesView {
             .scrollIndicators(.hidden)
             .scrollTargetBehavior(.paging)
             .scrollClipDisabled()
+        }
+    }
+
+    @ViewBuilder
+    var errorView: some View {
+        if let errorMessage = viewModel.uiProperties.errorMessage {
+            VStack {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.title)
+                Text(errorMessage)
+                    .font(.body)
+                Button("Reload data", action: viewModel.onAppear)
+                    .buttonStyle(.bordered)
+                Spacer()
+            }
+            .foregroundStyle(TLColor<TextPalette>.textPrimary.color)
         }
     }
 
@@ -147,6 +158,17 @@ private extension CategoriesView {
                 }
             }
             .padding(.top)
+        }
+    }
+
+    @ViewBuilder
+    var loadingView: some View {
+        if viewModel.uiProperties.showLoading {
+            ZStack {
+                Color.black.opacity(0.5)
+                ProgressView()
+            }
+            .ignoresSafeArea()
         }
     }
 }

@@ -17,10 +17,10 @@ import SwiftUI
 final class CategoriesViewModelMock: CategoriesDisplayLogic & CategoriesViewModelOutput {
     var uiProperties = CategoriesModel.UIProperties()
     private(set) var tabs: [CategoriesModel.Tab] = CategoriesModel.Tab.allCases
-    private(set) var sections: [CategoriesModel.Section] = [
-        .women(MockData.womenCards),
-        .men(MockData.menCards),
-        .kids(MockData.kidsCards)
+    private(set) var sections: [CategoriesModel.Tab: [CategoryCardModel]] = [
+        .women: MockData.womenCards,
+        .men: MockData.menCards,
+        .kids: MockData.kidsCards,
     ]
 
     func setEnvironmentObjects(coordinator: Coordinator) {}
@@ -47,6 +47,16 @@ final class CategoriesViewModelMock: CategoriesDisplayLogic & CategoriesViewMode
             : categories.filter {
                 $0.title.lowercased().contains(uiProperties.searchText.lowercased())
             }
+    }
+
+    func didUpdateSelectedTag(section: CategoriesModel.Tab) {
+        print("[DEBUG]: \(section)")
+    }
+
+    func onAppear() {}
+
+    func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {
+        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: .default)
     }
 }
 

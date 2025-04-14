@@ -39,6 +39,7 @@ extension AuthView {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(Constants.textColor)
                 .padding(.top, 5)
+                .disabled(viewModel.uiProperties.isLoading)
 
             Divider()
         }
@@ -55,6 +56,7 @@ extension AuthView {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(Constants.textColor)
                 .padding(.top, 5)
+                .disabled(viewModel.uiProperties.isLoading)
 
             Divider()
         }

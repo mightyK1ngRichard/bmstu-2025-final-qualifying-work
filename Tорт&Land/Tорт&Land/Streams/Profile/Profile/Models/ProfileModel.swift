@@ -12,5 +12,6 @@ enum ProfileModel {}
 
 extension ProfileModel {
     struct UIProperties: Hashable {
+        var screenState: ScreenState = .initial
     }
 }

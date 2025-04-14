@@ -45,21 +45,33 @@ private extension CakesListView {
 
     var sectionsContainer: some View {
         VStack(spacing: 40) {
-            switch viewModel.screenState {
+            switch viewModel.bindingData.screenState {
             case .initial, .loading:
                 shimmeringContainer
             case .finished:
-                ForEach(viewModel.sections) { section in
+                ForEach(viewModel.bindingData.sections) { section in
                     sectionView(for: section)
                 }
-            case .error:
-                Text("There was an error")
+            case let .error(errorMessage):
+                errorView(with: errorMessage)
             }
         }
         .padding(.vertical, 13)
         .background(Constants.bgMainColor)
         .clipShape(.rect(cornerRadius: 16))
         .padding(.top, -20)
+    }
+
+    func errorView(with message: String) -> some View {
+        VStack(spacing: 20) {
+            Text(message)
+                .style(16, .semibold)
+            Button("Reload", action: viewModel.fetchData)
+                .buttonStyle(.bordered)
+                .tint(Color.primary)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
     }
 
     var shimmeringContainer: some View {
@@ -108,29 +120,20 @@ private extension CakesListView {
     func sectionView(for section: CakesListModel.Section) -> some View {
         switch section {
         case let .new(cakeModels):
-            cakesSectionView(
-                section: .new([]),
-                models: cakeModels
-            ) {
-                viewModel.didTapNewsAllButton(cakeModels)
+            cakesSectionView(section: .new, models: cakeModels) {
+                viewModel.didTapAllButton(cakeModels, section: .new)
             }
         case let .sale(cakeModels):
-            cakesSectionView(
-                section: .sale([]),
-                models: cakeModels
-            ) {
-                viewModel.didTapSalesAllButton(cakeModels)
+            cakesSectionView(section: .sale, models: cakeModels) {
+                viewModel.didTapAllButton(cakeModels, section: .sales)
             }
         case let .all(cakeModels):
-            cakesSectionView(
-                section: .all([]),
-                models: cakeModels
-            )
+            cakesSectionView(section: .all, models: cakeModels)
         }
     }
 
     func cakesSectionView(
-        section: CakesListModel.Section,
+        section: CakesListModel.Section.Kind,
         models: [CakeModel],
         action: TLVoidBlock? = nil
     ) -> some View {
@@ -152,7 +155,7 @@ private extension CakesListView {
     }
 
     func horizontalCakesContainer(
-        section: CakesListModel.Section,
+        section: CakesListModel.Section.Kind,
         models: [CakeModel]
     ) -> some View {
         ScrollView(.horizontal) {
@@ -166,6 +169,7 @@ private extension CakesListView {
                     ) { isSelected in
                         viewModel.didTapLikeButton(model: cakeModel, isSelected: isSelected)
                     }
+                    .frame(width: 148)
                     .onTapGesture {
                         viewModel.didTapCell(model: cakeModel)
                     }
@@ -179,7 +183,7 @@ private extension CakesListView {
 
     @ViewBuilder
     func gridCakesContainer(
-        section: CakesListModel.Section,
+        section: CakesListModel.Section.Kind,
         models: [CakeModel]
     ) -> some View {
         LazyVGrid(
@@ -231,7 +235,7 @@ private extension CakesListView {
 
 #Preview("Mockable delay") {
     CakesListView(
-        viewModel: CakesListViewModelMock(delay: 5)
+        viewModel: CakesListViewModelMock(delay: 2)
     )
     .environment(Coordinator())
 }
@@ -239,7 +243,6 @@ private extension CakesListView {
 // MARK: - Constants
 
 private extension CakesListView {
-
     enum Constants {
         static let lookAllTitle = String(localized: "View all")
         static let bannerTitle = String(localized: "Торт&\nLand")

@@ -11,68 +11,60 @@ import NIOConcurrencyHelpers
 import SwiftProtobuf
 
 
-/// Usage: instantiate `CakeServiceClient`, then call methods of this protocol to make API calls.
-internal protocol CakeServiceClientProtocol: GRPCClient {
+/// Usage: instantiate `Cake_CakeServiceClient`, then call methods of this protocol to make API calls.
+internal protocol Cake_CakeServiceClientProtocol: GRPCClient {
   var serviceName: String { get }
-  var interceptors: CakeServiceClientInterceptorFactoryProtocol? { get }
-
-  func cake(
-    _ request: CakeRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<CakeRequest, CakeResponse>
+  var interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? { get }
 
   func createCake(
-    _ request: CreateCakeRequest,
+    _ request: Cake_CreateCakeRequest,
     callOptions: CallOptions?
-  ) -> UnaryCall<CreateCakeRequest, CreateCakeResponse>
+  ) -> UnaryCall<Cake_CreateCakeRequest, Cake_CreateCakeResponse>
 
-  func createFilling(
-    _ request: CreateFillingRequest,
+  func cake(
+    _ request: Cake_CakeRequest,
     callOptions: CallOptions?
-  ) -> UnaryCall<CreateFillingRequest, CreateFillingResponse>
-
-  func createCategory(
-    _ request: CreateCategoryRequest,
-    callOptions: CallOptions?
-  ) -> UnaryCall<CreateCategoryRequest, CreateCategoryResponse>
-
-  func categories(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CategoriesResponse>
-
-  func fillings(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>
+  ) -> UnaryCall<Cake_CakeRequest, Cake_CakeResponse>
 
   func cakes(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CakesResponse>
+
+  func categoryPreviewCakes(
+    _ request: Cake_CategoryPreviewCakesReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Cake_CategoryPreviewCakesReq, Cake_CategoryPreviewCakesRes>
+
+  func createFilling(
+    _ request: Cake_CreateFillingRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Cake_CreateFillingRequest, Cake_CreateFillingResponse>
+
+  func fillings(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_FillingsResponse>
+
+  func createCategory(
+    _ request: Cake_CreateCategoryRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse>
+
+  func categories(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>
+
+  func getCategoriesByGenderName(
+    _ request: Cake_GetCategoriesByGenderNameReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>
 }
 
-extension CakeServiceClientProtocol {
+extension Cake_CakeServiceClientProtocol {
   internal var serviceName: String {
-    return "CakeService"
-  }
-
-  /// Unary call to Cake
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to Cake.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func cake(
-    _ request: CakeRequest,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<CakeRequest, CakeResponse> {
-    return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.cake.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCakeInterceptors() ?? []
-    )
+    return "cake.CakeService"
   }
 
   /// Unary call to CreateCake
@@ -82,14 +74,68 @@ extension CakeServiceClientProtocol {
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
   internal func createCake(
-    _ request: CreateCakeRequest,
+    _ request: Cake_CreateCakeRequest,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<CreateCakeRequest, CreateCakeResponse> {
+  ) -> UnaryCall<Cake_CreateCakeRequest, Cake_CreateCakeResponse> {
     return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createCake.path,
+      path: Cake_CakeServiceClientMetadata.Methods.createCake.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to Cake
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to Cake.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func cake(
+    _ request: Cake_CakeRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Cake_CakeRequest, Cake_CakeResponse> {
+    return self.makeUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.cake.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakeInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to Cakes
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to Cakes.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func cakes(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CakesResponse> {
+    return self.makeUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.cakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to CategoryPreviewCakes
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to CategoryPreviewCakes.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func categoryPreviewCakes(
+    _ request: Cake_CategoryPreviewCakesReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Cake_CategoryPreviewCakesReq, Cake_CategoryPreviewCakesRes> {
+    return self.makeUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.categoryPreviewCakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCategoryPreviewCakesInterceptors() ?? []
     )
   }
 
@@ -100,14 +146,32 @@ extension CakeServiceClientProtocol {
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
   internal func createFilling(
-    _ request: CreateFillingRequest,
+    _ request: Cake_CreateFillingRequest,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<CreateFillingRequest, CreateFillingResponse> {
+  ) -> UnaryCall<Cake_CreateFillingRequest, Cake_CreateFillingResponse> {
     return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createFilling.path,
+      path: Cake_CakeServiceClientMetadata.Methods.createFilling.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateFillingInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to Fillings
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to Fillings.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func fillings(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_FillingsResponse> {
+    return self.makeUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.fillings.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
     )
   }
 
@@ -118,11 +182,11 @@ extension CakeServiceClientProtocol {
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
   internal func createCategory(
-    _ request: CreateCategoryRequest,
+    _ request: Cake_CreateCategoryRequest,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<CreateCategoryRequest, CreateCategoryResponse> {
+  ) -> UnaryCall<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse> {
     return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createCategory.path,
+      path: Cake_CakeServiceClientMetadata.Methods.createCategory.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateCategoryInterceptors() ?? []
@@ -138,71 +202,53 @@ extension CakeServiceClientProtocol {
   internal func categories(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CategoriesResponse> {
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse> {
     return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.categories.path,
+      path: Cake_CakeServiceClientMetadata.Methods.categories.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCategoriesInterceptors() ?? []
     )
   }
 
-  /// Unary call to Fillings
+  /// Unary call to GetCategoriesByGenderName
   ///
   /// - Parameters:
-  ///   - request: Request to send to Fillings.
+  ///   - request: Request to send to GetCategoriesByGenderName.
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func fillings(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+  internal func getCategoriesByGenderName(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse> {
+  ) -> UnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes> {
     return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.fillings.path,
+      path: Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
-    )
-  }
-
-  /// Unary call to Cakes
-  ///
-  /// - Parameters:
-  ///   - request: Request to send to Cakes.
-  ///   - callOptions: Call options.
-  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func cakes(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse> {
-    return self.makeUnaryCall(
-      path: CakeServiceClientMetadata.Methods.cakes.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+      interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? []
     )
   }
 }
 
 @available(*, deprecated)
-extension CakeServiceClient: @unchecked Sendable {}
+extension Cake_CakeServiceClient: @unchecked Sendable {}
 
-@available(*, deprecated, renamed: "CakeServiceNIOClient")
-internal final class CakeServiceClient: CakeServiceClientProtocol {
+@available(*, deprecated, renamed: "Cake_CakeServiceNIOClient")
+internal final class Cake_CakeServiceClient: Cake_CakeServiceClientProtocol {
   private let lock = Lock()
   private var _defaultCallOptions: CallOptions
-  private var _interceptors: CakeServiceClientInterceptorFactoryProtocol?
+  private var _interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol?
   internal let channel: GRPCChannel
   internal var defaultCallOptions: CallOptions {
     get { self.lock.withLock { return self._defaultCallOptions } }
     set { self.lock.withLockVoid { self._defaultCallOptions = newValue } }
   }
-  internal var interceptors: CakeServiceClientInterceptorFactoryProtocol? {
+  internal var interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? {
     get { self.lock.withLock { return self._interceptors } }
     set { self.lock.withLockVoid { self._interceptors = newValue } }
   }
 
-  /// Creates a client for the CakeService service.
+  /// Creates a client for the cake.CakeService service.
   ///
   /// - Parameters:
   ///   - channel: `GRPCChannel` to the service host.
@@ -211,7 +257,7 @@ internal final class CakeServiceClient: CakeServiceClientProtocol {
   internal init(
     channel: GRPCChannel,
     defaultCallOptions: CallOptions = CallOptions(),
-    interceptors: CakeServiceClientInterceptorFactoryProtocol? = nil
+    interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? = nil
   ) {
     self.channel = channel
     self._defaultCallOptions = defaultCallOptions
@@ -219,12 +265,12 @@ internal final class CakeServiceClient: CakeServiceClientProtocol {
   }
 }
 
-internal struct CakeServiceNIOClient: CakeServiceClientProtocol {
+internal struct Cake_CakeServiceNIOClient: Cake_CakeServiceClientProtocol {
   internal var channel: GRPCChannel
   internal var defaultCallOptions: CallOptions
-  internal var interceptors: CakeServiceClientInterceptorFactoryProtocol?
+  internal var interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol?
 
-  /// Creates a client for the CakeService service.
+  /// Creates a client for the cake.CakeService service.
   ///
   /// - Parameters:
   ///   - channel: `GRPCChannel` to the service host.
@@ -233,7 +279,7 @@ internal struct CakeServiceNIOClient: CakeServiceClientProtocol {
   internal init(
     channel: GRPCChannel,
     defaultCallOptions: CallOptions = CallOptions(),
-    interceptors: CakeServiceClientInterceptorFactoryProtocol? = nil
+    interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? = nil
   ) {
     self.channel = channel
     self.defaultCallOptions = defaultCallOptions
@@ -242,98 +288,144 @@ internal struct CakeServiceNIOClient: CakeServiceClientProtocol {
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-internal protocol CakeServiceAsyncClientProtocol: GRPCClient {
+internal protocol Cake_CakeServiceAsyncClientProtocol: GRPCClient {
   static var serviceDescriptor: GRPCServiceDescriptor { get }
-  var interceptors: CakeServiceClientInterceptorFactoryProtocol? { get }
-
-  func makeCakeCall(
-    _ request: CakeRequest,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<CakeRequest, CakeResponse>
+  var interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? { get }
 
   func makeCreateCakeCall(
-    _ request: CreateCakeRequest,
+    _ request: Cake_CreateCakeRequest,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<CreateCakeRequest, CreateCakeResponse>
+  ) -> GRPCAsyncUnaryCall<Cake_CreateCakeRequest, Cake_CreateCakeResponse>
 
-  func makeCreateFillingCall(
-    _ request: CreateFillingRequest,
+  func makeCakeCall(
+    _ request: Cake_CakeRequest,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<CreateFillingRequest, CreateFillingResponse>
-
-  func makeCreateCategoryCall(
-    _ request: CreateCategoryRequest,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<CreateCategoryRequest, CreateCategoryResponse>
-
-  func makeCategoriesCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CategoriesResponse>
-
-  func makeFillingsCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>
+  ) -> GRPCAsyncUnaryCall<Cake_CakeRequest, Cake_CakeResponse>
 
   func makeCakesCall(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CakesResponse>
+
+  func makeCategoryPreviewCakesCall(
+    _ request: Cake_CategoryPreviewCakesReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Cake_CategoryPreviewCakesReq, Cake_CategoryPreviewCakesRes>
+
+  func makeCreateFillingCall(
+    _ request: Cake_CreateFillingRequest,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Cake_CreateFillingRequest, Cake_CreateFillingResponse>
+
+  func makeFillingsCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_FillingsResponse>
+
+  func makeCreateCategoryCall(
+    _ request: Cake_CreateCategoryRequest,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse>
+
+  func makeCategoriesCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>
+
+  func makeGetCategoriesByGenderNameCall(
+    _ request: Cake_GetCategoriesByGenderNameReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-extension CakeServiceAsyncClientProtocol {
+extension Cake_CakeServiceAsyncClientProtocol {
   internal static var serviceDescriptor: GRPCServiceDescriptor {
-    return CakeServiceClientMetadata.serviceDescriptor
+    return Cake_CakeServiceClientMetadata.serviceDescriptor
   }
 
-  internal var interceptors: CakeServiceClientInterceptorFactoryProtocol? {
+  internal var interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? {
     return nil
   }
 
-  internal func makeCakeCall(
-    _ request: CakeRequest,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<CakeRequest, CakeResponse> {
-    return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.cake.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCakeInterceptors() ?? []
-    )
-  }
-
   internal func makeCreateCakeCall(
-    _ request: CreateCakeRequest,
+    _ request: Cake_CreateCakeRequest,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<CreateCakeRequest, CreateCakeResponse> {
+  ) -> GRPCAsyncUnaryCall<Cake_CreateCakeRequest, Cake_CreateCakeResponse> {
     return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createCake.path,
+      path: Cake_CakeServiceClientMetadata.Methods.createCake.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? []
     )
   }
 
-  internal func makeCreateFillingCall(
-    _ request: CreateFillingRequest,
+  internal func makeCakeCall(
+    _ request: Cake_CakeRequest,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<CreateFillingRequest, CreateFillingResponse> {
+  ) -> GRPCAsyncUnaryCall<Cake_CakeRequest, Cake_CakeResponse> {
     return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createFilling.path,
+      path: Cake_CakeServiceClientMetadata.Methods.cake.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakeInterceptors() ?? []
+    )
+  }
+
+  internal func makeCakesCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CakesResponse> {
+    return self.makeAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.cakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+    )
+  }
+
+  internal func makeCategoryPreviewCakesCall(
+    _ request: Cake_CategoryPreviewCakesReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Cake_CategoryPreviewCakesReq, Cake_CategoryPreviewCakesRes> {
+    return self.makeAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.categoryPreviewCakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCategoryPreviewCakesInterceptors() ?? []
+    )
+  }
+
+  internal func makeCreateFillingCall(
+    _ request: Cake_CreateFillingRequest,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Cake_CreateFillingRequest, Cake_CreateFillingResponse> {
+    return self.makeAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.createFilling.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateFillingInterceptors() ?? []
     )
   }
 
-  internal func makeCreateCategoryCall(
-    _ request: CreateCategoryRequest,
+  internal func makeFillingsCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<CreateCategoryRequest, CreateCategoryResponse> {
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_FillingsResponse> {
     return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createCategory.path,
+      path: Cake_CakeServiceClientMetadata.Methods.fillings.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
+    )
+  }
+
+  internal func makeCreateCategoryCall(
+    _ request: Cake_CreateCategoryRequest,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse> {
+    return self.makeAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.createCategory.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateCategoryInterceptors() ?? []
@@ -343,84 +435,108 @@ extension CakeServiceAsyncClientProtocol {
   internal func makeCategoriesCall(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CategoriesResponse> {
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse> {
     return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.categories.path,
+      path: Cake_CakeServiceClientMetadata.Methods.categories.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCategoriesInterceptors() ?? []
     )
   }
 
-  internal func makeFillingsCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+  internal func makeGetCategoriesByGenderNameCall(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse> {
+  ) -> GRPCAsyncUnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes> {
     return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.fillings.path,
+      path: Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
-    )
-  }
-
-  internal func makeCakesCall(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse> {
-    return self.makeAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.cakes.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+      interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? []
     )
   }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-extension CakeServiceAsyncClientProtocol {
-  internal func cake(
-    _ request: CakeRequest,
-    callOptions: CallOptions? = nil
-  ) async throws -> CakeResponse {
-    return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.cake.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCakeInterceptors() ?? []
-    )
-  }
-
+extension Cake_CakeServiceAsyncClientProtocol {
   internal func createCake(
-    _ request: CreateCakeRequest,
+    _ request: Cake_CreateCakeRequest,
     callOptions: CallOptions? = nil
-  ) async throws -> CreateCakeResponse {
+  ) async throws -> Cake_CreateCakeResponse {
     return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createCake.path,
+      path: Cake_CakeServiceClientMetadata.Methods.createCake.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? []
     )
   }
 
-  internal func createFilling(
-    _ request: CreateFillingRequest,
+  internal func cake(
+    _ request: Cake_CakeRequest,
     callOptions: CallOptions? = nil
-  ) async throws -> CreateFillingResponse {
+  ) async throws -> Cake_CakeResponse {
     return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createFilling.path,
+      path: Cake_CakeServiceClientMetadata.Methods.cake.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakeInterceptors() ?? []
+    )
+  }
+
+  internal func cakes(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> Cake_CakesResponse {
+    return try await self.performAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.cakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+    )
+  }
+
+  internal func categoryPreviewCakes(
+    _ request: Cake_CategoryPreviewCakesReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> Cake_CategoryPreviewCakesRes {
+    return try await self.performAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.categoryPreviewCakes.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCategoryPreviewCakesInterceptors() ?? []
+    )
+  }
+
+  internal func createFilling(
+    _ request: Cake_CreateFillingRequest,
+    callOptions: CallOptions? = nil
+  ) async throws -> Cake_CreateFillingResponse {
+    return try await self.performAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.createFilling.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateFillingInterceptors() ?? []
     )
   }
 
-  internal func createCategory(
-    _ request: CreateCategoryRequest,
+  internal func fillings(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) async throws -> CreateCategoryResponse {
+  ) async throws -> Cake_FillingsResponse {
     return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.createCategory.path,
+      path: Cake_CakeServiceClientMetadata.Methods.fillings.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
+    )
+  }
+
+  internal func createCategory(
+    _ request: Cake_CreateCategoryRequest,
+    callOptions: CallOptions? = nil
+  ) async throws -> Cake_CreateCategoryResponse {
+    return try await self.performAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.createCategory.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCreateCategoryInterceptors() ?? []
@@ -430,50 +546,38 @@ extension CakeServiceAsyncClientProtocol {
   internal func categories(
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions? = nil
-  ) async throws -> CategoriesResponse {
+  ) async throws -> Cake_CategoriesResponse {
     return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.categories.path,
+      path: Cake_CakeServiceClientMetadata.Methods.categories.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeCategoriesInterceptors() ?? []
     )
   }
 
-  internal func fillings(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+  internal func getCategoriesByGenderName(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions? = nil
-  ) async throws -> FillingsResponse {
+  ) async throws -> Cake_GetCategoriesByGenderNameRes {
     return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.fillings.path,
+      path: Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeFillingsInterceptors() ?? []
-    )
-  }
-
-  internal func cakes(
-    _ request: SwiftProtobuf.Google_Protobuf_Empty,
-    callOptions: CallOptions? = nil
-  ) async throws -> CakesResponse {
-    return try await self.performAsyncUnaryCall(
-      path: CakeServiceClientMetadata.Methods.cakes.path,
-      request: request,
-      callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeCakesInterceptors() ?? []
+      interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? []
     )
   }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-internal struct CakeServiceAsyncClient: CakeServiceAsyncClientProtocol {
+internal struct Cake_CakeServiceAsyncClient: Cake_CakeServiceAsyncClientProtocol {
   internal var channel: GRPCChannel
   internal var defaultCallOptions: CallOptions
-  internal var interceptors: CakeServiceClientInterceptorFactoryProtocol?
+  internal var interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol?
 
   internal init(
     channel: GRPCChannel,
     defaultCallOptions: CallOptions = CallOptions(),
-    interceptors: CakeServiceClientInterceptorFactoryProtocol? = nil
+    interceptors: Cake_CakeServiceClientInterceptorFactoryProtocol? = nil
   ) {
     self.channel = channel
     self.defaultCallOptions = defaultCallOptions
@@ -481,112 +585,136 @@ internal struct CakeServiceAsyncClient: CakeServiceAsyncClientProtocol {
   }
 }
 
-internal protocol CakeServiceClientInterceptorFactoryProtocol: Sendable {
-
-  /// - Returns: Interceptors to use when invoking 'cake'.
-  func makeCakeInterceptors() -> [ClientInterceptor<CakeRequest, CakeResponse>]
+internal protocol Cake_CakeServiceClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'createCake'.
-  func makeCreateCakeInterceptors() -> [ClientInterceptor<CreateCakeRequest, CreateCakeResponse>]
+  func makeCreateCakeInterceptors() -> [ClientInterceptor<Cake_CreateCakeRequest, Cake_CreateCakeResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'createFilling'.
-  func makeCreateFillingInterceptors() -> [ClientInterceptor<CreateFillingRequest, CreateFillingResponse>]
-
-  /// - Returns: Interceptors to use when invoking 'createCategory'.
-  func makeCreateCategoryInterceptors() -> [ClientInterceptor<CreateCategoryRequest, CreateCategoryResponse>]
-
-  /// - Returns: Interceptors to use when invoking 'categories'.
-  func makeCategoriesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, CategoriesResponse>]
-
-  /// - Returns: Interceptors to use when invoking 'fillings'.
-  func makeFillingsInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>]
+  /// - Returns: Interceptors to use when invoking 'cake'.
+  func makeCakeInterceptors() -> [ClientInterceptor<Cake_CakeRequest, Cake_CakeResponse>]
 
   /// - Returns: Interceptors to use when invoking 'cakes'.
-  func makeCakesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>]
+  func makeCakesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_CakesResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'categoryPreviewCakes'.
+  func makeCategoryPreviewCakesInterceptors() -> [ClientInterceptor<Cake_CategoryPreviewCakesReq, Cake_CategoryPreviewCakesRes>]
+
+  /// - Returns: Interceptors to use when invoking 'createFilling'.
+  func makeCreateFillingInterceptors() -> [ClientInterceptor<Cake_CreateFillingRequest, Cake_CreateFillingResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'fillings'.
+  func makeFillingsInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_FillingsResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'createCategory'.
+  func makeCreateCategoryInterceptors() -> [ClientInterceptor<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'categories'.
+  func makeCategoriesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'getCategoriesByGenderName'.
+  func makeGetCategoriesByGenderNameInterceptors() -> [ClientInterceptor<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>]
 }
 
-internal enum CakeServiceClientMetadata {
+internal enum Cake_CakeServiceClientMetadata {
   internal static let serviceDescriptor = GRPCServiceDescriptor(
     name: "CakeService",
-    fullName: "CakeService",
+    fullName: "cake.CakeService",
     methods: [
-      CakeServiceClientMetadata.Methods.cake,
-      CakeServiceClientMetadata.Methods.createCake,
-      CakeServiceClientMetadata.Methods.createFilling,
-      CakeServiceClientMetadata.Methods.createCategory,
-      CakeServiceClientMetadata.Methods.categories,
-      CakeServiceClientMetadata.Methods.fillings,
-      CakeServiceClientMetadata.Methods.cakes,
+      Cake_CakeServiceClientMetadata.Methods.createCake,
+      Cake_CakeServiceClientMetadata.Methods.cake,
+      Cake_CakeServiceClientMetadata.Methods.cakes,
+      Cake_CakeServiceClientMetadata.Methods.categoryPreviewCakes,
+      Cake_CakeServiceClientMetadata.Methods.createFilling,
+      Cake_CakeServiceClientMetadata.Methods.fillings,
+      Cake_CakeServiceClientMetadata.Methods.createCategory,
+      Cake_CakeServiceClientMetadata.Methods.categories,
+      Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName,
     ]
   )
 
   internal enum Methods {
-    internal static let cake = GRPCMethodDescriptor(
-      name: "Cake",
-      path: "/CakeService/Cake",
-      type: GRPCCallType.unary
-    )
-
     internal static let createCake = GRPCMethodDescriptor(
       name: "CreateCake",
-      path: "/CakeService/CreateCake",
+      path: "/cake.CakeService/CreateCake",
       type: GRPCCallType.unary
     )
 
-    internal static let createFilling = GRPCMethodDescriptor(
-      name: "CreateFilling",
-      path: "/CakeService/CreateFilling",
-      type: GRPCCallType.unary
-    )
-
-    internal static let createCategory = GRPCMethodDescriptor(
-      name: "CreateCategory",
-      path: "/CakeService/CreateCategory",
-      type: GRPCCallType.unary
-    )
-
-    internal static let categories = GRPCMethodDescriptor(
-      name: "Categories",
-      path: "/CakeService/Categories",
-      type: GRPCCallType.unary
-    )
-
-    internal static let fillings = GRPCMethodDescriptor(
-      name: "Fillings",
-      path: "/CakeService/Fillings",
+    internal static let cake = GRPCMethodDescriptor(
+      name: "Cake",
+      path: "/cake.CakeService/Cake",
       type: GRPCCallType.unary
     )
 
     internal static let cakes = GRPCMethodDescriptor(
       name: "Cakes",
-      path: "/CakeService/Cakes",
+      path: "/cake.CakeService/Cakes",
+      type: GRPCCallType.unary
+    )
+
+    internal static let categoryPreviewCakes = GRPCMethodDescriptor(
+      name: "CategoryPreviewCakes",
+      path: "/cake.CakeService/CategoryPreviewCakes",
+      type: GRPCCallType.unary
+    )
+
+    internal static let createFilling = GRPCMethodDescriptor(
+      name: "CreateFilling",
+      path: "/cake.CakeService/CreateFilling",
+      type: GRPCCallType.unary
+    )
+
+    internal static let fillings = GRPCMethodDescriptor(
+      name: "Fillings",
+      path: "/cake.CakeService/Fillings",
+      type: GRPCCallType.unary
+    )
+
+    internal static let createCategory = GRPCMethodDescriptor(
+      name: "CreateCategory",
+      path: "/cake.CakeService/CreateCategory",
+      type: GRPCCallType.unary
+    )
+
+    internal static let categories = GRPCMethodDescriptor(
+      name: "Categories",
+      path: "/cake.CakeService/Categories",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getCategoriesByGenderName = GRPCMethodDescriptor(
+      name: "GetCategoriesByGenderName",
+      path: "/cake.CakeService/GetCategoriesByGenderName",
       type: GRPCCallType.unary
     )
   }
 }
 
 /// To build a server, implement a class that conforms to this protocol.
-internal protocol CakeServiceProvider: CallHandlerProvider {
-  var interceptors: CakeServiceServerInterceptorFactoryProtocol? { get }
+internal protocol Cake_CakeServiceProvider: CallHandlerProvider {
+  var interceptors: Cake_CakeServiceServerInterceptorFactoryProtocol? { get }
 
-  func cake(request: CakeRequest, context: StatusOnlyCallContext) -> EventLoopFuture<CakeResponse>
+  func createCake(request: Cake_CreateCakeRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CreateCakeResponse>
 
-  func createCake(request: CreateCakeRequest, context: StatusOnlyCallContext) -> EventLoopFuture<CreateCakeResponse>
+  func cake(request: Cake_CakeRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CakeResponse>
 
-  func createFilling(request: CreateFillingRequest, context: StatusOnlyCallContext) -> EventLoopFuture<CreateFillingResponse>
+  func cakes(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CakesResponse>
 
-  func createCategory(request: CreateCategoryRequest, context: StatusOnlyCallContext) -> EventLoopFuture<CreateCategoryResponse>
+  func categoryPreviewCakes(request: Cake_CategoryPreviewCakesReq, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CategoryPreviewCakesRes>
 
-  func categories(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<CategoriesResponse>
+  func createFilling(request: Cake_CreateFillingRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CreateFillingResponse>
 
-  func fillings(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<FillingsResponse>
+  func fillings(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_FillingsResponse>
 
-  func cakes(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<CakesResponse>
+  func createCategory(request: Cake_CreateCategoryRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CreateCategoryResponse>
+
+  func categories(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CategoriesResponse>
+
+  func getCategoriesByGenderName(request: Cake_GetCategoriesByGenderNameReq, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_GetCategoriesByGenderNameRes>
 }
 
-extension CakeServiceProvider {
+extension Cake_CakeServiceProvider {
   internal var serviceName: Substring {
-    return CakeServiceServerMetadata.serviceDescriptor.fullName[...]
+    return Cake_CakeServiceServerMetadata.serviceDescriptor.fullName[...]
   }
 
   /// Determines, calls and returns the appropriate request handler, depending on the request's method.
@@ -596,38 +724,65 @@ extension CakeServiceProvider {
     context: CallHandlerContext
   ) -> GRPCServerHandlerProtocol? {
     switch name {
+    case "CreateCake":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Cake_CreateCakeRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CreateCakeResponse>(),
+        interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? [],
+        userFunction: self.createCake(request:context:)
+      )
+
     case "Cake":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CakeRequest>(),
-        responseSerializer: ProtobufSerializer<CakeResponse>(),
+        requestDeserializer: ProtobufDeserializer<Cake_CakeRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CakeResponse>(),
         interceptors: self.interceptors?.makeCakeInterceptors() ?? [],
         userFunction: self.cake(request:context:)
       )
 
-    case "CreateCake":
+    case "Cakes":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CreateCakeRequest>(),
-        responseSerializer: ProtobufSerializer<CreateCakeResponse>(),
-        interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? [],
-        userFunction: self.createCake(request:context:)
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Cake_CakesResponse>(),
+        interceptors: self.interceptors?.makeCakesInterceptors() ?? [],
+        userFunction: self.cakes(request:context:)
+      )
+
+    case "CategoryPreviewCakes":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Cake_CategoryPreviewCakesReq>(),
+        responseSerializer: ProtobufSerializer<Cake_CategoryPreviewCakesRes>(),
+        interceptors: self.interceptors?.makeCategoryPreviewCakesInterceptors() ?? [],
+        userFunction: self.categoryPreviewCakes(request:context:)
       )
 
     case "CreateFilling":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CreateFillingRequest>(),
-        responseSerializer: ProtobufSerializer<CreateFillingResponse>(),
+        requestDeserializer: ProtobufDeserializer<Cake_CreateFillingRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CreateFillingResponse>(),
         interceptors: self.interceptors?.makeCreateFillingInterceptors() ?? [],
         userFunction: self.createFilling(request:context:)
+      )
+
+    case "Fillings":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Cake_FillingsResponse>(),
+        interceptors: self.interceptors?.makeFillingsInterceptors() ?? [],
+        userFunction: self.fillings(request:context:)
       )
 
     case "CreateCategory":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CreateCategoryRequest>(),
-        responseSerializer: ProtobufSerializer<CreateCategoryResponse>(),
+        requestDeserializer: ProtobufDeserializer<Cake_CreateCategoryRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CreateCategoryResponse>(),
         interceptors: self.interceptors?.makeCreateCategoryInterceptors() ?? [],
         userFunction: self.createCategory(request:context:)
       )
@@ -636,27 +791,18 @@ extension CakeServiceProvider {
       return UnaryServerHandler(
         context: context,
         requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<CategoriesResponse>(),
+        responseSerializer: ProtobufSerializer<Cake_CategoriesResponse>(),
         interceptors: self.interceptors?.makeCategoriesInterceptors() ?? [],
         userFunction: self.categories(request:context:)
       )
 
-    case "Fillings":
+    case "GetCategoriesByGenderName":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<FillingsResponse>(),
-        interceptors: self.interceptors?.makeFillingsInterceptors() ?? [],
-        userFunction: self.fillings(request:context:)
-      )
-
-    case "Cakes":
-      return UnaryServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<CakesResponse>(),
-        interceptors: self.interceptors?.makeCakesInterceptors() ?? [],
-        userFunction: self.cakes(request:context:)
+        requestDeserializer: ProtobufDeserializer<Cake_GetCategoriesByGenderNameReq>(),
+        responseSerializer: ProtobufSerializer<Cake_GetCategoriesByGenderNameRes>(),
+        interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? [],
+        userFunction: self.getCategoriesByGenderName(request:context:)
       )
 
     default:
@@ -667,57 +813,67 @@ extension CakeServiceProvider {
 
 /// To implement a server, implement an object which conforms to this protocol.
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-internal protocol CakeServiceAsyncProvider: CallHandlerProvider, Sendable {
+internal protocol Cake_CakeServiceAsyncProvider: CallHandlerProvider, Sendable {
   static var serviceDescriptor: GRPCServiceDescriptor { get }
-  var interceptors: CakeServiceServerInterceptorFactoryProtocol? { get }
-
-  func cake(
-    request: CakeRequest,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> CakeResponse
+  var interceptors: Cake_CakeServiceServerInterceptorFactoryProtocol? { get }
 
   func createCake(
-    request: CreateCakeRequest,
+    request: Cake_CreateCakeRequest,
     context: GRPCAsyncServerCallContext
-  ) async throws -> CreateCakeResponse
+  ) async throws -> Cake_CreateCakeResponse
 
-  func createFilling(
-    request: CreateFillingRequest,
+  func cake(
+    request: Cake_CakeRequest,
     context: GRPCAsyncServerCallContext
-  ) async throws -> CreateFillingResponse
-
-  func createCategory(
-    request: CreateCategoryRequest,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> CreateCategoryResponse
-
-  func categories(
-    request: SwiftProtobuf.Google_Protobuf_Empty,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> CategoriesResponse
-
-  func fillings(
-    request: SwiftProtobuf.Google_Protobuf_Empty,
-    context: GRPCAsyncServerCallContext
-  ) async throws -> FillingsResponse
+  ) async throws -> Cake_CakeResponse
 
   func cakes(
     request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
-  ) async throws -> CakesResponse
+  ) async throws -> Cake_CakesResponse
+
+  func categoryPreviewCakes(
+    request: Cake_CategoryPreviewCakesReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Cake_CategoryPreviewCakesRes
+
+  func createFilling(
+    request: Cake_CreateFillingRequest,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Cake_CreateFillingResponse
+
+  func fillings(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Cake_FillingsResponse
+
+  func createCategory(
+    request: Cake_CreateCategoryRequest,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Cake_CreateCategoryResponse
+
+  func categories(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Cake_CategoriesResponse
+
+  func getCategoriesByGenderName(
+    request: Cake_GetCategoriesByGenderNameReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Cake_GetCategoriesByGenderNameRes
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-extension CakeServiceAsyncProvider {
+extension Cake_CakeServiceAsyncProvider {
   internal static var serviceDescriptor: GRPCServiceDescriptor {
-    return CakeServiceServerMetadata.serviceDescriptor
+    return Cake_CakeServiceServerMetadata.serviceDescriptor
   }
 
   internal var serviceName: Substring {
-    return CakeServiceServerMetadata.serviceDescriptor.fullName[...]
+    return Cake_CakeServiceServerMetadata.serviceDescriptor.fullName[...]
   }
 
-  internal var interceptors: CakeServiceServerInterceptorFactoryProtocol? {
+  internal var interceptors: Cake_CakeServiceServerInterceptorFactoryProtocol? {
     return nil
   }
 
@@ -726,38 +882,65 @@ extension CakeServiceAsyncProvider {
     context: CallHandlerContext
   ) -> GRPCServerHandlerProtocol? {
     switch name {
+    case "CreateCake":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Cake_CreateCakeRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CreateCakeResponse>(),
+        interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? [],
+        wrapping: { try await self.createCake(request: $0, context: $1) }
+      )
+
     case "Cake":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CakeRequest>(),
-        responseSerializer: ProtobufSerializer<CakeResponse>(),
+        requestDeserializer: ProtobufDeserializer<Cake_CakeRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CakeResponse>(),
         interceptors: self.interceptors?.makeCakeInterceptors() ?? [],
         wrapping: { try await self.cake(request: $0, context: $1) }
       )
 
-    case "CreateCake":
+    case "Cakes":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CreateCakeRequest>(),
-        responseSerializer: ProtobufSerializer<CreateCakeResponse>(),
-        interceptors: self.interceptors?.makeCreateCakeInterceptors() ?? [],
-        wrapping: { try await self.createCake(request: $0, context: $1) }
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Cake_CakesResponse>(),
+        interceptors: self.interceptors?.makeCakesInterceptors() ?? [],
+        wrapping: { try await self.cakes(request: $0, context: $1) }
+      )
+
+    case "CategoryPreviewCakes":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Cake_CategoryPreviewCakesReq>(),
+        responseSerializer: ProtobufSerializer<Cake_CategoryPreviewCakesRes>(),
+        interceptors: self.interceptors?.makeCategoryPreviewCakesInterceptors() ?? [],
+        wrapping: { try await self.categoryPreviewCakes(request: $0, context: $1) }
       )
 
     case "CreateFilling":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CreateFillingRequest>(),
-        responseSerializer: ProtobufSerializer<CreateFillingResponse>(),
+        requestDeserializer: ProtobufDeserializer<Cake_CreateFillingRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CreateFillingResponse>(),
         interceptors: self.interceptors?.makeCreateFillingInterceptors() ?? [],
         wrapping: { try await self.createFilling(request: $0, context: $1) }
+      )
+
+    case "Fillings":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Cake_FillingsResponse>(),
+        interceptors: self.interceptors?.makeFillingsInterceptors() ?? [],
+        wrapping: { try await self.fillings(request: $0, context: $1) }
       )
 
     case "CreateCategory":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<CreateCategoryRequest>(),
-        responseSerializer: ProtobufSerializer<CreateCategoryResponse>(),
+        requestDeserializer: ProtobufDeserializer<Cake_CreateCategoryRequest>(),
+        responseSerializer: ProtobufSerializer<Cake_CreateCategoryResponse>(),
         interceptors: self.interceptors?.makeCreateCategoryInterceptors() ?? [],
         wrapping: { try await self.createCategory(request: $0, context: $1) }
       )
@@ -766,27 +949,18 @@ extension CakeServiceAsyncProvider {
       return GRPCAsyncServerHandler(
         context: context,
         requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<CategoriesResponse>(),
+        responseSerializer: ProtobufSerializer<Cake_CategoriesResponse>(),
         interceptors: self.interceptors?.makeCategoriesInterceptors() ?? [],
         wrapping: { try await self.categories(request: $0, context: $1) }
       )
 
-    case "Fillings":
+    case "GetCategoriesByGenderName":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<FillingsResponse>(),
-        interceptors: self.interceptors?.makeFillingsInterceptors() ?? [],
-        wrapping: { try await self.fillings(request: $0, context: $1) }
-      )
-
-    case "Cakes":
-      return GRPCAsyncServerHandler(
-        context: context,
-        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
-        responseSerializer: ProtobufSerializer<CakesResponse>(),
-        interceptors: self.interceptors?.makeCakesInterceptors() ?? [],
-        wrapping: { try await self.cakes(request: $0, context: $1) }
+        requestDeserializer: ProtobufDeserializer<Cake_GetCategoriesByGenderNameReq>(),
+        responseSerializer: ProtobufSerializer<Cake_GetCategoriesByGenderNameRes>(),
+        interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? [],
+        wrapping: { try await self.getCategoriesByGenderName(request: $0, context: $1) }
       )
 
     default:
@@ -795,92 +969,114 @@ extension CakeServiceAsyncProvider {
   }
 }
 
-internal protocol CakeServiceServerInterceptorFactoryProtocol: Sendable {
-
-  /// - Returns: Interceptors to use when handling 'cake'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCakeInterceptors() -> [ServerInterceptor<CakeRequest, CakeResponse>]
+internal protocol Cake_CakeServiceServerInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when handling 'createCake'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCreateCakeInterceptors() -> [ServerInterceptor<CreateCakeRequest, CreateCakeResponse>]
+  func makeCreateCakeInterceptors() -> [ServerInterceptor<Cake_CreateCakeRequest, Cake_CreateCakeResponse>]
 
-  /// - Returns: Interceptors to use when handling 'createFilling'.
+  /// - Returns: Interceptors to use when handling 'cake'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCreateFillingInterceptors() -> [ServerInterceptor<CreateFillingRequest, CreateFillingResponse>]
-
-  /// - Returns: Interceptors to use when handling 'createCategory'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCreateCategoryInterceptors() -> [ServerInterceptor<CreateCategoryRequest, CreateCategoryResponse>]
-
-  /// - Returns: Interceptors to use when handling 'categories'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCategoriesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, CategoriesResponse>]
-
-  /// - Returns: Interceptors to use when handling 'fillings'.
-  ///   Defaults to calling `self.makeInterceptors()`.
-  func makeFillingsInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, FillingsResponse>]
+  func makeCakeInterceptors() -> [ServerInterceptor<Cake_CakeRequest, Cake_CakeResponse>]
 
   /// - Returns: Interceptors to use when handling 'cakes'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCakesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, CakesResponse>]
+  func makeCakesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_CakesResponse>]
+
+  /// - Returns: Interceptors to use when handling 'categoryPreviewCakes'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeCategoryPreviewCakesInterceptors() -> [ServerInterceptor<Cake_CategoryPreviewCakesReq, Cake_CategoryPreviewCakesRes>]
+
+  /// - Returns: Interceptors to use when handling 'createFilling'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeCreateFillingInterceptors() -> [ServerInterceptor<Cake_CreateFillingRequest, Cake_CreateFillingResponse>]
+
+  /// - Returns: Interceptors to use when handling 'fillings'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeFillingsInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_FillingsResponse>]
+
+  /// - Returns: Interceptors to use when handling 'createCategory'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeCreateCategoryInterceptors() -> [ServerInterceptor<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse>]
+
+  /// - Returns: Interceptors to use when handling 'categories'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeCategoriesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>]
+
+  /// - Returns: Interceptors to use when handling 'getCategoriesByGenderName'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetCategoriesByGenderNameInterceptors() -> [ServerInterceptor<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>]
 }
 
-internal enum CakeServiceServerMetadata {
+internal enum Cake_CakeServiceServerMetadata {
   internal static let serviceDescriptor = GRPCServiceDescriptor(
     name: "CakeService",
-    fullName: "CakeService",
+    fullName: "cake.CakeService",
     methods: [
-      CakeServiceServerMetadata.Methods.cake,
-      CakeServiceServerMetadata.Methods.createCake,
-      CakeServiceServerMetadata.Methods.createFilling,
-      CakeServiceServerMetadata.Methods.createCategory,
-      CakeServiceServerMetadata.Methods.categories,
-      CakeServiceServerMetadata.Methods.fillings,
-      CakeServiceServerMetadata.Methods.cakes,
+      Cake_CakeServiceServerMetadata.Methods.createCake,
+      Cake_CakeServiceServerMetadata.Methods.cake,
+      Cake_CakeServiceServerMetadata.Methods.cakes,
+      Cake_CakeServiceServerMetadata.Methods.categoryPreviewCakes,
+      Cake_CakeServiceServerMetadata.Methods.createFilling,
+      Cake_CakeServiceServerMetadata.Methods.fillings,
+      Cake_CakeServiceServerMetadata.Methods.createCategory,
+      Cake_CakeServiceServerMetadata.Methods.categories,
+      Cake_CakeServiceServerMetadata.Methods.getCategoriesByGenderName,
     ]
   )
 
   internal enum Methods {
-    internal static let cake = GRPCMethodDescriptor(
-      name: "Cake",
-      path: "/CakeService/Cake",
-      type: GRPCCallType.unary
-    )
-
     internal static let createCake = GRPCMethodDescriptor(
       name: "CreateCake",
-      path: "/CakeService/CreateCake",
+      path: "/cake.CakeService/CreateCake",
       type: GRPCCallType.unary
     )
 
-    internal static let createFilling = GRPCMethodDescriptor(
-      name: "CreateFilling",
-      path: "/CakeService/CreateFilling",
-      type: GRPCCallType.unary
-    )
-
-    internal static let createCategory = GRPCMethodDescriptor(
-      name: "CreateCategory",
-      path: "/CakeService/CreateCategory",
-      type: GRPCCallType.unary
-    )
-
-    internal static let categories = GRPCMethodDescriptor(
-      name: "Categories",
-      path: "/CakeService/Categories",
-      type: GRPCCallType.unary
-    )
-
-    internal static let fillings = GRPCMethodDescriptor(
-      name: "Fillings",
-      path: "/CakeService/Fillings",
+    internal static let cake = GRPCMethodDescriptor(
+      name: "Cake",
+      path: "/cake.CakeService/Cake",
       type: GRPCCallType.unary
     )
 
     internal static let cakes = GRPCMethodDescriptor(
       name: "Cakes",
-      path: "/CakeService/Cakes",
+      path: "/cake.CakeService/Cakes",
+      type: GRPCCallType.unary
+    )
+
+    internal static let categoryPreviewCakes = GRPCMethodDescriptor(
+      name: "CategoryPreviewCakes",
+      path: "/cake.CakeService/CategoryPreviewCakes",
+      type: GRPCCallType.unary
+    )
+
+    internal static let createFilling = GRPCMethodDescriptor(
+      name: "CreateFilling",
+      path: "/cake.CakeService/CreateFilling",
+      type: GRPCCallType.unary
+    )
+
+    internal static let fillings = GRPCMethodDescriptor(
+      name: "Fillings",
+      path: "/cake.CakeService/Fillings",
+      type: GRPCCallType.unary
+    )
+
+    internal static let createCategory = GRPCMethodDescriptor(
+      name: "CreateCategory",
+      path: "/cake.CakeService/CreateCategory",
+      type: GRPCCallType.unary
+    )
+
+    internal static let categories = GRPCMethodDescriptor(
+      name: "Categories",
+      path: "/cake.CakeService/Categories",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getCategoriesByGenderName = GRPCMethodDescriptor(
+      name: "GetCategoriesByGenderName",
+      path: "/cake.CakeService/GetCategoriesByGenderName",
       type: GRPCCallType.unary
     )
   }
