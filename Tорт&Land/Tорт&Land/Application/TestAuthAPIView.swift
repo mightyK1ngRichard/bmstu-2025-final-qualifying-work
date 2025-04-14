@@ -1,10 +1,3 @@
-////
-////  TestAuthAPIView.swift
-////  Tорт&Land
-////
-////  Created by Dmitriy Permyakov on 11.02.2025.
-////
-//
 //import Foundation
 //import NetworkAPI
 //import SwiftUI
@@ -320,3 +313,37 @@
 //#Preview {
 //    CategoryTestView()
 //}
+
+import SwiftUI
+import NetworkAPI
+
+struct TestAuthAPIView: View {
+    let cakeProvider = CakeGrpcServiceImpl(
+        configuration: AppHosts.cake,
+        networkService: {
+            let networkService = NetworkServiceImpl()
+            networkService.setRefreshToken(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQ2MTc1MzYsInVzZXJJRCI6IjhjMjhhNDY0LWY0ZjEtNGVlMy05MjI5LTgwMWIyMWRhODc4MyJ9.Z-nMk8hxoi4QNkWjIljh4WVLQd7IG5fnt81powleqDs"
+            )
+            return networkService
+        }()
+    )
+
+    var body: some View {
+        Button("Update token") {
+            Task {
+                do {
+                    let res = try await cakeProvider.fetchCategoriesByGenderName(gender: .male)
+                    print("[DEBUG]: \(res)")
+                } catch {
+                    print("[DEBUG]: \(error)")
+                }
+            }
+        }
+        .buttonStyle(.borderedProminent)
+    }
+}
+
+#Preview {
+    TestAuthAPIView()
+}

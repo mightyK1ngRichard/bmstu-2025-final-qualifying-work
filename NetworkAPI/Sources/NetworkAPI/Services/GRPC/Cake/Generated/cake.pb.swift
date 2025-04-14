@@ -268,7 +268,7 @@ struct Cake_CakesResponse: Sendable {
   init() {}
 }
 
-struct Cake_GetCategoryIDsByGenderReq: Sendable {
+struct Cake_GetCategoriesByGenderNameReq: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -280,7 +280,7 @@ struct Cake_GetCategoryIDsByGenderReq: Sendable {
   init() {}
 }
 
-struct Cake_GetCategoryIDsByGenderRes: Sendable {
+struct Cake_GetCategoriesByGenderNameRes: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -1142,8 +1142,8 @@ extension Cake_CakesResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
   }
 }
 
-extension Cake_GetCategoryIDsByGenderReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".GetCategoryIDsByGenderReq"
+extension Cake_GetCategoriesByGenderNameReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetCategoriesByGenderNameReq"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "categoryGender"),
   ]
@@ -1167,15 +1167,15 @@ extension Cake_GetCategoryIDsByGenderReq: SwiftProtobuf.Message, SwiftProtobuf._
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Cake_GetCategoryIDsByGenderReq, rhs: Cake_GetCategoryIDsByGenderReq) -> Bool {
+  static func ==(lhs: Cake_GetCategoriesByGenderNameReq, rhs: Cake_GetCategoriesByGenderNameReq) -> Bool {
     if lhs.categoryGender != rhs.categoryGender {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Cake_GetCategoryIDsByGenderRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".GetCategoryIDsByGenderRes"
+extension Cake_GetCategoriesByGenderNameRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetCategoriesByGenderNameRes"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "categories"),
   ]
@@ -1199,7 +1199,7 @@ extension Cake_GetCategoryIDsByGenderRes: SwiftProtobuf.Message, SwiftProtobuf._
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Cake_GetCategoryIDsByGenderRes, rhs: Cake_GetCategoryIDsByGenderRes) -> Bool {
+  static func ==(lhs: Cake_GetCategoriesByGenderNameRes, rhs: Cake_GetCategoriesByGenderNameRes) -> Bool {
     if lhs.categories != rhs.categories {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true

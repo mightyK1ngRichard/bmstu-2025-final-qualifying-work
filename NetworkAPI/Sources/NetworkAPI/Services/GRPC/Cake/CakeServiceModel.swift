@@ -14,6 +14,8 @@ public enum CakeServiceModel {
     public enum FetchFillings {}
     public enum FetchCategories {}
     public enum FetchCakes {}
+    public enum FetchCategoriesByGenderName {}
+    public enum FetchCategoryCakes {}
 }
 
 // MARK: - CreateCategory
@@ -130,5 +132,21 @@ public extension CakeServiceModel.CreateCake {
 public extension CakeServiceModel.FetchCakes {
     struct Response: Sendable {
         public let cakes: [PreviewCakeEntity]
+    }
+}
+
+// MARK: - FetchCategoriesByGenderName
+
+public extension CakeServiceModel.FetchCategoriesByGenderName {
+    struct Response: Sendable {
+        public let categories: [CategoryEntity]
+    }
+}
+
+// MARK: - FetchCategoryCakes
+
+public extension CakeServiceModel.FetchCategoryCakes {
+    struct Response: Sendable {
+        public let cakes: [ProfilePreviewCakeEntity]
     }
 }

@@ -339,6 +339,9 @@
         }
       }
     },
+    "Reload data" : {
+
+    },
     "Repeat Password" : {
       "localizations" : {
         "ru" : {
@@ -438,6 +441,9 @@
           }
         }
       }
+    },
+    "Update token" : {
+
     },
     "User address not found" : {
       "localizations" : {

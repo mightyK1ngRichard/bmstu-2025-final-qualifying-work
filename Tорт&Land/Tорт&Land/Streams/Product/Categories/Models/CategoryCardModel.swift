@@ -6,9 +6,22 @@
 //
 
 import Foundation
+import NetworkAPI
 
 struct CategoryCardModel: Identifiable, Hashable {
     var id: String
     var title: String
     var imageState: ImageState
+}
+
+// MARK: - CategoryEntity
+
+extension CategoryCardModel {
+    init(from model: CategoryEntity) {
+        self = CategoryCardModel(
+            id: model.id,
+            title: model.name,
+            imageState: .loading
+        )
+    }
 }

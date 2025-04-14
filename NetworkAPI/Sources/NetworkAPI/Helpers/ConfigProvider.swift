@@ -10,17 +10,6 @@ import Foundation
 import GRPC
 import NIO
 
-enum UserDefaultsKeys: String {
-    case accessToken
-    case refreshToken
-    case expiresIn
-}
-
-struct JWTTokens {
-    var accessToken: String?
-    var refreshToken: String?
-}
-
 final class ConfigProvider: Sendable {
     @MainActor
     static func makeDefaultCallOptions() -> CallOptions {

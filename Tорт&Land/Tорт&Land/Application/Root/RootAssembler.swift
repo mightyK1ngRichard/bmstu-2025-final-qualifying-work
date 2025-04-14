@@ -28,6 +28,10 @@ final class RootAssembler {
             networkService: networkService
         )
 
+        if networkService.refreshToken == nil {
+            startScreenControl.update(with: .auth)
+        }
+
         let viewModel = RootViewModel(
             authService: authService,
             cakeService: cakeService,

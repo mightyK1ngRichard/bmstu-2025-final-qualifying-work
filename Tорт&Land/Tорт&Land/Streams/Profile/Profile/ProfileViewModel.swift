@@ -56,6 +56,7 @@ extension ProfileViewModel {
                 fetchAvatarWithHeaderImage(imageURL: user.imageUrl, headerImageURL: user.headerImageUrl)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
+                Logger.log(error)
                 uiProperties.screenState = .error(message: error.localizedDescription)
             }
         }

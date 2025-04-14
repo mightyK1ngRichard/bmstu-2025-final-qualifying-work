@@ -31,6 +31,7 @@ public protocol NetworkService: Sendable {
 
     func setAccessToken(_ accessToken: String, expiresIn: Date)
     func setRefreshToken(_ refreshToken: String)
+    func setTokens(accessToken: String, expiresIn: Date, refreshToken: String) async
 }
 
 extension NetworkService {
@@ -87,6 +88,9 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         self._callOptions = ConfigProvider.makeDefaultCallOptions()
         self._accessToken = jwtTokens.accessToken
         self._refreshToken = jwtTokens.refreshToken
+
+        Logger.log(kind: .debug, "access token from user defaults: \(_accessToken ?? "not found")")
+        Logger.log(kind: .debug, "refresh token from user defaults: \(_refreshToken ?? "not found")")
     }
 
     public func performAndLog<Request, Response: Sendable, MappedResponse>(
@@ -115,10 +119,10 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     }
 
     public func setAccessToken(_ accessToken: String, expiresIn: Date) {
-        lock.lock()
-        self._accessToken = accessToken
-        self._expiresIn = expiresIn
-        lock.unlock()
+        lock.withLock {
+            _accessToken = accessToken
+            _expiresIn = expiresIn
+        }
 
         Task { @MainActor in
             UserDefaults.standard.set(accessToken, forKey: UserDefaultsKeys.accessToken.rawValue)
@@ -146,10 +150,25 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             return Date() >= expiration.addingTimeInterval(-threshold)
         }
 
-        guard shouldRefresh else { return }
+        guard shouldRefresh else {
+            return
+        }
 
         let response = try await authService.updateAccessToken()
-        setAccessToken(response.accessToken, expiresIn: Date(timeIntervalSince1970: TimeInterval(response.expiresIn)))
+        await setAccessToken(response.accessToken, expiresIn: Date(timeIntervalSince1970: TimeInterval(response.expiresIn)))
+    }
+
+    public func setTokens(accessToken: String, expiresIn: Date, refreshToken: String) async {
+        lock.withLock {
+            _accessToken = accessToken
+            _refreshToken = refreshToken
+            _expiresIn = expiresIn
+        }
+
+        await MainActor.run {
+            UserDefaults.standard.set(refreshToken, forKey: UserDefaultsKeys.refreshToken.rawValue)
+            UserDefaults.standard.set(refreshToken, forKey: UserDefaultsKeys.refreshToken.rawValue)
+        }
     }
 
     private func createCallOptions(additional: CallOptions) -> CallOptions {

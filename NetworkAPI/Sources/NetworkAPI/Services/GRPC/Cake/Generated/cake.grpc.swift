@@ -56,10 +56,10 @@ internal protocol Cake_CakeServiceClientProtocol: GRPCClient {
     callOptions: CallOptions?
   ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>
 
-  func getCategoryIDsByGender(
-    _ request: Cake_GetCategoryIDsByGenderReq,
+  func getCategoriesByGenderName(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions?
-  ) -> UnaryCall<Cake_GetCategoryIDsByGenderReq, Cake_GetCategoryIDsByGenderRes>
+  ) -> UnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>
 }
 
 extension Cake_CakeServiceClientProtocol {
@@ -211,21 +211,21 @@ extension Cake_CakeServiceClientProtocol {
     )
   }
 
-  /// Unary call to GetCategoryIDsByGender
+  /// Unary call to GetCategoriesByGenderName
   ///
   /// - Parameters:
-  ///   - request: Request to send to GetCategoryIDsByGender.
+  ///   - request: Request to send to GetCategoriesByGenderName.
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  internal func getCategoryIDsByGender(
-    _ request: Cake_GetCategoryIDsByGenderReq,
+  internal func getCategoriesByGenderName(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<Cake_GetCategoryIDsByGenderReq, Cake_GetCategoryIDsByGenderRes> {
+  ) -> UnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes> {
     return self.makeUnaryCall(
-      path: Cake_CakeServiceClientMetadata.Methods.getCategoryIDsByGender.path,
+      path: Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeGetCategoryIDsByGenderInterceptors() ?? []
+      interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? []
     )
   }
 }
@@ -332,10 +332,10 @@ internal protocol Cake_CakeServiceAsyncClientProtocol: GRPCClient {
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>
 
-  func makeGetCategoryIdsByGenderCall(
-    _ request: Cake_GetCategoryIDsByGenderReq,
+  func makeGetCategoriesByGenderNameCall(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<Cake_GetCategoryIDsByGenderReq, Cake_GetCategoryIDsByGenderRes>
+  ) -> GRPCAsyncUnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -444,15 +444,15 @@ extension Cake_CakeServiceAsyncClientProtocol {
     )
   }
 
-  internal func makeGetCategoryIdsByGenderCall(
-    _ request: Cake_GetCategoryIDsByGenderReq,
+  internal func makeGetCategoriesByGenderNameCall(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<Cake_GetCategoryIDsByGenderReq, Cake_GetCategoryIDsByGenderRes> {
+  ) -> GRPCAsyncUnaryCall<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes> {
     return self.makeAsyncUnaryCall(
-      path: Cake_CakeServiceClientMetadata.Methods.getCategoryIDsByGender.path,
+      path: Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeGetCategoryIDsByGenderInterceptors() ?? []
+      interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? []
     )
   }
 }
@@ -555,15 +555,15 @@ extension Cake_CakeServiceAsyncClientProtocol {
     )
   }
 
-  internal func getCategoryIDsByGender(
-    _ request: Cake_GetCategoryIDsByGenderReq,
+  internal func getCategoriesByGenderName(
+    _ request: Cake_GetCategoriesByGenderNameReq,
     callOptions: CallOptions? = nil
-  ) async throws -> Cake_GetCategoryIDsByGenderRes {
+  ) async throws -> Cake_GetCategoriesByGenderNameRes {
     return try await self.performAsyncUnaryCall(
-      path: Cake_CakeServiceClientMetadata.Methods.getCategoryIDsByGender.path,
+      path: Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName.path,
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
-      interceptors: self.interceptors?.makeGetCategoryIDsByGenderInterceptors() ?? []
+      interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? []
     )
   }
 }
@@ -611,8 +611,8 @@ internal protocol Cake_CakeServiceClientInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when invoking 'categories'.
   func makeCategoriesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>]
 
-  /// - Returns: Interceptors to use when invoking 'getCategoryIDsByGender'.
-  func makeGetCategoryIDsByGenderInterceptors() -> [ClientInterceptor<Cake_GetCategoryIDsByGenderReq, Cake_GetCategoryIDsByGenderRes>]
+  /// - Returns: Interceptors to use when invoking 'getCategoriesByGenderName'.
+  func makeGetCategoriesByGenderNameInterceptors() -> [ClientInterceptor<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>]
 }
 
 internal enum Cake_CakeServiceClientMetadata {
@@ -628,7 +628,7 @@ internal enum Cake_CakeServiceClientMetadata {
       Cake_CakeServiceClientMetadata.Methods.fillings,
       Cake_CakeServiceClientMetadata.Methods.createCategory,
       Cake_CakeServiceClientMetadata.Methods.categories,
-      Cake_CakeServiceClientMetadata.Methods.getCategoryIDsByGender,
+      Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName,
     ]
   )
 
@@ -681,9 +681,9 @@ internal enum Cake_CakeServiceClientMetadata {
       type: GRPCCallType.unary
     )
 
-    internal static let getCategoryIDsByGender = GRPCMethodDescriptor(
-      name: "GetCategoryIDsByGender",
-      path: "/cake.CakeService/GetCategoryIDsByGender",
+    internal static let getCategoriesByGenderName = GRPCMethodDescriptor(
+      name: "GetCategoriesByGenderName",
+      path: "/cake.CakeService/GetCategoriesByGenderName",
       type: GRPCCallType.unary
     )
   }
@@ -709,7 +709,7 @@ internal protocol Cake_CakeServiceProvider: CallHandlerProvider {
 
   func categories(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CategoriesResponse>
 
-  func getCategoryIDsByGender(request: Cake_GetCategoryIDsByGenderReq, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_GetCategoryIDsByGenderRes>
+  func getCategoriesByGenderName(request: Cake_GetCategoriesByGenderNameReq, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_GetCategoriesByGenderNameRes>
 }
 
 extension Cake_CakeServiceProvider {
@@ -796,13 +796,13 @@ extension Cake_CakeServiceProvider {
         userFunction: self.categories(request:context:)
       )
 
-    case "GetCategoryIDsByGender":
+    case "GetCategoriesByGenderName":
       return UnaryServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<Cake_GetCategoryIDsByGenderReq>(),
-        responseSerializer: ProtobufSerializer<Cake_GetCategoryIDsByGenderRes>(),
-        interceptors: self.interceptors?.makeGetCategoryIDsByGenderInterceptors() ?? [],
-        userFunction: self.getCategoryIDsByGender(request:context:)
+        requestDeserializer: ProtobufDeserializer<Cake_GetCategoriesByGenderNameReq>(),
+        responseSerializer: ProtobufSerializer<Cake_GetCategoriesByGenderNameRes>(),
+        interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? [],
+        userFunction: self.getCategoriesByGenderName(request:context:)
       )
 
     default:
@@ -857,10 +857,10 @@ internal protocol Cake_CakeServiceAsyncProvider: CallHandlerProvider, Sendable {
     context: GRPCAsyncServerCallContext
   ) async throws -> Cake_CategoriesResponse
 
-  func getCategoryIDsByGender(
-    request: Cake_GetCategoryIDsByGenderReq,
+  func getCategoriesByGenderName(
+    request: Cake_GetCategoriesByGenderNameReq,
     context: GRPCAsyncServerCallContext
-  ) async throws -> Cake_GetCategoryIDsByGenderRes
+  ) async throws -> Cake_GetCategoriesByGenderNameRes
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -954,13 +954,13 @@ extension Cake_CakeServiceAsyncProvider {
         wrapping: { try await self.categories(request: $0, context: $1) }
       )
 
-    case "GetCategoryIDsByGender":
+    case "GetCategoriesByGenderName":
       return GRPCAsyncServerHandler(
         context: context,
-        requestDeserializer: ProtobufDeserializer<Cake_GetCategoryIDsByGenderReq>(),
-        responseSerializer: ProtobufSerializer<Cake_GetCategoryIDsByGenderRes>(),
-        interceptors: self.interceptors?.makeGetCategoryIDsByGenderInterceptors() ?? [],
-        wrapping: { try await self.getCategoryIDsByGender(request: $0, context: $1) }
+        requestDeserializer: ProtobufDeserializer<Cake_GetCategoriesByGenderNameReq>(),
+        responseSerializer: ProtobufSerializer<Cake_GetCategoriesByGenderNameRes>(),
+        interceptors: self.interceptors?.makeGetCategoriesByGenderNameInterceptors() ?? [],
+        wrapping: { try await self.getCategoriesByGenderName(request: $0, context: $1) }
       )
 
     default:
@@ -1003,9 +1003,9 @@ internal protocol Cake_CakeServiceServerInterceptorFactoryProtocol: Sendable {
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeCategoriesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Cake_CategoriesResponse>]
 
-  /// - Returns: Interceptors to use when handling 'getCategoryIDsByGender'.
+  /// - Returns: Interceptors to use when handling 'getCategoriesByGenderName'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeGetCategoryIDsByGenderInterceptors() -> [ServerInterceptor<Cake_GetCategoryIDsByGenderReq, Cake_GetCategoryIDsByGenderRes>]
+  func makeGetCategoriesByGenderNameInterceptors() -> [ServerInterceptor<Cake_GetCategoriesByGenderNameReq, Cake_GetCategoriesByGenderNameRes>]
 }
 
 internal enum Cake_CakeServiceServerMetadata {
@@ -1021,7 +1021,7 @@ internal enum Cake_CakeServiceServerMetadata {
       Cake_CakeServiceServerMetadata.Methods.fillings,
       Cake_CakeServiceServerMetadata.Methods.createCategory,
       Cake_CakeServiceServerMetadata.Methods.categories,
-      Cake_CakeServiceServerMetadata.Methods.getCategoryIDsByGender,
+      Cake_CakeServiceServerMetadata.Methods.getCategoriesByGenderName,
     ]
   )
 
@@ -1074,9 +1074,9 @@ internal enum Cake_CakeServiceServerMetadata {
       type: GRPCCallType.unary
     )
 
-    internal static let getCategoryIDsByGender = GRPCMethodDescriptor(
-      name: "GetCategoryIDsByGender",
-      path: "/cake.CakeService/GetCategoryIDsByGender",
+    internal static let getCategoriesByGenderName = GRPCMethodDescriptor(
+      name: "GetCategoriesByGenderName",
+      path: "/cake.CakeService/GetCategoriesByGenderName",
       type: GRPCCallType.unary
     )
   }

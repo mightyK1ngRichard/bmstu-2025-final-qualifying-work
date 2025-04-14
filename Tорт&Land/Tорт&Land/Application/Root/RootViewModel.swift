@@ -96,9 +96,10 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
     }
 
     func assemblyCategoriesView() -> CategoriesView {
-        // FIXME: Убрать моки
-        let viewModel = CategoriesViewModelMock()
-        return CategoriesView(viewModel: viewModel)
+        CategoriesAssembler.assemble(
+            cakeProvider: cakeService,
+            imageProvider: imageProvider
+        )
     }
 
     func assemblyChatListView() -> ChatListView {

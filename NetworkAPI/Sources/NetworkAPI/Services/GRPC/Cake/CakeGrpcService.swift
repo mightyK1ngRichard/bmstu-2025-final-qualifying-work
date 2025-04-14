@@ -20,6 +20,8 @@ public protocol CakeGrpcService: Sendable {
     func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response
     func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
     func fetchCakeDetails(cakeID: String) async throws -> CakeEntity
+    func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response
+    func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
     func closeConnection()
 }
 
@@ -158,6 +160,30 @@ public extension CakeGrpcServiceImpl {
             call: client.cake,
             with: request,
             mapping: { CakeEntity(from: $0.cake) }
+        )
+    }
+
+    func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response {
+        let request = Cake_GetCategoriesByGenderNameReq.with {
+            $0.categoryGender = gender.convertToGrpcModel()
+        }
+
+        return try await networkService.performAndLog(
+            call: client.getCategoriesByGenderName,
+            with: request,
+            mapping: { .init(categories: $0.categories.map(CategoryEntity.init(from:))) }
+        )
+    }
+
+    func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response {
+        let request = Cake_CategoryPreviewCakesReq.with {
+            $0.categoryID = categoryID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.categoryPreviewCakes,
+            with: request,
+            mapping: { .init(cakes: $0.previewCakes.map(ProfilePreviewCakeEntity.init(from:))) }
         )
     }
 

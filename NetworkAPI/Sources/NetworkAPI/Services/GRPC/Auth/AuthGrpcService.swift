@@ -57,12 +57,19 @@ public extension AuthGrpcServiceImpl {
             $0.email = req.email
             $0.password = req.password
         }
-
-        return try await networkService.performAndLog(
+        let result = try await networkService.performAndLog(
             call: client.register,
             with: request,
             mapping: { AuthServiceModel.Register.Response(from: $0) }
         )
+
+        await networkService.setTokens(
+            accessToken: result.accessToken,
+            expiresIn: Date(timeIntervalSince1970: TimeInterval(result.expiresIn)),
+            refreshToken: result.refreshToken
+        )
+
+        return result
     }
 
     func login(req: AuthServiceModel.Login.Request) async throws -> AuthServiceModel.Login.Response {
@@ -71,15 +78,23 @@ public extension AuthGrpcServiceImpl {
             $0.password = req.password
         }
 
-        return try await networkService.performAndLog(
+        let result = try await networkService.performAndLog(
             call: client.login,
             with: request,
             mapping: { AuthServiceModel.Login.Response(from: $0) }
         )
+
+        await networkService.setTokens(
+            accessToken: result.accessToken,
+            expiresIn: Date(timeIntervalSince1970: TimeInterval(result.expiresIn)),
+            refreshToken: result.refreshToken
+        )
+        
+        return result
     }
 
     func updateAccessToken() async throws -> AuthServiceModel.UpdateAccessToken.Response {
-        guard let refreshToken = networkService.refreshToken else {
+        guard let refreshToken = networkService.refreshToken, !refreshToken.isEmpty else {
             throw NetworkError.missingRefreshToken
         }
 
