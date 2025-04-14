@@ -10,6 +10,13 @@ import Foundation
 @testable import NetworkAPI
 
 final class StubGrpcCakeServiceImpl: CakeGrpcService {
+    func fetchCategoriesByGenderName(gender: NetworkAPI.CategoryGender) async throws -> NetworkAPI.CakeServiceModel.FetchCategoriesByGenderName.Response {
+        fatalError("No implementation")
+    }
+    
+    func fetchCategoryCakes(categoryID: String) async throws -> NetworkAPI.CakeServiceModel.FetchCategoryCakes.Response {
+        fatalError("No implementation")
+    }
 
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
         fatalError("No implementation")
@@ -40,5 +47,4 @@ final class StubGrpcCakeServiceImpl: CakeGrpcService {
     }
     
     func closeConnection() {}
-
 }

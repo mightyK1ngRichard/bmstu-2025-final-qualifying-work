@@ -17,7 +17,9 @@ final class ModelsMockProvider {
         id: "1",
         fio: "King Richard",
         nickname: "mightyK1ngRichard",
-        mail: "dimapermyakov@gmail.com"
+        mail: "dimapermyakov@gmail.com",
+        imageURL: nil,
+        headerImageURL: nil
     )
 
     static func generateCakeEntity(id: Int) -> CakeEntity {

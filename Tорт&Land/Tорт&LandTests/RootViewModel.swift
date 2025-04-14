@@ -12,7 +12,9 @@ import Foundation
 
 struct RootViewModelTests {
     let viewModel = RootViewModel(
+        authService: StubGrpcAuthService(),
         cakeService: StubGrpcCakeServiceImpl(),
+        profileService: StubProfileGrpcServiceImpl(),
         imageProvider: ImageLoaderProviderImpl(),
         startScreenControl: StartScreenControl()
     )
