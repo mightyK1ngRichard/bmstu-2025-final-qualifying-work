@@ -12,7 +12,7 @@ import Foundation
 import Observation
 
 @Observable
-final class ChatListViewModelMock: ChatListDisplayLogic & ChatListViewModelOutput {
+final class ChatListViewModelMock: ChatListDisplayLogic, ChatListViewModelInput, ChatListViewModelOutput {
     var uiProperties = ChatListModel.UIProperties()
     var cells: [ChatListModel.ChatCellModel] {
         uiProperties.searchText.isEmpty

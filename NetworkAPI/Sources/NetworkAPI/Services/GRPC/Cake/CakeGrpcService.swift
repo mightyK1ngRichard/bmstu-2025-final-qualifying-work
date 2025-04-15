@@ -111,9 +111,7 @@ public extension CakeGrpcServiceImpl {
             call: client.categories,
             with: request,
             mapping: {
-                .init(
-                    categories: $0.categories.map { CategoryEntity(from: $0) }
-                )
+                .init(categories: $0.categories.map { CategoryEntity(from: $0) })
             }
         )
     }

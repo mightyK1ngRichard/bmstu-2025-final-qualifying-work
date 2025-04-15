@@ -12,7 +12,8 @@ import GRPC
 // MARK: - NetworkService
 
 public protocol NetworkService: Sendable {
-    func maybeRefreshAccessToken(using authService: AuthService) async throws
+    @discardableResult
+    func maybeRefreshAccessToken(using authService: AuthService) async throws -> Bool
     func performAndLog<Request, Response: Sendable, MappedResponse>(
         call: (Request, CallOptions?) async throws -> Response,
         with: Request,
@@ -137,8 +138,12 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             UserDefaults.standard.set(refreshToken, forKey: UserDefaultsKeys.refreshToken.rawValue)
         }
     }
-
-    public func maybeRefreshAccessToken(using authService: AuthService) async throws {
+    
+    /// Обновление access token при необходимости
+    /// - Parameter authService: authService
+    /// - Returns: Нужно ли обновить токен
+    @discardableResult
+    public func maybeRefreshAccessToken(using authService: AuthService) async throws -> Bool {
         // Число секунд до истечения, чтобы обновить заранее
         let threshold: TimeInterval = 30
 
@@ -151,11 +156,17 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         }
 
         guard shouldRefresh else {
-            return
+            return false
         }
 
         let response = try await authService.updateAccessToken()
-        await setAccessToken(response.accessToken, expiresIn: Date(timeIntervalSince1970: TimeInterval(response.expiresIn)))
+        setAccessToken(
+            response.accessToken,
+            expiresIn: Date(timeIntervalSince1970: TimeInterval(response.expiresIn))
+        )
+        addAuthorizationHeaderIfNeeded()
+
+        return true
     }
 
     public func setTokens(accessToken: String, expiresIn: Date, refreshToken: String) async {
@@ -180,5 +191,10 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             options.customMetadata.replaceOrAdd(name: $0.name, value: $0.value)
         }
         return options
+    }
+
+    private func addAuthorizationHeaderIfNeeded() {
+        guard let accessToken else { return }
+        callOptions.customMetadata.replaceOrAdd(name: "authorization", value: "Bearer \(accessToken)")
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ChatDisplayLogic: ChatViewModelInput {
+protocol ChatDisplayLogic {
     var uiProperties: ChatModel.UIProperties { get set }
     var currentUser: UserModel { get }
     var interlocutor: UserModel { get }

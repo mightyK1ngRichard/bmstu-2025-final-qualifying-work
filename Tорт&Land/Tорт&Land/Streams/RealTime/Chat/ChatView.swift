@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ChatView: View {
-    @State var viewModel: ChatDisplayLogic & ChatViewModelOutput
+    @State var viewModel: ChatDisplayLogic & ChatViewModelOutput & ChatViewModelInput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ChatListDisplayLogic: ChatListViewModelInput {
+protocol ChatListDisplayLogic {
     var uiProperties: ChatListModel.UIProperties { get set }
     var cells: [ChatListModel.ChatCellModel] { get }
 }
