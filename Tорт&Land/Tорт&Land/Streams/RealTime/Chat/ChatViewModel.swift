@@ -7,22 +7,54 @@
 //
 
 import Foundation
+import NetworkAPI
 
 @Observable
-final class ChatViewModel {
+final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelInput {
     var uiProperties = ChatModel.UIProperties()
     private(set) var currentUser: UserModel
     private(set) var interlocutor: UserModel
-    private(set) var messages: [ChatModel.ChatMessage] = []
+    private(set) var messages: [ChatModel.ChatMessage]
     private(set) var lastMessageID: String?
+    @ObservationIgnored
+    private let chatProvider: ChatService
 
     init(
         currentUser: UserModel,
-        interlocutor: UserModel
+        interlocutor: UserModel,
+        chatProvider: ChatService,
+        messages: [ChatModel.ChatMessage] = []
     ) {
         self.currentUser = currentUser
         self.interlocutor = interlocutor
-//        self.lastMessageID = messages.last?.id
+        self.chatProvider = chatProvider
+        self.messages = messages
+        self.lastMessageID = messages.last?.id
+    }
+
+    func fetchMessages() {
+        uiProperties.isLoading = true
+
+        Task { @MainActor in
+            let messagesEntities = try await chatProvider.getMessages(interlocutorID: interlocutor.id)
+            lastMessageID = messagesEntities.last?.id
+            
+            for message in messagesEntities {
+                let isYou = message.senderID == currentUser.id
+                messages.append(
+                    ChatModel.ChatMessage(
+                        id: message.id,
+                        isYou: isYou,
+                        message: message.text,
+                        user: isYou ? currentUser : interlocutor,
+                        time: message.dateCreation.formattedHHmm,
+                        state: .received
+                    )
+                )
+            }
+
+            uiProperties.isLoading = false
+        }
     }
 
     func didTapSendMessageButton() {

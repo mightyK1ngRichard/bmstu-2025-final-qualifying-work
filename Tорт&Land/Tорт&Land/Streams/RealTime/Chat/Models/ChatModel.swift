@@ -13,6 +13,7 @@ enum ChatModel {}
 extension ChatModel {
     struct UIProperties: Hashable {
         var messageText = ""
+        var isLoading = false
     }
 
     struct ChatMessage: Identifiable, Hashable {

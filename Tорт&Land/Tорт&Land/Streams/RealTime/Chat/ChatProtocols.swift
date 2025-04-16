@@ -19,8 +19,9 @@ protocol ChatDisplayLogic {
 protocol ChatViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
     func configureInterlocutorAvatar() -> TLImageView.Configuration
+    func didTapSendMessageButton()
+    func fetchMessages()
 }
 
 protocol ChatViewModelOutput {
-    func didTapSendMessageButton()
 }

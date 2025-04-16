@@ -15,6 +15,7 @@ struct ChatView: View {
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.fetchMessages()
         }
     }
 }

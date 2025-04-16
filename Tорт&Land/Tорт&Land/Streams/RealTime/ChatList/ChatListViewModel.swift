@@ -18,6 +18,7 @@ final class ChatListViewModel: ChatListDisplayLogic, ChatListViewModelInput, Cha
         : allChatCells.filter { $0.user.name.contains(uiProperties.searchText) }
     }
     private var allChatCells: [ChatListModel.ChatCellModel] = []
+    private let currentUser: UserModel
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
@@ -25,7 +26,12 @@ final class ChatListViewModel: ChatListDisplayLogic, ChatListViewModelInput, Cha
     @ObservationIgnored
     private var coordinator: Coordinator?
 
-    init(imageProvider: ImageLoaderProvider, chatProvider: ChatService) {
+    init(
+        currentUser: UserModel,
+        imageProvider: ImageLoaderProvider,
+        chatProvider: ChatService
+    ) {
+        self.currentUser = currentUser
         self.imageProvider = imageProvider
         self.chatProvider = chatProvider
     }
@@ -83,9 +89,11 @@ extension ChatListViewModel {
 
 extension ChatListViewModel {
     func configureChatView(with model: ChatListModel.ChatCellModel) -> ChatView {
-        // TODO: Убрать моки
-        let viewModel = ChatViewModelMock()
-        return ChatView(viewModel: viewModel)
+        ChatAssembler.assemble(
+            currentUser: currentUser,
+            interlocutor: model.user,
+            chatProvider: chatProvider
+        )
     }
 
     func configureChatCell(with model: ChatListModel.ChatCellModel) -> TLChatCell.Configuration {
@@ -115,6 +123,7 @@ import SwiftUI
     )
 
     return ChatListAssembler.assemble(
+        currentUser: CommonMockData.generateMockUserModel(id: 1),
         imageProvider: ImageLoaderProviderImpl(),
         chatProvider: ChatServiceImpl(
             configuration: AppHosts.chat,

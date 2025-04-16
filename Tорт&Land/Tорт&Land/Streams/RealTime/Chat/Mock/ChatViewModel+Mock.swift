@@ -48,6 +48,9 @@ final class ChatViewModelMock: ChatDisplayLogic, ChatViewModelOutput, ChatViewMo
     func configureInterlocutorAvatar() -> TLImageView.Configuration {
         .init(imageState: interlocutor.avatarImage)
     }
+
+    func fetchMessages() {
+    }
 }
 
 private extension ChatViewModelMock {

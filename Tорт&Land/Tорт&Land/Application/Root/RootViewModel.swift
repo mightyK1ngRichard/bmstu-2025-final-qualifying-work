@@ -30,18 +30,22 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     @ObservationIgnored
     private let profileService: ProfileGrpcService
     @ObservationIgnored
+    private let chatProvider: ChatService
+    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     private var coordinator: Coordinator!
 
     init(
         authService: AuthService,
         cakeService: CakeGrpcService,
+        chatProvider: ChatService,
         profileService: ProfileGrpcService,
         imageProvider: ImageLoaderProvider,
         startScreenControl: StartScreenControl
     ) {
         self.authService = authService
         self.cakeService = cakeService
+        self.chatProvider = chatProvider
         self.profileService = profileService
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
@@ -82,7 +86,8 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
             user: userModel,
             imageProvider: imageProvider,
             profileService: profileService,
-            isCurrentUser: currentUser?.id == userModel.id
+            isCurrentUser: currentUser?.id == userModel.id,
+            rootViewModel: self
         )
     }
 
@@ -103,9 +108,11 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
     }
 
     func assemblyChatListView() -> ChatListView {
-        // FIXME: Убрать моки
-        let viewModel = ChatListViewModelMock(delay: 3)
-        return ChatListView(viewModel: viewModel)
+        ChatListAssembler.assemble(
+            currentUser: currentUser!,
+            imageProvider: imageProvider,
+            chatProvider: chatProvider
+        )
     }
 
     func assemblyNotificationsListView() -> NotificationsListView {
@@ -119,7 +126,8 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
             user: currentUser,
             imageProvider: imageProvider,
             profileService: profileService,
-            isCurrentUser: true
+            isCurrentUser: true,
+            rootViewModel: self
         )
     }
 }
@@ -128,8 +136,8 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
 
 extension RootViewModel {
 
-    func updateCurrentUser(_ user: UserEntity) {
-        #warning("Сделать из экрана профиля")
+    func updateCurrentUser(_ user: ProfileEntity) {
+        currentUser = UserModel(from: .init(from: user))
     }
 
     func setCakes(_ newCakes: [CakeEntity]) {

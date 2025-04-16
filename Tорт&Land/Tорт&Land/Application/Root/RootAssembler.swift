@@ -27,6 +27,11 @@ final class RootAssembler {
             authService: authService,
             networkService: networkService
         )
+        let chatService = ChatServiceImpl(
+            configuration: AppHosts.chat,
+            authService: authService,
+            networkService: networkService
+        )
 
         if networkService.refreshToken == nil {
             startScreenControl.update(with: .auth)
@@ -35,6 +40,7 @@ final class RootAssembler {
         let viewModel = RootViewModel(
             authService: authService,
             cakeService: cakeService,
+            chatProvider: chatService,
             profileService: profileService,
             imageProvider: imageProvider,
             startScreenControl: startScreenControl

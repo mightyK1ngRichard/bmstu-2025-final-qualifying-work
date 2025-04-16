@@ -402,6 +402,9 @@
         }
       }
     },
+    "Send message" : {
+
+    },
     "Send review" : {
       "localizations" : {
         "ru" : {

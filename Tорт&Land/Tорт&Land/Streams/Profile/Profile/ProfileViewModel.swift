@@ -16,6 +16,8 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
     private(set) var user: UserModel?
     private(set) var isCurrentUser: Bool
     @ObservationIgnored
+    private let rootViewModel: RootViewModel
+    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private let profileService: ProfileGrpcService
@@ -28,12 +30,14 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
         profileService: ProfileGrpcService,
-        isCurrentUser: Bool = false
+        isCurrentUser: Bool = false,
+        rootViewModel: RootViewModel
     ) {
         self.user = user
         self.profileService = profileService
         self.isCurrentUser = isCurrentUser
         self.imageProvider = imageProvider
+        self.rootViewModel = rootViewModel
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
@@ -53,6 +57,9 @@ extension ProfileViewModel {
                 user = UserModel(from: res.userInfo)
                 uiProperties.screenState = .finished
                 let user = res.userInfo.profile
+                if isCurrentUser {
+                    rootViewModel.updateCurrentUser(user)
+                }
                 fetchAvatarWithHeaderImage(imageURL: user.imageUrl, headerImageURL: user.headerImageUrl)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
@@ -139,26 +146,4 @@ extension ProfileViewModel {
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {
         cake.configureProductCard(priceFormatter: priceFormatter)
     }
-}
-
-import SwiftUI
-#Preview("Network") {
-    let networkImpl = NetworkServiceImpl()
-    let authService = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: networkImpl
-    )
-
-    ProfileView(
-        viewModel: ProfileViewModel(
-            user: CommonMockData.generateMockUserModel(id: 1),
-            imageProvider: ImageLoaderProviderImpl(),
-            profileService: ProfileGrpcServiceImpl(
-                configuration: AppHosts.profile,
-                authService: authService,
-                networkService: networkImpl
-            )
-        )
-    )
-    .environment(Coordinator())
 }

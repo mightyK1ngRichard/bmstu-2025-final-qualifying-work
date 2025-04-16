@@ -14,13 +14,15 @@ final class ProfileAssemler {
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
         profileService: ProfileGrpcService,
-        isCurrentUser: Bool
+        isCurrentUser: Bool,
+        rootViewModel: RootViewModel
     ) -> ProfileView {
         let viewModel = ProfileViewModel(
             user: user,
             imageProvider: imageProvider,
             profileService: profileService,
-            isCurrentUser: isCurrentUser
+            isCurrentUser: isCurrentUser,
+            rootViewModel: rootViewModel
         )
 
         return ProfileView(viewModel: viewModel)
