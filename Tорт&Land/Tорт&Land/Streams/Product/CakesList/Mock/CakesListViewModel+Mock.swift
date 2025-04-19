@@ -62,6 +62,12 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
     func didTapLikeButton(model: CakeModel, isSelected: Bool) {
         print("[DEBUG]: Нажали лайк для торта: \(model.id), isSelected: \(isSelected)")
     }
+    
+    func updateUserAvatarImage(imageState: ImageState, cakeID: String) {
+    }
+
+    func updateUserHeaderImage(imageState: ImageState, cakeID: String) {
+    }
 }
 
 // MARK: - Configuration

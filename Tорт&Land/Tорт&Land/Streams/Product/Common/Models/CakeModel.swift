@@ -92,14 +92,7 @@ extension CakeModel {
             comments: [],
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
-            seller: UserModel(
-                id: model.owner.id,
-                name: model.owner.fio ?? StringConstants.anonimeUserName,
-                mail: model.owner.mail,
-                avatarImage: .empty,
-                headerImage: .empty,
-                cakes: []
-            )
+            seller: UserModel(from: model.owner)
         )
     }
 

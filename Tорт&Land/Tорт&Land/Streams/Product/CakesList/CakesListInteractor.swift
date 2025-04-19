@@ -39,6 +39,7 @@ extension CakesListInteractor {
                     let section = identifyСakeSection(for: cake)
                     sections[section, default: []].append(cake)
                     images.append((cake, section, cake.imageURL))
+                    fetchUserImages(user: cake.owner, cakeID: cake.id)
                 }
 
                 await presenter.didFetchCakes(result: .success(sections))
@@ -65,16 +66,33 @@ private extension CakesListInteractor {
         return .all
     }
 
+    func fetchUserImages(user: UserEntity, cakeID: String) {
+        Task { @MainActor in
+            guard let imageURL = user.imageURL else {
+                presenter.updateUserAvatarImage(imageState: .fetched(.uiImage(.profile)), cakeID: cakeID)
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: imageURL)
+            presenter.updateUserAvatarImage(imageState: imageState, cakeID: cakeID)
+        }
+
+        Task { @MainActor in
+            guard let imageURL = user.headerImageURL else {
+                presenter.updateUserHeaderImage(imageState: .empty, cakeID: cakeID)
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: imageURL)
+            presenter.updateUserHeaderImage(imageState: imageState, cakeID: cakeID)
+        }
+    }
+
     func fetchImages(for items: [(cake: PreviewCakeEntity, section: CakesListModel.Section.Kind, url: String)]) {
         for item in items {
             Task {
-                do {
-                    let imageState = try await imageProvider.fetchImage(for: item.url)
-                    await presenter.updateCakeCellImage(cakeID: item.cake.id, imageState: imageState, with: item.section)
-                } catch {
-                    Logger.log(kind: .error, "Ошибка получения изображения: \(error.localizedDescription)")
-                    await presenter.updateCakeCellImage(cakeID: item.cake.id, imageState: .error(.systemImage()), with: item.section)
-                }
+                let imageState = await imageProvider.fetchImage(for: item.url)
+                await presenter.updateCakeCellImage(cakeID: item.cake.id, imageState: imageState, with: item.section)
             }
         }
     }

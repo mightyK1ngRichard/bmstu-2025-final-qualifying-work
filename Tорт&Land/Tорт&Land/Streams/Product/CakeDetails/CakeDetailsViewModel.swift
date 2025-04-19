@@ -70,13 +70,9 @@ extension CakeDetailsViewModel {
     private func fetchThumbnails(cakeImages: [Thumbnail]) {
         for thumbnail in cakeImages {
             Task { @MainActor in
-                do {
-                    let imageState = try await imageProvider.fetchImage(for: thumbnail.url)
-                    if let index = cakeModel.thumbnails.firstIndex(where: { $0.id == thumbnail.id }) {
-                        cakeModel.thumbnails[index].imageState = imageState
-                    }
-                } catch {
-                    
+                let imageState = await imageProvider.fetchImage(for: thumbnail.url)
+                if let index = cakeModel.thumbnails.firstIndex(where: { $0.id == thumbnail.id }) {
+                    cakeModel.thumbnails[index].imageState = imageState
                 }
             }
         }
@@ -86,7 +82,7 @@ extension CakeDetailsViewModel {
     private func fetchCategoriesImages(categories: [CategoryEntity]) {
         for category in categories {
             Task { @MainActor in
-                let imageState = try await imageProvider.fetchImage(for: category.imageURL)
+                let imageState = await imageProvider.fetchImage(for: category.imageURL)
                 if let index = cakeModel.categories.firstIndex(where: { $0.id == category.id }) {
                     cakeModel.categories[index].imageState = imageState
                 }
@@ -98,7 +94,7 @@ extension CakeDetailsViewModel {
     private func fetchFillingsImages(fillings: [FillingEntity]) {
         for filling in fillings {
             Task { @MainActor in
-                let imageState = try await imageProvider.fetchImage(for: filling.imageURL)
+                let imageState = await imageProvider.fetchImage(for: filling.imageURL)
                 if let index = cakeModel.fillings.firstIndex(where: { $0.id == filling.id }) {
                     cakeModel.fillings[index].imageState = imageState
                 }

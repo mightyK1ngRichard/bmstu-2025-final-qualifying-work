@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NetworkAPI
 
 enum ChatModel {}
 
@@ -22,7 +23,7 @@ extension ChatModel {
         let message: String
         let user: UserModel
         let time: String
-        let state: MessageState
+        var state: MessageState
     }
 }
 
@@ -31,5 +32,18 @@ extension ChatModel.ChatMessage {
         case progress
         case received
         case error
+    }
+}
+
+extension ChatModel.ChatMessage {
+    init(from model: ChatMessageEntity, sender: UserModel, userID: String) {
+        self = .init(
+            id: model.id,
+            isYou: model.senderID == userID,
+            message: model.text,
+            user: sender,
+            time: model.dateCreation.formattedHHmm,
+            state: .received
+        )
     }
 }

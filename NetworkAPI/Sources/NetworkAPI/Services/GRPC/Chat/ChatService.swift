@@ -11,6 +11,7 @@ import NIO
 import SwiftProtobuf
 
 public protocol ChatService: Sendable {
+    var handler: ((ChatMessageEntity) -> Void)? { get set }
     func startChat() async throws
     func getUserChats() async throws -> [UserEntity]
     func getMessages(interlocutorID: String) async throws -> [ChatMessageEntity]
@@ -25,6 +26,7 @@ public final class ChatServiceImpl: ChatService, @unchecked Sendable {
     private let networkService: NetworkService
     private var chatStream: GRPCAsyncBidirectionalStreamingCall<Chat_ChatMessage, Chat_ChatMessage>!
     private let authService: AuthService
+    private var isStreaming = false
 
     public init(
         configuration: GRPCHostPortConfiguration,
@@ -35,7 +37,7 @@ public final class ChatServiceImpl: ChatService, @unchecked Sendable {
             let channel = try ConfigProvider.makeConection(
                 host: configuration.hostName,
                 port: configuration.port,
-                numberOfThreads: 1
+                numberOfThreads: 4
             )
             self.client = Chat_ChatServiceAsyncClient(channel: channel, interceptors: nil)
             self.channel = channel
@@ -54,6 +56,10 @@ public final class ChatServiceImpl: ChatService, @unchecked Sendable {
 
 public extension ChatServiceImpl {
     func startChat() async throws {
+        guard !isStreaming else {
+            return
+        }
+
         // Обновляем рефреш токен если это необходимо
         try await networkService.maybeRefreshAccessToken(using: authService)
         var options = networkService.callOptions
@@ -61,6 +67,7 @@ public extension ChatServiceImpl {
         chatStream = client.makeChatCall(callOptions: options)
 
         try await chatStream.requestStream.send(Chat_ChatMessage())
+        isStreaming = true
 
         for try await message in chatStream.responseStream {
             handler?(
@@ -113,8 +120,9 @@ public extension ChatServiceImpl {
 
     func closeConnection() {
         do {
-            try channel.close().wait()
             chatStream.cancel()
+            try channel.close().wait()
+            isStreaming = false
         } catch {
             Logger.log(kind: .error, error)
         }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 import NetworkAPI
 
 protocol RootDisplayData {
@@ -18,6 +19,7 @@ protocol RootDisplayData {
 }
 
 protocol RootViewModelInput {
+    func fetchUserInfoIfNeeded()
     func setEnvironmentObjects(_ coordinator: Coordinator)
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
     func assemblyProfileView(userModel: UserModel) -> ProfileView
@@ -26,7 +28,9 @@ protocol RootViewModelInput {
     func assemblyCategoriesView() -> CategoriesView
     func assemblyChatListView() -> ChatListView
     func assemblyNotificationsListView() -> NotificationsListView
-    func assemblyProfileView() -> ProfileView
+//    func assemblyProfileView() -> ProfileView
+    associatedtype UserContentView: View
+    func assemblyProfileView() -> UserContentView
 }
 
 protocol RootViewModelOutput {

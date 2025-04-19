@@ -90,6 +90,8 @@ extension RootViewModelMock: @preconcurrency RootViewModelInput {
     func setCakes(_ newCakes: [CakeEntity]) {}
 
     func updateCake(_ cake: CakeEntity) {}
+
+    func fetchUserInfoIfNeeded() {}
 }
 
 // MARK: - Mock Data

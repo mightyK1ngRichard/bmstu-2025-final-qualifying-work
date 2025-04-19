@@ -402,9 +402,6 @@
         }
       }
     },
-    "Send message" : {
-
-    },
     "Send review" : {
       "localizations" : {
         "ru" : {
@@ -444,9 +441,6 @@
           }
         }
       }
-    },
-    "Update token" : {
-
     },
     "User address not found" : {
       "localizations" : {

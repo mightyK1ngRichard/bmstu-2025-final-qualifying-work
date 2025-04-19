@@ -49,7 +49,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
         self.profileService = profileService
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
-        // FIXME: Сделать UserDefauls
+        // FIXME: Сделать получение юзера из SwiftData
         // currentUser = UserDefaults
     }
 }
@@ -61,6 +61,62 @@ extension RootViewModel {
 
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
+    }
+}
+
+// MARK: - User Model
+
+extension RootViewModel {
+    func fetchUserInfoIfNeeded() {
+        guard currentUser == nil && startScreenControl.screenKind == .cakesList else {
+            return
+        }
+
+        Task { @MainActor in
+            do {
+                let result = try await profileService.getUserInfo()
+                let user = UserModel(from: result.userInfo)
+                currentUser = user
+                fetchUserAvatar(urlString: result.userInfo.profile.imageUrl)
+                fetchUserHeaderImage(urlString: result.userInfo.profile.headerImageUrl)
+                fetchCakesImages(cakes: result.userInfo.previewCakes)
+            } catch {
+                Logger.log(kind: .error, error)
+            }
+        }
+    }
+}
+
+private extension RootViewModel {
+    func fetchUserAvatar(urlString: String?) {
+        Task { @MainActor in
+            guard let url = urlString else {
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: url)
+            currentUser?.avatarImage = imageState
+        }
+    }
+
+    func fetchUserHeaderImage(urlString: String?) {
+        Task { @MainActor in
+            guard let url = urlString else {
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: url)
+            currentUser?.headerImage = imageState
+        }
+    }
+
+    func fetchCakesImages(cakes: [ProfilePreviewCakeEntity]) {
+//        for (index, cake) in cakes.enumerated() {
+//            Task { @MainActor in
+//                let imageState = await imageProvider.fetchImage(for: cake.previewImageURL)
+//                currentUser?.cakes[safe: index]?.previewImageState = imageState
+//            }
+//        }
     }
 }
 
@@ -109,7 +165,7 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
 
     func assemblyChatListView() -> ChatListView {
         ChatListAssembler.assemble(
-            currentUser: currentUser!,
+            currentUser: currentUser,
             imageProvider: imageProvider,
             chatProvider: chatProvider
         )
@@ -149,6 +205,7 @@ extension RootViewModel {
                 if newCake != cake {
                     cakes[index] = newCake
                 }
+
                 newCakesDict.removeValue(forKey: cake.id)
             }
         }

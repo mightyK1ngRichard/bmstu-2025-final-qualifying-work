@@ -17,7 +17,7 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
     private(set) var messages: [ChatModel.ChatMessage]
     private(set) var lastMessageID: String?
     @ObservationIgnored
-    private let chatProvider: ChatService
+    private var chatProvider: ChatService
 
     init(
         currentUser: UserModel,
@@ -34,6 +34,10 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
 
     func fetchMessages() {
         uiProperties.isLoading = true
+
+        Task {
+            try await chatProvider.startChat()
+        }
 
         Task { @MainActor in
             let messagesEntities = try await chatProvider.getMessages(interlocutorID: interlocutor.id)
@@ -54,20 +58,57 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
             }
 
             uiProperties.isLoading = false
+
+            chatProvider.handler = { [weak self] msg in
+                guard let self else { return }
+                messages.append(
+                    ChatModel.ChatMessage(
+                        from: msg,
+                        sender: msg.senderID == currentUser.id ? currentUser : interlocutor,
+                        userID: currentUser.id
+                    )
+                )
+                lastMessageID = msg.id
+            }
         }
     }
 
     func didTapSendMessageButton() {
-//        let newMessage = ChatModel.ChatMessage(
-//            id: UUID().uuidString,
-//            isYou: true,
-//            message: uiProperties.messageText,
-//            user: currentUser,
-//            time: Date.now.formattedHHmm,
-//            state: .received
-//        )
-//        messages.append(newMessage)
-//        uiProperties.messageText.removeAll()
+        let chatModel = ChatMessageEntity(
+            id: UUID().uuidString,
+            text: uiProperties.messageText,
+            interlocutorID: interlocutor.id,
+            dateCreation: Date(),
+            senderID: currentUser.id
+        )
+
+        let newMessage = ChatModel.ChatMessage(
+            id: chatModel.id,
+            isYou: true,
+            message: chatModel.text,
+            user: currentUser,
+            time: chatModel.dateCreation.formattedHHmm,
+            state: .progress
+        )
+
+        let index = messages.count
+        messages.append(newMessage)
+        lastMessageID = newMessage.id
+        uiProperties.messageText.removeAll()
+
+        // Отправляем сообщение по сети
+        sendMessage(chatModel: chatModel, index: index)
+    }
+
+    func sendMessage(chatModel: ChatMessageEntity, index: Int) {
+        Task { @MainActor in
+            do {
+                try await chatProvider.sendMessage(message: chatModel)
+                messages[safe: index]?.state = .received
+            } catch {
+                messages[safe: index]?.state = .error
+            }
+        }
     }
 
     func configureInterlocutorAvatar() -> TLImageView.Configuration {
@@ -77,4 +118,17 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
 
 extension ChatViewModel {
     func setEnvironmentObjects(coordinator: Coordinator) {}
+}
+
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        get {
+            return indices.contains(index) ? self[index] : nil
+        }
+        set {
+            if let newValue = newValue, indices.contains(index) {
+                self[index] = newValue
+            }
+        }
+    }
 }

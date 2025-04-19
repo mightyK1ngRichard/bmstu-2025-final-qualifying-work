@@ -62,6 +62,33 @@ extension CakesListViewModel: CakesListDisplayLogic {
         #endif
     }
 
+    func updateUserAvatarImage(imageState: ImageState, cakeID: String) {
+        for (i, section) in bindingData.sections.enumerated() {
+            guard let index = section.cakes.firstIndex(where: { $0.id == cakeID }) else {
+                continue
+            }
+
+            switch section {
+            case let .all(cakes):
+                var updatedCake = cakes
+                updatedCake[index].seller.avatarImage = imageState
+                bindingData.sections[i] = .all(updatedCake)
+            case let .sale(cakes):
+                var updatedCake = cakes
+                updatedCake[index].seller.avatarImage = imageState
+                bindingData.sections[i] = .sale(updatedCake)
+            case let .new(cakes):
+                var updatedCake = cakes
+                updatedCake[index].seller.avatarImage = imageState
+                bindingData.sections[i] = .new(updatedCake)
+            }
+        }
+    }
+
+    func updateUserHeaderImage(imageState: ImageState, cakeID: String) {
+//        viewModel.updateUserHeaderImage(imageState: imageState)
+    }
+
     func addCakesToRootViewModel(_ cakes: [CakeEntity]) {
         rootViewModel.setCakes(cakes)
     }

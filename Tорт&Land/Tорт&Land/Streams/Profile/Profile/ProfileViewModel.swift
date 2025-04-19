@@ -50,6 +50,11 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
 
 extension ProfileViewModel {
     func fetchUserData() {
+        guard isCurrentUser else {
+            uiProperties.screenState = .finished
+            return
+        }
+
         uiProperties.screenState = .loading
         Task { @MainActor in
             do {
