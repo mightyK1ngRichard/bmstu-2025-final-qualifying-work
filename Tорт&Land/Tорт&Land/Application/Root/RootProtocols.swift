@@ -27,7 +27,7 @@ protocol RootViewModelInput {
     func assemblyAuthView() -> AuthView
     func assemblyCakeListView() -> CakesListView
     func assemblyCategoriesView() -> CategoriesView
-    func assemlyChatListErrorView() -> TLErrorView.Configuration
+    func assemblyChatListErrorView() -> TLErrorView.Configuration
     func assemblyChatListView(userModel: UserModel) -> ChatListView
     func assemblyNotificationsListView() -> NotificationsListView
     func assemblyProfileView() -> ProfileView

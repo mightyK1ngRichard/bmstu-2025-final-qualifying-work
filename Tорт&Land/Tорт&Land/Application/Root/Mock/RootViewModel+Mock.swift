@@ -95,7 +95,7 @@ extension RootViewModelMock {
 
     func reloadGetUserInfo() {}
 
-    func assemlyChatListErrorView() -> TLErrorView.Configuration {
+    func assemblyChatListErrorView() -> TLErrorView.Configuration {
         .init(kind: .noConnection)
     }
 

@@ -31,6 +31,6 @@ public extension ReviewsServiceModel.CreateFeedback {
     }
 
     struct Response: Sendable {
-        public var feeback: FeedbackEntity
+        public var feedback: FeedbackEntity
     }
 }

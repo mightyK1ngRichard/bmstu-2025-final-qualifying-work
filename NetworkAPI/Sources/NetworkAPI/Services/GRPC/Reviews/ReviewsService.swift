@@ -76,7 +76,7 @@ public extension ReviewsGrpcServiceImpl {
         return try await networkService.performAndLog(
             call: client.addFeedback,
             with: request,
-            mapping: { .init(feeback: FeedbackEntity(from: $0.feedback)) }
+            mapping: { .init(feedback: FeedbackEntity(from: $0.feedback)) }
         )
     }
 }

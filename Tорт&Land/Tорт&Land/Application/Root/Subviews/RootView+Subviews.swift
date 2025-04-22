@@ -44,7 +44,7 @@ private extension RootView {
                 Text("Current User not found")
                     .frame(maxHeight: .infinity)
                 TLErrorView(
-                    configuration: viewModel.assemlyChatListErrorView(),
+                    configuration: viewModel.assemblyChatListErrorView(),
                     action: viewModel.reloadGetUserInfo
                 )
             }

@@ -56,7 +56,7 @@ extension FeedbackViewModel {
                         rating: uiProperties.countFillStars
                     )
                 )
-                ratingReviewViewModel.insertNewComment(response.feeback)
+                ratingReviewViewModel.insertNewComment(response.feedback)
                 dismiss()
             } catch {
                 showErrorMessage(message: "\(error)")
