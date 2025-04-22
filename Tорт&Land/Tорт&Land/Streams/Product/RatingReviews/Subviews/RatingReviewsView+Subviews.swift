@@ -9,15 +9,35 @@
 import SwiftUI
 
 extension RatingReviewsView {
-
     var mainContainer: some View {
+        Group {
+            switch viewModel.uiProperties.state {
+            case .initial, .loading:
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            case let .error(message):
+                TLErrorView(
+                    configuration: viewModel.configureErrorView(message: message),
+                    action: viewModel.fetchComments
+                )
+                .padding(.horizontal, 50)
+                .ignoresSafeArea()
+            case .finished:
+                contentView
+            }
+        }
+        .background(TLColor<BackgroundPalette>.bgMainColor.color)
+        .navigationTitle(Constants.navigationTitle)
+    }
+}
+
+private extension RatingReviewsView {
+    var contentView: some View {
         ScrollView {
             ratingBlock
             sectionTitle
             reviewsBlock
         }
-        .background(TLColor<BackgroundPalette>.bgMainColor.color)
-        .navigationTitle(Constants.navigationTitle)
         .overlay(alignment: .bottomTrailing) {
             writeReviewButton
         }
@@ -29,6 +49,7 @@ extension RatingReviewsView {
                 .padding(.top)
                 .presentationDetents([.medium, .large])
         }
+
     }
 
     var ratingBlock: some View {
@@ -83,12 +104,37 @@ extension RatingReviewsView {
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Mockable") {
     NavigationStack {
         RatingReviewsView(viewModel: RatingReviewsViewModelMock())
     }
     .environment(Coordinator())
 }
+
+#if DEBUG
+import NetworkAPI
+#Preview("Network") {
+    NavigationStack {
+        RatingReviewsAssemler.assemble(
+            cakeID: "550e8400-e29b-41d4-a716-446655441001",
+            reviewsService: {
+                let networkService = NetworkServiceImpl()
+                let authProvider = AuthGrpcServiceImpl(
+                    configuration: AppHosts.auth,
+                    networkService: networkService
+                )
+                return ReviewsGrpcServiceImpl(
+                    configuration: AppHosts.reviews,
+                    authService: authProvider,
+                    networkService: networkService
+                )
+            }(),
+            imageProvider: ImageLoaderProviderImpl()
+        )
+    }
+    .environment(Coordinator())
+}
+#endif
 
 // MARK: - Constants
 

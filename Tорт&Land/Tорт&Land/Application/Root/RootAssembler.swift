@@ -32,6 +32,11 @@ final class RootAssembler {
             authService: authService,
             networkService: networkService
         )
+        let reviewsService = ReviewsGrpcServiceImpl(
+            configuration: AppHosts.reviews,
+            authService: authService,
+            networkService: networkService
+        )
 
         if networkService.refreshToken == nil {
             startScreenControl.update(with: .auth)
@@ -40,6 +45,7 @@ final class RootAssembler {
         let viewModel = RootViewModel(
             authService: authService,
             cakeService: cakeService,
+            reviewsService: reviewsService,
             chatProvider: chatService,
             profileService: profileService,
             imageProvider: imageProvider,

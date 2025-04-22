@@ -16,6 +16,8 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
     @ObservationIgnored
     private(set) var showOwnerButton: Bool
     @ObservationIgnored
+    private let reviewsService: ReviewsService
+    @ObservationIgnored
     private let cakeService: CakeGrpcService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
@@ -30,6 +32,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeGrpcService,
+        reviewsService: ReviewsService,
         imageProvider: ImageLoaderProvider,
         rootViewModel: RootViewModelOutput,
         priceFormatter: PriceFormatterService = .shared
@@ -37,6 +40,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
         self.cakeModel = cakeModel
         self.showOwnerButton = !isOwnedByUser
         self.cakeService = cakeService
+        self.reviewsService = reviewsService
         self.imageProvider = imageProvider
         self.priceFormatter = priceFormatter
         self.rootViewModel = rootViewModel
@@ -46,6 +50,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
 // MARK: - Network
 
 extension CakeDetailsViewModel {
+
     func fetchCakeDetails() {
         bindingData.isLoading = true
         Task { @MainActor in
@@ -56,6 +61,7 @@ extension CakeDetailsViewModel {
                 fetchThumbnails(cakeImages: cakeModel.thumbnails)
                 fetchCategoriesImages(categories: cakeEntity.categories)
                 fetchFillingsImages(fillings: cakeEntity.fillings)
+                fetchSellerImages(imageURL: cakeEntity.owner.imageURL, headerImage: cakeEntity.owner.headerImageURL)
 
                 // Обновляем торт
                 rootViewModel.updateCake(cakeEntity)
@@ -63,6 +69,29 @@ extension CakeDetailsViewModel {
                 bindingData.isLoading = false
                 // TODO: Показать ошибку
             }
+        }
+    }
+    
+    /// Получаем изображения продавца
+    private func fetchSellerImages(imageURL: String?, headerImage: String?) {
+        Task { @MainActor in
+            guard let imageURL else {
+                cakeModel.seller.avatarImage = .fetched(.uiImage(.profile))
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: imageURL)
+            cakeModel.seller.avatarImage = imageState
+        }
+
+        Task { @MainActor in
+            guard let headerImage else {
+                cakeModel.seller.headerImage = .fetched(.uiImage(.candy))
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: headerImage)
+            cakeModel.seller.headerImage = imageState
         }
     }
 
@@ -101,11 +130,13 @@ extension CakeDetailsViewModel {
             }
         }
     }
+
 }
 
 // MARK: - Actions
 
 extension CakeDetailsViewModel {
+
     func didTapSellerInfoButton() {
         coordinator.addScreen(RootModel.Screens.profile(cakeModel.seller))
     }
@@ -128,11 +159,13 @@ extension CakeDetailsViewModel {
         bindingData.selectedFilling = filling
         bindingData.showSheet = true
     }
+
 }
 
 // MARK: - Configuration
 
 extension CakeDetailsViewModel {
+
     func configurePreviewImageViewConfiguration() -> TLImageView.Configuration {
         .init(imageState: cakeModel.previewImageState)
     }
@@ -150,9 +183,11 @@ extension CakeDetailsViewModel {
     }
 
     func assemblyRatingReviewsView() -> RatingReviewsView {
-        // FIXME: Убрать моки
-        let viewModel = RatingReviewsViewModelMock(comments: cakeModel.comments)
-        return RatingReviewsView(viewModel: viewModel)
+        RatingReviewsAssemler.assemble(
+            cakeID: cakeModel.id,
+            reviewsService: reviewsService,
+            imageProvider: imageProvider
+        )
     }
 
     func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration {
@@ -164,6 +199,7 @@ extension CakeDetailsViewModel {
             description: filling.description
         )
     }
+    
 }
 
 // MARK: - Setters

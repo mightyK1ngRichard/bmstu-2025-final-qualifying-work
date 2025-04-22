@@ -12,7 +12,7 @@ import NetworkAPI
 import Observation
 
 @Observable
-final class RootViewModel: RootDisplayData, RootViewModelOutput {
+final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {
     // MARK: Inner values
     var uiProperties = RootModel.UIProperties()
 
@@ -26,6 +26,8 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     @ObservationIgnored
     private let authService: AuthService
     @ObservationIgnored
+    private let reviewsService: ReviewsService
+    @ObservationIgnored
     private let cakeService: CakeGrpcService
     @ObservationIgnored
     private let profileService: ProfileGrpcService
@@ -38,6 +40,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     init(
         authService: AuthService,
         cakeService: CakeGrpcService,
+        reviewsService: ReviewsService,
         chatProvider: ChatService,
         profileService: ProfileGrpcService,
         imageProvider: ImageLoaderProvider,
@@ -45,6 +48,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     ) {
         self.authService = authService
         self.cakeService = cakeService
+        self.reviewsService = reviewsService
         self.chatProvider = chatProvider
         self.profileService = profileService
         self.imageProvider = imageProvider
@@ -55,6 +59,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
 }
 
 extension RootViewModel {
+
     var screenKind: StartScreenKind {
         startScreenControl.screenKind
     }
@@ -62,11 +67,13 @@ extension RootViewModel {
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
+
 }
 
 // MARK: - User Model
 
 extension RootViewModel {
+
     func fetchUserInfoIfNeeded() {
         guard currentUser == nil && startScreenControl.screenKind == .cakesList else {
             return
@@ -77,17 +84,19 @@ extension RootViewModel {
                 let result = try await profileService.getUserInfo()
                 let user = UserModel(from: result.userInfo)
                 currentUser = user
-                fetchUserAvatar(urlString: result.userInfo.profile.imageUrl)
-                fetchUserHeaderImage(urlString: result.userInfo.profile.headerImageUrl)
+                fetchUserAvatar(urlString: result.userInfo.profile.imageURL)
+                fetchUserHeaderImage(urlString: result.userInfo.profile.headerImageURL)
                 fetchCakesImages(cakes: result.userInfo.previewCakes)
             } catch {
                 Logger.log(kind: .error, error)
             }
         }
     }
+
 }
 
 private extension RootViewModel {
+
     func fetchUserAvatar(urlString: String?) {
         Task { @MainActor in
             guard let url = urlString else {
@@ -111,18 +120,24 @@ private extension RootViewModel {
     }
 
     func fetchCakesImages(cakes: [ProfilePreviewCakeEntity]) {
-//        for (index, cake) in cakes.enumerated() {
-//            Task { @MainActor in
-//                let imageState = await imageProvider.fetchImage(for: cake.previewImageURL)
-//                currentUser?.cakes[safe: index]?.previewImageState = imageState
-//            }
-//        }
+        for (index, cake) in cakes.enumerated() {
+            Task { @MainActor in
+                let imageState = await imageProvider.fetchImage(for: cake.previewImageURL)
+                currentUser?.cakes[safe: index]?.previewImageState = imageState
+            }
+        }
     }
+
 }
 
 // MARK: - Screens
 
-extension RootViewModel: @preconcurrency RootViewModelInput {
+extension RootViewModel {
+
+    func assemlyChatListErrorView() -> TLErrorView.Configuration {
+        .init(kind: .customError("Error", "User not found"))
+    }
+
     func assemblyAuthView() -> AuthView {
         AuthAssembler.assemble(authService: authService)
     }
@@ -132,6 +147,7 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
             cakeModel: model,
             isOwnedByUser: model.seller.id == currentUser?.id,
             cakeService: cakeService,
+            reviewsService: reviewsService,
             rootViewModel: self,
             imageProvider: imageProvider
         )
@@ -163,9 +179,9 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
         )
     }
 
-    func assemblyChatListView() -> ChatListView {
+    func assemblyChatListView(userModel: UserModel) -> ChatListView {
         ChatListAssembler.assemble(
-            currentUser: currentUser,
+            currentUser: userModel,
             imageProvider: imageProvider,
             chatProvider: chatProvider
         )
@@ -186,6 +202,17 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
             rootViewModel: self
         )
     }
+
+}
+
+// MARK: - Actions
+
+extension RootViewModel {
+
+    func reloadGetUserInfo() {
+        fetchUserInfoIfNeeded()
+    }
+
 }
 
 // MARK: - RootViewModelOutput

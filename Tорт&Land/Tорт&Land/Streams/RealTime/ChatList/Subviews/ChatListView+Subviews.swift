@@ -31,11 +31,33 @@ private extension ChatListView {
         case .initial, .loading:
             shimmeringView
         case .finished:
+            contentView
+        case let .error(errorMessage):
+            TLErrorView(
+                configuration: .init(kind: .customError("Network error", errorMessage))
+            )
+        }
+    }
+
+    @ViewBuilder
+    var contentView: some View {
+        if viewModel.cells.isEmpty {
+            VStack(spacing: 24) {
+                Image(.noMessage)
+                    .resizable()
+                    .scaledToFit()
+                    .padding(.horizontal, 50)
+                VStack(spacing: 4) {
+                    Text("No message")
+                        .style(24, .bold, TLColor<TextPalette>.textSecondary.color)
+                    Text("There are no chats in your feed")
+                        .style(16, .regular, TLColor<TextPalette>.textSecondary.color)
+                }
+            }
+        } else {
             ForEach(viewModel.cells) { cell in
                 cellView(for: cell)
             }
-        case .error:
-            Text("Error")
         }
     }
 

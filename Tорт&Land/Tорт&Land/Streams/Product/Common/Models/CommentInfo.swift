@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import NetworkAPI
 
 struct CommentInfo: Identifiable, Hashable {
     /// Код комментария
     var id: String
     /// Автор коментария
-    var author: UserModel
+    var author: Author
     /// Дата комментария
     var date: String
     /// Описание комментария
@@ -19,6 +20,43 @@ struct CommentInfo: Identifiable, Hashable {
     /// Число закрашенных звёзд (от 1 до 5)
     var countFillStars: Int
 }
+
+extension CommentInfo {
+    init(from model: FeedbackEntity) {
+        self = CommentInfo(
+            id: model.id,
+            author: CommentInfo.Author(from: model.author),
+            date: model.dateCreation.formattedHHmm,
+            description: model.text,
+            countFillStars: model.rating
+        )
+    }
+}
+
+// MARK: - Author
+
+extension CommentInfo {
+    struct Author: Hashable {
+        /// Код автора
+        var id: String
+        /// Имя автора
+        var name: String
+        /// Фотография автора
+        var imageState: ImageState
+    }
+}
+
+extension CommentInfo.Author {
+    init(from model: ProfileEntity) {
+        self = .init(
+            id: model.id,
+            name: model.fio ?? StringConstants.anonimeUserName,
+            imageState: .loading
+        )
+    }
+}
+
+// MARK: - Helpers
 
 extension [CommentInfo] {
     
@@ -76,4 +114,5 @@ extension [CommentInfo] {
         guard feedbackCount > 0 else { return .zero }
         return CGFloat(allStarsCount) / CGFloat(feedbackCount)
     }
+
 }

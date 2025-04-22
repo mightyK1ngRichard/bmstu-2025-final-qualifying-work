@@ -11,6 +11,8 @@ import NIOConcurrencyHelpers
 import SwiftProtobuf
 
 
+/// ############### ProfileService ############### 
+///
 /// Usage: instantiate `Profile_ProfileServiceClient`, then call methods of this protocol to make API calls.
 internal protocol Profile_ProfileServiceClientProtocol: GRPCClient {
   var serviceName: String { get }
@@ -20,6 +22,11 @@ internal protocol Profile_ProfileServiceClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserInfoRes>
+
+  func getUserInfoByID(
+    _ request: Profile_GetUserInfoByIDReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>
 }
 
 extension Profile_ProfileServiceClientProtocol {
@@ -42,6 +49,24 @@ extension Profile_ProfileServiceClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeGetUserInfoInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to GetUserInfoByID
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetUserInfoByID.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func getUserInfoByID(
+    _ request: Profile_GetUserInfoByIDReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes> {
+    return self.makeUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.getUserInfoByID.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? []
     )
   }
 }
@@ -103,6 +128,7 @@ internal struct Profile_ProfileServiceNIOClient: Profile_ProfileServiceClientPro
   }
 }
 
+/// ############### ProfileService ############### 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 internal protocol Profile_ProfileServiceAsyncClientProtocol: GRPCClient {
   static var serviceDescriptor: GRPCServiceDescriptor { get }
@@ -112,6 +138,11 @@ internal protocol Profile_ProfileServiceAsyncClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserInfoRes>
+
+  func makeGetUserInfoByIDCall(
+    _ request: Profile_GetUserInfoByIDReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -135,6 +166,18 @@ extension Profile_ProfileServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGetUserInfoInterceptors() ?? []
     )
   }
+
+  internal func makeGetUserInfoByIDCall(
+    _ request: Profile_GetUserInfoByIDReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes> {
+    return self.makeAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.getUserInfoByID.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -148,6 +191,18 @@ extension Profile_ProfileServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeGetUserInfoInterceptors() ?? []
+    )
+  }
+
+  internal func getUserInfoByID(
+    _ request: Profile_GetUserInfoByIDReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> Profile_GetUserInfoByIDRes {
+    return try await self.performAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.getUserInfoByID.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? []
     )
   }
 }
@@ -173,6 +228,9 @@ internal protocol Profile_ProfileServiceClientInterceptorFactoryProtocol: Sendab
 
   /// - Returns: Interceptors to use when invoking 'getUserInfo'.
   func makeGetUserInfoInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserInfoRes>]
+
+  /// - Returns: Interceptors to use when invoking 'getUserInfoByID'.
+  func makeGetUserInfoByIDInterceptors() -> [ClientInterceptor<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>]
 }
 
 internal enum Profile_ProfileServiceClientMetadata {
@@ -181,6 +239,7 @@ internal enum Profile_ProfileServiceClientMetadata {
     fullName: "profile.ProfileService",
     methods: [
       Profile_ProfileServiceClientMetadata.Methods.getUserInfo,
+      Profile_ProfileServiceClientMetadata.Methods.getUserInfoByID,
     ]
   )
 
@@ -190,14 +249,24 @@ internal enum Profile_ProfileServiceClientMetadata {
       path: "/profile.ProfileService/GetUserInfo",
       type: GRPCCallType.unary
     )
+
+    internal static let getUserInfoByID = GRPCMethodDescriptor(
+      name: "GetUserInfoByID",
+      path: "/profile.ProfileService/GetUserInfoByID",
+      type: GRPCCallType.unary
+    )
   }
 }
 
+/// ############### ProfileService ############### 
+///
 /// To build a server, implement a class that conforms to this protocol.
 internal protocol Profile_ProfileServiceProvider: CallHandlerProvider {
   var interceptors: Profile_ProfileServiceServerInterceptorFactoryProtocol? { get }
 
   func getUserInfo(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_GetUserInfoRes>
+
+  func getUserInfoByID(request: Profile_GetUserInfoByIDReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_GetUserInfoByIDRes>
 }
 
 extension Profile_ProfileServiceProvider {
@@ -221,12 +290,23 @@ extension Profile_ProfileServiceProvider {
         userFunction: self.getUserInfo(request:context:)
       )
 
+    case "GetUserInfoByID":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_GetUserInfoByIDReq>(),
+        responseSerializer: ProtobufSerializer<Profile_GetUserInfoByIDRes>(),
+        interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? [],
+        userFunction: self.getUserInfoByID(request:context:)
+      )
+
     default:
       return nil
     }
   }
 }
 
+/// ############### ProfileService ############### 
+///
 /// To implement a server, implement an object which conforms to this protocol.
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 internal protocol Profile_ProfileServiceAsyncProvider: CallHandlerProvider, Sendable {
@@ -237,6 +317,11 @@ internal protocol Profile_ProfileServiceAsyncProvider: CallHandlerProvider, Send
     request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
   ) async throws -> Profile_GetUserInfoRes
+
+  func getUserInfoByID(
+    request: Profile_GetUserInfoByIDReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Profile_GetUserInfoByIDRes
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -267,6 +352,15 @@ extension Profile_ProfileServiceAsyncProvider {
         wrapping: { try await self.getUserInfo(request: $0, context: $1) }
       )
 
+    case "GetUserInfoByID":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_GetUserInfoByIDReq>(),
+        responseSerializer: ProtobufSerializer<Profile_GetUserInfoByIDRes>(),
+        interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? [],
+        wrapping: { try await self.getUserInfoByID(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -278,6 +372,10 @@ internal protocol Profile_ProfileServiceServerInterceptorFactoryProtocol: Sendab
   /// - Returns: Interceptors to use when handling 'getUserInfo'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeGetUserInfoInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserInfoRes>]
+
+  /// - Returns: Interceptors to use when handling 'getUserInfoByID'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetUserInfoByIDInterceptors() -> [ServerInterceptor<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>]
 }
 
 internal enum Profile_ProfileServiceServerMetadata {
@@ -286,6 +384,7 @@ internal enum Profile_ProfileServiceServerMetadata {
     fullName: "profile.ProfileService",
     methods: [
       Profile_ProfileServiceServerMetadata.Methods.getUserInfo,
+      Profile_ProfileServiceServerMetadata.Methods.getUserInfoByID,
     ]
   )
 
@@ -293,6 +392,12 @@ internal enum Profile_ProfileServiceServerMetadata {
     internal static let getUserInfo = GRPCMethodDescriptor(
       name: "GetUserInfo",
       path: "/profile.ProfileService/GetUserInfo",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getUserInfoByID = GRPCMethodDescriptor(
+      name: "GetUserInfoByID",
+      path: "/profile.ProfileService/GetUserInfoByID",
       type: GRPCCallType.unary
     )
   }

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct FeedbackView: View {
-    @State var viewModel: FeedbackDisplayLogic & FeedbackViewModelOutput
+    @State var viewModel: FeedbackDisplayLogic & FeedbackViewModelInput
 
     var body: some View {
         mainContainer

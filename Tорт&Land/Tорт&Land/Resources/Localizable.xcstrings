@@ -60,6 +60,9 @@
         }
       }
     },
+    "choose rating" : {
+
+    },
     "Create a product" : {
       "localizations" : {
         "ru" : {
@@ -69,6 +72,9 @@
           }
         }
       }
+    },
+    "Current User not found" : {
+
     },
     "Customer" : {
       "localizations" : {
@@ -213,6 +219,9 @@
         }
       }
     },
+    "No message" : {
+
+    },
     "Nothing found" : {
       "localizations" : {
         "ru" : {
@@ -330,6 +339,7 @@
       }
     },
     "Reload" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -441,6 +451,12 @@
           }
         }
       }
+    },
+    "There are no chats in your feed" : {
+
+    },
+    "Try again" : {
+
     },
     "User address not found" : {
       "localizations" : {

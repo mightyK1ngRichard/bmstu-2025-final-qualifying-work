@@ -24,6 +24,7 @@ protocol CakesListViewModelInput {
     func didTapCell(model: CakeModel)
     func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind)
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
+    func configureErrorView(message: String) -> TLErrorView.Configuration
 }
 
 @MainActor

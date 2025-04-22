@@ -68,6 +68,10 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
 
     func updateUserHeaderImage(imageState: ImageState, cakeID: String) {
     }
+
+    func configureErrorView(message: String) -> TLErrorView.Configuration {
+        .init(kind: .noConnection)
+    }
 }
 
 // MARK: - Configuration

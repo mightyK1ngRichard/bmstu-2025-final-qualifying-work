@@ -38,7 +38,16 @@ private extension RootView {
         case .categories:
             viewModel.assemblyCategoriesView()
         case .chat:
-            viewModel.assemblyChatListView()
+            if let currentUser = viewModel.currentUser {
+                viewModel.assemblyChatListView(userModel: currentUser)
+            } else {
+                Text("Current User not found")
+                    .frame(maxHeight: .infinity)
+                TLErrorView(
+                    configuration: viewModel.assemlyChatListErrorView(),
+                    action: viewModel.reloadGetUserInfo
+                )
+            }
         case .notifications:
             viewModel.assemblyNotificationsListView()
         case .profile:

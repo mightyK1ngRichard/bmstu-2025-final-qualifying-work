@@ -20,17 +20,19 @@ protocol RootDisplayData {
 
 protocol RootViewModelInput {
     func fetchUserInfoIfNeeded()
-    func setEnvironmentObjects(_ coordinator: Coordinator)
+    func reloadGetUserInfo()
+
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
     func assemblyProfileView(userModel: UserModel) -> ProfileView
     func assemblyAuthView() -> AuthView
     func assemblyCakeListView() -> CakesListView
     func assemblyCategoriesView() -> CategoriesView
-    func assemblyChatListView() -> ChatListView
+    func assemlyChatListErrorView() -> TLErrorView.Configuration
+    func assemblyChatListView(userModel: UserModel) -> ChatListView
     func assemblyNotificationsListView() -> NotificationsListView
-//    func assemblyProfileView() -> ProfileView
-    associatedtype UserContentView: View
-    func assemblyProfileView() -> UserContentView
+    func assemblyProfileView() -> ProfileView
+
+    func setEnvironmentObjects(_ coordinator: Coordinator)
 }
 
 protocol RootViewModelOutput {

@@ -65,7 +65,7 @@ extension ProfileViewModel {
                 if isCurrentUser {
                     rootViewModel.updateCurrentUser(user)
                 }
-                fetchAvatarWithHeaderImage(imageURL: user.imageUrl, headerImageURL: user.headerImageUrl)
+                fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
                 Logger.log(error)
@@ -77,7 +77,7 @@ extension ProfileViewModel {
     private func fetchAvatarWithHeaderImage(imageURL: String?, headerImageURL: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                user?.avatarImage = .error(.systemImage("person.fill"))
+                user?.avatarImage = .fetched(.uiImage(.profile))
                 return
             }
 
@@ -87,7 +87,7 @@ extension ProfileViewModel {
 
         Task { @MainActor in
             guard let headerImageURL else {
-                user?.headerImage = .empty
+                user?.headerImage = .fetched(.uiImage(.candy))
                 return
             }
 

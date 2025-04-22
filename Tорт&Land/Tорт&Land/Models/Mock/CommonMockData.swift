@@ -32,7 +32,7 @@ enum CommonMockData {
             comments: (1...10).map {
                 CommentInfo(
                     id: String($0),
-                    author: generateMockUserModel(id: $0, name: "Комментатор #\($0)"),
+                    author: generateMockAuthor(id: $0, name: "Комментатор #\($0)"),
                     date: "June 5, 2025",
                     description: Constants.longComment,
                     countFillStars: (1...5).randomElement() ?? 1
@@ -80,6 +80,18 @@ enum CommonMockData {
                 .uiImage(UIImage(named: "header\(Int.random(in: 1...6))") ?? .header1)
             ),
             cakes: []
+        )
+    }
+
+    static func generateMockAuthor(
+        id: Int,
+        name: String? = nil,
+        avatar: ImageState? = nil
+    ) -> CommentInfo.Author {
+        .init(
+            id: String(id),
+            name: name ?? "Имя пользователя #\(id)",
+            imageState: avatar ?? .fetched(.uiImage(.king))
         )
     }
 }

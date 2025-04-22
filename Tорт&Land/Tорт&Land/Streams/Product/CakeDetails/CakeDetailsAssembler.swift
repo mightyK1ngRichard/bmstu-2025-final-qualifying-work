@@ -14,6 +14,7 @@ final class CakeDetailsAssembler {
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeGrpcService,
+        reviewsService: ReviewsService,
         rootViewModel: RootViewModelOutput,
         imageProvider: ImageLoaderProvider
     ) -> CakeDetailsView {
@@ -21,6 +22,7 @@ final class CakeDetailsAssembler {
             cakeModel: cakeModel,
             isOwnedByUser: isOwnedByUser,
             cakeService: cakeService,
+            reviewsService: reviewsService,
             imageProvider: imageProvider,
             rootViewModel: rootViewModel
         )
