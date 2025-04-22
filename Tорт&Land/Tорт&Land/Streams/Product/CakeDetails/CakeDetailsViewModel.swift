@@ -183,7 +183,7 @@ extension CakeDetailsViewModel {
     }
 
     func assemblyRatingReviewsView() -> RatingReviewsView {
-        RatingReviewsAssemler.assemble(
+        RatingReviewsAssembler.assemble(
             cakeID: cakeModel.id,
             reviewsService: reviewsService,
             imageProvider: imageProvider

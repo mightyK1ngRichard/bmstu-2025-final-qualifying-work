@@ -9,7 +9,7 @@
 import Foundation
 import NetworkAPI
 
-final class RatingReviewsAssemler {
+final class RatingReviewsAssembler {
     static func assemble(
         cakeID: String,
         reviewsService: ReviewsService,

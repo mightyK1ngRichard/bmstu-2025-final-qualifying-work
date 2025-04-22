@@ -115,7 +115,7 @@ private extension RatingReviewsView {
 import NetworkAPI
 #Preview("Network") {
     NavigationStack {
-        RatingReviewsAssemler.assemble(
+        RatingReviewsAssembler.assemble(
             cakeID: "550e8400-e29b-41d4-a716-446655441001",
             reviewsService: {
                 let networkService = NetworkServiceImpl()
