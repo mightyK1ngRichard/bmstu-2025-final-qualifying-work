@@ -11,10 +11,16 @@ import SwiftUI
 extension ProfileView {
     var mainContainer: some View {
         ScrollView {
-            VStack {
-                imageBlockView
-                buttonsBlockView
-                productsBlockView
+            switch viewModel.uiProperties.screenState {
+            case .initial, .loading:
+                shimmeringView
+            case .finished:
+                contentView
+            case let .error(message):
+                TLErrorView(
+                    configuration: .init(kind: .customError("Network Error", message))
+                )
+                .padding(.horizontal, 30)
             }
         }
         .ignoresSafeArea()
@@ -25,6 +31,14 @@ extension ProfileView {
 // MARK: - UI Subviews
 
 private extension ProfileView {
+
+    var contentView: some View {
+        VStack {
+            imageBlockView
+            buttonsBlockView
+            productsBlockView
+        }
+    }
 
     var buttonsBlockView: some View {
         GeometryReader { geo in
@@ -92,19 +106,21 @@ private extension ProfileView {
                 }
 
                 Group {
-                    VStack(spacing: 6) {
-                        Text(viewModel.user.name)
-                            .bold()
-                            .font(.title)
-                        Text(viewModel.user.mail).font(.callout)
-                            .foregroundStyle(Constants.userMailColor)
-                            .multilineTextAlignment(.center)
-                            .frame(width: geo.size.width)
-                            .lineLimit(1)
-                            .fixedSize()
-                            .foregroundStyle(Constants.textColor)
+                    if let user = viewModel.user {
+                        VStack(spacing: 6) {
+                            Text(user.name)
+                                .bold()
+                                .font(.title)
+                            Text(user.mail).font(.callout)
+                                .foregroundStyle(Constants.userMailColor)
+                                .multilineTextAlignment(.center)
+                                .frame(width: geo.size.width)
+                                .lineLimit(1)
+                                .fixedSize()
+                                .foregroundStyle(Constants.textColor)
+                        }
+                        .offset(y: iscrolling ? -minY : 0)
                     }
-                    .offset(y: iscrolling ? -minY : 0)
                 }
                 .padding(.vertical, 18)
             }
@@ -112,21 +128,24 @@ private extension ProfileView {
         .frame(height: 400)
     }
 
+    @ViewBuilder
     var productsBlockView: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(), count: 2)) {
-            ForEach(viewModel.user.cakes) { cake in
-                TLProductCard(
-                    configuration: viewModel.configureProductCard(for: cake)
-                ) { isSelected in
-                    viewModel.didTapCakeLikeButton(cake: cake, isSelected: isSelected)
-                }
-                .onTapGesture {
-                    viewModel.didTapCakeCard(with: cake)
+        if let user = viewModel.user {
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 2)) {
+                ForEach(user.cakes) { cake in
+                    TLProductCard(
+                        configuration: viewModel.configureProductCard(for: cake)
+                    ) { isSelected in
+                        viewModel.didTapCakeLikeButton(cake: cake, isSelected: isSelected)
+                    }
+                    .onTapGesture {
+                        viewModel.didTapCakeCard(with: cake)
+                    }
                 }
             }
+            .padding(.horizontal, 10)
+            .padding(.vertical)
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical)
     }
 }
 
@@ -165,7 +184,71 @@ private struct IconButton: View {
                 .foregroundStyle(TLColor<IconPalette>.iconSecondary.color)
                 .frame(width: 23, height: 23)
                 .padding(10)
-                .background(.ultraThinMaterial, in: Circle())
+                .background(.ultraThinMaterial, in: .circle)
+        }
+    }
+}
+
+private extension ProfileView {
+    var shimmeringView: some View {
+        VStack {
+            GeometryReader { geo in
+                VStack {
+                    ShimmeringView().frame(
+                        width: geo.size.width,
+                        height: 280
+                    )
+                    .overlay(alignment: .bottom) {
+                        ZStack {
+                            ShimmeringView()
+                                .frame(width: 110, height: 110)
+
+                            Circle().stroke(lineWidth: 6)
+                                .fill(Constants.bgColor)
+                        }
+                        .frame(width: 110, height: 110)
+                        .clipShape(.circle)
+                        .offset(y: 25)
+                    }
+
+                    VStack(spacing: 6) {
+                        ShimmeringView()
+                            .frame(width: 250, height: 28)
+                            .clipShape(.capsule)
+
+                        ShimmeringView()
+                            .frame(width: 200, height: 22)
+                            .clipShape(.capsule)
+                    }
+                    .padding(.vertical, 18)
+                }
+            }
+            .frame(height: 400)
+
+            HStack {
+                ShimmeringView()
+                    .frame(width: 240, height: 45)
+                    .clipShape(.rect(cornerRadius: 30))
+
+                ShimmeringView()
+                    .frame(width: 43, height: 43)
+                    .clipShape(.circle)
+
+                ShimmeringView()
+                    .frame(width: 43, height: 43)
+                    .clipShape(.circle)
+            }
+            .offset(y: -36)
+
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 2)) {
+                ForEach(0...10, id: \.self) { _ in
+                    TLProductCard(
+                        configuration: .shimmering(imageHeight: 184)
+                    )
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical)
         }
     }
 }

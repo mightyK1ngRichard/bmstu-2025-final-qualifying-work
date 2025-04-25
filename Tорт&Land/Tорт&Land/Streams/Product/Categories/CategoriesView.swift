@@ -15,6 +15,22 @@ struct CategoriesView: View {
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.onAppear()
+        }
+        .navigationDestination(for: CategoriesModel.Screens.self) { screen in
+            openNextScreen(for: screen)
+        }
+    }
+}
+
+// MARK: - Navigation Destination
+
+private extension CategoriesView {
+    @ViewBuilder
+    func openNextScreen(for screen: CategoriesModel.Screens) -> some View {
+        switch screen {
+        case let .cakes(cakes):
+            viewModel.assemlyCakesCategoryView(cakes: cakes)
         }
     }
 }

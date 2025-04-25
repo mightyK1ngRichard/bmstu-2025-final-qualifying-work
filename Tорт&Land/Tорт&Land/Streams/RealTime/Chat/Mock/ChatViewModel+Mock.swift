@@ -12,7 +12,7 @@ import Foundation
 import Observation
 
 @Observable
-final class ChatViewModelMock: ChatDisplayLogic & ChatViewModelOutput {
+final class ChatViewModelMock: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelInput {
     var uiProperties = ChatModel.UIProperties()
     private(set) var currentUser: UserModel
     private(set) var interlocutor: UserModel
@@ -47,6 +47,9 @@ final class ChatViewModelMock: ChatDisplayLogic & ChatViewModelOutput {
 
     func configureInterlocutorAvatar() -> TLImageView.Configuration {
         .init(imageState: interlocutor.avatarImage)
+    }
+
+    func fetchMessages() {
     }
 }
 

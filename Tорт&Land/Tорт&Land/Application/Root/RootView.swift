@@ -9,21 +9,20 @@
 import SwiftUI
 
 struct RootView: View {
-    @State var viewModel: RootDisplayLogic & RootViewModelOutput
-    @State private var startScreenControl = StartScreenControl()
+    @State var viewModel: RootDisplayData & RootViewModelInput
     @State private var coordinator = Coordinator()
 
     var body: some View {
         NavigationStack(path: $coordinator.navPath) {
             mainContainer.onFirstAppear {
-                viewModel.setEnvironmentObjects(coordinator, startScreenControl)
+                viewModel.setEnvironmentObjects(coordinator)
+                viewModel.fetchUserInfoIfNeeded()
             }
             .navigationDestination(for: RootModel.Screens.self) { screen in
                 openNextScreen(for: screen)
             }
         }
         .tint(.primary)
-        .environment(startScreenControl)
         .environment(coordinator)
     }
 }
@@ -45,8 +44,6 @@ private extension RootView {
 // MARK: - Preview
 
 #Preview {
-    RootView(
-        viewModel: RootViewModelMock()
-    )
-    .environment(Coordinator())
+    RootAssembler.assembleMock()
+        .environment(Coordinator())
 }

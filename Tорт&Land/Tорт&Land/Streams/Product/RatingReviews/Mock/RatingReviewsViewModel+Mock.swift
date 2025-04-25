@@ -10,9 +10,10 @@
 
 import Foundation
 import Observation
+import NetworkAPI
 
 @Observable
-final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic & RatingReviewsViewModelOutput {
+final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic, RatingReviewsViewModelInput, RatingReviewsViewModelOutput {
     var uiProperties = RatingReviewsModel.UIProperties()
     private(set) var comments: [CommentInfo]
 
@@ -35,12 +36,8 @@ final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic & RatingReview
     }
 
     func configureCommentConfiguration(comment: CommentInfo) -> TLCommentView.Configuration {
-        return .basic(
-            imageState: {
-                comment.author.avatarImage == .empty
-                    ? ImageState.fetched(.uiImage(.mockUser))
-                    : comment.author.avatarImage
-            }(),
+        .basic(
+            imageState: comment.author.imageState,
             userName: comment.author.name,
             date: comment.date,
             description: comment.description,
@@ -49,6 +46,20 @@ final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic & RatingReview
             )
         )
     }
+
+    func fetchComments() {
+        uiProperties.state = .loading
+        Task { @MainActor in
+            try await Task.sleep(for: .seconds(2))
+            uiProperties.state = .finished
+        }
+    }
+
+    func configureErrorView(message: String) -> TLErrorView.Configuration {
+        .init(kind: .customError("Network error", message))
+    }
+
+    func insertNewComment(_ feedback: FeedbackEntity) {}
 }
 
 // MARK: - Constants
@@ -59,7 +70,7 @@ private extension RatingReviewsViewModelMock {
         static func generateMockCommentInfo(_ number: Int) -> CommentInfo {
             CommentInfo(
                 id: String(number),
-                author: CommonMockData.generateMockUserModel(id: number, name: "Helene Moore \(number)"),
+                author: CommonMockData.generateMockAuthor(id: number, name: "Helene Moore \(number)"),
                 date: "June 5, 2019",
                 description: """
                 The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.

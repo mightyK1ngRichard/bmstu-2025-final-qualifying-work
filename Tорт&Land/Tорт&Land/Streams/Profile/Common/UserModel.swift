@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NetworkAPI
 
 struct UserModel: Identifiable, Hashable {
     /// Код пользователя
@@ -21,4 +22,41 @@ struct UserModel: Identifiable, Hashable {
     var headerImage: ImageState
     /// Продавайемые торты пользователя
     var cakes: [CakeModel]
+}
+
+extension UserModel {
+    init(from model: UserInfoEntity) {
+        let user = model.profile
+
+        self = UserModel(
+            id: user.id,
+            name: user.fio ?? StringConstants.anonimeUserName,
+            mail: user.mail,
+            avatarImage: .loading,
+            headerImage: .loading,
+            cakes: model.previewCakes.map(CakeModel.init(from:))
+        )
+    }
+
+    init(from model: UserEntity) {
+        self = UserModel(
+            id: model.id,
+            name: model.fio ?? StringConstants.anonimeUserName,
+            mail: model.mail,
+            avatarImage: .loading,
+            headerImage: .loading,
+            cakes: []
+        )
+    }
+
+    init(from model: ProfileEntity) {
+        self = UserModel(
+            id: model.id,
+            name: model.fio ?? StringConstants.anonimeUserName,
+            mail: model.mail,
+            avatarImage: .loading,
+            headerImage: .loading,
+            cakes: []
+        )
+    }
 }

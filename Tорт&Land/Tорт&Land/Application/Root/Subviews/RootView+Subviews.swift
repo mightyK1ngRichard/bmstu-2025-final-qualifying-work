@@ -13,8 +13,7 @@ extension RootView {
     var mainContainer: some View {
         switch viewModel.screenKind {
         case .initial, .auth:
-            let viewModel = AuthViewModelMock()
-            AuthView(viewModel: viewModel)
+            viewModel.assemblyAuthView()
         case .cakesList:
             tabBarView
         }
@@ -35,46 +34,25 @@ private extension RootView {
     var allTabBarViews: some View {
         switch viewModel.activeTab {
         case .house:
-            cakeListScreen
+            viewModel.assemblyCakeListView()
         case .categories:
-            categoriesScreen
+            viewModel.assemblyCategoriesView()
         case .chat:
-            chatScreen
+            if let currentUser = viewModel.currentUser {
+                viewModel.assemblyChatListView(userModel: currentUser)
+            } else {
+                TLErrorView(
+                    configuration: viewModel.assemblyChatListErrorView(),
+                    action: viewModel.reloadGetUserInfo
+                )
+                .padding(.horizontal, 50)
+                .frame(maxHeight: .infinity)
+            }
         case .notifications:
-            notificationsScreen
+            viewModel.assemblyNotificationsListView()
         case .profile:
-            profileScreen
+            viewModel.assemblyProfileView()
         }
-    }
-
-    @ViewBuilder
-    var cakeListScreen: some View {
-        let viewModel = CakesListViewModelMock(delay: 3)
-        CakesListView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var categoriesScreen: some View {
-        let viewModel = CategoriesViewModelMock()
-        CategoriesView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var chatScreen: some View {
-        let viewModel = ChatListViewModelMock(delay: 3)
-        ChatListView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var notificationsScreen: some View {
-        let viewModel = NotificationsListViewModelMock(delay: 3)
-        NotificationsListView(viewModel: viewModel)
-    }
-
-    @ViewBuilder
-    var profileScreen: some View {
-        let viewModel = ProfileViewModelMock(isCurrentUser: true)
-        ProfileView(viewModel: viewModel)
     }
 }
 

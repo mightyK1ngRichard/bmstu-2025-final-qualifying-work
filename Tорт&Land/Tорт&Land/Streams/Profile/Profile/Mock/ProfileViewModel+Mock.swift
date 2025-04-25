@@ -12,12 +12,14 @@ import Foundation
 import Observation
 
 @Observable
-final class ProfileViewModelMock: ProfileDisplayLogic & ProfileViewModelOutput {
+final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
     var uiProperties = ProfileModel.UIProperties()
-    private(set) var user: UserModel
+    private(set) var user: UserModel?
     private(set) var isCurrentUser: Bool
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private let priceFormatter = PriceFormatterService.shared
 
     init(user: UserModel? = nil, isCurrentUser: Bool = false) {
         var userInfo = CommonMockData.generateMockUserModel(
@@ -68,21 +70,32 @@ extension ProfileViewModelMock {
     func didTapCakeLikeButton(cake: CakeModel, isSelected: Bool) {
         print("[DEBUG]: cake with id=\(cake.id) is \(isSelected ? "liked" : "unliked")")
     }
+
+    func fetchUserData() {
+        Task {
+            try await Task.sleep(for: .seconds(2))
+            uiProperties.screenState = .finished
+        }
+    }
 }
 
 // MARK: - Configurations
 
 extension ProfileViewModelMock {
     func configureAvatarImage() -> TLImageView.Configuration {
-        .init(imageState: user.avatarImage)
+        .init(imageState: user!.avatarImage)
     }
 
     func configureHeaderImage() -> TLImageView.Configuration {
-        .init(imageState: user.headerImage)
+        .init(imageState: user!.headerImage)
     }
 
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {
-        cake.configureProductCard()
+        cake.configureProductCard(priceFormatter: priceFormatter)
+    }
+
+    func assmebleCreateCakeView() -> CreateProductView {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

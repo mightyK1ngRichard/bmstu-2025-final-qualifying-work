@@ -9,42 +9,96 @@
 #if DEBUG
 
 import Foundation
+import NetworkAPI
+import SwiftUI
 import Observation
 
 @Observable
-final class RootViewModelMock: RootDisplayLogic & RootViewModelOutput {
+final class RootViewModelMock: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {
     // Inner values
     var uiProperties = RootModel.UIProperties()
+
     // Computed values
     var screenKind: StartScreenKind {
-        startScreenControl?.screenKind ?? .initial
+        startScreenControl.screenKind
     }
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
+
     // Private values
-    private(set) var currentUser: UserModel
-    private var startScreenControl: StartScreenControl?
+    private(set) var cakes: [CakeEntity] = []
+    private(set) var currentUser: UserModel?
+    private let startScreenControl: StartScreenControl
     private var coordinator: Coordinator?
 
-    init(currentUser: UserModel = MockData.mockCurrentUser) {
+    init(startScreenControl: StartScreenControl = .init(), currentUser: UserModel = MockData.mockCurrentUser) {
         self.currentUser = currentUser
-    }
-
-    func setEnvironmentObjects(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
-        self.coordinator = coordinator
         self.startScreenControl = startScreenControl
     }
 
+    func setEnvironmentObjects(_ coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
+}
+
+// MARK: - Screens
+
+extension RootViewModelMock {
+    func assemblyAuthView() -> AuthView {
+        AuthView(viewModel: AuthViewModelMock())
+    }
+
+    @MainActor
+    func assemblyCakeListView() -> CakesListView {
+        CakesListAssembler.assembleMock()
+    }
+
+    func assemblyCategoriesView() -> CategoriesView {
+        // FIXME: Assembler моки
+        let viewModel = CategoriesViewModelMock()
+        return CategoriesView(viewModel: viewModel)
+    }
+
+    func assemblyChatListView(userModel: UserModel) -> ChatListView {
+        // FIXME: Assembler моки
+        let viewModel = ChatListViewModelMock(delay: 3)
+        return ChatListView(viewModel: viewModel)
+    }
+
+    func assemblyNotificationsListView() -> NotificationsListView {
+        // FIXME: Assembler моки
+        let viewModel = NotificationsListViewModelMock(delay: 3)
+        return NotificationsListView(viewModel: viewModel)
+    }
+
+    func assemblyProfileView() -> ProfileView {
+        // FIXME: Assembler моки
+        let viewModel = ProfileViewModelMock(user: currentUser, isCurrentUser: true)
+        return ProfileView(viewModel: viewModel)
+    }
+
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
-        let viewModel = CakeDetailsViewModelMock(cakeModel: model)
-        return CakeDetailsView(viewModel: viewModel)
+        CakeDetailsAssembler.assembleMock(cakeModel: model)
     }
 
     func assemblyProfileView(userModel: UserModel) -> ProfileView {
-        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser.id)
+        let viewModel = ProfileViewModelMock(user: userModel, isCurrentUser: userModel.id == currentUser?.id)
         return ProfileView(viewModel: viewModel)
     }
+
+    func setCakes(_ newCakes: [CakeEntity]) {}
+
+    func updateCake(_ cake: CakeEntity) {}
+
+    func fetchUserInfoIfNeeded() {}
+
+    func reloadGetUserInfo() {}
+
+    func assemblyChatListErrorView() -> TLErrorView.Configuration {
+        .init(kind: .noConnection)
+    }
+
 }
 
 // MARK: - Mock Data

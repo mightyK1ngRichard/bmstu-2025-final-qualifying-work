@@ -26,10 +26,17 @@ final class ConfigProvider: Sendable {
         )
     }
 
+    static func makeJWTTokens() -> JWTTokens {
+        let accessToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.accessToken.rawValue)
+        let refreshToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.refreshToken.rawValue)
+
+        return JWTTokens(accessToken: accessToken, refreshToken: refreshToken)
+    }
+
     static func makeConection(
         host: String,
         port: Int,
-        numberOfThreads: Int = System.coreCount
+        numberOfThreads: Int = 1
     ) throws -> GRPCChannel {
         let group = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
         let channel = try GRPCChannelPool.with(

@@ -1,7 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "(%lld)" : {
+
+    },
+    "*Kg price, %@" : {
+
+    },
+    "*Weight in grams" : {
 
     },
     "%@" : {
@@ -19,6 +28,15 @@
           }
         }
       }
+    },
+    "200" : {
+
+    },
+    "850" : {
+
+    },
+    "1000" : {
+
     },
     "All" : {
       "localizations" : {
@@ -40,23 +58,18 @@
         }
       }
     },
+    "Cake name" : {
+
+    },
+    "Cancel" : {
+
+    },
     "Categories" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Категории"
-          }
-        }
-      }
-    },
-    "Chat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Чат"
           }
         }
       }
@@ -71,6 +84,15 @@
         }
       }
     },
+    "choose rating" : {
+
+    },
+    "Close" : {
+
+    },
+    "Create" : {
+
+    },
     "Create a product" : {
       "localizations" : {
         "ru" : {
@@ -82,6 +104,16 @@
       }
     },
     "Customer" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Покупатель"
+          }
+        }
+      }
+    },
+    "Delete" : {
 
     },
     "Delete product" : {
@@ -95,6 +127,19 @@
       }
     },
     "Delivery address" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес доставки"
+          }
+        }
+      }
+    },
+    "Discounted price (Optional field)" : {
+
+    },
+    "Discounted price end date (Optional field)" : {
 
     },
     "Don't have account?" : {
@@ -120,6 +165,16 @@
         }
       }
     },
+    "Fillings" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начинки"
+          }
+        }
+      }
+    },
     "Home" : {
       "localizations" : {
         "ru" : {
@@ -131,7 +186,14 @@
       }
     },
     "ID: %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Код: %@"
+          }
+        }
+      }
     },
     "kids" : {
       "localizations" : {
@@ -193,6 +255,9 @@
         }
       }
     },
+    "No message" : {
+
+    },
     "Nothing found" : {
       "localizations" : {
         "ru" : {
@@ -217,10 +282,24 @@
       }
     },
     "OK" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хорошо"
+          }
+        }
+      }
     },
     "Order" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заказ"
+          }
+        }
+      }
     },
     "Order date" : {
 
@@ -246,7 +325,14 @@
       }
     },
     "Product" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продукт"
+          }
+        }
+      }
     },
     "Profile" : {
       "localizations" : {
@@ -288,6 +374,20 @@
         }
       }
     },
+    "Reload" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторить"
+          }
+        }
+      }
+    },
+    "Reload data" : {
+
+    },
     "Repeat Password" : {
       "localizations" : {
         "ru" : {
@@ -328,8 +428,18 @@
         }
       }
     },
-    "Seller" : {
+    "Select product photos" : {
 
+    },
+    "Seller" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продавец"
+          }
+        }
+      }
     },
     "Seller Info" : {
       "localizations" : {
@@ -372,20 +482,30 @@
       }
     },
     "The chat history is empty" : {
-
-    },
-    "There was an error" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Произошла ошибка"
+            "value" : "История чата пустая"
           }
         }
       }
     },
-    "User address not found" : {
+    "There are no chats in your feed" : {
 
+    },
+    "Try again" : {
+
+    },
+    "User address not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес пользователя не найден"
+          }
+        }
+      }
     },
     "View all" : {
       "localizations" : {
@@ -416,6 +536,9 @@
           }
         }
       }
+    },
+    "Write a description of the product..." : {
+
     },
     "Write a review" : {
       "localizations" : {
@@ -466,24 +589,6 @@
           }
         }
       }
-    },
-    "Получить категории" : {
-
-    },
-    "Получить начинка" : {
-
-    },
-    "Получить торты" : {
-
-    },
-    "Создать категории" : {
-
-    },
-    "Создать начинки" : {
-
-    },
-    "Создать торт" : {
-
     },
     "Торт&\nLand" : {
 

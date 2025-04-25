@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct CakeDetailsView: View {
-    @State var viewModel: CakeDetailsDisplayLogic & CakeDetailsViewModelOutput
+    @State var viewModel: CakeDetailsDisplayData & CakeDetailsViewModelInput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.fetchCakeDetails()
         }
         .navigationDestination(for: CakeDetailsModel.Screens.self) { screen in
             openNextScreen(screen)
@@ -39,7 +40,7 @@ private extension CakeDetailsView {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
-        CakeDetailsView(viewModel: CakeDetailsViewModelMock())
+        CakeDetailsView(viewModel: CakeDetailsViewModelMock(isOwnedByUser: false))
     }
     .environment(coordinator)
 }

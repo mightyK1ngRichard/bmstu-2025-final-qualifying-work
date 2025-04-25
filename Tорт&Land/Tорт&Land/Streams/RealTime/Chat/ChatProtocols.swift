@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ChatDisplayLogic: ChatViewModelInput {
+protocol ChatDisplayLogic {
     var uiProperties: ChatModel.UIProperties { get set }
     var currentUser: UserModel { get }
     var interlocutor: UserModel { get }
@@ -19,8 +19,9 @@ protocol ChatDisplayLogic: ChatViewModelInput {
 protocol ChatViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
     func configureInterlocutorAvatar() -> TLImageView.Configuration
+    func didTapSendMessageButton()
+    func fetchMessages()
 }
 
 protocol ChatViewModelOutput {
-    func didTapSendMessageButton()
 }

@@ -14,27 +14,54 @@ enum CommonMockData {
     static func generateMockCakeModel(id: Int, withDiscount: Bool = true) -> CakeModel {
         CakeModel(
             id: String(id),
+            previewImageState: .fetched(.uiImage(.cake1)),
             thumbnails: [
-                Thumbnail(imageState: .fetched(.uiImage(.cake1))),
-                Thumbnail(imageState: .fetched(.uiImage(.cake2))),
-                Thumbnail(imageState: .fetched(.uiImage(.cake3))),
+                Thumbnail(id: "1", imageState: .fetched(.uiImage(.cake1)), url: ""),
+                Thumbnail(id: "2", imageState: .fetched(.uiImage(.cake2)), url: ""),
+                Thumbnail(id: "3", imageState: .fetched(.uiImage(.cake3)), url: ""),
             ].shuffled(),
             cakeName: "Моковый торт #\(id)",
             price: 19.99,
+            mass: 400,
             discountedPrice: withDiscount ? 15.99 : nil,
+            rating: 5,
+            reviewsCount: 10,
             isSelected: Bool.random(),
             description: Constants.longDescription,
             establishmentDate: Date().description,
-            similarCakes: [],
+            similarCakes: [
+            ],
             comments: (1...10).map {
                 CommentInfo(
                     id: String($0),
-                    author: generateMockUserModel(id: $0, name: "Комментатор #\($0)"),
+                    author: generateMockAuthor(id: $0, name: "Комментатор #\($0)"),
                     date: "June 5, 2025",
                     description: Constants.longComment,
                     countFillStars: (1...5).randomElement() ?? 1
                 )
             },
+            categories: [
+                .init(id: "1", name: "Свадебный торт", imageState: .fetched(.uiImage(.categ1))),
+                .init(id: "2", name: "Шоколадный торт", imageState: .fetched(.uiImage(.categ5))),
+            ],
+            fillings: [
+                .init(
+                    id: "1",
+                    name: "Шоколадная начинка",
+                    imageState: .fetched(.uiImage(.filling2)),
+                    content: "Шоколад, сливки, витамин G",
+                    kgPrice: 200,
+                    description: "Это очень вкусный коржик"
+                ),
+                .init(
+                    id: "2",
+                    name: "Клубничная начинка начинка начинка",
+                    imageState: .fetched(.uiImage(.filling1)),
+                    content: "Клабника, сливки, витамин L",
+                    kgPrice: 200,
+                    description: "Это очень вкусный коржик"
+                )
+            ],
             seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
         )
     }
@@ -55,6 +82,18 @@ enum CommonMockData {
                 .uiImage(UIImage(named: "header\(Int.random(in: 1...6))") ?? .header1)
             ),
             cakes: []
+        )
+    }
+
+    static func generateMockAuthor(
+        id: Int,
+        name: String? = nil,
+        avatar: ImageState? = nil
+    ) -> CommentInfo.Author {
+        .init(
+            id: String(id),
+            name: name ?? "Имя пользователя #\(id)",
+            imageState: avatar ?? .fetched(.uiImage(.king))
         )
     }
 }

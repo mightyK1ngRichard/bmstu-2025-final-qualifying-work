@@ -7,18 +7,27 @@
 //
 
 import Foundation
+import NetworkAPI
 
 struct CakeModel: Identifiable, Hashable {
     /// Код торта
     let id: String
-    /// Состояние изображения
+    /// Изображение карточки товара
+    var previewImageState: ImageState
+    /// Состояние изображений
     var thumbnails: [Thumbnail]
     /// Название торта
-    let cakeName: String
+    var cakeName: String
     /// Цена торта (без скидки)
-    let price: Double
+    var price: Double
+    /// Масса торта (в граммах)
+    var mass: Double
     /// Цена со скидкой (если есть)
-    let discountedPrice: Double?
+    var discountedPrice: Double?
+    /// Рейтинг торта (от 0 до 5)
+    var rating: Int
+    /// Число отзывов
+    var reviewsCount: Int
     /// Флаг любимого товара
     var isSelected: Bool
     /// Описание товара
@@ -28,15 +37,87 @@ struct CakeModel: Identifiable, Hashable {
     /// Схожие товары
     var similarCakes: [CakeModel]
     /// Комментарии
-    var comments: [CommentInfo] = []
+    var comments: [CommentInfo]
+    /// Категории торта
+    var categories: [Category]
+    /// Начинки торта
+    var fillings: [Filling]
     /// Продовец
     var seller: UserModel
+}
+
+extension CakeModel {
+    init(from model: ProfilePreviewCakeEntity) {
+        self = CakeModel(
+            id: model.id,
+            previewImageState: .loading,
+            thumbnails: [],
+            cakeName: model.name,
+            price: model.kgPrice,
+            mass: model.mass,
+            rating: model.rating,
+            reviewsCount: model.reviewsCount,
+            isSelected: false,
+            description: model.description ?? "",
+            establishmentDate: model.dateCreation.description,
+            similarCakes: [],
+            comments: [],
+            categories: [],
+            fillings: [],
+            seller: UserModel(from: model.owner)
+        )
+    }
+}
+
+// MARK: - PreviewCakeEntity
+
+extension CakeModel {
+
+    init(from model: PreviewCakeEntity) {
+        // 1000 ₽/кг * 2 кг = 2000 ₽
+        let cakePrice = model.kgPrice * (model.mass / 1000)
+        let discountedPrice: Double? = {
+            guard let discount = model.discountKgPrice else {
+                return nil
+            }
+            return discount * (model.mass / 1000)
+        }()
+
+        self = CakeModel(
+            id: model.id,
+            previewImageState: .loading,
+            thumbnails: [],
+            cakeName: model.name,
+            price: cakePrice,
+            mass: model.mass,
+            discountedPrice: discountedPrice,
+            rating: model.rating,
+            reviewsCount: model.reviewsCount,
+            isSelected: false,
+            description: model.description,
+            establishmentDate: model.dateCreation.description,
+            similarCakes: [],
+            comments: [],
+            categories: model.categories.map(Category.init(from:)),
+            fillings: model.fillings.map(Filling.init(from:)),
+            seller: UserModel(from: model.owner)
+        )
+    }
+
+    func applyDetails(_ cakeEntity: CakeEntity) -> CakeModel {
+        var cakeCopy = self
+        cakeCopy.thumbnails = cakeEntity.images.map { Thumbnail(id: $0.id, imageState: .loading, url: $0.imageURL) }
+        cakeCopy.categories = cakeEntity.categories.map(Category.init(from:))
+        cakeCopy.fillings = cakeEntity.fillings.map(Filling.init(from:))
+        return cakeCopy
+    }
 }
 
 // MARK: - TLProductCard Configuration
 
 extension CakeModel {
-    func configureProductCard() -> TLProductCard.Configuration {
+
+    func configureProductCard(priceFormatter: PriceFormatterService) -> TLProductCard.Configuration {
         let badgeViewConfiguration: TLBadgeView.Configuration? = {
             let (badgeText, badgeKind) = badgeInfo
             guard let badgeText, let badgeKind else {
@@ -45,31 +126,31 @@ extension CakeModel {
             return .basic(text: badgeText, kind: badgeKind)
         }()
         let productDiscountedPrice: String? = {
-            guard let discountedPrice = discountedPrice else {
+            guard let discountedPrice else {
                 return nil
             }
-            return "\(discountedPrice)$"
+            return priceFormatter.formatPrice(discountedPrice)
         }()
 
         return .basic(
-            imageState: thumbnails.first?.imageState ?? .empty,
+            imageState: previewImageState,
             imageHeight: 184,
             productText: .init(
                 seller: seller.name,
                 productName: cakeName,
-                productPrice: "\(price)$",
+                productPrice: priceFormatter.formatPrice(price),
                 productDiscountedPrice: productDiscountedPrice
             ),
             badgeViewConfiguration: badgeViewConfiguration,
             productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected)),
-            starsViewConfiguration: starsConfiguration
+            starsViewConfiguration: starsConfiguration()
         )
     }
 
-    var starsConfiguration: TLStarsView.Configuration {
+    func starsConfiguration() -> TLStarsView.Configuration {
         .basic(
-            kind: .init(rawValue: Int(comments.averageRating)) ?? .zero,
-            feedbackCount: comments.count
+            kind: .init(rawValue: rating) ?? .zero,
+            feedbackCount: reviewsCount
         )
     }
 
@@ -77,6 +158,7 @@ extension CakeModel {
         guard let productDate = establishmentDate.dateRedescription else {
             return false
         }
+
         let componentsDif = Calendar.current.dateComponents(
             [.year, .month, .day],
             from: productDate,
@@ -85,42 +167,45 @@ extension CakeModel {
         guard componentsDif.month == 0 && componentsDif.year == 0 else {
             return false
         }
+
         // Получаем разницу нынешней даты и даты создания объявления
         guard let difDay = componentsDif.day else {
             return false
         }
+
         // Если разница меньше 8, объявление считается новым
         return difDay < 8
     }
 
     private var badgeInfo: (String?, TLBadgeView.Configuration.Kind?) {
-        guard let discountedPrice = discountedPrice else {
+        guard let discountedPrice else {
             if isNew {
                 return ("NEW", .dark)
             }
             return (nil, nil)
         }
-        let discountPercentage = (discountedPrice * 100) / price
-        return ("-\(Int(round(discountPercentage)))%", .red)
+        let discountPercentage = 100 - (discountedPrice * 100) / price
+        return ("-\(Int(discountPercentage))%", .red)
     }
 }
 
 // MARK: - TLProductDescriptionView Configuration
 
 extension CakeModel {
-    func configureDescriptionView() -> TLProductDescriptionView.Configuration {
+
+    func configureDescriptionView(priceFormatter: PriceFormatterService) -> TLProductDescriptionView.Configuration {
         .basic(
-            title: cakeName,
-            price: "$\(price)",
+            title: "\(cakeName), \(Int(mass))г",
+            price: priceFormatter.formatPrice(price),
             discountedPrice: {
                 guard let discountedPrice else {
                     return nil
                 }
-                return "$\(discountedPrice)"
+                return priceFormatter.formatPrice(discountedPrice)
             }(),
             subtitle: seller.name,
             description: description,
-            starsConfiguration: starsConfiguration
+            starsConfiguration: starsConfiguration()
         )
     }
 }

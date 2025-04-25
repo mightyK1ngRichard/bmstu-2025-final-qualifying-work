@@ -43,8 +43,6 @@ extension TLProductCard.Configuration {
 extension TLProductCard.Configuration {
 
     var isShimmering: Bool {
-        imageConfiguration.isShimmering
-        || productButtonConfiguration.isShimmering
-        || starsViewConfiguration.isShimmering
+        productButtonConfiguration.isShimmering || starsViewConfiguration.isShimmering
     }
 }

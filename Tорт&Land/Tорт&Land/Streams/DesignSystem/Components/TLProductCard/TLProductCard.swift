@@ -35,8 +35,8 @@ struct TLProductCard: View, Configurable {
 
     var body: some View {
         VStack(alignment: .leading) {
-            ImageBlock
-            FooterBlockView
+            imageBlock
+            footerBlockView
                 .padding(.top, 2)
         }
     }
@@ -46,7 +46,7 @@ struct TLProductCard: View, Configurable {
 
 private extension TLProductCard {
 
-    var ImageBlock: some View {
+    var imageBlock: some View {
         TLImageView(configuration: configuration.imageConfiguration)
             .frame(height: configuration.imageHeight)
             .clipShape(.rect(cornerRadius: 9))
@@ -65,22 +65,22 @@ private extension TLProductCard {
             }
     }
 
-    var FooterBlockView: some View {
+    var footerBlockView: some View {
         VStack(alignment: .leading) {
-            StartsBlockView
+            startsBlockView
             if configuration.isShimmering {
                 ShimmeringTextBlock
             } else {
-                TextBlockView
+                textBlockView
             }
         }
     }
 
-    var StartsBlockView: some View {
+    var startsBlockView: some View {
         TLStarsView(configuration: configuration.starsViewConfiguration)
     }
 
-    var TextBlockView: some View {
+    var textBlockView: some View {
         VStack(alignment: .leading, spacing: 3) {
             if let seller = configuration.productText.seller {
                 Text(seller)

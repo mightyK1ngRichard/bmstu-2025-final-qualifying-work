@@ -9,7 +9,7 @@
 import Foundation
 
 struct Thumbnail: Identifiable, Hashable {
-    var id: String { UUID().uuidString }
+    var id: String
     var imageState: ImageState
-    var url: String?
+    var url: String
 }

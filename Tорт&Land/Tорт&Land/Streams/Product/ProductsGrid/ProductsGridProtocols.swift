@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ProductsGridDisplayLogic: ProductsGridViewModelInput {
+protocol ProductsGridDisplayData {
     var uiProperties: ProductsGridModel.UIProperties { get set }
     var cakes: [CakeModel] { get }
     var sectionKind: ProductsGridModel.SectionKind { get }
@@ -17,9 +17,10 @@ protocol ProductsGridDisplayLogic: ProductsGridViewModelInput {
 protocol ProductsGridViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
     func configureProductCard(cake: CakeModel) -> TLProductCard.Configuration
-}
-
-protocol ProductsGridViewModelOutput {
     func didTapProductCard(cake: CakeModel)
     func didTapProductLikeButton(cake: CakeModel, isSelected: Bool)
+}
+
+@MainActor
+protocol ProductsGridDisplayLogic {
 }
