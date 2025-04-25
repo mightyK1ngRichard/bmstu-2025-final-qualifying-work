@@ -22,8 +22,8 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
     private var rootViewModel: RootViewModelOutput
 
     init(
-        priceFormatter: PriceFormatterService = .shared,
-        rootViewModel: RootViewModelOutput!
+        rootViewModel: RootViewModelOutput,
+        priceFormatter: PriceFormatterService = .shared
     ) {
         self.priceFormatter = priceFormatter
         self.rootViewModel = rootViewModel
@@ -137,7 +137,11 @@ extension CakesListViewModel {
     }
 
     func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
-        return model.configureProductCard(priceFormatter: priceFormatter)
+        model.configureProductCard(priceFormatter: priceFormatter)
+    }
+
+    func configureErrorView(message: String) -> TLErrorView.Configuration {
+        .init(kind: .customError("Network Error", message))
     }
 
 }

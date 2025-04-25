@@ -22,12 +22,13 @@ public enum AppHosts: GRPCHostPortConfiguration {
     case chat
     case cake
     case profile
+    case reviews
 }
 
 public extension AppHosts {
     var hostName: String {
         switch self {
-        case .auth, .cake, .profile, .chat:
+        case .auth, .cake, .profile, .chat, .reviews:
         #if DEBUG
             return "localhost"
         #else
@@ -47,6 +48,8 @@ public extension AppHosts {
             return 44046
         case .chat:
             return 44047
+        case .reviews:
+            return 44048
         #else
         case .cake:
             return 44044
@@ -56,6 +59,8 @@ public extension AppHosts {
             return 44046
         case .chat:
             return 44047
+        case .reviews:
+            return 44048
         #endif
         }
     }

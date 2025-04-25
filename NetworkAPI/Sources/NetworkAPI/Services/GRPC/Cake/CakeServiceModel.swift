@@ -89,10 +89,11 @@ public extension CakeServiceModel.CreateCake {
         let name: String
         let previewImageData: Data
         let kgPrice: Double
-        let rating: Int
         let description: String
         let mass: Double
         let isOpenForSale: Bool
+        let discountEndTime: Date?
+        let discountKgPrice: Double?
         let fillingIDs: [String]
         let categoryIDs: [String]
         let imagesData: [Data]
@@ -101,10 +102,11 @@ public extension CakeServiceModel.CreateCake {
             name: String,
             previewImageData: Data,
             kgPrice: Double,
-            rating: Int,
             description: String,
             mass: Double,
             isOpenForSale: Bool,
+            discountEndTime: Date?,
+            discountKgPrice: Double?,
             fillingIDs: [String],
             categoryIDs: [String],
             imagesData: [Data]
@@ -112,10 +114,11 @@ public extension CakeServiceModel.CreateCake {
             self.name = name
             self.previewImageData = previewImageData
             self.kgPrice = kgPrice
-            self.rating = rating
             self.description = description
             self.mass = mass
             self.isOpenForSale = isOpenForSale
+            self.discountKgPrice = discountKgPrice
+            self.discountEndTime = discountEndTime
             self.fillingIDs = fillingIDs
             self.categoryIDs = categoryIDs
             self.imagesData = imagesData

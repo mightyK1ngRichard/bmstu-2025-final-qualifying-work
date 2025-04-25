@@ -48,4 +48,15 @@ extension UserModel {
             cakes: []
         )
     }
+
+    init(from model: ProfileEntity) {
+        self = UserModel(
+            id: model.id,
+            name: model.fio ?? StringConstants.anonimeUserName,
+            mail: model.mail,
+            avatarImage: .loading,
+            headerImage: .loading,
+            cakes: []
+        )
+    }
 }

@@ -13,7 +13,8 @@ final class CakeDetailsAssembler {
     static func assemble(
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
-        cakeService: CakeGrpcService,
+        cakeService: CakeService,
+        reviewsService: ReviewsService,
         rootViewModel: RootViewModelOutput,
         imageProvider: ImageLoaderProvider
     ) -> CakeDetailsView {
@@ -21,6 +22,7 @@ final class CakeDetailsAssembler {
             cakeModel: cakeModel,
             isOwnedByUser: isOwnedByUser,
             cakeService: cakeService,
+            reviewsService: reviewsService,
             imageProvider: imageProvider,
             rootViewModel: rootViewModel
         )

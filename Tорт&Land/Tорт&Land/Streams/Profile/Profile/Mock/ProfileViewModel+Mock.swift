@@ -12,7 +12,7 @@ import Foundation
 import Observation
 
 @Observable
-final class ProfileViewModelMock: ProfileDisplayLogic & ProfileViewModelOutput {
+final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
     var uiProperties = ProfileModel.UIProperties()
     private(set) var user: UserModel?
     private(set) var isCurrentUser: Bool
@@ -92,6 +92,10 @@ extension ProfileViewModelMock {
 
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {
         cake.configureProductCard(priceFormatter: priceFormatter)
+    }
+
+    func assmebleCreateCakeView() -> CreateProductView {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

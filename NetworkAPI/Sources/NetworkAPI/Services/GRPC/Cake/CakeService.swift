@@ -12,7 +12,7 @@ import SwiftProtobuf
 
 // MARK: - AuthService
 
-public protocol CakeGrpcService: Sendable {
+public protocol CakeService: Sendable {
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response
@@ -27,7 +27,7 @@ public protocol CakeGrpcService: Sendable {
 
 // MARK: - AuthGrpcServiceImpl
 
-public final class CakeGrpcServiceImpl: CakeGrpcService, Sendable {
+public final class CakeGrpcServiceImpl: CakeService, Sendable {
     private let client: Cake_CakeServiceAsyncClientProtocol
     private let channel: GRPCChannel
     private let networkService: NetworkService
@@ -121,13 +121,20 @@ public extension CakeGrpcServiceImpl {
             $0.name = req.name
             $0.previewImageData = req.previewImageData
             $0.kgPrice = req.kgPrice
-            $0.rating = Int32(req.rating)
             $0.description_p = req.description
             $0.mass = req.mass
             $0.isOpenForSale = req.isOpenForSale
             $0.fillingIds = req.fillingIDs
             $0.categoryIds = req.categoryIDs
             $0.images = req.imagesData
+            // nullable discount price
+            if let discountEnd = req.discountEndTime {
+                $0.discountEndTime = Google_Protobuf_Timestamp(date: discountEnd)
+            }
+            // nullable discount price
+            if let discountPrice = req.discountKgPrice {
+                $0.discountKgPrice = Google_Protobuf_DoubleValue(discountPrice)
+            }
         }
 
         return try await networkService.performAndLog(

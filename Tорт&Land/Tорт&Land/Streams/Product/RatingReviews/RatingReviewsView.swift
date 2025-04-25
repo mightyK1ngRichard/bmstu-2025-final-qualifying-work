@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct RatingReviewsView: View {
-    @State var viewModel: RatingReviewsDisplayLogic & RatingReviewsViewModelOutput
+    @State var viewModel: RatingReviewsDisplayLogic & RatingReviewsViewModelInput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.fetchComments()
         }
     }
 }

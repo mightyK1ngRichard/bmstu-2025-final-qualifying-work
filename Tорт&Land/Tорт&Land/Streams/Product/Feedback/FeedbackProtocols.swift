@@ -8,14 +8,12 @@
 
 import Foundation
 
-protocol FeedbackDisplayLogic: FeedbackViewModelInput {
+protocol FeedbackDisplayLogic {
     var uiProperties: FeedbackModel.UIProperties { get set }
 }
 
 protocol FeedbackViewModelInput {
-}
-
-protocol FeedbackViewModelOutput {
     func didTapSendFeedbackButton()
     func didTapStar(count: Int)
+    func didTapCloseErrorAlert()
 }

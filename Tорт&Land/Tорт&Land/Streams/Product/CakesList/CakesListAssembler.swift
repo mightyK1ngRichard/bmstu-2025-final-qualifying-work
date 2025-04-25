@@ -13,7 +13,7 @@ import NetworkAPI
 final class CakesListAssembler {
     static func assemble(
         rootViewModel: RootViewModelOutput,
-        cakeService: CakeGrpcService,
+        cakeService: CakeService,
         imageProvider: ImageLoaderProvider
     ) -> CakesListView {
         let viewModel = CakesListViewModel(rootViewModel: rootViewModel)

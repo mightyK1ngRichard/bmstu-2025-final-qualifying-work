@@ -14,7 +14,7 @@ import SwiftUI
 import Observation
 
 @Observable
-final class RootViewModelMock: RootDisplayData, RootViewModelOutput {
+final class RootViewModelMock: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {
     // Inner values
     var uiProperties = RootModel.UIProperties()
 
@@ -44,7 +44,7 @@ final class RootViewModelMock: RootDisplayData, RootViewModelOutput {
 
 // MARK: - Screens
 
-extension RootViewModelMock: @preconcurrency RootViewModelInput {
+extension RootViewModelMock {
     func assemblyAuthView() -> AuthView {
         AuthView(viewModel: AuthViewModelMock())
     }
@@ -60,7 +60,7 @@ extension RootViewModelMock: @preconcurrency RootViewModelInput {
         return CategoriesView(viewModel: viewModel)
     }
 
-    func assemblyChatListView() -> ChatListView {
+    func assemblyChatListView(userModel: UserModel) -> ChatListView {
         // FIXME: Assembler моки
         let viewModel = ChatListViewModelMock(delay: 3)
         return ChatListView(viewModel: viewModel)
@@ -92,6 +92,13 @@ extension RootViewModelMock: @preconcurrency RootViewModelInput {
     func updateCake(_ cake: CakeEntity) {}
 
     func fetchUserInfoIfNeeded() {}
+
+    func reloadGetUserInfo() {}
+
+    func assemblyChatListErrorView() -> TLErrorView.Configuration {
+        .init(kind: .noConnection)
+    }
+
 }
 
 // MARK: - Mock Data

@@ -44,8 +44,8 @@ extension UserEntity {
             fio: model.fio,
             nickname: model.nickname,
             mail: model.mail,
-            imageURL: model.imageUrl,
-            headerImageURL: model.headerImageUrl
+            imageURL: model.imageURL,
+            headerImageURL: model.headerImageURL
         )
     }
 }

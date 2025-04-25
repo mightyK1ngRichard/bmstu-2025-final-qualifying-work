@@ -19,9 +19,21 @@ extension FeedbackView {
         }
         .background(Constants.bgColor)
         .overlay {
-            if viewModel.uiProperties.isLoading {
-                ProgressView()
+            loadingView
+        }
+        .alert(
+            viewModel.uiProperties.errorMessage,
+            isPresented: $viewModel.uiProperties.showErrorMessage,
+            actions: {
+                Button("OK", action: viewModel.didTapCloseErrorAlert)
             }
+        )
+    }
+
+    @ViewBuilder
+    var loadingView: some View {
+        if viewModel.uiProperties.isLoading {
+            ProgressView()
         }
     }
 
@@ -96,6 +108,7 @@ extension FeedbackView {
         .tint(Color.white)
         .padding(.bottom, 6)
         .padding(.top, 18)
+        .disabled(viewModel.uiProperties.isLoading)
     }
 }
 

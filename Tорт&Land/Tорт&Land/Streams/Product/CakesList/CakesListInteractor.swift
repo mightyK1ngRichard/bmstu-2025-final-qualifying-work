@@ -11,10 +11,10 @@ import NetworkAPI
 
 final class CakesListInteractor: CakesListBusinessLogic {
     var presenter: CakesListPresenterInput!
-    private let cakeService: CakeGrpcService
+    private let cakeService: CakeService
     private let imageProvider: ImageLoaderProvider
 
-    init(cakeService: CakeGrpcService, imageProvider: ImageLoaderProvider) {
+    init(cakeService: CakeService, imageProvider: ImageLoaderProvider) {
         self.cakeService = cakeService
         self.imageProvider = imageProvider
     }

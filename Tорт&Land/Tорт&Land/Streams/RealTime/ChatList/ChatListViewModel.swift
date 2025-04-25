@@ -43,19 +43,22 @@ extension ChatListViewModel {
     func fetchChatsHistory() {
         uiProperties.screenState = .loading
         Task { @MainActor in
-            let usersEntities = try await chatProvider.getUserChats()
-            for (index, usersEntity) in usersEntities.enumerated() {
-                let cell = ChatListModel.ChatCellModel(
-                    id: UUID().uuidString,
-                    user: UserModel(from: usersEntity),
-                    lastMessage: "Последнее сообщение",
-                    timeMessage: Date()
-                )
-                allChatCells.append(cell)
-                fetchUserImage(index: index, urlString: usersEntity.imageURL)
+            do {
+                let usersEntities = try await chatProvider.getUserChats()
+                for (index, userEntity) in usersEntities.enumerated() {
+                    let cell = ChatListModel.ChatCellModel(
+                        id: UUID().uuidString,
+                        user: UserModel(from: userEntity),
+                        lastMessage: "Последнее сообщение",
+                        timeMessage: Date()
+                    )
+                    allChatCells.append(cell)
+                    fetchUserImage(index: index, urlString: userEntity.imageURL)
+                }
+                uiProperties.screenState = .finished
+            } catch {
+                uiProperties.screenState = .error(message: "\(error)")
             }
-
-            uiProperties.screenState = .finished
         }
     }
 
@@ -111,27 +114,3 @@ extension ChatListViewModel {
         self.coordinator = coordinator
     }
 }
-
-import SwiftUI
-
-#Preview {
-    let network = NetworkServiceImpl()
-    network.setRefreshToken(refreshToken)
-    let auth = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: network
-    )
-
-    return ChatListAssembler.assemble(
-        currentUser: CommonMockData.generateMockUserModel(id: 1),
-        imageProvider: ImageLoaderProviderImpl(),
-        chatProvider: ChatServiceImpl(
-            configuration: AppHosts.chat,
-            authService: auth,
-            networkService: network
-        )
-    )
-    .environment(Coordinator())
-}
-
-private let refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyNzcwNjEsInVzZXJJRCI6IjY5ZjQwOWZhLWYyYjQtNDllMC04MjE5LWZlNmUyYTAzNWZlMCJ9.Kw3RqyNlrrNN_PP4wJ2P2we-_FKOX5UrOTGn1hyWA4g"

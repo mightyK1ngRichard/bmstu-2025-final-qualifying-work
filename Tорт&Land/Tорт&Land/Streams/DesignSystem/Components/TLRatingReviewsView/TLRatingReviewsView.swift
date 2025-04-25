@@ -92,7 +92,7 @@ private extension TLRatingReviewsView {
             twoStarRating: .init(ration: .twenty, count: 0),
             oneStarRating: .init(ration: .zero, count: 1),
             commonRating: "4.0",
-            commonCount: "23 ratings"
+            commonCount: "23 reviews"
         )
     )
     .padding(.horizontal)

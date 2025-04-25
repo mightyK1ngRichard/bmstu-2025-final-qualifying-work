@@ -9,7 +9,7 @@
 import Foundation
 @testable import NetworkAPI
 
-final class StubGrpcCakeServiceImpl: CakeGrpcService {
+final class StubGrpcCakeServiceImpl: CakeService {
     func fetchCategoriesByGenderName(gender: NetworkAPI.CategoryGender) async throws -> NetworkAPI.CakeServiceModel.FetchCategoriesByGenderName.Response {
         fatalError("No implementation")
     }

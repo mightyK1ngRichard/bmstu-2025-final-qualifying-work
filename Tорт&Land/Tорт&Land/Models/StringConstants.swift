@@ -10,4 +10,5 @@ import Foundation
 
 enum StringConstants {
     static let anonimeUserName = "Anonymous"
+    static let rub = "₽"
 }

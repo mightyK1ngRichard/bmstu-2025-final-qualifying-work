@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ProfileDisplayLogic: ProfileViewModelInput {
+protocol ProfileDisplayLogic {
     var uiProperties: ProfileModel.UIProperties { get set }
     var user: UserModel? { get }
     var isCurrentUser: Bool { get }
@@ -16,17 +16,20 @@ protocol ProfileDisplayLogic: ProfileViewModelInput {
 
 protocol ProfileViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
+    func assmebleCreateCakeView() -> CreateProductView
     func configureAvatarImage() -> TLImageView.Configuration
     func configureHeaderImage() -> TLImageView.Configuration
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration
-}
 
-protocol ProfileViewModelOutput {
     func fetchUserData()
+
     func didTapCreateProduct()
     func didTapOpenSettings()
     func didTapOpenMap()
     func didTapWriteMessage()
     func didTapCakeLikeButton(cake: CakeModel, isSelected: Bool)
     func didTapCakeCard(with cake: CakeModel)
+}
+
+protocol ProfileViewModelOutput {
 }
