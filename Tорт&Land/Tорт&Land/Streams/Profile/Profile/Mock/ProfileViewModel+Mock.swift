@@ -94,7 +94,11 @@ extension ProfileViewModelMock {
         cake.configureProductCard(priceFormatter: priceFormatter)
     }
 
-    func assmebleCreateCakeView() -> CreateProductView {
+    func assemblyCreateCakeView() -> CreateProductView {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func assemblyChatView(interlocutor: UserModel) -> ChatView {
         fatalError("init(coder:) has not been implemented")
     }
 }

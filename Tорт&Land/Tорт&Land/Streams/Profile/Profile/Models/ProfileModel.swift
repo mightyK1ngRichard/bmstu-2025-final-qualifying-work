@@ -17,5 +17,6 @@ extension ProfileModel {
 
     enum Screens: Hashable {
         case createProfile
+        case sendMessage(interlocutor: UserModel)
     }
 }

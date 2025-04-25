@@ -18,6 +18,8 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     @ObservationIgnored
     private let rootViewModel: RootViewModel
     @ObservationIgnored
+    private let chatProvider: ChatService
+    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private let cakeProvider: CakeService
@@ -32,6 +34,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
         cakeProvider: CakeService,
+        chatProvider: ChatService,
         profileService: ProfileGrpcService,
         isCurrentUser: Bool = false,
         rootViewModel: RootViewModel
@@ -39,6 +42,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         self.user = user
         self.profileService = profileService
         self.cakeProvider = cakeProvider
+        self.chatProvider = chatProvider
         self.isCurrentUser = isCurrentUser
         self.imageProvider = imageProvider
         self.rootViewModel = rootViewModel
@@ -112,6 +116,7 @@ extension ProfileViewModel {
 // MARK: - Actions
 
 extension ProfileViewModel {
+
     func didTapCakeCard(with cake: CakeModel) {
         coordinator?.addScreen(RootModel.Screens.details(cake))
     }
@@ -129,12 +134,15 @@ extension ProfileViewModel {
     }
 
     func didTapWriteMessage() {
-        print("[DEBUG]: \(#function)")
+        if let interlocutor = user {
+            coordinator?.addScreen(ProfileModel.Screens.sendMessage(interlocutor: interlocutor))
+        }
     }
 
     func didTapCakeLikeButton(cake: CakeModel, isSelected: Bool) {
         print("[DEBUG]: cake with id=\(cake.id) is \(isSelected ? "liked" : "unliked")")
     }
+
 }
 
 // MARK: - Configurations
@@ -154,10 +162,22 @@ extension ProfileViewModel {
         cake.configureProductCard(priceFormatter: priceFormatter)
     }
 
-    func assmebleCreateCakeView() -> CreateProductView {
+    func assemblyCreateCakeView() -> CreateProductView {
         CreateProductAssembler.assemble(
             cakeProvider: cakeProvider,
             imageProvider: imageProvider
+        )
+    }
+
+    func assemblyChatView(interlocutor: UserModel) -> ChatView {
+        guard let currentUser = rootViewModel.currentUser else {
+            fatalError()
+        }
+
+        return ChatAssembler.assemble(
+            currentUser: currentUser,
+            interlocutor: interlocutor,
+            chatProvider: chatProvider
         )
     }
 }

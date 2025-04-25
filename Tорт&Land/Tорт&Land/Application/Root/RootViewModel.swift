@@ -158,6 +158,7 @@ extension RootViewModel {
             user: userModel,
             imageProvider: imageProvider,
             cakeProvider: cakeService,
+            chatProvider: chatProvider,
             profileService: profileService,
             isCurrentUser: currentUser?.id == userModel.id,
             rootViewModel: self
@@ -199,6 +200,7 @@ extension RootViewModel {
             user: currentUser,
             imageProvider: imageProvider,
             cakeProvider: cakeService,
+            chatProvider: chatProvider,
             profileService: profileService,
             isCurrentUser: true,
             rootViewModel: self
