@@ -14,6 +14,8 @@ struct RootViewModelTests {
     let viewModel = RootViewModel(
         authService: StubGrpcAuthService(),
         cakeService: StubGrpcCakeServiceImpl(),
+        reviewsService: StubGrpcReviewsImpl(),
+        chatProvider: StubChatServiceImpl(),
         profileService: StubProfileGrpcServiceImpl(),
         imageProvider: ImageLoaderProviderImpl(),
         startScreenControl: StartScreenControl()
