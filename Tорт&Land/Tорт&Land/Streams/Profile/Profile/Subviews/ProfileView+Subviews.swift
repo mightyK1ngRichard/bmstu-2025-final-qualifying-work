@@ -17,8 +17,10 @@ extension ProfileView {
             case .finished:
                 contentView
             case let .error(message):
-                Text(message)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                TLErrorView(
+                    configuration: .init(kind: .customError("Network Error", message))
+                )
+                .padding(.horizontal, 30)
             }
         }
         .ignoresSafeArea()

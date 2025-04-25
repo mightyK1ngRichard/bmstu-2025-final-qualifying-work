@@ -16,6 +16,7 @@ struct RootView: View {
         NavigationStack(path: $coordinator.navPath) {
             mainContainer.onFirstAppear {
                 viewModel.setEnvironmentObjects(coordinator)
+                viewModel.fetchUserInfoIfNeeded()
             }
             .navigationDestination(for: RootModel.Screens.self) { screen in
                 openNextScreen(for: screen)

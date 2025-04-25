@@ -36,7 +36,7 @@ final class ConfigProvider: Sendable {
     static func makeConection(
         host: String,
         port: Int,
-        numberOfThreads: Int = System.coreCount
+        numberOfThreads: Int = 1
     ) throws -> GRPCChannel {
         let group = MultiThreadedEventLoopGroup(numberOfThreads: numberOfThreads)
         let channel = try GRPCChannelPool.with(

@@ -63,15 +63,11 @@ private extension CakesListView {
     }
 
     func errorView(with message: String) -> some View {
-        VStack(spacing: 20) {
-            Text(message)
-                .style(16, .semibold)
-            Button("Reload", action: viewModel.fetchData)
-                .buttonStyle(.bordered)
-                .tint(Color.primary)
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
+        TLErrorView(
+            configuration: viewModel.configureErrorView(message: message),
+            action: viewModel.fetchData
+        )
+        .padding(.horizontal, 53)
     }
 
     var shimmeringContainer: some View {

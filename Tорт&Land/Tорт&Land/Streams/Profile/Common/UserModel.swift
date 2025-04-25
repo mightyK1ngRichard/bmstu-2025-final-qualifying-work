@@ -30,7 +30,7 @@ extension UserModel {
 
         self = UserModel(
             id: user.id,
-            name: user.fio ?? "Anonymous",
+            name: user.fio ?? StringConstants.anonimeUserName,
             mail: user.mail,
             avatarImage: .loading,
             headerImage: .loading,
@@ -41,7 +41,18 @@ extension UserModel {
     init(from model: UserEntity) {
         self = UserModel(
             id: model.id,
-            name: model.fio ?? "Anonymous",
+            name: model.fio ?? StringConstants.anonimeUserName,
+            mail: model.mail,
+            avatarImage: .loading,
+            headerImage: .loading,
+            cakes: []
+        )
+    }
+
+    init(from model: ProfileEntity) {
+        self = UserModel(
+            id: model.id,
+            name: model.fio ?? StringConstants.anonimeUserName,
             mail: model.mail,
             avatarImage: .loading,
             headerImage: .loading,

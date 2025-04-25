@@ -24,6 +24,7 @@ protocol CakesListViewModelInput {
     func didTapCell(model: CakeModel)
     func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind)
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
+    func configureErrorView(message: String) -> TLErrorView.Configuration
 }
 
 @MainActor
@@ -32,6 +33,8 @@ protocol CakesListDisplayLogic {
     func showError(message: String)
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind)
     func addCakesToRootViewModel(_ cakes: [CakeEntity])
+    func updateUserAvatarImage(imageState: ImageState, cakeID: String)
+    func updateUserHeaderImage(imageState: ImageState, cakeID: String)
 }
 
 // MARK: - Business Logic
@@ -46,4 +49,8 @@ protocol CakesListPresenterInput {
     func addCakesToRootViewModel(_ cakes: [CakeEntity]) async
     func didFetchCakes(result: Result<[CakesListModel.Section.Kind: [PreviewCakeEntity]], Error>) async
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) async
+    @MainActor
+    func updateUserAvatarImage(imageState: ImageState, cakeID: String)
+    @MainActor
+    func updateUserHeaderImage(imageState: ImageState, cakeID: String)
 }

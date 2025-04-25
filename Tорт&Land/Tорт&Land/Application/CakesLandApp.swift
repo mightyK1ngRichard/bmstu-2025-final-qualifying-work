@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import NetworkAPI
 
 @main
 struct CakesLandApp: App {

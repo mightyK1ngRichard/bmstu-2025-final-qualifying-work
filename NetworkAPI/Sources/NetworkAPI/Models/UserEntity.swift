@@ -37,4 +37,15 @@ extension UserEntity {
             headerImageURL: model.hasHeaderImageURL ? model.headerImageURL.value : nil
         )
     }
+
+    public init(from model: ProfileEntity) {
+        self = UserEntity(
+            id: model.id,
+            fio: model.fio,
+            nickname: model.nickname,
+            mail: model.mail,
+            imageURL: model.imageURL,
+            headerImageURL: model.headerImageURL
+        )
+    }
 }

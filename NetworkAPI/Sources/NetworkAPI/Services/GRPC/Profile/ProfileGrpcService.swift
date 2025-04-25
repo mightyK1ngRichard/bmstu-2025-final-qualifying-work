@@ -20,7 +20,7 @@ public protocol ProfileGrpcService: Sendable {
 
 // MARK: - AuthGrpcServiceImpl
 
-public final class ProfileGrpcServiceImpl: ProfileGrpcService, Sendable {
+public final class ProfileGrpcServiceImpl: ProfileGrpcService {
     private let client: Profile_ProfileServiceAsyncClient
     private let channel: GRPCChannel
     private let authService: AuthService

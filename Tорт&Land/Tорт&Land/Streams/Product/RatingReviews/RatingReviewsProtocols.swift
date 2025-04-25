@@ -7,19 +7,25 @@
 //
 
 import Foundation
+import NetworkAPI
 
-protocol RatingReviewsDisplayLogic: RatingReviewsViewModelInput {
+protocol RatingReviewsDisplayLogic {
     var uiProperties: RatingReviewsModel.UIProperties { get set }
     var comments: [CommentInfo] { get }
 }
 
 protocol RatingReviewsViewModelInput {
-    func setEnvironmentObjects(coordinator: Coordinator)
     func configureReviewConfiguration() -> TLRatingReviewsView.Configuration
     func configureCommentConfiguration(comment: CommentInfo) -> TLCommentView.Configuration
+    func configureErrorView(message: String) -> TLErrorView.Configuration
     func openSheetView() -> FeedbackView
+
+    func fetchComments()
+    func didTapWriteReviewButton()
+    func setEnvironmentObjects(coordinator: Coordinator)
 }
 
 protocol RatingReviewsViewModelOutput {
-    func didTapWriteReviewButton()
+    @MainActor
+    func insertNewComment(_ feedback: FeedbackEntity)
 }

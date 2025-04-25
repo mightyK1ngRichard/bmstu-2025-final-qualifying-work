@@ -11,12 +11,16 @@ import Observation
 import NetworkAPI
 
 @Observable
-final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
+final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
     var uiProperties = ProfileModel.UIProperties()
     private(set) var user: UserModel?
     private(set) var isCurrentUser: Bool
     @ObservationIgnored
+    private let rootViewModel: RootViewModel
+    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
+    @ObservationIgnored
+    private let cakeProvider: CakeService
     @ObservationIgnored
     private let profileService: ProfileGrpcService
     @ObservationIgnored
@@ -27,13 +31,17 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
     init(
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
+        cakeProvider: CakeService,
         profileService: ProfileGrpcService,
-        isCurrentUser: Bool = false
+        isCurrentUser: Bool = false,
+        rootViewModel: RootViewModel
     ) {
         self.user = user
         self.profileService = profileService
+        self.cakeProvider = cakeProvider
         self.isCurrentUser = isCurrentUser
         self.imageProvider = imageProvider
+        self.rootViewModel = rootViewModel
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
@@ -46,6 +54,11 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
 
 extension ProfileViewModel {
     func fetchUserData() {
+        guard isCurrentUser else {
+            uiProperties.screenState = .finished
+            return
+        }
+
         uiProperties.screenState = .loading
         Task { @MainActor in
             do {
@@ -53,11 +66,13 @@ extension ProfileViewModel {
                 user = UserModel(from: res.userInfo)
                 uiProperties.screenState = .finished
                 let user = res.userInfo.profile
-                fetchAvatarWithHeaderImage(imageURL: user.imageUrl, headerImageURL: user.headerImageUrl)
+                if isCurrentUser {
+                    rootViewModel.updateCurrentUser(user)
+                }
+                fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
-                Logger.log(error)
-                uiProperties.screenState = .error(message: error.localizedDescription)
+                uiProperties.screenState = .error(message: "\(error)")
             }
         }
     }
@@ -65,7 +80,7 @@ extension ProfileViewModel {
     private func fetchAvatarWithHeaderImage(imageURL: String?, headerImageURL: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                user?.avatarImage = .error(.systemImage("person.fill"))
+                user?.avatarImage = .fetched(.uiImage(.profile))
                 return
             }
 
@@ -75,7 +90,7 @@ extension ProfileViewModel {
 
         Task { @MainActor in
             guard let headerImageURL else {
-                user?.headerImage = .empty
+                user?.headerImage = .fetched(.uiImage(.candy))
                 return
             }
 
@@ -98,12 +113,11 @@ extension ProfileViewModel {
 
 extension ProfileViewModel {
     func didTapCakeCard(with cake: CakeModel) {
-        print("[DEBUG]: did tap cake with id=\(cake.id)")
         coordinator?.addScreen(RootModel.Screens.details(cake))
     }
 
     func didTapCreateProduct() {
-        print("[DEBUG]: \(#function)")
+        coordinator?.addScreen(ProfileModel.Screens.createProfile)
     }
 
     func didTapOpenSettings() {
@@ -139,26 +153,11 @@ extension ProfileViewModel {
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {
         cake.configureProductCard(priceFormatter: priceFormatter)
     }
-}
 
-import SwiftUI
-#Preview("Network") {
-    let networkImpl = NetworkServiceImpl()
-    let authService = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: networkImpl
-    )
-
-    ProfileView(
-        viewModel: ProfileViewModel(
-            user: CommonMockData.generateMockUserModel(id: 1),
-            imageProvider: ImageLoaderProviderImpl(),
-            profileService: ProfileGrpcServiceImpl(
-                configuration: AppHosts.profile,
-                authService: authService,
-                networkService: networkImpl
-            )
+    func assmebleCreateCakeView() -> CreateProductView {
+        CreateProductAssembler.assemble(
+            cakeProvider: cakeProvider,
+            imageProvider: imageProvider
         )
-    )
-    .environment(Coordinator())
+    }
 }

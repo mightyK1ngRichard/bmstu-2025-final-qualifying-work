@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import GRPC
+import NIO
 
 final class CakesListPresenter: CakesListPresenterInput {
     var viewModel: CakesListDisplayLogic!
@@ -23,13 +25,25 @@ final class CakesListPresenter: CakesListPresenterInput {
 
             await viewModel.didFetchSections(with: resSections)
         } catch {
+            let errorMessage: String
             if let error = error as? NetworkError {
-                Logger.log(kind: .error, error)
+                errorMessage = "\(error)"
+            } else if let grpcStatus = (error as? GRPCStatus) ?? (error as? GRPCStatusTransformable)?.makeGRPCStatus() {
+                switch grpcStatus.code {
+                case .unavailable:
+                    errorMessage = "Нет соединения с сервером"
+                case .deadlineExceeded:
+                    errorMessage = "Превышено время ожидания ответа"
+                default:
+                    errorMessage = "GRPC ошибка: \(grpcStatus)"
+                }
+            } else if let nioError = error as? NIOConnectionError {
+                errorMessage = "NIO ошибка соединения: \(nioError)"
             } else {
-                Logger.log(kind: .error, error)
+                errorMessage = "Не удалось получить данные. Попробуйте позже."
             }
-
-            await viewModel.showError(message: "Не удалось получить данные. Попробуйте позже.")
+            Logger.log(kind: .error, error)
+            await viewModel.showError(message: errorMessage)
         }
     }
 
@@ -37,7 +51,21 @@ final class CakesListPresenter: CakesListPresenterInput {
         await viewModel?.addCakesToRootViewModel(cakes)
     }
 
-    func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) async {
+    func updateCakeCellImage(
+        cakeID: String,
+        imageState: ImageState,
+        with sectionKind: CakesListModel.Section.Kind
+    ) async {
         await viewModel.updateCakeCellImage(cakeID: cakeID, imageState: imageState, with: sectionKind)
+    }
+
+    @MainActor
+    func updateUserAvatarImage(imageState: ImageState, cakeID: String) {
+        viewModel.updateUserAvatarImage(imageState: imageState, cakeID: cakeID)
+    }
+
+    @MainActor
+    func updateUserHeaderImage(imageState: ImageState, cakeID: String) {
+        viewModel.updateUserHeaderImage(imageState: imageState, cakeID: cakeID)
     }
 }

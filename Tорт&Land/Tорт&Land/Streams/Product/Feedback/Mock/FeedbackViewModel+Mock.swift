@@ -10,7 +10,7 @@
 import Foundation
 
 @Observable
-final class FeedbackViewModelMock: FeedbackDisplayLogic, FeedbackViewModelOutput {
+final class FeedbackViewModelMock: FeedbackDisplayLogic, FeedbackViewModelInput {
     var uiProperties = FeedbackModel.UIProperties()
 
     func didTapSendFeedbackButton() {
@@ -20,6 +20,10 @@ final class FeedbackViewModelMock: FeedbackDisplayLogic, FeedbackViewModelOutput
     func didTapStar(count: Int) {
         print("[DEBUG]: count=\(count)")
         uiProperties.countFillStars = count
+    }
+
+    func didTapCloseErrorAlert() {
+        print("[DEBUG]: \(#function)")
     }
 }
 #endif

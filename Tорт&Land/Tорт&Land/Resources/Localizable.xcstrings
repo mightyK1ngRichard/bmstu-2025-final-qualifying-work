@@ -1,7 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "(%lld)" : {
+
+    },
+    "*Kg price, %@" : {
+
+    },
+    "*Weight in grams" : {
 
     },
     "%@" : {
@@ -19,6 +28,15 @@
           }
         }
       }
+    },
+    "200" : {
+
+    },
+    "850" : {
+
+    },
+    "1000" : {
+
     },
     "All" : {
       "localizations" : {
@@ -40,6 +58,12 @@
         }
       }
     },
+    "Cake name" : {
+
+    },
+    "Cancel" : {
+
+    },
     "Categories" : {
       "localizations" : {
         "ru" : {
@@ -59,6 +83,15 @@
           }
         }
       }
+    },
+    "choose rating" : {
+
+    },
+    "Close" : {
+
+    },
+    "Create" : {
+
     },
     "Create a product" : {
       "localizations" : {
@@ -80,6 +113,9 @@
         }
       }
     },
+    "Delete" : {
+
+    },
     "Delete product" : {
       "localizations" : {
         "ru" : {
@@ -99,6 +135,12 @@
           }
         }
       }
+    },
+    "Discounted price (Optional field)" : {
+
+    },
+    "Discounted price end date (Optional field)" : {
+
     },
     "Don't have account?" : {
       "localizations" : {
@@ -212,6 +254,9 @@
           }
         }
       }
+    },
+    "No message" : {
+
     },
     "Nothing found" : {
       "localizations" : {
@@ -330,6 +375,7 @@
       }
     },
     "Reload" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -381,6 +427,9 @@
           }
         }
       }
+    },
+    "Select product photos" : {
+
     },
     "Seller" : {
       "localizations" : {
@@ -442,7 +491,10 @@
         }
       }
     },
-    "Update token" : {
+    "There are no chats in your feed" : {
+
+    },
+    "Try again" : {
 
     },
     "User address not found" : {
@@ -484,6 +536,9 @@
           }
         }
       }
+    },
+    "Write a description of the product..." : {
+
     },
     "Write a review" : {
       "localizations" : {

@@ -12,7 +12,7 @@ import NetworkAPI
 import Observation
 
 @Observable
-final class RootViewModel: RootDisplayData, RootViewModelOutput {
+final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {
     // MARK: Inner values
     var uiProperties = RootModel.UIProperties()
 
@@ -26,31 +26,40 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput {
     @ObservationIgnored
     private let authService: AuthService
     @ObservationIgnored
-    private let cakeService: CakeGrpcService
+    private let reviewsService: ReviewsService
+    @ObservationIgnored
+    private let cakeService: CakeService
     @ObservationIgnored
     private let profileService: ProfileGrpcService
+    @ObservationIgnored
+    private let chatProvider: ChatService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     private var coordinator: Coordinator!
 
     init(
         authService: AuthService,
-        cakeService: CakeGrpcService,
+        cakeService: CakeService,
+        reviewsService: ReviewsService,
+        chatProvider: ChatService,
         profileService: ProfileGrpcService,
         imageProvider: ImageLoaderProvider,
         startScreenControl: StartScreenControl
     ) {
         self.authService = authService
         self.cakeService = cakeService
+        self.reviewsService = reviewsService
+        self.chatProvider = chatProvider
         self.profileService = profileService
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
-        // FIXME: Сделать UserDefauls
+        // FIXME: Сделать получение юзера из SwiftData
         // currentUser = UserDefaults
     }
 }
 
 extension RootViewModel {
+
     var screenKind: StartScreenKind {
         startScreenControl.screenKind
     }
@@ -58,11 +67,77 @@ extension RootViewModel {
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
     }
+
+}
+
+// MARK: - User Model
+
+extension RootViewModel {
+
+    func fetchUserInfoIfNeeded() {
+        guard currentUser == nil && startScreenControl.screenKind == .cakesList else {
+            return
+        }
+
+        Task { @MainActor in
+            do {
+                let result = try await profileService.getUserInfo()
+                let user = UserModel(from: result.userInfo)
+                currentUser = user
+                fetchUserAvatar(urlString: result.userInfo.profile.imageURL)
+                fetchUserHeaderImage(urlString: result.userInfo.profile.headerImageURL)
+                fetchCakesImages(cakes: result.userInfo.previewCakes)
+            } catch {
+                Logger.log(kind: .error, error)
+            }
+        }
+    }
+
+}
+
+private extension RootViewModel {
+
+    func fetchUserAvatar(urlString: String?) {
+        Task { @MainActor in
+            guard let url = urlString else {
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: url)
+            currentUser?.avatarImage = imageState
+        }
+    }
+
+    func fetchUserHeaderImage(urlString: String?) {
+        Task { @MainActor in
+            guard let url = urlString else {
+                return
+            }
+
+            let imageState = await imageProvider.fetchImage(for: url)
+            currentUser?.headerImage = imageState
+        }
+    }
+
+    func fetchCakesImages(cakes: [ProfilePreviewCakeEntity]) {
+        for (index, cake) in cakes.enumerated() {
+            Task { @MainActor in
+                let imageState = await imageProvider.fetchImage(for: cake.previewImageURL)
+                currentUser?.cakes[safe: index]?.previewImageState = imageState
+            }
+        }
+    }
+
 }
 
 // MARK: - Screens
 
-extension RootViewModel: @preconcurrency RootViewModelInput {
+extension RootViewModel {
+
+    func assemblyChatListErrorView() -> TLErrorView.Configuration {
+        .init(kind: .customError("Error", "User not found"))
+    }
+
     func assemblyAuthView() -> AuthView {
         AuthAssembler.assemble(authService: authService)
     }
@@ -72,6 +147,7 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
             cakeModel: model,
             isOwnedByUser: model.seller.id == currentUser?.id,
             cakeService: cakeService,
+            reviewsService: reviewsService,
             rootViewModel: self,
             imageProvider: imageProvider
         )
@@ -81,8 +157,10 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
         ProfileAssemler.assemble(
             user: userModel,
             imageProvider: imageProvider,
+            cakeProvider: cakeService,
             profileService: profileService,
-            isCurrentUser: currentUser?.id == userModel.id
+            isCurrentUser: currentUser?.id == userModel.id,
+            rootViewModel: self
         )
     }
 
@@ -102,10 +180,12 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
         )
     }
 
-    func assemblyChatListView() -> ChatListView {
-        // FIXME: Убрать моки
-        let viewModel = ChatListViewModelMock(delay: 3)
-        return ChatListView(viewModel: viewModel)
+    func assemblyChatListView(userModel: UserModel) -> ChatListView {
+        ChatListAssembler.assemble(
+            currentUser: userModel,
+            imageProvider: imageProvider,
+            chatProvider: chatProvider
+        )
     }
 
     func assemblyNotificationsListView() -> NotificationsListView {
@@ -118,18 +198,31 @@ extension RootViewModel: @preconcurrency RootViewModelInput {
         ProfileAssemler.assemble(
             user: currentUser,
             imageProvider: imageProvider,
+            cakeProvider: cakeService,
             profileService: profileService,
-            isCurrentUser: true
+            isCurrentUser: true,
+            rootViewModel: self
         )
     }
+
+}
+
+// MARK: - Actions
+
+extension RootViewModel {
+
+    func reloadGetUserInfo() {
+        fetchUserInfoIfNeeded()
+    }
+
 }
 
 // MARK: - RootViewModelOutput
 
 extension RootViewModel {
 
-    func updateCurrentUser(_ user: UserEntity) {
-        #warning("Сделать из экрана профиля")
+    func updateCurrentUser(_ user: ProfileEntity) {
+        currentUser = UserModel(from: .init(from: user))
     }
 
     func setCakes(_ newCakes: [CakeEntity]) {
@@ -141,6 +234,7 @@ extension RootViewModel {
                 if newCake != cake {
                     cakes[index] = newCake
                 }
+
                 newCakesDict.removeValue(forKey: cake.id)
             }
         }

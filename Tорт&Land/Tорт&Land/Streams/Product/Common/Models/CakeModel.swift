@@ -20,10 +20,14 @@ struct CakeModel: Identifiable, Hashable {
     var cakeName: String
     /// Цена торта (без скидки)
     var price: Double
+    /// Масса торта (в граммах)
+    var mass: Double
     /// Цена со скидкой (если есть)
     var discountedPrice: Double?
     /// Рейтинг торта (от 0 до 5)
     var rating: Int
+    /// Число отзывов
+    var reviewsCount: Int
     /// Флаг любимого товара
     var isSelected: Bool
     /// Описание товара
@@ -50,7 +54,9 @@ extension CakeModel {
             thumbnails: [],
             cakeName: model.name,
             price: model.kgPrice,
+            mass: model.mass,
             rating: model.rating,
+            reviewsCount: model.reviewsCount,
             isSelected: false,
             description: model.description ?? "",
             establishmentDate: model.dateCreation.description,
@@ -69,12 +75,12 @@ extension CakeModel {
 
     init(from model: PreviewCakeEntity) {
         // 1000 ₽/кг * 2 кг = 2000 ₽
-        let cakePrice = model.kgPrice * model.mass
+        let cakePrice = model.kgPrice * (model.mass / 1000)
         let discountedPrice: Double? = {
             guard let discount = model.discountKgPrice else {
                 return nil
             }
-            return discount * model.mass
+            return discount * (model.mass / 1000)
         }()
 
         self = CakeModel(
@@ -83,8 +89,10 @@ extension CakeModel {
             thumbnails: [],
             cakeName: model.name,
             price: cakePrice,
+            mass: model.mass,
             discountedPrice: discountedPrice,
             rating: model.rating,
+            reviewsCount: model.reviewsCount,
             isSelected: false,
             description: model.description,
             establishmentDate: model.dateCreation.description,
@@ -92,14 +100,7 @@ extension CakeModel {
             comments: [],
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
-            seller: UserModel(
-                id: model.owner.id,
-                name: model.owner.fio ?? StringConstants.anonimeUserName,
-                mail: model.owner.mail,
-                avatarImage: .empty,
-                headerImage: .empty,
-                cakes: []
-            )
+            seller: UserModel(from: model.owner)
         )
     }
 
@@ -142,14 +143,14 @@ extension CakeModel {
             ),
             badgeViewConfiguration: badgeViewConfiguration,
             productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected)),
-            starsViewConfiguration: starsConfiguration
+            starsViewConfiguration: starsConfiguration()
         )
     }
 
-    var starsConfiguration: TLStarsView.Configuration {
+    func starsConfiguration() -> TLStarsView.Configuration {
         .basic(
             kind: .init(rawValue: rating) ?? .zero,
-            feedbackCount: comments.count
+            feedbackCount: reviewsCount
         )
     }
 
@@ -194,7 +195,7 @@ extension CakeModel {
 
     func configureDescriptionView(priceFormatter: PriceFormatterService) -> TLProductDescriptionView.Configuration {
         .basic(
-            title: cakeName,
+            title: "\(cakeName), \(Int(mass))г",
             price: priceFormatter.formatPrice(price),
             discountedPrice: {
                 guard let discountedPrice else {
@@ -204,7 +205,7 @@ extension CakeModel {
             }(),
             subtitle: seller.name,
             description: description,
-            starsConfiguration: starsConfiguration
+            starsConfiguration: starsConfiguration()
         )
     }
 }
