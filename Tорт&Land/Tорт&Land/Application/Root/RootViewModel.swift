@@ -28,7 +28,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
     @ObservationIgnored
     private let reviewsService: ReviewsService
     @ObservationIgnored
-    private let cakeService: CakeGrpcService
+    private let cakeService: CakeService
     @ObservationIgnored
     private let profileService: ProfileGrpcService
     @ObservationIgnored
@@ -39,7 +39,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
 
     init(
         authService: AuthService,
-        cakeService: CakeGrpcService,
+        cakeService: CakeService,
         reviewsService: ReviewsService,
         chatProvider: ChatService,
         profileService: ProfileGrpcService,
@@ -157,6 +157,7 @@ extension RootViewModel {
         ProfileAssemler.assemble(
             user: userModel,
             imageProvider: imageProvider,
+            cakeProvider: cakeService,
             profileService: profileService,
             isCurrentUser: currentUser?.id == userModel.id,
             rootViewModel: self
@@ -197,6 +198,7 @@ extension RootViewModel {
         ProfileAssemler.assemble(
             user: currentUser,
             imageProvider: imageProvider,
+            cakeProvider: cakeService,
             profileService: profileService,
             isCurrentUser: true,
             rootViewModel: self

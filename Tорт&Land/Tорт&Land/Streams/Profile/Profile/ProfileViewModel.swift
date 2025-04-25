@@ -11,7 +11,7 @@ import Observation
 import NetworkAPI
 
 @Observable
-final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
+final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
     var uiProperties = ProfileModel.UIProperties()
     private(set) var user: UserModel?
     private(set) var isCurrentUser: Bool
@@ -19,6 +19,8 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
     private let rootViewModel: RootViewModel
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
+    @ObservationIgnored
+    private let cakeProvider: CakeService
     @ObservationIgnored
     private let profileService: ProfileGrpcService
     @ObservationIgnored
@@ -29,12 +31,14 @@ final class ProfileViewModel: ProfileDisplayLogic & ProfileViewModelOutput {
     init(
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
+        cakeProvider: CakeService,
         profileService: ProfileGrpcService,
         isCurrentUser: Bool = false,
         rootViewModel: RootViewModel
     ) {
         self.user = user
         self.profileService = profileService
+        self.cakeProvider = cakeProvider
         self.isCurrentUser = isCurrentUser
         self.imageProvider = imageProvider
         self.rootViewModel = rootViewModel
@@ -68,8 +72,7 @@ extension ProfileViewModel {
                 fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
-                Logger.log(error)
-                uiProperties.screenState = .error(message: error.localizedDescription)
+                uiProperties.screenState = .error(message: "\(error)")
             }
         }
     }
@@ -110,12 +113,11 @@ extension ProfileViewModel {
 
 extension ProfileViewModel {
     func didTapCakeCard(with cake: CakeModel) {
-        print("[DEBUG]: did tap cake with id=\(cake.id)")
         coordinator?.addScreen(RootModel.Screens.details(cake))
     }
 
     func didTapCreateProduct() {
-        print("[DEBUG]: \(#function)")
+        coordinator?.addScreen(ProfileModel.Screens.createProfile)
     }
 
     func didTapOpenSettings() {
@@ -150,5 +152,12 @@ extension ProfileViewModel {
 
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {
         cake.configureProductCard(priceFormatter: priceFormatter)
+    }
+
+    func assmebleCreateCakeView() -> CreateProductView {
+        CreateProductAssembler.assemble(
+            cakeProvider: cakeProvider,
+            imageProvider: imageProvider
+        )
     }
 }

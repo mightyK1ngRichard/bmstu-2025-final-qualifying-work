@@ -43,19 +43,22 @@ extension ChatListViewModel {
     func fetchChatsHistory() {
         uiProperties.screenState = .loading
         Task { @MainActor in
-            let usersEntities = try await chatProvider.getUserChats()
-            for (index, usersEntity) in usersEntities.enumerated() {
-                let cell = ChatListModel.ChatCellModel(
-                    id: UUID().uuidString,
-                    user: UserModel(from: usersEntity),
-                    lastMessage: "Последнее сообщение",
-                    timeMessage: Date()
-                )
-                allChatCells.append(cell)
-                fetchUserImage(index: index, urlString: usersEntity.imageURL)
+            do {
+                let usersEntities = try await chatProvider.getUserChats()
+                for (index, userEntity) in usersEntities.enumerated() {
+                    let cell = ChatListModel.ChatCellModel(
+                        id: UUID().uuidString,
+                        user: UserModel(from: userEntity),
+                        lastMessage: "Последнее сообщение",
+                        timeMessage: Date()
+                    )
+                    allChatCells.append(cell)
+                    fetchUserImage(index: index, urlString: userEntity.imageURL)
+                }
+                uiProperties.screenState = .finished
+            } catch {
+                uiProperties.screenState = .error(message: "\(error)")
             }
-
-            uiProperties.screenState = .finished
         }
     }
 

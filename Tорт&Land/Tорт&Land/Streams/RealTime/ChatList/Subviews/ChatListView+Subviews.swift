@@ -36,6 +36,7 @@ private extension ChatListView {
             TLErrorView(
                 configuration: .init(kind: .customError("Network error", errorMessage))
             )
+            .padding(.horizontal, 30)
         }
     }
 

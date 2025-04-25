@@ -18,7 +18,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
     @ObservationIgnored
     private let reviewsService: ReviewsService
     @ObservationIgnored
-    private let cakeService: CakeGrpcService
+    private let cakeService: CakeService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
@@ -31,7 +31,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelI
     init(
         cakeModel: CakeModel,
         isOwnedByUser: Bool,
-        cakeService: CakeGrpcService,
+        cakeService: CakeService,
         reviewsService: ReviewsService,
         imageProvider: ImageLoaderProvider,
         rootViewModel: RootViewModelOutput,

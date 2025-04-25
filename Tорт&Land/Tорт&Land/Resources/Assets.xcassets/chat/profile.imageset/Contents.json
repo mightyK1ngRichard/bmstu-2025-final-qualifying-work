@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "l5w5aIHioYc.jpg",
+      "filename" : "ed_6shutterstock_151265393_1.jpg",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

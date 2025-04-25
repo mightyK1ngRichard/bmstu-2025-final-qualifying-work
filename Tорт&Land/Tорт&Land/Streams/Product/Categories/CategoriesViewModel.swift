@@ -16,13 +16,13 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
     private(set) var tabs: [CategoriesModel.Tab] = CategoriesModel.Tab.allCases
     private(set) var sections: [CategoriesModel.Tab: [CategoryCardModel]] = [:]
     @ObservationIgnored
-    private let cakeProvider: CakeGrpcService
+    private let cakeProvider: CakeService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private var coordinator: Coordinator!
 
-    init(cakeProvider: CakeGrpcService, imageProvider: ImageLoaderProvider) {
+    init(cakeProvider: CakeService, imageProvider: ImageLoaderProvider) {
         self.cakeProvider = cakeProvider
         self.imageProvider = imageProvider
     }

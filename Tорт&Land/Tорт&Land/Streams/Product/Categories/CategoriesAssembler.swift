@@ -10,7 +10,7 @@ import Foundation
 import NetworkAPI
 
 final class CategoriesAssembler {
-    static func assemble(cakeProvider: CakeGrpcService, imageProvider: ImageLoaderProvider) -> CategoriesView {
+    static func assemble(cakeProvider: CakeService, imageProvider: ImageLoaderProvider) -> CategoriesView {
         let viewModel = CategoriesViewModel(cakeProvider: cakeProvider, imageProvider: imageProvider)
         let view = CategoriesView(viewModel: viewModel)
         return view

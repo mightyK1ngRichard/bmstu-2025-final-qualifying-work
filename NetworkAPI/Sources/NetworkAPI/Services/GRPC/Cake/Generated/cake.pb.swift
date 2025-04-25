@@ -63,6 +63,7 @@ enum Cake_CategoryGender: SwiftProtobuf.Enum, Swift.CaseIterable {
 
 }
 
+/// ############### Cake ############### 
 struct Cake_CakeRequest: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -97,6 +98,7 @@ struct Cake_CakeResponse: Sendable {
   fileprivate var _cake: Cake_Cake? = nil
 }
 
+/// ############### CreateCake ############### 
 struct Cake_CreateCakeRequest: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -110,9 +112,6 @@ struct Cake_CreateCakeRequest: @unchecked Sendable {
 
   /// Цена за кг
   var kgPrice: Double = 0
-
-  /// Рейтинг (0-5)
-  var rating: Int32 = 0
 
   /// Описание торта
   var description_p: String = String()
@@ -132,9 +131,32 @@ struct Cake_CreateCakeRequest: @unchecked Sendable {
   /// Все фотографии торта
   var images: [Data] = []
 
+  /// Скидочная цена за кг (nullable)
+  var discountKgPrice: SwiftProtobuf.Google_Protobuf_DoubleValue {
+    get {return _discountKgPrice ?? SwiftProtobuf.Google_Protobuf_DoubleValue()}
+    set {_discountKgPrice = newValue}
+  }
+  /// Returns true if `discountKgPrice` has been explicitly set.
+  var hasDiscountKgPrice: Bool {return self._discountKgPrice != nil}
+  /// Clears the value of `discountKgPrice`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountKgPrice() {self._discountKgPrice = nil}
+
+  /// Время окончания скидки (nullable)
+  var discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _discountEndTime ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_discountEndTime = newValue}
+  }
+  /// Returns true if `discountEndTime` has been explicitly set.
+  var hasDiscountEndTime: Bool {return self._discountEndTime != nil}
+  /// Clears the value of `discountEndTime`. Subsequent reads from it will return its default value.
+  mutating func clearDiscountEndTime() {self._discountEndTime = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
+
+  fileprivate var _discountKgPrice: SwiftProtobuf.Google_Protobuf_DoubleValue? = nil
+  fileprivate var _discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
 }
 
 struct Cake_CreateCakeResponse: Sendable {
@@ -150,6 +172,7 @@ struct Cake_CreateCakeResponse: Sendable {
   init() {}
 }
 
+/// ############### CreateFilling ############### 
 struct Cake_CreateFillingRequest: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -197,6 +220,7 @@ struct Cake_CreateFillingResponse: Sendable {
   fileprivate var _filling: Cake_Filling? = nil
 }
 
+/// ############### CreateCategory ############### 
 struct Cake_CreateCategoryRequest: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -232,6 +256,7 @@ struct Cake_CreateCategoryResponse: Sendable {
   fileprivate var _category: Cake_Category? = nil
 }
 
+/// ############### Categories ############### 
 struct Cake_CategoriesResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -244,6 +269,7 @@ struct Cake_CategoriesResponse: Sendable {
   init() {}
 }
 
+/// ############### Fillings ############### 
 struct Cake_FillingsResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -256,6 +282,7 @@ struct Cake_FillingsResponse: Sendable {
   init() {}
 }
 
+/// ############### CakesResponse ############### 
 struct Cake_CakesResponse: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -268,6 +295,7 @@ struct Cake_CakesResponse: Sendable {
   init() {}
 }
 
+/// ############### GetCategoriesByGenderName ############### 
 struct Cake_GetCategoriesByGenderNameReq: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -292,6 +320,7 @@ struct Cake_GetCategoriesByGenderNameRes: Sendable {
   init() {}
 }
 
+/// ############### CategoryPreviewCakes ############### 
 struct Cake_CategoryPreviewCakesReq: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -426,6 +455,12 @@ struct Cake_Cake: @unchecked Sendable {
   var images: [Cake_Cake.CakeImage] {
     get {return _storage._images}
     set {_uniqueStorage()._images = newValue}
+  }
+
+  /// Число отзывов
+  var reviewsCount: Int32 {
+    get {return _storage._reviewsCount}
+    set {_uniqueStorage()._reviewsCount = newValue}
   }
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -674,6 +709,12 @@ struct Cake_PreviewCake: @unchecked Sendable {
   /// Clears the value of `owner`. Subsequent reads from it will return its default value.
   mutating func clearOwner() {_uniqueStorage()._owner = nil}
 
+  /// Число отзывов
+  var reviewsCount: Int32 {
+    get {return _storage._reviewsCount}
+    set {_uniqueStorage()._reviewsCount = newValue}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
@@ -768,13 +809,14 @@ extension Cake_CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     1: .same(proto: "name"),
     2: .standard(proto: "preview_image_data"),
     3: .standard(proto: "kg_price"),
-    4: .same(proto: "rating"),
-    5: .same(proto: "description"),
-    6: .same(proto: "mass"),
-    7: .standard(proto: "is_open_for_sale"),
-    8: .standard(proto: "filling_ids"),
-    9: .standard(proto: "category_ids"),
-    10: .same(proto: "images"),
+    4: .same(proto: "description"),
+    5: .same(proto: "mass"),
+    6: .standard(proto: "is_open_for_sale"),
+    7: .standard(proto: "filling_ids"),
+    8: .standard(proto: "category_ids"),
+    9: .same(proto: "images"),
+    10: .standard(proto: "discount_kg_price"),
+    11: .standard(proto: "discount_end_time"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -786,19 +828,24 @@ extension Cake_CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
       case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
       case 2: try { try decoder.decodeSingularBytesField(value: &self.previewImageData) }()
       case 3: try { try decoder.decodeSingularDoubleField(value: &self.kgPrice) }()
-      case 4: try { try decoder.decodeSingularInt32Field(value: &self.rating) }()
-      case 5: try { try decoder.decodeSingularStringField(value: &self.description_p) }()
-      case 6: try { try decoder.decodeSingularDoubleField(value: &self.mass) }()
-      case 7: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
-      case 8: try { try decoder.decodeRepeatedStringField(value: &self.fillingIds) }()
-      case 9: try { try decoder.decodeRepeatedStringField(value: &self.categoryIds) }()
-      case 10: try { try decoder.decodeRepeatedBytesField(value: &self.images) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.description_p) }()
+      case 5: try { try decoder.decodeSingularDoubleField(value: &self.mass) }()
+      case 6: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
+      case 7: try { try decoder.decodeRepeatedStringField(value: &self.fillingIds) }()
+      case 8: try { try decoder.decodeRepeatedStringField(value: &self.categoryIds) }()
+      case 9: try { try decoder.decodeRepeatedBytesField(value: &self.images) }()
+      case 10: try { try decoder.decodeSingularMessageField(value: &self._discountKgPrice) }()
+      case 11: try { try decoder.decodeSingularMessageField(value: &self._discountEndTime) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.name.isEmpty {
       try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
     }
@@ -808,27 +855,30 @@ extension Cake_CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     if self.kgPrice.bitPattern != 0 {
       try visitor.visitSingularDoubleField(value: self.kgPrice, fieldNumber: 3)
     }
-    if self.rating != 0 {
-      try visitor.visitSingularInt32Field(value: self.rating, fieldNumber: 4)
-    }
     if !self.description_p.isEmpty {
-      try visitor.visitSingularStringField(value: self.description_p, fieldNumber: 5)
+      try visitor.visitSingularStringField(value: self.description_p, fieldNumber: 4)
     }
     if self.mass.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.mass, fieldNumber: 6)
+      try visitor.visitSingularDoubleField(value: self.mass, fieldNumber: 5)
     }
     if self.isOpenForSale != false {
-      try visitor.visitSingularBoolField(value: self.isOpenForSale, fieldNumber: 7)
+      try visitor.visitSingularBoolField(value: self.isOpenForSale, fieldNumber: 6)
     }
     if !self.fillingIds.isEmpty {
-      try visitor.visitRepeatedStringField(value: self.fillingIds, fieldNumber: 8)
+      try visitor.visitRepeatedStringField(value: self.fillingIds, fieldNumber: 7)
     }
     if !self.categoryIds.isEmpty {
-      try visitor.visitRepeatedStringField(value: self.categoryIds, fieldNumber: 9)
+      try visitor.visitRepeatedStringField(value: self.categoryIds, fieldNumber: 8)
     }
     if !self.images.isEmpty {
-      try visitor.visitRepeatedBytesField(value: self.images, fieldNumber: 10)
+      try visitor.visitRepeatedBytesField(value: self.images, fieldNumber: 9)
     }
+    try { if let v = self._discountKgPrice {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
+    } }()
+    try { if let v = self._discountEndTime {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -836,13 +886,14 @@ extension Cake_CreateCakeRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     if lhs.name != rhs.name {return false}
     if lhs.previewImageData != rhs.previewImageData {return false}
     if lhs.kgPrice != rhs.kgPrice {return false}
-    if lhs.rating != rhs.rating {return false}
     if lhs.description_p != rhs.description_p {return false}
     if lhs.mass != rhs.mass {return false}
     if lhs.isOpenForSale != rhs.isOpenForSale {return false}
     if lhs.fillingIds != rhs.fillingIds {return false}
     if lhs.categoryIds != rhs.categoryIds {return false}
     if lhs.images != rhs.images {return false}
+    if lhs._discountKgPrice != rhs._discountKgPrice {return false}
+    if lhs._discountEndTime != rhs._discountEndTime {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1288,6 +1339,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     13: .standard(proto: "discount_end_time"),
     14: .standard(proto: "date_creation"),
     15: .same(proto: "images"),
+    16: .same(proto: "reviewsCount"),
   ]
 
   fileprivate class _StorageClass {
@@ -1306,6 +1358,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     var _discountEndTime: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
     var _dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
     var _images: [Cake_Cake.CakeImage] = []
+    var _reviewsCount: Int32 = 0
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1335,6 +1388,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
       _discountEndTime = source._discountEndTime
       _dateCreation = source._dateCreation
       _images = source._images
+      _reviewsCount = source._reviewsCount
     }
   }
 
@@ -1368,6 +1422,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
         case 13: try { try decoder.decodeSingularMessageField(value: &_storage._discountEndTime) }()
         case 14: try { try decoder.decodeSingularMessageField(value: &_storage._dateCreation) }()
         case 15: try { try decoder.decodeRepeatedMessageField(value: &_storage._images) }()
+        case 16: try { try decoder.decodeSingularInt32Field(value: &_storage._reviewsCount) }()
         default: break
         }
       }
@@ -1425,6 +1480,9 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
       if !_storage._images.isEmpty {
         try visitor.visitRepeatedMessageField(value: _storage._images, fieldNumber: 15)
       }
+      if _storage._reviewsCount != 0 {
+        try visitor.visitSingularInt32Field(value: _storage._reviewsCount, fieldNumber: 16)
+      }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -1449,6 +1507,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
         if _storage._discountEndTime != rhs_storage._discountEndTime {return false}
         if _storage._dateCreation != rhs_storage._dateCreation {return false}
         if _storage._images != rhs_storage._images {return false}
+        if _storage._reviewsCount != rhs_storage._reviewsCount {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -1701,6 +1760,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     10: .standard(proto: "date_creation"),
     11: .standard(proto: "is_open_for_sale"),
     12: .same(proto: "owner"),
+    13: .same(proto: "reviewsCount"),
   ]
 
   fileprivate class _StorageClass {
@@ -1716,6 +1776,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     var _dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
     var _isOpenForSale: Bool = false
     var _owner: Cake_User? = nil
+    var _reviewsCount: Int32 = 0
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1742,6 +1803,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       _dateCreation = source._dateCreation
       _isOpenForSale = source._isOpenForSale
       _owner = source._owner
+      _reviewsCount = source._reviewsCount
     }
   }
 
@@ -1772,6 +1834,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         case 10: try { try decoder.decodeSingularMessageField(value: &_storage._dateCreation) }()
         case 11: try { try decoder.decodeSingularBoolField(value: &_storage._isOpenForSale) }()
         case 12: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
+        case 13: try { try decoder.decodeSingularInt32Field(value: &_storage._reviewsCount) }()
         default: break
         }
       }
@@ -1820,6 +1883,9 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       try { if let v = _storage._owner {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 12)
       } }()
+      if _storage._reviewsCount != 0 {
+        try visitor.visitSingularInt32Field(value: _storage._reviewsCount, fieldNumber: 13)
+      }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -1841,6 +1907,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         if _storage._dateCreation != rhs_storage._dateCreation {return false}
         if _storage._isOpenForSale != rhs_storage._isOpenForSale {return false}
         if _storage._owner != rhs_storage._owner {return false}
+        if _storage._reviewsCount != rhs_storage._reviewsCount {return false}
         return true
       }
       if !storagesAreEqual {return false}

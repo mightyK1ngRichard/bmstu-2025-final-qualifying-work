@@ -11,6 +11,8 @@ import NIOConcurrencyHelpers
 import SwiftProtobuf
 
 
+/// ############### CakeService ############### 
+///
 /// Usage: instantiate `Cake_CakeServiceClient`, then call methods of this protocol to make API calls.
 internal protocol Cake_CakeServiceClientProtocol: GRPCClient {
   var serviceName: String { get }
@@ -287,6 +289,7 @@ internal struct Cake_CakeServiceNIOClient: Cake_CakeServiceClientProtocol {
   }
 }
 
+/// ############### CakeService ############### 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 internal protocol Cake_CakeServiceAsyncClientProtocol: GRPCClient {
   static var serviceDescriptor: GRPCServiceDescriptor { get }
@@ -689,6 +692,8 @@ internal enum Cake_CakeServiceClientMetadata {
   }
 }
 
+/// ############### CakeService ############### 
+///
 /// To build a server, implement a class that conforms to this protocol.
 internal protocol Cake_CakeServiceProvider: CallHandlerProvider {
   var interceptors: Cake_CakeServiceServerInterceptorFactoryProtocol? { get }
@@ -811,6 +816,8 @@ extension Cake_CakeServiceProvider {
   }
 }
 
+/// ############### CakeService ############### 
+///
 /// To implement a server, implement an object which conforms to this protocol.
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 internal protocol Cake_CakeServiceAsyncProvider: CallHandlerProvider, Sendable {

@@ -32,4 +32,12 @@ final class PriceFormatterService {
         let formattedPrice = formatPrice(price)
         return "\(formattedPrice)/кг"
     }
+
+    func formatKgPrice(_ price: String) -> String {
+        guard let price = Double(price) else {
+            return "invalid input price"
+        }
+
+        return formatKgPrice(price)
+    }
 }

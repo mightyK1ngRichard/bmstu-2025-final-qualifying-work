@@ -18,6 +18,8 @@ public struct ProfilePreviewCakeEntity: Sendable, Hashable {
     public let kgPrice: Double
     /// Рейтинг
     public let rating: Int
+    /// Число отзывов
+    public let reviewsCount: Int
     /// Описание (nullable)
     public let description: String?
     /// Масса
@@ -44,6 +46,7 @@ extension ProfilePreviewCakeEntity {
             previewImageURL: model.previewImageURL,
             kgPrice: model.kgPrice,
             rating: Int(model.rating),
+            reviewsCount: Int(model.reviewsCount),
             description: model.hasDescription_p ? model.description_p.value : nil,
             mass: model.mass,
             discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice.value : nil,

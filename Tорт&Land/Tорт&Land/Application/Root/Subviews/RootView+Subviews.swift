@@ -41,12 +41,12 @@ private extension RootView {
             if let currentUser = viewModel.currentUser {
                 viewModel.assemblyChatListView(userModel: currentUser)
             } else {
-                Text("Current User not found")
-                    .frame(maxHeight: .infinity)
                 TLErrorView(
                     configuration: viewModel.assemblyChatListErrorView(),
                     action: viewModel.reloadGetUserInfo
                 )
+                .padding(.horizontal, 50)
+                .frame(maxHeight: .infinity)
             }
         case .notifications:
             viewModel.assemblyNotificationsListView()

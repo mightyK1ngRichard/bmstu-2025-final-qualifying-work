@@ -123,9 +123,7 @@ extension RatingReviewsViewModel {
     func insertNewComment(_ feedback: FeedbackEntity) {
         let index = comments.count
         comments.append(CommentInfo(from: feedback))
-        Task {
-            fetchUserImage(index: index, urlString: feedback.author.imageURL)
-        }
+        fetchUserImage(index: index, urlString: feedback.author.imageURL)
     }
 }
 

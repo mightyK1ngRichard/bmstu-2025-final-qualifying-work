@@ -1,7 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "(%lld)" : {
+
+    },
+    "*Kg price, %@" : {
+
+    },
+    "*Weight in grams" : {
 
     },
     "%@" : {
@@ -19,6 +28,15 @@
           }
         }
       }
+    },
+    "200" : {
+
+    },
+    "850" : {
+
+    },
+    "1000" : {
+
     },
     "All" : {
       "localizations" : {
@@ -39,6 +57,12 @@
           }
         }
       }
+    },
+    "Cake name" : {
+
+    },
+    "Cancel" : {
+
     },
     "Categories" : {
       "localizations" : {
@@ -63,6 +87,12 @@
     "choose rating" : {
 
     },
+    "Close" : {
+
+    },
+    "Create" : {
+
+    },
     "Create a product" : {
       "localizations" : {
         "ru" : {
@@ -73,9 +103,6 @@
         }
       }
     },
-    "Current User not found" : {
-
-    },
     "Customer" : {
       "localizations" : {
         "ru" : {
@@ -85,6 +112,9 @@
           }
         }
       }
+    },
+    "Delete" : {
+
     },
     "Delete product" : {
       "localizations" : {
@@ -105,6 +135,12 @@
           }
         }
       }
+    },
+    "Discounted price (Optional field)" : {
+
+    },
+    "Discounted price end date (Optional field)" : {
+
     },
     "Don't have account?" : {
       "localizations" : {
@@ -392,6 +428,9 @@
         }
       }
     },
+    "Select product photos" : {
+
+    },
     "Seller" : {
       "localizations" : {
         "ru" : {
@@ -497,6 +536,9 @@
           }
         }
       }
+    },
+    "Write a description of the product..." : {
+
     },
     "Write a review" : {
       "localizations" : {
