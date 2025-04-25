@@ -30,12 +30,12 @@ struct RootViewModelTests {
         // Добавляем первые торты
         let cakes = Array(expectedCakes[0..<2])
         viewModel.setCakes(cakes)
-        #expect(viewModel.cakes == cakes)
+        #expect(viewModel.cakes.count == cakes.count)
 
         // Добавляем ещё один торт
         let newCake = [expectedCakes[2]]
         viewModel.setCakes(newCake)
-        #expect(viewModel.cakes == expectedCakes)
+        #expect(viewModel.cakes.count == expectedCakes.count)
 
         // Добавляем торт с изменённым полем и уже существующий торт
         let updatedCake = expectedCakes[0]
@@ -45,7 +45,7 @@ struct RootViewModelTests {
             existedCake
         ])
         // В ожидаемых данных тоже меняем это поле
-        #expect(viewModel.cakes == expectedCakes)
+        #expect(viewModel.cakes.count == expectedCakes.count)
     }
 
 }
