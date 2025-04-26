@@ -39,6 +39,7 @@ struct TLProductCard: View, Configurable {
             footerBlockView
                 .padding(.top, 2)
         }
+        .contentShape(.rect)
     }
 }
 

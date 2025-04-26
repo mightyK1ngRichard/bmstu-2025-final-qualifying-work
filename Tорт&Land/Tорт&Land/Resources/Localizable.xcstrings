@@ -258,6 +258,12 @@
     "No message" : {
 
     },
+    "No preview available" : {
+
+    },
+    "No Preview Available" : {
+
+    },
     "Nothing found" : {
       "localizations" : {
         "ru" : {
@@ -290,6 +296,9 @@
           }
         }
       }
+    },
+    "Open in map" : {
+
     },
     "Order" : {
       "localizations" : {
@@ -427,6 +436,12 @@
           }
         }
       }
+    },
+    "Select" : {
+
+    },
+    "Select Address" : {
+
     },
     "Select product photos" : {
 
