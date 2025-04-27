@@ -77,7 +77,8 @@ extension UpdateAddressViewModel {
                 completion?(res.address)
                 coordinator?.openPreviousScreen()
             } catch {
-                print("[DEBUG]: \(error)")
+                uiProperties.buttonIsLoading = false
+                uiProperties.errorMessage = "\(error)"
             }
         }
     }
