@@ -38,6 +38,9 @@
     "1000" : {
 
     },
+    "Add address" : {
+
+    },
     "All" : {
       "localizations" : {
         "ru" : {
@@ -258,9 +261,6 @@
     "No message" : {
 
     },
-    "No preview available" : {
-
-    },
     "No Preview Available" : {
 
     },
@@ -296,9 +296,6 @@
           }
         }
       }
-    },
-    "Open in map" : {
-
     },
     "Order" : {
       "localizations" : {
@@ -437,12 +434,6 @@
         }
       }
     },
-    "Select" : {
-
-    },
-    "Select Address" : {
-
-    },
     "Select product photos" : {
 
     },
@@ -475,6 +466,9 @@
           }
         }
       }
+    },
+    "Settings" : {
+
     },
     "Sign In" : {
       "localizations" : {
@@ -594,6 +588,9 @@
           }
         }
       }
+    },
+    "Your addresses" : {
+
     },
     "Your feedback" : {
       "localizations" : {

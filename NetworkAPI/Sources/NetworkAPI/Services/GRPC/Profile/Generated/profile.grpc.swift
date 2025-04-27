@@ -27,6 +27,21 @@ internal protocol Profile_ProfileServiceClientProtocol: GRPCClient {
     _ request: Profile_GetUserInfoByIDReq,
     callOptions: CallOptions?
   ) -> UnaryCall<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>
+
+  func getUserAddresses(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserAddressesRes>
+
+  func updateUserAddresses(
+    _ request: Profile_UpdateUserAddressesReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Profile_UpdateUserAddressesReq, Profile_UpdateUserAddressesRes>
+
+  func createAddress(
+    _ request: Profile_CreateAddressReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Profile_CreateAddressReq, Profile_CreateAddressRes>
 }
 
 extension Profile_ProfileServiceClientProtocol {
@@ -67,6 +82,60 @@ extension Profile_ProfileServiceClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to GetUserAddresses
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetUserAddresses.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func getUserAddresses(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserAddressesRes> {
+    return self.makeUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.getUserAddresses.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetUserAddressesInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to UpdateUserAddresses
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to UpdateUserAddresses.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func updateUserAddresses(
+    _ request: Profile_UpdateUserAddressesReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Profile_UpdateUserAddressesReq, Profile_UpdateUserAddressesRes> {
+    return self.makeUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserAddresses.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserAddressesInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to CreateAddress
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to CreateAddress.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func createAddress(
+    _ request: Profile_CreateAddressReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Profile_CreateAddressReq, Profile_CreateAddressRes> {
+    return self.makeUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.createAddress.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? []
     )
   }
 }
@@ -143,6 +212,21 @@ internal protocol Profile_ProfileServiceAsyncClientProtocol: GRPCClient {
     _ request: Profile_GetUserInfoByIDReq,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>
+
+  func makeGetUserAddressesCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserAddressesRes>
+
+  func makeUpdateUserAddressesCall(
+    _ request: Profile_UpdateUserAddressesReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Profile_UpdateUserAddressesReq, Profile_UpdateUserAddressesRes>
+
+  func makeCreateAddressCall(
+    _ request: Profile_CreateAddressReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Profile_CreateAddressReq, Profile_CreateAddressRes>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -178,6 +262,42 @@ extension Profile_ProfileServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? []
     )
   }
+
+  internal func makeGetUserAddressesCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserAddressesRes> {
+    return self.makeAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.getUserAddresses.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetUserAddressesInterceptors() ?? []
+    )
+  }
+
+  internal func makeUpdateUserAddressesCall(
+    _ request: Profile_UpdateUserAddressesReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Profile_UpdateUserAddressesReq, Profile_UpdateUserAddressesRes> {
+    return self.makeAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserAddresses.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserAddressesInterceptors() ?? []
+    )
+  }
+
+  internal func makeCreateAddressCall(
+    _ request: Profile_CreateAddressReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Profile_CreateAddressReq, Profile_CreateAddressRes> {
+    return self.makeAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.createAddress.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -203,6 +323,42 @@ extension Profile_ProfileServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeGetUserInfoByIDInterceptors() ?? []
+    )
+  }
+
+  internal func getUserAddresses(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> Profile_GetUserAddressesRes {
+    return try await self.performAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.getUserAddresses.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetUserAddressesInterceptors() ?? []
+    )
+  }
+
+  internal func updateUserAddresses(
+    _ request: Profile_UpdateUserAddressesReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> Profile_UpdateUserAddressesRes {
+    return try await self.performAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserAddresses.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserAddressesInterceptors() ?? []
+    )
+  }
+
+  internal func createAddress(
+    _ request: Profile_CreateAddressReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> Profile_CreateAddressRes {
+    return try await self.performAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.createAddress.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? []
     )
   }
 }
@@ -231,6 +387,15 @@ internal protocol Profile_ProfileServiceClientInterceptorFactoryProtocol: Sendab
 
   /// - Returns: Interceptors to use when invoking 'getUserInfoByID'.
   func makeGetUserInfoByIDInterceptors() -> [ClientInterceptor<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>]
+
+  /// - Returns: Interceptors to use when invoking 'getUserAddresses'.
+  func makeGetUserAddressesInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserAddressesRes>]
+
+  /// - Returns: Interceptors to use when invoking 'updateUserAddresses'.
+  func makeUpdateUserAddressesInterceptors() -> [ClientInterceptor<Profile_UpdateUserAddressesReq, Profile_UpdateUserAddressesRes>]
+
+  /// - Returns: Interceptors to use when invoking 'createAddress'.
+  func makeCreateAddressInterceptors() -> [ClientInterceptor<Profile_CreateAddressReq, Profile_CreateAddressRes>]
 }
 
 internal enum Profile_ProfileServiceClientMetadata {
@@ -240,6 +405,9 @@ internal enum Profile_ProfileServiceClientMetadata {
     methods: [
       Profile_ProfileServiceClientMetadata.Methods.getUserInfo,
       Profile_ProfileServiceClientMetadata.Methods.getUserInfoByID,
+      Profile_ProfileServiceClientMetadata.Methods.getUserAddresses,
+      Profile_ProfileServiceClientMetadata.Methods.updateUserAddresses,
+      Profile_ProfileServiceClientMetadata.Methods.createAddress,
     ]
   )
 
@@ -255,6 +423,24 @@ internal enum Profile_ProfileServiceClientMetadata {
       path: "/profile.ProfileService/GetUserInfoByID",
       type: GRPCCallType.unary
     )
+
+    internal static let getUserAddresses = GRPCMethodDescriptor(
+      name: "GetUserAddresses",
+      path: "/profile.ProfileService/GetUserAddresses",
+      type: GRPCCallType.unary
+    )
+
+    internal static let updateUserAddresses = GRPCMethodDescriptor(
+      name: "UpdateUserAddresses",
+      path: "/profile.ProfileService/UpdateUserAddresses",
+      type: GRPCCallType.unary
+    )
+
+    internal static let createAddress = GRPCMethodDescriptor(
+      name: "CreateAddress",
+      path: "/profile.ProfileService/CreateAddress",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -267,6 +453,12 @@ internal protocol Profile_ProfileServiceProvider: CallHandlerProvider {
   func getUserInfo(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_GetUserInfoRes>
 
   func getUserInfoByID(request: Profile_GetUserInfoByIDReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_GetUserInfoByIDRes>
+
+  func getUserAddresses(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_GetUserAddressesRes>
+
+  func updateUserAddresses(request: Profile_UpdateUserAddressesReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_UpdateUserAddressesRes>
+
+  func createAddress(request: Profile_CreateAddressReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_CreateAddressRes>
 }
 
 extension Profile_ProfileServiceProvider {
@@ -299,6 +491,33 @@ extension Profile_ProfileServiceProvider {
         userFunction: self.getUserInfoByID(request:context:)
       )
 
+    case "GetUserAddresses":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Profile_GetUserAddressesRes>(),
+        interceptors: self.interceptors?.makeGetUserAddressesInterceptors() ?? [],
+        userFunction: self.getUserAddresses(request:context:)
+      )
+
+    case "UpdateUserAddresses":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_UpdateUserAddressesReq>(),
+        responseSerializer: ProtobufSerializer<Profile_UpdateUserAddressesRes>(),
+        interceptors: self.interceptors?.makeUpdateUserAddressesInterceptors() ?? [],
+        userFunction: self.updateUserAddresses(request:context:)
+      )
+
+    case "CreateAddress":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_CreateAddressReq>(),
+        responseSerializer: ProtobufSerializer<Profile_CreateAddressRes>(),
+        interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? [],
+        userFunction: self.createAddress(request:context:)
+      )
+
     default:
       return nil
     }
@@ -322,6 +541,21 @@ internal protocol Profile_ProfileServiceAsyncProvider: CallHandlerProvider, Send
     request: Profile_GetUserInfoByIDReq,
     context: GRPCAsyncServerCallContext
   ) async throws -> Profile_GetUserInfoByIDRes
+
+  func getUserAddresses(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Profile_GetUserAddressesRes
+
+  func updateUserAddresses(
+    request: Profile_UpdateUserAddressesReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Profile_UpdateUserAddressesRes
+
+  func createAddress(
+    request: Profile_CreateAddressReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Profile_CreateAddressRes
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -361,6 +595,33 @@ extension Profile_ProfileServiceAsyncProvider {
         wrapping: { try await self.getUserInfoByID(request: $0, context: $1) }
       )
 
+    case "GetUserAddresses":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Profile_GetUserAddressesRes>(),
+        interceptors: self.interceptors?.makeGetUserAddressesInterceptors() ?? [],
+        wrapping: { try await self.getUserAddresses(request: $0, context: $1) }
+      )
+
+    case "UpdateUserAddresses":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_UpdateUserAddressesReq>(),
+        responseSerializer: ProtobufSerializer<Profile_UpdateUserAddressesRes>(),
+        interceptors: self.interceptors?.makeUpdateUserAddressesInterceptors() ?? [],
+        wrapping: { try await self.updateUserAddresses(request: $0, context: $1) }
+      )
+
+    case "CreateAddress":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_CreateAddressReq>(),
+        responseSerializer: ProtobufSerializer<Profile_CreateAddressRes>(),
+        interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? [],
+        wrapping: { try await self.createAddress(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -376,6 +637,18 @@ internal protocol Profile_ProfileServiceServerInterceptorFactoryProtocol: Sendab
   /// - Returns: Interceptors to use when handling 'getUserInfoByID'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeGetUserInfoByIDInterceptors() -> [ServerInterceptor<Profile_GetUserInfoByIDReq, Profile_GetUserInfoByIDRes>]
+
+  /// - Returns: Interceptors to use when handling 'getUserAddresses'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetUserAddressesInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Profile_GetUserAddressesRes>]
+
+  /// - Returns: Interceptors to use when handling 'updateUserAddresses'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeUpdateUserAddressesInterceptors() -> [ServerInterceptor<Profile_UpdateUserAddressesReq, Profile_UpdateUserAddressesRes>]
+
+  /// - Returns: Interceptors to use when handling 'createAddress'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeCreateAddressInterceptors() -> [ServerInterceptor<Profile_CreateAddressReq, Profile_CreateAddressRes>]
 }
 
 internal enum Profile_ProfileServiceServerMetadata {
@@ -385,6 +658,9 @@ internal enum Profile_ProfileServiceServerMetadata {
     methods: [
       Profile_ProfileServiceServerMetadata.Methods.getUserInfo,
       Profile_ProfileServiceServerMetadata.Methods.getUserInfoByID,
+      Profile_ProfileServiceServerMetadata.Methods.getUserAddresses,
+      Profile_ProfileServiceServerMetadata.Methods.updateUserAddresses,
+      Profile_ProfileServiceServerMetadata.Methods.createAddress,
     ]
   )
 
@@ -398,6 +674,24 @@ internal enum Profile_ProfileServiceServerMetadata {
     internal static let getUserInfoByID = GRPCMethodDescriptor(
       name: "GetUserInfoByID",
       path: "/profile.ProfileService/GetUserInfoByID",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getUserAddresses = GRPCMethodDescriptor(
+      name: "GetUserAddresses",
+      path: "/profile.ProfileService/GetUserAddresses",
+      type: GRPCCallType.unary
+    )
+
+    internal static let updateUserAddresses = GRPCMethodDescriptor(
+      name: "UpdateUserAddresses",
+      path: "/profile.ProfileService/UpdateUserAddresses",
+      type: GRPCCallType.unary
+    )
+
+    internal static let createAddress = GRPCMethodDescriptor(
+      name: "CreateAddress",
+      path: "/profile.ProfileService/CreateAddress",
       type: GRPCCallType.unary
     )
   }

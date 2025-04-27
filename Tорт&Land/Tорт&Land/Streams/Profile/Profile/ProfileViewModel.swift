@@ -126,7 +126,7 @@ extension ProfileViewModel {
     }
 
     func didTapOpenSettings() {
-        print("[DEBUG]: \(#function)")
+        coordinator?.addScreen(ProfileModel.Screens.settings)
     }
 
     func didTapOpenMap() {
@@ -179,5 +179,9 @@ extension ProfileViewModel {
             interlocutor: interlocutor,
             chatProvider: chatProvider
         )
+    }
+
+    func assemblySettingsView() -> SettingsView {
+        SettingsAssembler.assemble(profileProvider: profileService)
     }
 }

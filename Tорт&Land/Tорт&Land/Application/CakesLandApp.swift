@@ -16,10 +16,9 @@ struct CakesLandApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            UserLocationView(viewModel: UserLocationViewModel())
 //            RootAssembler.assembleMock()
-//            RootAssembler.assemble(startScreenControl: startScreenControl)
-//                .environment(startScreenControl)
+            RootAssembler.assemble(startScreenControl: startScreenControl)
+                .environment(startScreenControl)
             #else
             RootAssembler.assemble(startScreenControl: startScreenControl)
                 .environment(startScreenControl)

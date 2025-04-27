@@ -9,16 +9,21 @@
 import Foundation
 import Observation
 import Combine
-import MapKit
+import _MapKit_SwiftUI
 
 @Observable
 final class UserLocationViewModel: UserLocationDisplayLogic, UserLocationViewModelInput, UserLocationViewModelOutput {
     var uiProperties = UserLocationModel.UIProperties()
     var camera: MapCameraPosition = .region(.bmstuRegion)
     var mapSelection: MKMapItem?
+    var action: (MKPlacemark) async throws -> Void
     private(set) var mapItems: [MKMapItem] = []
     @ObservationIgnored
     private var coordinator: Coordinator?
+
+    init(action: @escaping (MKPlacemark) async throws -> Void) {
+        self.action = action
+    }
 }
 
 // MARK: - Network
@@ -31,6 +36,7 @@ extension UserLocationViewModel {
         let results = try await MKLocalSearch(request: request).start()
         return results.mapItems
     }
+
 }
 
 extension UserLocationViewModel {
@@ -49,22 +55,23 @@ extension UserLocationViewModel {
         guard let selectedMapItem = mapSelection else {
             return
         }
+        uiProperties.showButtonLoader = true
+        Task { @MainActor in
+            try await action(selectedMapItem.placemark)
+            uiProperties.showButtonLoader = false
+            uiProperties.showDetailsSheet = false
+            coordinator?.openPreviousScreen()
+        }
+    }
 
-        print("[DEBUG]: \(selectedMapItem.placemark.title)")
-        print("[DEBUG]: \(Double(selectedMapItem.placemark.coordinate.latitude))")
+    func didTapBackButton() {
+        coordinator?.openPreviousScreen()
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {
         self.coordinator = coordinator
     }
-}
 
-import SwiftUI
-#Preview {
-    UserLocationView(
-        viewModel: UserLocationViewModel()
-    )
-    .environment(Coordinator())
 }
 
 private extension MKCoordinateRegion {

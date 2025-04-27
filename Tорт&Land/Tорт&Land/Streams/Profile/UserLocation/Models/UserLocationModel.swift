@@ -15,5 +15,6 @@ extension UserLocationModel {
         var textInput = ""
         var showSheet = false
         var showDetailsSheet = false
+        var showButtonLoader = false
     }
 }

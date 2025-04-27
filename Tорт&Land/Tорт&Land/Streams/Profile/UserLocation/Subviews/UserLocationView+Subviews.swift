@@ -29,6 +29,7 @@ extension UserLocationView {
 
             UserAnnotation()
         }
+        .navigationBarHidden(true)
         .mapStyle(.imagery)
         .sheet(isPresented: $viewModel.uiProperties.showSheet, onDismiss: {
             viewModel.uiProperties.textInput.removeAll()
@@ -60,9 +61,6 @@ extension UserLocationView {
             viewModel.uiProperties.showSheet = !showDetailsSheet
             viewModel.uiProperties.showDetailsSheet = showDetailsSheet
         }
-        .onAppear {
-            viewModel.uiProperties.textInput = "Авиаторов"
-        }
     }
 }
 
@@ -81,17 +79,29 @@ private extension UserLocationView {
 private extension UserLocationView {
 
     var navigationContainer: some View {
-        TextField(
-            Constants.textFieldPlaceholder,
-            text: $viewModel.uiProperties.textInput
-        )
-        .font(.subheadline)
-        .tint(.white)
-        .padding(12)
-        .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
-        .shadow(radius: 10)
-        .padding(.horizontal)
-        .onChange(of: viewModel.uiProperties.textInput, viewModel.didInputText)
+        HStack(spacing: 0) {
+            Button(action: viewModel.didTapBackButton, label: {
+                Image(systemName: "chevron.left")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .bold()
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(.white)
+                    .padding(.leading)
+            })
+
+            TextField(
+                Constants.textFieldPlaceholder,
+                text: $viewModel.uiProperties.textInput
+            )
+            .font(.subheadline)
+            .tint(.white)
+            .padding(12)
+            .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
+            .shadow(radius: 10)
+            .padding(.horizontal)
+            .onChange(of: viewModel.uiProperties.textInput, viewModel.didInputText)
+        }
     }
 
     var mapDetails: some View {
@@ -106,16 +116,9 @@ private extension UserLocationView {
             .frame(height: 200)
             .clipShape(.rect(cornerRadius: 15))
 
-            Button("Select Address") {
+            TLButton("Select Address") {
                 viewModel.didSelectAddress()
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(
-                TLColor<BackgroundPalette>.bgBasketColor.color,
-                in: .rect(cornerRadius: 15)
-            )
         }
         .padding(.horizontal)
     }
@@ -158,7 +161,7 @@ private extension UserLocationView {
 
 #Preview {
     UserLocationView(
-        viewModel: UserLocationViewModel()
+        viewModel: UserLocationViewModel { _ in }
     )
     .environment(Coordinator())
 }

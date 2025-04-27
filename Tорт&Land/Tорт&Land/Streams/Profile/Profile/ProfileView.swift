@@ -36,6 +36,8 @@ private extension ProfileView {
             viewModel.assemblyCreateCakeView()
         case let .sendMessage(interlocutor):
             viewModel.assemblyChatView(interlocutor: interlocutor)
+        case .settings:
+            viewModel.assemblySettingsView()
         }
     }
 }
@@ -44,7 +46,7 @@ private extension ProfileView {
 
 #Preview("Mockable") {
     ProfileView(
-        viewModel: ProfileViewModelMock()
+        viewModel: ProfileViewModelMock(isCurrentUser: true)
     )
     .environment(Coordinator())
 }
