@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AddressEntity: Sendable {
+public struct AddressEntity: Sendable, Hashable {
     /// Код адреса
     public let id: String
     /// Широта

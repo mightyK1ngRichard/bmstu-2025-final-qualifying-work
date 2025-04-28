@@ -137,6 +137,10 @@ extension CakeDetailsViewModel {
 
 extension CakeDetailsViewModel {
 
+    func didTapMakeOrderButton() {
+        coordinator?.addScreen(RootModel.Screens.makeOrder(cakeID: cakeModel.id))
+    }
+
     func didTapSellerInfoButton() {
         coordinator.addScreen(RootModel.Screens.profile(cakeModel.seller))
     }

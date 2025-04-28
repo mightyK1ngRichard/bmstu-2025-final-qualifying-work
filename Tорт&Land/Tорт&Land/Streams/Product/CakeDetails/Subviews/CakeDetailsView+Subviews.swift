@@ -17,11 +17,18 @@ extension CakeDetailsView {
                 moreInfoContainer
                 similarProductsContainer
             }
+            .padding(.bottom, 100)
         }
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .navigationTitle(viewModel.cakeModel.cakeName)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
+        .overlay(alignment: .bottom) {
+            if viewModel.showOwnerButton {
+                TLButton("make order".uppercased(), action: viewModel.didTapMakeOrderButton)
+                    .padding(.horizontal)
+            }
+        }
         .overlay {
             progressView
         }

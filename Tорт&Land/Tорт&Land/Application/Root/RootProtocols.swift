@@ -24,6 +24,7 @@ protocol RootViewModelInput {
 
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
     func assemblyProfileView(userModel: UserModel) -> ProfileView
+    func assemblyOrderView(cakeID: String) -> OrderView
     func assemblyAuthView() -> AuthView
     func assemblyCakeListView() -> CakesListView
     func assemblyCategoriesView() -> CategoriesView

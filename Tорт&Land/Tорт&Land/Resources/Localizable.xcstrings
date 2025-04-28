@@ -13,16 +13,6 @@
     "*Weight in grams" : {
 
     },
-    "%.1f × (%lldг)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$.1f × (%2$lldг)"
-          }
-        }
-      }
-    },
     "%@" : {
 
     },
@@ -163,6 +153,9 @@
           }
         }
       }
+    },
+    "Desired delivery date:" : {
+
     },
     "Discounted price (Optional field)" : {
 
@@ -332,7 +325,13 @@
         }
       }
     },
+    "Order address" : {
+
+    },
     "Order date" : {
+
+    },
+    "Order information" : {
 
     },
     "Password" : {
@@ -344,6 +343,9 @@
           }
         }
       }
+    },
+    "Payment Type" : {
+
     },
     "Please share your opinion about the product" : {
       "localizations" : {
@@ -462,9 +464,6 @@
     "Select product photos" : {
 
     },
-    "Select weight" : {
-
-    },
     "Seller" : {
       "localizations" : {
         "ru" : {
@@ -498,6 +497,9 @@
     "Settings" : {
 
     },
+    "Shipping Address:" : {
+
+    },
     "Sign In" : {
       "localizations" : {
         "ru" : {
@@ -529,6 +531,9 @@
       }
     },
     "There are no chats in your feed" : {
+
+    },
+    "Total Amount:" : {
 
     },
     "Try again" : {

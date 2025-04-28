@@ -165,6 +165,15 @@ extension RootViewModel {
         )
     }
 
+    func assemblyOrderView(cakeID: String) -> OrderView {
+        OrderAssembler.assemble(
+            cakeID: cakeID,
+            profileProvider: profileService,
+            cakeProvider: cakeService,
+            imageProvider: imageProvider
+        )
+    }
+
     @MainActor
     func assemblyCakeListView() -> CakesListView {
         CakesListAssembler.assemble(

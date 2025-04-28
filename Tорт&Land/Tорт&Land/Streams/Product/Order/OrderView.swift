@@ -13,6 +13,7 @@ import NetworkAPI
 
 struct OrderView: View {
     @State var viewModel: OrderViewModel
+    @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
         List {
@@ -47,7 +48,16 @@ struct OrderView: View {
         .scrollContentBackground(.hidden)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .onFirstAppear {
+            viewModel.setCoordinator(coordinator)
             viewModel.onAppear()
+        }
+        .navigationDestination(for: OrderViewModel.Screens.self) { screen in
+            switch screen {
+            case .addAddress:
+                viewModel.assemblyAddAddressView()
+            case let .updateAddress(selectedAddress):
+                viewModel.assemblyUpdateAddressView(address: selectedAddress)
+            }
         }
     }
 }
@@ -140,16 +150,16 @@ private extension OrderView {
             addressInfo(selectedAddress: selectedAddress)
         }
 
-        NavigationLink {
-            viewModel.assemblyAddAddressView()
+        Button {
+            viewModel.didTapAddAddress()
         } label: {
-            Label {
+            HStack {
                 Text("Add address")
                     .style(14, .medium)
-            } icon: {
                 Image(systemName: "plus")
-                    .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
             }
+            .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
 
@@ -175,13 +185,10 @@ private extension OrderView {
             addressCell(title: "Floor:", info: selectedAddress.floor)
             addressCell(title: "Apartment:", info: selectedAddress.apartment)
             addressCell(title: "Comment for delivery:", info: selectedAddress.comment)
-        } else {
-            NavigationLink {
-                viewModel.assemblyUpdateAddressView(address: selectedAddress)
-            } label: {
-                Text("Add address info")
-                    .style(14, .regular)
-            }
+        }
+
+        linkButton("Update address details") {
+            viewModel.didTapUpdateAddress(address: selectedAddress)
         }
     }
 
@@ -230,6 +237,23 @@ private extension OrderView {
             .listRowInsets(.init())
             .listRowBackground(Color.clear)
             .disabled(viewModel.orderIsDisabled)
+    }
+
+    func linkButton(_ title: String, action: TLVoidBlock?) -> some View {
+        Button {
+            action?()
+        } label: {
+            HStack {
+                Text(title)
+                    .style(14, .regular)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 12)
+            }
+            .foregroundStyle(Constants.textSecondaryColor)
+        }
     }
 
 }

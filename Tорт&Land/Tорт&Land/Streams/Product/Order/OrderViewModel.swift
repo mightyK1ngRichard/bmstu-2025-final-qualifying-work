@@ -23,6 +23,11 @@ extension OrderViewModel {
         var paymentMethod: PaymentMethod = .cash
         var deliveryDate = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
     }
+
+    enum Screens: Hashable {
+        case updateAddress(AddressEntity)
+        case addAddress
+    }
 }
 
 @Observable
@@ -42,6 +47,8 @@ final class OrderViewModel {
     private let cakeProvider: CakeService
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
+    @ObservationIgnored
+    private var coordinator: Coordinator?
 
     init(
         cakeID: String,
@@ -151,6 +158,18 @@ extension OrderViewModel {
     /// Нажали кнопку `Заказать торт`
     func didTapMakeOrder() {
         print("[DEBUG]: \(#function)")
+    }
+
+    func didTapUpdateAddress(address: AddressEntity) {
+        coordinator?.addScreen(Screens.updateAddress(address))
+    }
+
+    func didTapAddAddress() {
+        coordinator?.addScreen(Screens.addAddress)
+    }
+
+    func setCoordinator(_ coordinator: Coordinator) {
+        self.coordinator = coordinator
     }
 
 }
