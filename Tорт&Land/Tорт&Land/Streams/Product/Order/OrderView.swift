@@ -47,6 +47,12 @@ struct OrderView: View {
         }
         .scrollContentBackground(.hidden)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
+        .overlay {
+            if viewModel.uiProperties.isLoading {
+                Color.black.opacity(0.4).ignoresSafeArea()
+                ProgressView().tint(.white)
+            }
+        }
         .onFirstAppear {
             viewModel.setCoordinator(coordinator)
             viewModel.onAppear()
@@ -57,6 +63,8 @@ struct OrderView: View {
                 viewModel.assemblyAddAddressView()
             case let .updateAddress(selectedAddress):
                 viewModel.assemblyUpdateAddressView(address: selectedAddress)
+            case .success:
+                viewModel.assemblySuccessView()
             }
         }
     }
@@ -227,7 +235,7 @@ private extension OrderView {
             Text("Total Amount:")
                 .style(14, .regular, Constants.textSecondaryColor)
             Spacer()
-            Text(viewModel.calculateTotalAmount())
+            Text(viewModel.calculateTotalAmountTitle())
                 .style(16, .semibold, TLColor<TextPalette>.textWild.color)
         }
     }
@@ -263,16 +271,22 @@ private extension OrderView {
 #Preview {
     let network = NetworkServiceImpl()
     network.setRefreshToken(CommonMockData.refreshToken)
+    let auth = AuthGrpcServiceImpl(
+        configuration: AppHosts.auth,
+        networkService: network
+    )
     return NavigationStack {
         OrderView(
             viewModel: OrderViewModel(
                 cakeID: "550e8400-e29b-41d4-a716-446655441204",
+                orderProvider: OrderGrpcServiceImpl(
+                    configuration: AppHosts.order,
+                    authService: auth,
+                    networkService: network
+                ),
                 profileProvider: ProfileGrpcServiceImpl(
                     configuration: AppHosts.profile,
-                    authService: AuthGrpcServiceImpl(
-                        configuration: AppHosts.auth,
-                        networkService: network
-                    ),
+                    authService: auth,
                     networkService: network
                 ),
                 cakeProvider: CakeGrpcServiceImpl(

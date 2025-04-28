@@ -37,6 +37,11 @@ final class RootAssembler {
             authService: authService,
             networkService: networkService
         )
+        let orderService = OrderGrpcServiceImpl(
+            configuration: AppHosts.order,
+            authService: authService,
+            networkService: networkService
+        )
 
         if networkService.refreshToken == nil {
             startScreenControl.update(with: .auth)
@@ -48,6 +53,7 @@ final class RootAssembler {
             reviewsService: reviewsService,
             chatProvider: chatService,
             profileService: profileService,
+            orderProvider: orderService,
             imageProvider: imageProvider,
             startScreenControl: startScreenControl
         )

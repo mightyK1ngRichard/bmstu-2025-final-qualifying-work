@@ -30,6 +30,8 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
     @ObservationIgnored
     private let cakeService: CakeService
     @ObservationIgnored
+    private let orderProvider: OrderService
+    @ObservationIgnored
     private let profileService: ProfileGrpcService
     @ObservationIgnored
     private let chatProvider: ChatService
@@ -43,6 +45,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
         reviewsService: ReviewsService,
         chatProvider: ChatService,
         profileService: ProfileGrpcService,
+        orderProvider: OrderService,
         imageProvider: ImageLoaderProvider,
         startScreenControl: StartScreenControl
     ) {
@@ -51,6 +54,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
         self.reviewsService = reviewsService
         self.chatProvider = chatProvider
         self.profileService = profileService
+        self.orderProvider = orderProvider
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
         // FIXME: Сделать получение юзера из SwiftData
@@ -168,6 +172,7 @@ extension RootViewModel {
     func assemblyOrderView(cakeID: String) -> OrderView {
         OrderAssembler.assemble(
             cakeID: cakeID,
+            orderProvider: orderProvider,
             profileProvider: profileService,
             cakeProvider: cakeService,
             imageProvider: imageProvider

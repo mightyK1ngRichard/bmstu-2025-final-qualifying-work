@@ -12,12 +12,14 @@ import NetworkAPI
 final class OrderAssembler {
     static func assemble(
         cakeID: String,
+        orderProvider: OrderService,
         profileProvider: ProfileGrpcService,
         cakeProvider: CakeService,
         imageProvider: ImageLoaderProvider
     ) -> OrderView {
         let viewModel = OrderViewModel(
             cakeID: cakeID,
+            orderProvider: orderProvider,
             profileProvider: profileProvider,
             cakeProvider: cakeProvider,
             imageProvider: imageProvider

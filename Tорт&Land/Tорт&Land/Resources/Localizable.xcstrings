@@ -510,6 +510,9 @@
         }
       }
     },
+    "Success!" : {
+
+    },
     "Super summer sale" : {
       "localizations" : {
         "ru" : {
@@ -634,6 +637,9 @@
           }
         }
       }
+    },
+    "Your order will be delivered soon.\nThank you for choosing our app!" : {
+
     },
     "Торт&\nLand" : {
 

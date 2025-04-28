@@ -14,9 +14,21 @@ enum PaymentMethod: String, Hashable, CaseIterable {
     case ioMoney = "ЮMoney"
 }
 
+extension PaymentMethodEntity {
+    init(from model: PaymentMethod) {
+        switch model {
+        case .cash:
+            self = .cash
+        case .ioMoney:
+            self = .ioMoney
+        }
+    }
+}
+
 extension OrderViewModel {
     struct UIProperties: Hashable {
         var state: ScreenState = .initial
+        var isLoading = false
         var selectedFillingID = ""
         var selectedAddressID: String?
         var selectedWeightMultiplier = 1.0
@@ -27,6 +39,7 @@ extension OrderViewModel {
     enum Screens: Hashable {
         case updateAddress(AddressEntity)
         case addAddress
+        case success
     }
 }
 
@@ -40,6 +53,8 @@ final class OrderViewModel {
     @ObservationIgnored
     let availableMultipliers = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
     @ObservationIgnored
+    private let orderProvider: OrderService
+    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private let profileProvider: ProfileGrpcService
@@ -52,12 +67,14 @@ final class OrderViewModel {
 
     init(
         cakeID: String,
+        orderProvider: OrderService,
         profileProvider: ProfileGrpcService,
         cakeProvider: CakeService,
         imageProvider: ImageLoaderProvider,
         priceFormatter: PriceFormatterService = .shared
     ) {
         self.cakeID = cakeID
+        self.orderProvider = orderProvider
         self.cakeProvider = cakeProvider
         self.profileProvider = profileProvider
         self.imageProvider = imageProvider
@@ -157,7 +174,38 @@ extension OrderViewModel {
     
     /// Нажали кнопку `Заказать торт`
     func didTapMakeOrder() {
-        print("[DEBUG]: \(#function)")
+        guard
+            let cake,
+            let totalAmount = calculateTotalAmount,
+            let selectedAddressID = uiProperties.selectedAddressID,
+            !uiProperties.selectedFillingID.isEmpty
+        else {
+            // Show error
+            return
+        }
+
+        uiProperties.isLoading = true
+        Task { @MainActor in
+            do {
+                let _ = try await orderProvider.makeOrder(
+                    req: .init(
+                        totalPrice: totalAmount,
+                        deliveryAddressID: selectedAddressID,
+                        mass: uiProperties.selectedWeightMultiplier * cake.mass,
+                        paymentMethod: PaymentMethodEntity(from: uiProperties.paymentMethod),
+                        deliveryDate: uiProperties.deliveryDate,
+                        fillingID: uiProperties.selectedFillingID,
+                        sellerID: cake.seller.id,
+                        cakeID: cakeID
+                    )
+                )
+                uiProperties.isLoading = false
+                coordinator?.addScreen(Screens.success)
+            } catch {
+                uiProperties.isLoading = false
+                uiProperties.state = .error(message: "\(error)")
+            }
+        }
     }
 
     func didTapUpdateAddress(address: AddressEntity) {
@@ -183,14 +231,20 @@ extension OrderViewModel {
         return "\(coef)× (\(Int(mass * multiplier)) г)"
     }
 
-    func calculateTotalAmount() -> String {
+    var calculateTotalAmount: Double? {
         guard let cake else {
-            return ""
+            return nil
         }
 
         let kgPrice = cake.discountedPrice ?? cake.price
         let mass = uiProperties.selectedWeightMultiplier * cake.mass
-        let total = kgPrice * (mass / 1000)
+        return kgPrice * (mass / 1000)
+    }
+
+    func calculateTotalAmountTitle() -> String {
+        guard let total = calculateTotalAmount else {
+            return ""
+        }
 
         return priceFormatter.formatPrice(total)
     }
@@ -233,6 +287,12 @@ extension OrderViewModel {
         }
 
         return UserLocationView(viewModel: viewModel)
+    }
+
+    func assemblySuccessView() -> OrderSuccessView {
+        OrderSuccessView { [weak self] in
+            self?.coordinator?.goToRoot()
+        }
     }
 
 }
