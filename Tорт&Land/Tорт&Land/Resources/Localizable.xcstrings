@@ -13,6 +13,16 @@
     "*Weight in grams" : {
 
     },
+    "%.1f × (%lldг)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$.1f × (%2$lldг)"
+          }
+        }
+      }
+    },
     "%@" : {
 
     },
@@ -61,7 +71,22 @@
         }
       }
     },
+    "Cake" : {
+
+    },
+    "Cake filling:" : {
+
+    },
+    "Cake Fillings" : {
+
+    },
     "Cake name" : {
+
+    },
+    "Cake parameters" : {
+
+    },
+    "Cake weight:" : {
 
     },
     "Cancel" : {
@@ -435,6 +460,9 @@
       }
     },
     "Select product photos" : {
+
+    },
+    "Select weight" : {
 
     },
     "Seller" : {

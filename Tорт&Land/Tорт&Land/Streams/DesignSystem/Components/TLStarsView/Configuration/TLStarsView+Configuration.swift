@@ -27,6 +27,8 @@ extension TLStarsView {
         var leftPadding: CGFloat = .zero
         /// Shimmering flag
         var isShimmering: Bool = false
+        /// Shimmering kind
+        var shimmeringKind: ShimmeringView.ShimmeringKind = .default
     }
 }
 

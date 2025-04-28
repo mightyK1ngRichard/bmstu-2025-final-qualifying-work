@@ -19,6 +19,8 @@ public struct CakeEntity: Sendable, Hashable {
     public let kgPrice: Double
     /// Рейтинг (от 0 до 5)
     public let rating: Int
+    /// Число отзывов
+    public let reviewsCount: Int
     /// Описание
     public let description: String
     /// Масса торта
@@ -61,6 +63,7 @@ extension CakeEntity {
             imageURL: model.imageURL,
             kgPrice: model.kgPrice,
             rating: Int(model.rating),
+            reviewsCount: Int(model.reviewsCount),
             description: model.description_p,
             mass: model.mass,
             isOpenForSale: model.isOpenForSale,
@@ -91,6 +94,7 @@ public extension CakeEntity {
             imageURL: model.imageURL,
             kgPrice: model.kgPrice,
             rating: model.rating,
+            reviewsCount: model.reviewsCount,
             description: model.description,
             mass: model.mass,
             isOpenForSale: model.isOpenForSale,

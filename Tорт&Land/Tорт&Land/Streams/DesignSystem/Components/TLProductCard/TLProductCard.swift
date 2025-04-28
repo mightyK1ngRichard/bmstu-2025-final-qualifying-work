@@ -156,6 +156,8 @@ private extension TLProductCard {
     }
 }
 
+// MARK: - Preview
+
 #Preview("Shimmering") {
     TLProductCard(
         configuration: .shimmering(imageHeight: 184)

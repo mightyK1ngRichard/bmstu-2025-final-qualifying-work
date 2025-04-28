@@ -25,6 +25,7 @@ extension TLButton.Configuration {
 struct TLButton: View {
     let configuration: Configuration
     var action: TLVoidBlock?
+    @Environment(\.isEnabled) private var isEnabled
 
     init(configuration: Configuration, action: TLVoidBlock? = nil) {
         self.configuration = configuration
@@ -43,7 +44,7 @@ struct TLButton: View {
             content
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(TLButtonStyle())
+        .buttonStyle(TLButtonStyle(isEnabled: isEnabled))
     }
 
     @ViewBuilder
@@ -51,7 +52,7 @@ struct TLButton: View {
         switch configuration.kind {
         case .default:
             Text(configuration.title)
-                .font(.system(size: 14, weight: .medium))
+                .style(14, .medium, .white)
         case .loading:
             ProgressView()
                 .tint(.white)
@@ -60,10 +61,12 @@ struct TLButton: View {
 }
 
 private struct TLButtonStyle: ButtonStyle {
+    let isEnabled: Bool
+
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(.vertical, 14)
-            .background(TLColor<BackgroundPalette>.bgRed.color)
+            .background(TLColor<BackgroundPalette>.bgRed.color.opacity(isEnabled ? 1 : 0.4))
             .clipShape(.rect(cornerRadius: 25))
             .foregroundStyle(.white)
             .scaleEffect(configuration.isPressed ? 0.95: 1)
@@ -73,6 +76,8 @@ private struct TLButtonStyle: ButtonStyle {
 
 #Preview {
     VStack {
+        TLButton("Save")
+            .disabled(true)
         TLButton("Save")
         TLButton(configuration: .init(title: "Save", kind: .loading))
         TLButton(configuration: .init())

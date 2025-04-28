@@ -25,7 +25,7 @@ struct TLStarsView: View, Configurable {
             HStack(spacing: configuration.padding) {
                 ForEach(0..<configuration.countFillStars, id: \.self) { _ in
                     if configuration.isShimmering {
-                        ShimmeringView()
+                        ShimmeringView(kind: configuration.shimmeringKind)
                             .frame(width: configuration.starWidth, height: configuration.starWidth)
                             .mask {
                                 Image(.starFill)

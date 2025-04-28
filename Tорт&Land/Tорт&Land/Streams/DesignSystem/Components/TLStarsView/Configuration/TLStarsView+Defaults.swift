@@ -38,6 +38,16 @@ extension TLStarsView.Configuration {
             isShimmering: true
         )
     }
+
+    static var shimmeringInverted: Self {
+        .init(
+            countFillStars: Kind.five.rawValue,
+            starWidth: Constants.starWidth,
+            padding: Constants.padding,
+            isShimmering: true,
+            shimmeringKind: .inverted
+        )
+    }
 }
 
 // MARK: - Constants
