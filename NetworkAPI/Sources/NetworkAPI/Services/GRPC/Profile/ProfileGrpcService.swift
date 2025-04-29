@@ -74,7 +74,7 @@ public extension ProfileGrpcServiceImpl {
     }
 
     func createAddress(req: ProfileServiceModel.CreateAddress.Request) async throws -> AddressEntity {
-        let requst = Profile_CreateAddressReq.with {
+        let request = Profile_CreateAddressReq.with {
             $0.latitude = req.latitude
             $0.longitude = req.longitude
             $0.formattedAddress = req.formattedAddress
@@ -82,7 +82,7 @@ public extension ProfileGrpcServiceImpl {
 
         return try await networkService.performAndLog(
             call: client.createAddress,
-            with: requst,
+            with: request,
             mapping: { .init(from: $0.address) }
         )
     }
