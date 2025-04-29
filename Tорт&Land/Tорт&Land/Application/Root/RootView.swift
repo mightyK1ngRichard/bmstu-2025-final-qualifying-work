@@ -37,6 +37,8 @@ private extension RootView {
             viewModel.assemblyDetailsView(model: cakeModel)
         case let .profile(userModel):
             viewModel.assemblyProfileView(userModel: userModel)
+        case let .makeOrder(cakeID):
+            viewModel.assemblyOrderView(cakeID: cakeID)
         }
     }
 }

@@ -50,7 +50,7 @@ extension CommentInfo.Author {
     init(from model: ProfileEntity) {
         self = .init(
             id: model.id,
-            name: model.fio ?? StringConstants.anonimeUserName,
+            name: model.fio ?? model.nickname,
             imageState: .loading
         )
     }

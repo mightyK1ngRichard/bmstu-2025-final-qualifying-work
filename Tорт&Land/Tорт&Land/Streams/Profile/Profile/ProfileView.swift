@@ -29,11 +29,15 @@ struct ProfileView: View {
 // MARK: - Navigation Destionation
 
 private extension ProfileView {
-
+    @ViewBuilder
     func openNextScreen(for screen: ProfileModel.Screens) -> some View {
         switch screen {
         case .createProfile:
-            viewModel.assmebleCreateCakeView()
+            viewModel.assemblyCreateCakeView()
+        case let .sendMessage(interlocutor):
+            viewModel.assemblyChatView(interlocutor: interlocutor)
+        case .settings:
+            viewModel.assemblySettingsView()
         }
     }
 }
@@ -42,7 +46,7 @@ private extension ProfileView {
 
 #Preview("Mockable") {
     ProfileView(
-        viewModel: ProfileViewModelMock()
+        viewModel: ProfileViewModelMock(isCurrentUser: true)
     )
     .environment(Coordinator())
 }

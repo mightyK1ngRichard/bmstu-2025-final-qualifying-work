@@ -8,6 +8,7 @@
 
 #if DEBUG
 import Foundation
+import NetworkAPI
 import UIKit
 
 enum CommonMockData {
@@ -96,6 +97,8 @@ enum CommonMockData {
             imageState: avatar ?? .fetched(.uiImage(.king))
         )
     }
+
+    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDYxNTE3NDYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.t1aSbfDSZLdxYK_Y0WlzaOcwl1hDTbk4WyVcFC973OE"
 }
 
 // MARK: - Constants

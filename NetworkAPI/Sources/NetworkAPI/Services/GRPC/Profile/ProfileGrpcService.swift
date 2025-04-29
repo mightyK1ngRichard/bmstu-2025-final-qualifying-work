@@ -15,6 +15,9 @@ import SwiftProtobuf
 
 public protocol ProfileGrpcService: Sendable {
     func getUserInfo() async throws -> ProfileServiceModel.GetUserInfo.Response
+    func updateUserAddress(req: ProfileServiceModel.UpdateUser.Request) async throws -> ProfileServiceModel.UpdateUser.Response
+    func getUserAddresses() async throws -> [AddressEntity]
+    func createAddress(req: ProfileServiceModel.CreateAddress.Request) async throws -> AddressEntity
     func closeConnection()
 }
 
@@ -67,6 +70,56 @@ public extension ProfileGrpcServiceImpl {
                     profile: ProfileEntity(from: $0.userInfo.user)
                 ))
             }
+        )
+    }
+
+    func createAddress(req: ProfileServiceModel.CreateAddress.Request) async throws -> AddressEntity {
+        let request = Profile_CreateAddressReq.with {
+            $0.latitude = req.latitude
+            $0.longitude = req.longitude
+            $0.formattedAddress = req.formattedAddress
+        }
+
+        return try await networkService.performAndLog(
+            call: client.createAddress,
+            with: request,
+            mapping: { .init(from: $0.address) }
+        )
+    }
+
+    func updateUserAddress(req: ProfileServiceModel.UpdateUser.Request) async throws -> ProfileServiceModel.UpdateUser.Response {
+        let request = Profile_UpdateUserAddressesReq.with {
+            $0.addressID = req.addressID
+            if let apartment = req.apartment {
+                $0.apartment = apartment
+            }
+            if let floor = req.floor {
+                $0.floor = floor
+            }
+            if let entrance = req.entrance {
+                $0.entrance = entrance
+            }
+            if let comment = req.comment {
+                $0.comment = comment
+            }
+        }
+
+        return try await networkService.performAndLog(
+            call: client.updateUserAddresses,
+            with: request,
+            mapping: { .init(address: AddressEntity(from: $0.address)) }
+        )
+    }
+
+    func getUserAddresses() async throws -> [AddressEntity] {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Google_Protobuf_Empty()
+
+        return try await networkService.performAndLog(
+            call: client.getUserAddresses,
+            with: request,
+            mapping: { $0.addresses.map(AddressEntity.init(from:)) }
         )
     }
 

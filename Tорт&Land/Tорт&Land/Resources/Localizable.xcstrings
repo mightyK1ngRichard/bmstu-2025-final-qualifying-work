@@ -38,6 +38,9 @@
     "1000" : {
 
     },
+    "Add address" : {
+
+    },
     "All" : {
       "localizations" : {
         "ru" : {
@@ -58,7 +61,25 @@
         }
       }
     },
+    "Analyze Image" : {
+
+    },
+    "Cake" : {
+
+    },
+    "Cake filling:" : {
+
+    },
+    "Cake Fillings" : {
+
+    },
     "Cake name" : {
+
+    },
+    "Cake parameters" : {
+
+    },
+    "Cake weight:" : {
 
     },
     "Cancel" : {
@@ -135,6 +156,9 @@
           }
         }
       }
+    },
+    "Desired delivery date:" : {
+
     },
     "Discounted price (Optional field)" : {
 
@@ -258,6 +282,9 @@
     "No message" : {
 
     },
+    "No Preview Available" : {
+
+    },
     "Nothing found" : {
       "localizations" : {
         "ru" : {
@@ -301,7 +328,13 @@
         }
       }
     },
+    "Order address" : {
+
+    },
     "Order date" : {
+
+    },
+    "Order information" : {
 
     },
     "Password" : {
@@ -313,6 +346,9 @@
           }
         }
       }
+    },
+    "Payment Type" : {
+
     },
     "Please share your opinion about the product" : {
       "localizations" : {
@@ -461,6 +497,12 @@
         }
       }
     },
+    "Settings" : {
+
+    },
+    "Shipping Address:" : {
+
+    },
     "Sign In" : {
       "localizations" : {
         "ru" : {
@@ -470,6 +512,9 @@
           }
         }
       }
+    },
+    "Success!" : {
+
     },
     "Super summer sale" : {
       "localizations" : {
@@ -492,6 +537,9 @@
       }
     },
     "There are no chats in your feed" : {
+
+    },
+    "Total Amount:" : {
 
     },
     "Try again" : {
@@ -580,6 +628,9 @@
         }
       }
     },
+    "Your addresses" : {
+
+    },
     "Your feedback" : {
       "localizations" : {
         "ru" : {
@@ -589,6 +640,9 @@
           }
         }
       }
+    },
+    "Your order will be delivered soon.\nThank you for choosing our app!" : {
+
     },
     "Торт&\nLand" : {
 

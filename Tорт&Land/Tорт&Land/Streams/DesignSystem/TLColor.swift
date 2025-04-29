@@ -62,6 +62,8 @@ extension TLColor where Palette == BackgroundPalette {
     static let bgShimmering = TLColor(hexLight: 0xF3F3F7, hexDark: 0x242429)
     /// Черный белый фон
     static let bgPrimary = TLColor(hexLight: 0xF9F9F9, hexDark: 0x060606)
+    /// Фон для text field
+    static let bgTextField = TLColor(hexLight: 0xFFFFFF, hexDark: 0x2A2C36)
 }
 
 // MARK: - Text Colors

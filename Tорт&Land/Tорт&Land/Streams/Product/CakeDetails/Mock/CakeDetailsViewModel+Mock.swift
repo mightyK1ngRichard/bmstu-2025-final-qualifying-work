@@ -37,6 +37,10 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewMo
         self.coordinator = coordinator
     }
 
+    func didTapMakeOrderButton() {
+        print("[DEBUG]: \(#function)")
+    }
+
     func didTapSellerInfoButton() {
         print("[DEBUG]: \(#function)")
         coordinator?.addScreen(RootModel.Screens.profile(cakeModel.seller))
