@@ -94,7 +94,7 @@ extension ProfileViewModel {
 
         Task { @MainActor in
             guard let headerImageURL else {
-                user?.headerImage = .fetched(.uiImage(.candy))
+                user?.headerImage = .fetched(.uiImage(.mockHeader))
                 return
             }
 

@@ -16,6 +16,7 @@ public enum CakeServiceModel {
     public enum FetchCakes {}
     public enum FetchCategoriesByGenderName {}
     public enum FetchCategoryCakes {}
+    public enum AddCakeColors {}
 }
 
 // MARK: - CreateCategory
@@ -33,6 +34,20 @@ public extension CakeServiceModel.CreateCategory {
 
     struct Response: Sendable {
         public let category: CategoryEntity
+    }
+}
+
+// MARK: - AddCakeColors
+
+public extension CakeServiceModel.AddCakeColors {
+    struct Request: Sendable {
+        let cakeID: String
+        let hexStrings: [String]
+
+        public init(cakeID: String, hexStrings: [String]) {
+            self.cakeID = cakeID
+            self.hexStrings = hexStrings
+        }
     }
 }
 

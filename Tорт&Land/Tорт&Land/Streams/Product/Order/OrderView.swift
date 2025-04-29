@@ -46,6 +46,9 @@ struct OrderView: View {
             makeOrderButton
         }
         .scrollContentBackground(.hidden)
+        .fullScreenCover(isPresented: $viewModel.uiProperties.openSuccessScreen) {
+            viewModel.assemblySuccessView()
+        }
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .overlay {
             if viewModel.uiProperties.isLoading {
@@ -63,8 +66,6 @@ struct OrderView: View {
                 viewModel.assemblyAddAddressView()
             case let .updateAddress(selectedAddress):
                 viewModel.assemblyUpdateAddressView(address: selectedAddress)
-            case .success:
-                viewModel.assemblySuccessView()
             }
         }
     }

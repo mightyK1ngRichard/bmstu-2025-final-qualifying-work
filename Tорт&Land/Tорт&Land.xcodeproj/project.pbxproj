@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E5296C372DBFD10B004887BB /* ColorThiefSwift */; };
 		E5EE25922D5FEDD100632DCC /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5EE25912D5FEDD100632DCC /* NetworkAPI */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5EE25922D5FEDD100632DCC /* NetworkAPI in Frameworks */,
+				E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +108,7 @@
 			name = "Tорт&Land";
 			packageProductDependencies = (
 				E5EE25912D5FEDD100632DCC /* NetworkAPI */,
+				E5296C372DBFD10B004887BB /* ColorThiefSwift */,
 			);
 			productName = "Tорт&Land";
 			productReference = E5A5F5B32D1647E600140551 /* Tорт&Land.app */;
@@ -166,6 +169,7 @@
 			mainGroup = E5A5F5AA2D1647E600140551;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E5A5F5B42D1647E600140551 /* Products */;
@@ -493,7 +497,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yamoridon/ColorThiefSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		E5296C372DBFD10B004887BB /* ColorThiefSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */;
+			productName = ColorThiefSwift;
+		};
 		E5EE25912D5FEDD100632DCC /* NetworkAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkAPI;

@@ -29,6 +29,8 @@ struct RegisterRequest: Sendable {
 
   var password: String = String()
 
+  var nickname: String = String()
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
@@ -113,6 +115,7 @@ extension RegisterRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "email"),
     2: .same(proto: "password"),
+    3: .same(proto: "nickname"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -123,6 +126,7 @@ extension RegisterRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.email) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.password) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.nickname) }()
       default: break
       }
     }
@@ -135,12 +139,16 @@ extension RegisterRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
     if !self.password.isEmpty {
       try visitor.visitSingularStringField(value: self.password, fieldNumber: 2)
     }
+    if !self.nickname.isEmpty {
+      try visitor.visitSingularStringField(value: self.nickname, fieldNumber: 3)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: RegisterRequest, rhs: RegisterRequest) -> Bool {
     if lhs.email != rhs.email {return false}
     if lhs.password != rhs.password {return false}
+    if lhs.nickname != rhs.nickname {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

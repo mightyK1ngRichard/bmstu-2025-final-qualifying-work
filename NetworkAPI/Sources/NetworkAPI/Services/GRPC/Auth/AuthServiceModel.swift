@@ -20,10 +20,12 @@ public extension AuthServiceModel.Register {
     struct Request {
         let email: String
         let password: String
+        let nickname: String
 
-        public init(email: String, password: String) {
+        public init(email: String, password: String, nickname: String) {
             self.email = email
             self.password = password
+            self.nickname = nickname
         }
     }
 

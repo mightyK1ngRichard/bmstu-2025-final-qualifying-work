@@ -29,6 +29,7 @@ extension OrderViewModel {
     struct UIProperties: Hashable {
         var state: ScreenState = .initial
         var isLoading = false
+        var openSuccessScreen = false
         var selectedFillingID = ""
         var selectedAddressID: String?
         var selectedWeightMultiplier = 1.0
@@ -39,7 +40,6 @@ extension OrderViewModel {
     enum Screens: Hashable {
         case updateAddress(AddressEntity)
         case addAddress
-        case success
     }
 }
 
@@ -178,7 +178,8 @@ extension OrderViewModel {
             let cake,
             let totalAmount = calculateTotalAmount,
             let selectedAddressID = uiProperties.selectedAddressID,
-            !uiProperties.selectedFillingID.isEmpty
+            !uiProperties.selectedFillingID.isEmpty,
+            let coordinator
         else {
             // Show error
             return
@@ -200,7 +201,7 @@ extension OrderViewModel {
                     )
                 )
                 uiProperties.isLoading = false
-                coordinator?.addScreen(Screens.success)
+                uiProperties.openSuccessScreen = true
             } catch {
                 uiProperties.isLoading = false
                 uiProperties.state = .error(message: "\(error)")

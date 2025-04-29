@@ -22,12 +22,13 @@ public protocol CakeService: Sendable {
     func fetchCakeDetails(cakeID: String) async throws -> CakeEntity
     func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response
     func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
+    func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
     func closeConnection()
 }
 
 // MARK: - AuthGrpcServiceImpl
 
-public final class CakeGrpcServiceImpl: CakeService, Sendable {
+public final class CakeGrpcServiceImpl: CakeService {
     private let client: Cake_CakeServiceAsyncClientProtocol
     private let channel: GRPCChannel
     private let networkService: NetworkService
@@ -57,6 +58,19 @@ public final class CakeGrpcServiceImpl: CakeService, Sendable {
 }
 
 public extension CakeGrpcServiceImpl {
+    func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws {
+        let request = Cake_AddCakeColorsReq.with {
+            $0.cakeID = req.cakeID
+            $0.colorsHex = req.hexStrings
+        }
+
+        return try await networkService.performAndLog(
+            call: client.addCakeColors,
+            with: request,
+            mapping: { _ in }
+        )
+    }
+
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response {
         let request = Cake_CreateCategoryRequest.with {
             $0.name = req.name

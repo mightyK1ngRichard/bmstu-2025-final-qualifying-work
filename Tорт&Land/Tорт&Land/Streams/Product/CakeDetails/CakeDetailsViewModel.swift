@@ -86,7 +86,7 @@ extension CakeDetailsViewModel {
 
         Task { @MainActor in
             guard let headerImage else {
-                cakeModel.seller.headerImage = .fetched(.uiImage(.candy))
+                cakeModel.seller.headerImage = .fetched(.uiImage(.mockHeader))
                 return
             }
 

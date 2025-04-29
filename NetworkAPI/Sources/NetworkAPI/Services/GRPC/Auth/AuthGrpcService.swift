@@ -56,6 +56,7 @@ public extension AuthGrpcServiceImpl {
         let request = RegisterRequest.with {
             $0.email = req.email
             $0.password = req.password
+            $0.nickname = req.nickname
         }
         let result = try await networkService.performAndLog(
             call: client.register,

@@ -29,7 +29,13 @@ final class AuthViewModel: AuthDisplayLogic, AuthViewModelOutput {
 extension AuthViewModel {
 
     func registerUser() async throws {
-        let _ = try await authService.register(req: .init(email: uiProperties.email.lowercased(), password: uiProperties.password))
+        let _ = try await authService.register(
+            req: .init(
+                email: uiProperties.email.lowercased(),
+                password: uiProperties.password,
+                nickname: uiProperties.nickName
+            )
+        )
     }
 
     func loginUser() async throws {
