@@ -91,7 +91,7 @@ extension TLColor where Palette == IconPalette {
     static let iconGray = TLColor(hexLight: 0x9B9B9B, hexDark: 0xABB4BD)
     static let iconBasket = TLColor(hexLight: 0xF9F9F9, hexDark: 0xF6F6F6)
     static let iconPrimary = TLColor(hexLight: 0x222222, hexDark: 0xF9F9F9)
-    static let navigationBackButton = TLColor(hexLight: 0x222222, hexDark: 0xF6F6F6)
+    static let iconDarkWhite = TLColor(hexLight: 0x222222, hexDark: 0xF6F6F6)
 }
 
 // MARK: - Separator Colors
@@ -106,6 +106,8 @@ extension TLColor where Palette == SeparatorPalette {
     static let divider = TLColor(hexLight: 0x9B9B9B, hexDark: 0xABB4BD)
     /// Красная линия. Ex: Экран рейтинга
     static let redLine = TLColor(hexLight: 0xDB3022, hexDark: 0xFF3E3E)
+    /// Красный белый
+    static let colorCell = TLColor(hexLight: 0xDB3022, hexDark: 0xABB4BD)
 }
 
 // MARK: - Shadow Colors

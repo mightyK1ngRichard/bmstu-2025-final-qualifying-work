@@ -19,14 +19,18 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
     @ObservationIgnored
+    private let cakeService: CakeService
+    @ObservationIgnored
     private var rootViewModel: RootViewModelOutput
 
     init(
         rootViewModel: RootViewModelOutput,
+        cakeService: CakeService,
         priceFormatter: PriceFormatterService = .shared
     ) {
         self.priceFormatter = priceFormatter
         self.rootViewModel = rootViewModel
+        self.cakeService = cakeService
     }
 }
 
@@ -129,7 +133,7 @@ extension CakesListViewModel {
         cakes: [CakeModel],
         sectionKind: ProductsGridModel.SectionKind
     ) -> ProductsGridView {
-        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: sectionKind)
+        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: sectionKind, cakeService: cakeService)
     }
 
     func configureShimmeringProductCard() -> TLProductCard.Configuration {

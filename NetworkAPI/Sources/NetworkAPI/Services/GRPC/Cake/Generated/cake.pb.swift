@@ -288,7 +288,7 @@ struct Cake_CakesResponse: Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var cakes: [Cake_Cake] = []
+  var cakes: [Cake_PreviewCake] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -739,6 +739,12 @@ struct Cake_PreviewCake: @unchecked Sendable {
   var reviewsCount: Int32 {
     get {return _storage._reviewsCount}
     set {_uniqueStorage()._reviewsCount = newValue}
+  }
+
+  /// Hex цвета торта
+  var colorsHex: [String] {
+    get {return _storage._colorsHex}
+    set {_uniqueStorage()._colorsHex = newValue}
   }
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -1857,6 +1863,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     11: .standard(proto: "is_open_for_sale"),
     12: .same(proto: "owner"),
     13: .same(proto: "reviewsCount"),
+    14: .same(proto: "colorsHex"),
   ]
 
   fileprivate class _StorageClass {
@@ -1873,6 +1880,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     var _isOpenForSale: Bool = false
     var _owner: Cake_User? = nil
     var _reviewsCount: Int32 = 0
+    var _colorsHex: [String] = []
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1900,6 +1908,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       _isOpenForSale = source._isOpenForSale
       _owner = source._owner
       _reviewsCount = source._reviewsCount
+      _colorsHex = source._colorsHex
     }
   }
 
@@ -1931,6 +1940,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         case 11: try { try decoder.decodeSingularBoolField(value: &_storage._isOpenForSale) }()
         case 12: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
         case 13: try { try decoder.decodeSingularInt32Field(value: &_storage._reviewsCount) }()
+        case 14: try { try decoder.decodeRepeatedStringField(value: &_storage._colorsHex) }()
         default: break
         }
       }
@@ -1982,6 +1992,9 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       if _storage._reviewsCount != 0 {
         try visitor.visitSingularInt32Field(value: _storage._reviewsCount, fieldNumber: 13)
       }
+      if !_storage._colorsHex.isEmpty {
+        try visitor.visitRepeatedStringField(value: _storage._colorsHex, fieldNumber: 14)
+      }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -2004,6 +2017,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         if _storage._isOpenForSale != rhs_storage._isOpenForSale {return false}
         if _storage._owner != rhs_storage._owner {return false}
         if _storage._reviewsCount != rhs_storage._reviewsCount {return false}
+        if _storage._colorsHex != rhs_storage._colorsHex {return false}
         return true
       }
       if !storagesAreEqual {return false}

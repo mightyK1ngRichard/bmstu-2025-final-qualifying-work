@@ -41,6 +41,8 @@ public struct CakeEntity: Sendable, Hashable {
     public let categories: [CategoryEntity]
     /// Фотографии торта
     public let images: [CakeImageEntity]
+    /// Hex цвета торта
+    public var colorsHex: [String]
 }
 
 public extension CakeEntity {
@@ -73,7 +75,8 @@ extension CakeEntity {
             owner: UserEntity(from: model.owner),
             fillings:  model.fillings.map(FillingEntity.init(from:)),
             categories: model.categories.map(CategoryEntity.init(from:)),
-            images: model.images.map(CakeImageEntity.init(from:))
+            images: model.images.map(CakeImageEntity.init(from:)),
+            colorsHex: []
         )
     }
 }
@@ -104,7 +107,8 @@ public extension CakeEntity {
             owner: model.owner,
             fillings: model.fillings,
             categories: model.categories,
-            images: []
+            images: [],
+            colorsHex: model.colorsHex
         )
     }
 }

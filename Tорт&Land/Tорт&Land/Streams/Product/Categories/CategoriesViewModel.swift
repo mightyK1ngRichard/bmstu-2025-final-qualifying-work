@@ -49,7 +49,7 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
 
 extension CategoriesViewModel {
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {
-        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: .default)
+        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: .default, cakeService: cakeProvider)
     }
 }
 

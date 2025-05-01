@@ -19,6 +19,16 @@
     "%lld" : {
 
     },
+    "%lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@"
+          }
+        }
+      }
+    },
     "%lld/%lld" : {
       "localizations" : {
         "en" : {
@@ -28,6 +38,9 @@
           }
         }
       }
+    },
+    "0" : {
+
     },
     "200" : {
 
@@ -60,9 +73,6 @@
           }
         }
       }
-    },
-    "Analyze Image" : {
-
     },
     "Cake" : {
 
@@ -109,6 +119,9 @@
 
     },
     "Close" : {
+
+    },
+    "Colors" : {
 
     },
     "Create" : {
@@ -360,6 +373,16 @@
         }
       }
     },
+    "Price range: %lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Price range: %1$lld %2$@"
+          }
+        }
+      }
+    },
     "Product" : {
       "localizations" : {
         "ru" : {
@@ -501,6 +524,9 @@
 
     },
     "Shipping Address:" : {
+
+    },
+    "SHow" : {
 
     },
     "Sign In" : {

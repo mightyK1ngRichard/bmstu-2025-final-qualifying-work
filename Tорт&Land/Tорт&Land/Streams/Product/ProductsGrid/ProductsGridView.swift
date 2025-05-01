@@ -18,12 +18,3 @@ struct ProductsGridView: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    ProductsGridView(
-        viewModel: ProductsGridViewModelMock()
-    )
-    .environment(Coordinator())
-}
