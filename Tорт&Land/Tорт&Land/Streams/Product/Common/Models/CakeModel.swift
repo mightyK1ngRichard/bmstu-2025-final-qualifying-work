@@ -44,6 +44,8 @@ struct CakeModel: Identifiable, Hashable {
     var fillings: [Filling]
     /// Продовец
     var seller: UserModel
+    /// Hex цвета торта
+    var colorsHex: [String]
 }
 
 extension CakeModel {
@@ -64,7 +66,33 @@ extension CakeModel {
             comments: [],
             categories: [],
             fillings: [],
-            seller: UserModel(from: model.owner)
+            seller: UserModel(from: model.owner),
+            colorsHex: []
+        )
+    }
+
+    init(from model: CakeEntity) {
+        self = CakeModel(
+            id: model.id,
+            previewImageState: .loading,
+            thumbnails: model.images.map {
+                Thumbnail(id: $0.id, imageState: .loading, url: $0.imageURL)
+            },
+            cakeName: model.name,
+            price: model.kgPrice,
+            mass: model.mass,
+            discountedPrice: model.discountKgPrice,
+            rating: model.rating,
+            reviewsCount: model.reviewsCount,
+            isSelected: false,
+            description: model.description,
+            establishmentDate: model.dateCreation.description,
+            similarCakes: [],
+            comments: [],
+            categories: model.categories.map(Category.init(from:)),
+            fillings: model.fillings.map(Filling.init(from:)),
+            seller: UserModel(from: model.owner),
+            colorsHex: model.colorsHex
         )
     }
 }
@@ -100,7 +128,8 @@ extension CakeModel {
             comments: [],
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
-            seller: UserModel(from: model.owner)
+            seller: UserModel(from: model.owner),
+            colorsHex: model.colorsHex
         )
     }
 
@@ -113,7 +142,7 @@ extension CakeModel {
     }
 }
 
-// MARK: - TLProductCard Configuration
+// MARK: - TLProductCard
 
 extension CakeModel {
 
@@ -146,6 +175,33 @@ extension CakeModel {
             starsViewConfiguration: starsConfiguration()
         )
     }
+
+    func configureProductHCard(priceFormatter: PriceFormatterService) -> TLProductHCard.Configuration {
+        let discountedPriceLabel: String? = {
+            guard let discountedPrice else {
+                return nil
+            }
+
+            return priceFormatter.formatKgPrice(discountedPrice)
+        }()
+        let kgPriceLabel = discountedPriceLabel == nil ? priceFormatter.formatKgPrice(price) : priceFormatter.formatPrice(price)
+
+        return .init(
+            imageConfiguration: .init(imageState: previewImageState),
+            starsConfiguration: starsConfiguration(),
+            seller: seller.name,
+            title: cakeName,
+            productPrice: kgPriceLabel,
+            mass: "\(Int(mass))г.",
+            productDiscountedPrice: discountedPriceLabel
+        )
+    }
+
+}
+
+// MARK: - Helpers
+
+extension CakeModel {
 
     func starsConfiguration() -> TLStarsView.Configuration {
         .basic(
@@ -187,6 +243,7 @@ extension CakeModel {
         let discountPercentage = 100 - (discountedPrice * 100) / price
         return ("-\(Int(discountPercentage))%", .red)
     }
+
 }
 
 // MARK: - TLProductDescriptionView Configuration

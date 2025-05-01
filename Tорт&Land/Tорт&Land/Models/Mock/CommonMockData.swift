@@ -8,6 +8,7 @@
 
 #if DEBUG
 import Foundation
+import NetworkAPI
 import UIKit
 
 enum CommonMockData {
@@ -21,9 +22,9 @@ enum CommonMockData {
                 Thumbnail(id: "3", imageState: .fetched(.uiImage(.cake3)), url: ""),
             ].shuffled(),
             cakeName: "Моковый торт #\(id)",
-            price: 19.99,
+            price: 19.99 * Double(id),
             mass: 400,
-            discountedPrice: withDiscount ? 15.99 : nil,
+            discountedPrice: withDiscount ? 15.99 * Double(id) : nil,
             rating: 5,
             reviewsCount: 10,
             isSelected: Bool.random(),
@@ -62,7 +63,8 @@ enum CommonMockData {
                     description: "Это очень вкусный коржик"
                 )
             ],
-            seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
+            seller: generateMockUserModel(id: id, name: "Продавец #\(id)"),
+            colorsHex: []
         )
     }
     static func generateMockUserModel(
@@ -96,6 +98,8 @@ enum CommonMockData {
             imageState: avatar ?? .fetched(.uiImage(.king))
         )
     }
+
+    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDYxNTE3NDYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.t1aSbfDSZLdxYK_Y0WlzaOcwl1hDTbk4WyVcFC973OE"
 }
 
 // MARK: - Constants

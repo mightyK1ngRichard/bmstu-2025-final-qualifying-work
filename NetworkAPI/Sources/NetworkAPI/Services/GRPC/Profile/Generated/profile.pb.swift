@@ -76,6 +76,137 @@ struct Profile_GetUserInfoByIDRes: Sendable {
   fileprivate var _user: Profile_Profile? = nil
 }
 
+/// ############### GetUserAddresses ############### 
+struct Profile_GetUserAddressesRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var addresses: [Profile_Address] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// ############### UpdateUserAddresses ############### 
+struct Profile_UpdateUserAddressesReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Код адреса
+  var addressID: String = String()
+
+  /// Подъезд (опционально)
+  var entrance: String {
+    get {return _entrance ?? String()}
+    set {_entrance = newValue}
+  }
+  /// Returns true if `entrance` has been explicitly set.
+  var hasEntrance: Bool {return self._entrance != nil}
+  /// Clears the value of `entrance`. Subsequent reads from it will return its default value.
+  mutating func clearEntrance() {self._entrance = nil}
+
+  /// Этаж (опционально)
+  var floor: String {
+    get {return _floor ?? String()}
+    set {_floor = newValue}
+  }
+  /// Returns true if `floor` has been explicitly set.
+  var hasFloor: Bool {return self._floor != nil}
+  /// Clears the value of `floor`. Subsequent reads from it will return its default value.
+  mutating func clearFloor() {self._floor = nil}
+
+  /// Квартира (опционально)
+  var apartment: String {
+    get {return _apartment ?? String()}
+    set {_apartment = newValue}
+  }
+  /// Returns true if `apartment` has been explicitly set.
+  var hasApartment: Bool {return self._apartment != nil}
+  /// Clears the value of `apartment`. Subsequent reads from it will return its default value.
+  mutating func clearApartment() {self._apartment = nil}
+
+  /// Комментарий к доставке
+  var comment: String {
+    get {return _comment ?? String()}
+    set {_comment = newValue}
+  }
+  /// Returns true if `comment` has been explicitly set.
+  var hasComment: Bool {return self._comment != nil}
+  /// Clears the value of `comment`. Subsequent reads from it will return its default value.
+  mutating func clearComment() {self._comment = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _entrance: String? = nil
+  fileprivate var _floor: String? = nil
+  fileprivate var _apartment: String? = nil
+  fileprivate var _comment: String? = nil
+}
+
+struct Profile_UpdateUserAddressesRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var address: Profile_Address {
+    get {return _address ?? Profile_Address()}
+    set {_address = newValue}
+  }
+  /// Returns true if `address` has been explicitly set.
+  var hasAddress: Bool {return self._address != nil}
+  /// Clears the value of `address`. Subsequent reads from it will return its default value.
+  mutating func clearAddress() {self._address = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _address: Profile_Address? = nil
+}
+
+/// ############### CreateAddress ############### 
+struct Profile_CreateAddressReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var latitude: Double = 0
+
+  var longitude: Double = 0
+
+  var formattedAddress: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Profile_CreateAddressRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var address: Profile_Address {
+    get {return _address ?? Profile_Address()}
+    set {_address = newValue}
+  }
+  /// Returns true if `address` has been explicitly set.
+  var hasAddress: Bool {return self._address != nil}
+  /// Clears the value of `address`. Subsequent reads from it will return its default value.
+  mutating func clearAddress() {self._address = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _address: Profile_Address? = nil
+}
+
 struct Profile_Profile: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -174,6 +305,74 @@ struct Profile_UserInfo: Sendable {
   init() {}
 
   fileprivate var _user: Profile_Profile? = nil
+}
+
+/// Сообщение для адреса
+struct Profile_Address: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// UUID адреса
+  var id: String = String()
+
+  /// Широта
+  var latitude: Double = 0
+
+  /// Долгота
+  var longitude: Double = 0
+
+  /// Форматированный адрес
+  var formattedAddress: String = String()
+
+  /// Подъезд (опционально)
+  var entrance: String {
+    get {return _entrance ?? String()}
+    set {_entrance = newValue}
+  }
+  /// Returns true if `entrance` has been explicitly set.
+  var hasEntrance: Bool {return self._entrance != nil}
+  /// Clears the value of `entrance`. Subsequent reads from it will return its default value.
+  mutating func clearEntrance() {self._entrance = nil}
+
+  /// Этаж (опционально)
+  var floor: String {
+    get {return _floor ?? String()}
+    set {_floor = newValue}
+  }
+  /// Returns true if `floor` has been explicitly set.
+  var hasFloor: Bool {return self._floor != nil}
+  /// Clears the value of `floor`. Subsequent reads from it will return its default value.
+  mutating func clearFloor() {self._floor = nil}
+
+  /// Квартира (опционально)
+  var apartment: String {
+    get {return _apartment ?? String()}
+    set {_apartment = newValue}
+  }
+  /// Returns true if `apartment` has been explicitly set.
+  var hasApartment: Bool {return self._apartment != nil}
+  /// Clears the value of `apartment`. Subsequent reads from it will return its default value.
+  mutating func clearApartment() {self._apartment = nil}
+
+  /// Комментарий к доставке
+  var comment: String {
+    get {return _comment ?? String()}
+    set {_comment = newValue}
+  }
+  /// Returns true if `comment` has been explicitly set.
+  var hasComment: Bool {return self._comment != nil}
+  /// Clears the value of `comment`. Subsequent reads from it will return its default value.
+  mutating func clearComment() {self._comment = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _entrance: String? = nil
+  fileprivate var _floor: String? = nil
+  fileprivate var _apartment: String? = nil
+  fileprivate var _comment: String? = nil
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
@@ -279,6 +478,214 @@ extension Profile_GetUserInfoByIDRes: SwiftProtobuf.Message, SwiftProtobuf._Mess
 
   static func ==(lhs: Profile_GetUserInfoByIDRes, rhs: Profile_GetUserInfoByIDRes) -> Bool {
     if lhs._user != rhs._user {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Profile_GetUserAddressesRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetUserAddressesRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "addresses"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.addresses) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.addresses.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.addresses, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Profile_GetUserAddressesRes, rhs: Profile_GetUserAddressesRes) -> Bool {
+    if lhs.addresses != rhs.addresses {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Profile_UpdateUserAddressesReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".UpdateUserAddressesReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "addressID"),
+    6: .same(proto: "entrance"),
+    7: .same(proto: "floor"),
+    8: .same(proto: "apartment"),
+    9: .same(proto: "comment"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.addressID) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self._entrance) }()
+      case 7: try { try decoder.decodeSingularStringField(value: &self._floor) }()
+      case 8: try { try decoder.decodeSingularStringField(value: &self._apartment) }()
+      case 9: try { try decoder.decodeSingularStringField(value: &self._comment) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if !self.addressID.isEmpty {
+      try visitor.visitSingularStringField(value: self.addressID, fieldNumber: 1)
+    }
+    try { if let v = self._entrance {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 6)
+    } }()
+    try { if let v = self._floor {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 7)
+    } }()
+    try { if let v = self._apartment {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 8)
+    } }()
+    try { if let v = self._comment {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 9)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Profile_UpdateUserAddressesReq, rhs: Profile_UpdateUserAddressesReq) -> Bool {
+    if lhs.addressID != rhs.addressID {return false}
+    if lhs._entrance != rhs._entrance {return false}
+    if lhs._floor != rhs._floor {return false}
+    if lhs._apartment != rhs._apartment {return false}
+    if lhs._comment != rhs._comment {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Profile_UpdateUserAddressesRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".UpdateUserAddressesRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "address"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._address) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._address {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Profile_UpdateUserAddressesRes, rhs: Profile_UpdateUserAddressesRes) -> Bool {
+    if lhs._address != rhs._address {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Profile_CreateAddressReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateAddressReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "latitude"),
+    2: .same(proto: "longitude"),
+    3: .same(proto: "formattedAddress"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularDoubleField(value: &self.latitude) }()
+      case 2: try { try decoder.decodeSingularDoubleField(value: &self.longitude) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.formattedAddress) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.latitude.bitPattern != 0 {
+      try visitor.visitSingularDoubleField(value: self.latitude, fieldNumber: 1)
+    }
+    if self.longitude.bitPattern != 0 {
+      try visitor.visitSingularDoubleField(value: self.longitude, fieldNumber: 2)
+    }
+    if !self.formattedAddress.isEmpty {
+      try visitor.visitSingularStringField(value: self.formattedAddress, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Profile_CreateAddressReq, rhs: Profile_CreateAddressReq) -> Bool {
+    if lhs.latitude != rhs.latitude {return false}
+    if lhs.longitude != rhs.longitude {return false}
+    if lhs.formattedAddress != rhs.formattedAddress {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Profile_CreateAddressRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CreateAddressRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "address"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._address) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._address {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Profile_CreateAddressRes, rhs: Profile_CreateAddressRes) -> Bool {
+    if lhs._address != rhs._address {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -405,6 +812,84 @@ extension Profile_UserInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
   static func ==(lhs: Profile_UserInfo, rhs: Profile_UserInfo) -> Bool {
     if lhs._user != rhs._user {return false}
     if lhs.cakes != rhs.cakes {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Profile_Address: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Address"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "id"),
+    3: .same(proto: "latitude"),
+    4: .same(proto: "longitude"),
+    5: .same(proto: "formattedAddress"),
+    6: .same(proto: "entrance"),
+    7: .same(proto: "floor"),
+    8: .same(proto: "apartment"),
+    9: .same(proto: "comment"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
+      case 3: try { try decoder.decodeSingularDoubleField(value: &self.latitude) }()
+      case 4: try { try decoder.decodeSingularDoubleField(value: &self.longitude) }()
+      case 5: try { try decoder.decodeSingularStringField(value: &self.formattedAddress) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self._entrance) }()
+      case 7: try { try decoder.decodeSingularStringField(value: &self._floor) }()
+      case 8: try { try decoder.decodeSingularStringField(value: &self._apartment) }()
+      case 9: try { try decoder.decodeSingularStringField(value: &self._comment) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if !self.id.isEmpty {
+      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
+    }
+    if self.latitude.bitPattern != 0 {
+      try visitor.visitSingularDoubleField(value: self.latitude, fieldNumber: 3)
+    }
+    if self.longitude.bitPattern != 0 {
+      try visitor.visitSingularDoubleField(value: self.longitude, fieldNumber: 4)
+    }
+    if !self.formattedAddress.isEmpty {
+      try visitor.visitSingularStringField(value: self.formattedAddress, fieldNumber: 5)
+    }
+    try { if let v = self._entrance {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 6)
+    } }()
+    try { if let v = self._floor {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 7)
+    } }()
+    try { if let v = self._apartment {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 8)
+    } }()
+    try { if let v = self._comment {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 9)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Profile_Address, rhs: Profile_Address) -> Bool {
+    if lhs.id != rhs.id {return false}
+    if lhs.latitude != rhs.latitude {return false}
+    if lhs.longitude != rhs.longitude {return false}
+    if lhs.formattedAddress != rhs.formattedAddress {return false}
+    if lhs._entrance != rhs._entrance {return false}
+    if lhs._floor != rhs._floor {return false}
+    if lhs._apartment != rhs._apartment {return false}
+    if lhs._comment != rhs._comment {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

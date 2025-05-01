@@ -7,10 +7,15 @@
 //
 
 import Foundation
+import NetworkAPI
 
 final class ProductsGridAssemler {
-    static func assembly(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView {
-        let viewModel = ProductsGridViewModel(cakes: cakes, sectionKind: sectionKind)
+    static func assembly(
+        cakes: [CakeModel],
+        sectionKind: ProductsGridModel.SectionKind,
+        cakeService: CakeService
+    ) -> ProductsGridView {
+        let viewModel = ProductsGridViewModel(cakes: cakes, sectionKind: sectionKind, cakeService: cakeService)
         return ProductsGridView(viewModel: viewModel)
     }
 }

@@ -78,6 +78,10 @@ extension RootViewModelMock {
         return ProfileView(viewModel: viewModel)
     }
 
+    func assemblyOrderView(cakeID: String) -> OrderView {
+        fatalError("Not implemented")
+    }
+
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
         CakeDetailsAssembler.assembleMock(cakeModel: model)
     }

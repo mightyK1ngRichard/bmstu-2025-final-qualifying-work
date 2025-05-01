@@ -32,6 +32,8 @@ public struct PreviewCakeEntity: Sendable, Hashable {
     public let fillings: [FillingEntity]
     /// Список категорий
     public let categories: [CategoryEntity]
+    /// Hex цвета торта
+    public let colorsHex: [String]
     /// Скидка на цену за кг
     public let discountKgPrice: Double?
     /// Дата окончания скидки
@@ -43,6 +45,7 @@ public struct PreviewCakeEntity: Sendable, Hashable {
 // MARK: - Cake_Cake
 
 extension PreviewCakeEntity {
+    @available(*, deprecated, message: "Use init(from:Cake_PreviewCake) instead")
     init(from model: Cake_Cake) {
         self = PreviewCakeEntity(
             id: model.id,
@@ -57,7 +60,29 @@ extension PreviewCakeEntity {
             owner: UserEntity(from: model.owner),
             fillings: model.fillings.map { FillingEntity(from: $0) },
             categories: model.categories.map { CategoryEntity(from: $0) },
+            colorsHex: [],
             discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice : nil,
+            discountEndTime: model.hasDiscountEndTime ? model.discountEndTime.date : nil,
+            dateCreation: model.dateCreation.date
+        )
+    }
+
+    init(from model: Cake_PreviewCake) {
+        self = PreviewCakeEntity(
+            id: model.id,
+            name: model.name,
+            imageURL: model.previewImageURL,
+            kgPrice: model.kgPrice,
+            rating: Int(model.rating),
+            reviewsCount: Int(model.reviewsCount),
+            description: model.description_p.value,
+            mass: model.mass,
+            isOpenForSale: model.isOpenForSale,
+            owner: UserEntity(from: model.owner),
+            fillings: [],
+            categories: [],
+            colorsHex: model.colorsHex,
+            discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice.value : nil,
             discountEndTime: model.hasDiscountEndTime ? model.discountEndTime.date : nil,
             dateCreation: model.dateCreation.date
         )

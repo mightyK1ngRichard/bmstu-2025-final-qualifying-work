@@ -39,6 +39,7 @@ struct TLProductCard: View, Configurable {
             footerBlockView
                 .padding(.top, 2)
         }
+        .contentShape(.rect)
     }
 }
 
@@ -154,6 +155,8 @@ private extension TLProductCard {
         .frame(width: 148)
     }
 }
+
+// MARK: - Preview
 
 #Preview("Shimmering") {
     TLProductCard(

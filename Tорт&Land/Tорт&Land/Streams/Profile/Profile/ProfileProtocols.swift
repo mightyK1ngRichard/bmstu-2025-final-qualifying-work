@@ -16,7 +16,9 @@ protocol ProfileDisplayLogic {
 
 protocol ProfileViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
-    func assmebleCreateCakeView() -> CreateProductView
+    func assemblyCreateCakeView() -> CreateProductView
+    func assemblySettingsView() -> SettingsView
+    func assemblyChatView(interlocutor: UserModel) -> ChatView
     func configureAvatarImage() -> TLImageView.Configuration
     func configureHeaderImage() -> TLImageView.Configuration
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration

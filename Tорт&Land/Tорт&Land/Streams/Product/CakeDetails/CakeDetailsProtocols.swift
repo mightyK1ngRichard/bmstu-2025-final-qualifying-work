@@ -24,6 +24,7 @@ protocol CakeDetailsViewModelInput {
     func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration
     func assemblyRatingReviewsView() -> RatingReviewsView
 
+    func didTapMakeOrderButton()
     func didTapSellerInfoButton()
     func didTapRatingReviewsButton()
     func didTapBackButton()

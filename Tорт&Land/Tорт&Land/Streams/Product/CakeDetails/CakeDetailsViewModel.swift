@@ -86,7 +86,7 @@ extension CakeDetailsViewModel {
 
         Task { @MainActor in
             guard let headerImage else {
-                cakeModel.seller.headerImage = .fetched(.uiImage(.candy))
+                cakeModel.seller.headerImage = .fetched(.uiImage(.mockHeader))
                 return
             }
 
@@ -136,6 +136,10 @@ extension CakeDetailsViewModel {
 // MARK: - Actions
 
 extension CakeDetailsViewModel {
+
+    func didTapMakeOrderButton() {
+        coordinator?.addScreen(RootModel.Screens.makeOrder(cakeID: cakeModel.id))
+    }
 
     func didTapSellerInfoButton() {
         coordinator.addScreen(RootModel.Screens.profile(cakeModel.seller))

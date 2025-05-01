@@ -11,6 +11,7 @@
 import Foundation
 import Observation
 import UIKit
+import NetworkAPI
 import SwiftUI
 
 @Observable
@@ -55,8 +56,16 @@ final class CategoriesViewModelMock: CategoriesDisplayLogic & CategoriesViewMode
 
     func onAppear() {}
 
+    @MainActor
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {
-        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: .default)
+        ProductsGridAssemler.assembly(
+            cakes: cakes,
+            sectionKind: .default,
+            cakeService: CakeGrpcServiceImpl(
+                configuration: AppHosts.cake,
+                networkService: NetworkServiceImpl()
+            )
+        )
     }
 }
 

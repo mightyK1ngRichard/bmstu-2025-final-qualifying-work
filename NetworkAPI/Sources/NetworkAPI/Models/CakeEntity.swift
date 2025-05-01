@@ -19,6 +19,8 @@ public struct CakeEntity: Sendable, Hashable {
     public let kgPrice: Double
     /// Рейтинг (от 0 до 5)
     public let rating: Int
+    /// Число отзывов
+    public let reviewsCount: Int
     /// Описание
     public let description: String
     /// Масса торта
@@ -39,6 +41,8 @@ public struct CakeEntity: Sendable, Hashable {
     public let categories: [CategoryEntity]
     /// Фотографии торта
     public let images: [CakeImageEntity]
+    /// Hex цвета торта
+    public var colorsHex: [String]
 }
 
 public extension CakeEntity {
@@ -61,6 +65,7 @@ extension CakeEntity {
             imageURL: model.imageURL,
             kgPrice: model.kgPrice,
             rating: Int(model.rating),
+            reviewsCount: Int(model.reviewsCount),
             description: model.description_p,
             mass: model.mass,
             isOpenForSale: model.isOpenForSale,
@@ -70,7 +75,8 @@ extension CakeEntity {
             owner: UserEntity(from: model.owner),
             fillings:  model.fillings.map(FillingEntity.init(from:)),
             categories: model.categories.map(CategoryEntity.init(from:)),
-            images: model.images.map(CakeImageEntity.init(from:))
+            images: model.images.map(CakeImageEntity.init(from:)),
+            colorsHex: []
         )
     }
 }
@@ -91,6 +97,7 @@ public extension CakeEntity {
             imageURL: model.imageURL,
             kgPrice: model.kgPrice,
             rating: model.rating,
+            reviewsCount: model.reviewsCount,
             description: model.description,
             mass: model.mass,
             isOpenForSale: model.isOpenForSale,
@@ -100,7 +107,8 @@ public extension CakeEntity {
             owner: model.owner,
             fillings: model.fillings,
             categories: model.categories,
-            images: []
+            images: [],
+            colorsHex: model.colorsHex
         )
     }
 }

@@ -117,7 +117,7 @@ extension CreateProductViewModel {
 
         Task { @MainActor in
             do {
-                let _ = try await cakeProvider.createCake(
+                let response = try await cakeProvider.createCake(
                     req: .init(
                         name: uiProperties.inputName,
                         previewImageData: previewImage,
@@ -133,11 +133,25 @@ extension CreateProductViewModel {
                     )
                 )
                 coordinator.openPreviousScreen()
+                generateCakeColors(cakeID: response.cakeID)
             } catch {
                 uiProperties.alertTitle = "Failed to create product"
                 uiProperties.alertMessage = "\(error)"
                 uiProperties.showAlert = true
             }
+        }
+    }
+
+    /// Генерируем цвета из превью
+    func generateCakeColors(cakeID: String) {
+        Task {
+            guard
+                let previewData = uiProperties.selectedPhotosData.first,
+                let uiImage = UIImage(data: previewData)
+            else { return }
+
+            let hexStrings = extractPaletteHexColors(from: uiImage)
+            try await cakeProvider.addCakeColors(req: .init(cakeID: cakeID, hexStrings: hexStrings))
         }
     }
 

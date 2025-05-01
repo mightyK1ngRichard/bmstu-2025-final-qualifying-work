@@ -19,6 +19,16 @@
     "%lld" : {
 
     },
+    "%lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@"
+          }
+        }
+      }
+    },
     "%lld/%lld" : {
       "localizations" : {
         "en" : {
@@ -29,6 +39,9 @@
         }
       }
     },
+    "0" : {
+
+    },
     "200" : {
 
     },
@@ -36,6 +49,9 @@
 
     },
     "1000" : {
+
+    },
+    "Add address" : {
 
     },
     "All" : {
@@ -58,7 +74,22 @@
         }
       }
     },
+    "Cake" : {
+
+    },
+    "Cake filling:" : {
+
+    },
+    "Cake Fillings" : {
+
+    },
     "Cake name" : {
+
+    },
+    "Cake parameters" : {
+
+    },
+    "Cake weight:" : {
 
     },
     "Cancel" : {
@@ -88,6 +119,9 @@
 
     },
     "Close" : {
+
+    },
+    "Colors" : {
 
     },
     "Create" : {
@@ -135,6 +169,9 @@
           }
         }
       }
+    },
+    "Desired delivery date:" : {
+
     },
     "Discounted price (Optional field)" : {
 
@@ -258,6 +295,9 @@
     "No message" : {
 
     },
+    "No Preview Available" : {
+
+    },
     "Nothing found" : {
       "localizations" : {
         "ru" : {
@@ -301,7 +341,13 @@
         }
       }
     },
+    "Order address" : {
+
+    },
     "Order date" : {
+
+    },
+    "Order information" : {
 
     },
     "Password" : {
@@ -314,12 +360,25 @@
         }
       }
     },
+    "Payment Type" : {
+
+    },
     "Please share your opinion about the product" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пожалуйста, поделитесь своим мнением о продукте"
+          }
+        }
+      }
+    },
+    "Price range: %lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Price range: %1$lld %2$@"
           }
         }
       }
@@ -461,6 +520,15 @@
         }
       }
     },
+    "Settings" : {
+
+    },
+    "Shipping Address:" : {
+
+    },
+    "SHow" : {
+
+    },
     "Sign In" : {
       "localizations" : {
         "ru" : {
@@ -470,6 +538,9 @@
           }
         }
       }
+    },
+    "Success!" : {
+
     },
     "Super summer sale" : {
       "localizations" : {
@@ -492,6 +563,9 @@
       }
     },
     "There are no chats in your feed" : {
+
+    },
+    "Total Amount:" : {
 
     },
     "Try again" : {
@@ -580,6 +654,9 @@
         }
       }
     },
+    "Your addresses" : {
+
+    },
     "Your feedback" : {
       "localizations" : {
         "ru" : {
@@ -589,6 +666,9 @@
           }
         }
       }
+    },
+    "Your order will be delivered soon.\nThank you for choosing our app!" : {
+
     },
     "Торт&\nLand" : {
 

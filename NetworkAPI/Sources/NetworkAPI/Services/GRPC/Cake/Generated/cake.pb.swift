@@ -288,7 +288,7 @@ struct Cake_CakesResponse: Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var cakes: [Cake_Cake] = []
+  var cakes: [Cake_PreviewCake] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -339,6 +339,32 @@ struct Cake_CategoryPreviewCakesRes: Sendable {
   // methods supported on all messages.
 
   var previewCakes: [Cake_PreviewCake] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_AddCakeColorsReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var cakeID: String = String()
+
+  var colorsHex: [String] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_CakeColorsRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var colorsHex: [String] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -713,6 +739,12 @@ struct Cake_PreviewCake: @unchecked Sendable {
   var reviewsCount: Int32 {
     get {return _storage._reviewsCount}
     set {_uniqueStorage()._reviewsCount = newValue}
+  }
+
+  /// Hex цвета торта
+  var colorsHex: [String] {
+    get {return _storage._colorsHex}
+    set {_uniqueStorage()._colorsHex = newValue}
   }
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -1321,6 +1353,76 @@ extension Cake_CategoryPreviewCakesRes: SwiftProtobuf.Message, SwiftProtobuf._Me
   }
 }
 
+extension Cake_AddCakeColorsReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".AddCakeColorsReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "cakeID"),
+    2: .same(proto: "colorsHex"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.cakeID) }()
+      case 2: try { try decoder.decodeRepeatedStringField(value: &self.colorsHex) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.cakeID.isEmpty {
+      try visitor.visitSingularStringField(value: self.cakeID, fieldNumber: 1)
+    }
+    if !self.colorsHex.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.colorsHex, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_AddCakeColorsReq, rhs: Cake_AddCakeColorsReq) -> Bool {
+    if lhs.cakeID != rhs.cakeID {return false}
+    if lhs.colorsHex != rhs.colorsHex {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_CakeColorsRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CakeColorsRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "colorsHex"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedStringField(value: &self.colorsHex) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.colorsHex.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.colorsHex, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_CakeColorsRes, rhs: Cake_CakeColorsRes) -> Bool {
+    if lhs.colorsHex != rhs.colorsHex {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Cake"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1761,6 +1863,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     11: .standard(proto: "is_open_for_sale"),
     12: .same(proto: "owner"),
     13: .same(proto: "reviewsCount"),
+    14: .same(proto: "colorsHex"),
   ]
 
   fileprivate class _StorageClass {
@@ -1777,6 +1880,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     var _isOpenForSale: Bool = false
     var _owner: Cake_User? = nil
     var _reviewsCount: Int32 = 0
+    var _colorsHex: [String] = []
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1804,6 +1908,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       _isOpenForSale = source._isOpenForSale
       _owner = source._owner
       _reviewsCount = source._reviewsCount
+      _colorsHex = source._colorsHex
     }
   }
 
@@ -1835,6 +1940,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         case 11: try { try decoder.decodeSingularBoolField(value: &_storage._isOpenForSale) }()
         case 12: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
         case 13: try { try decoder.decodeSingularInt32Field(value: &_storage._reviewsCount) }()
+        case 14: try { try decoder.decodeRepeatedStringField(value: &_storage._colorsHex) }()
         default: break
         }
       }
@@ -1886,6 +1992,9 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       if _storage._reviewsCount != 0 {
         try visitor.visitSingularInt32Field(value: _storage._reviewsCount, fieldNumber: 13)
       }
+      if !_storage._colorsHex.isEmpty {
+        try visitor.visitRepeatedStringField(value: _storage._colorsHex, fieldNumber: 14)
+      }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -1908,6 +2017,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         if _storage._isOpenForSale != rhs_storage._isOpenForSale {return false}
         if _storage._owner != rhs_storage._owner {return false}
         if _storage._reviewsCount != rhs_storage._reviewsCount {return false}
+        if _storage._colorsHex != rhs_storage._colorsHex {return false}
         return true
       }
       if !storagesAreEqual {return false}
