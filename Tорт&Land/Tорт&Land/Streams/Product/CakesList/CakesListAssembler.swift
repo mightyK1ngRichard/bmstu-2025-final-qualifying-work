@@ -16,7 +16,7 @@ final class CakesListAssembler {
         cakeService: CakeService,
         imageProvider: ImageLoaderProvider
     ) -> CakesListView {
-        let viewModel = CakesListViewModel(rootViewModel: rootViewModel)
+        let viewModel = CakesListViewModel(rootViewModel: rootViewModel, cakeService: cakeService)
         let interactor = CakesListInteractor(cakeService: cakeService, imageProvider: imageProvider)
         let presenter = CakesListPresenter()
         interactor.presenter = presenter

@@ -10,7 +10,8 @@ import Foundation
 
 protocol ProductsGridDisplayData {
     var uiProperties: ProductsGridModel.UIProperties { get set }
-    var cakes: [CakeModel] { get }
+    var colors: [ProductsGridModel.ColorCell] { get }
+    var displayedCakes: [CakeModel] { get }
     var sectionKind: ProductsGridModel.SectionKind { get }
 }
 
@@ -19,6 +20,11 @@ protocol ProductsGridViewModelInput {
     func configureProductCard(cake: CakeModel) -> TLProductCard.Configuration
     func didTapProductCard(cake: CakeModel)
     func didTapProductLikeButton(cake: CakeModel, isSelected: Bool)
+    func didTapFilterButton()
+    func didTapSortButton()
+    func didSelectedSortMode(mode: ProductsGridModel.SortMode)
+    func didTapColorCell(with: ProductsGridModel.ColorCell)
+    func cellIsSelected(for: ProductsGridModel.ColorCell) -> Bool
 }
 
 @MainActor

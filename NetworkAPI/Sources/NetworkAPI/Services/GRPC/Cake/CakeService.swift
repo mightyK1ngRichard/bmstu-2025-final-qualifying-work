@@ -23,6 +23,7 @@ public protocol CakeService: Sendable {
     func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response
     func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
+    func fetchColors() async throws -> [String]
     func closeConnection()
 }
 
@@ -58,6 +59,14 @@ public final class CakeGrpcServiceImpl: CakeService {
 }
 
 public extension CakeGrpcServiceImpl {
+    func fetchColors() async throws -> [String] {
+        return try await networkService.performAndLog(
+            call: client.getColors,
+            with: Google_Protobuf_Empty(),
+            mapping: \.colorsHex
+        )
+    }
+
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws {
         let request = Cake_AddCakeColorsReq.with {
             $0.cakeID = req.cakeID

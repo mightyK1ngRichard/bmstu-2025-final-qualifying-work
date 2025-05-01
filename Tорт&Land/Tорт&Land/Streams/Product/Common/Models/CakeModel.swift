@@ -44,6 +44,8 @@ struct CakeModel: Identifiable, Hashable {
     var fillings: [Filling]
     /// Продовец
     var seller: UserModel
+    /// Hex цвета торта
+    var colorsHex: [String]
 }
 
 extension CakeModel {
@@ -64,7 +66,8 @@ extension CakeModel {
             comments: [],
             categories: [],
             fillings: [],
-            seller: UserModel(from: model.owner)
+            seller: UserModel(from: model.owner),
+            colorsHex: []
         )
     }
 
@@ -88,7 +91,8 @@ extension CakeModel {
             comments: [],
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
-            seller: UserModel(from: model.owner)
+            seller: UserModel(from: model.owner),
+            colorsHex: model.colorsHex
         )
     }
 }
@@ -124,7 +128,8 @@ extension CakeModel {
             comments: [],
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
-            seller: UserModel(from: model.owner)
+            seller: UserModel(from: model.owner),
+            colorsHex: model.colorsHex
         )
     }
 

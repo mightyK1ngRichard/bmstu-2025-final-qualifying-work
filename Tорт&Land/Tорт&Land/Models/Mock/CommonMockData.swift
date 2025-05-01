@@ -22,9 +22,9 @@ enum CommonMockData {
                 Thumbnail(id: "3", imageState: .fetched(.uiImage(.cake3)), url: ""),
             ].shuffled(),
             cakeName: "Моковый торт #\(id)",
-            price: 19.99,
+            price: 19.99 * Double(id),
             mass: 400,
-            discountedPrice: withDiscount ? 15.99 : nil,
+            discountedPrice: withDiscount ? 15.99 * Double(id) : nil,
             rating: 5,
             reviewsCount: 10,
             isSelected: Bool.random(),
@@ -63,7 +63,8 @@ enum CommonMockData {
                     description: "Это очень вкусный коржик"
                 )
             ],
-            seller: generateMockUserModel(id: id, name: "Продавец #\(id)")
+            seller: generateMockUserModel(id: id, name: "Продавец #\(id)"),
+            colorsHex: []
         )
     }
     static func generateMockUserModel(
