@@ -40,6 +40,8 @@ public struct PreviewCakeEntity: Sendable, Hashable {
     public let discountEndTime: Date?
     /// Дата создания торта
     public let dateCreation: Date
+    /// Ссылка на 3Д модель
+    public let model3DURL: String?
 }
 
 // MARK: - Cake_Cake
@@ -63,7 +65,8 @@ extension PreviewCakeEntity {
             colorsHex: [],
             discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice : nil,
             discountEndTime: model.hasDiscountEndTime ? model.discountEndTime.date : nil,
-            dateCreation: model.dateCreation.date
+            dateCreation: model.dateCreation.date,
+            model3DURL: model.model3Durl
         )
     }
 
@@ -84,7 +87,8 @@ extension PreviewCakeEntity {
             colorsHex: model.colorsHex,
             discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice.value : nil,
             discountEndTime: model.hasDiscountEndTime ? model.discountEndTime.date : nil,
-            dateCreation: model.dateCreation.date
+            dateCreation: model.dateCreation.date,
+            model3DURL: model.model3Durl
         )
     }
 }

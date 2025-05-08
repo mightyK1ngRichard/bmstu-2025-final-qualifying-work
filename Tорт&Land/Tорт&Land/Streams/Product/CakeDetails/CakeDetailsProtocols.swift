@@ -11,6 +11,7 @@ protocol CakeDetailsDisplayData {
     var bindingData: CakeDetailsModel.BindingData { get set }
     var cakeModel: CakeModel { get }
     var showOwnerButton: Bool { get }
+    var show3DButton: Bool { get }
 }
 
 protocol CakeDetailsViewModelInput {
@@ -31,6 +32,9 @@ protocol CakeDetailsViewModelInput {
     func didTapSimilarCake(model: CakeModel)
     func didTapCakeLike(model: CakeModel, isSelected: Bool)
     func didTapFilling(with filling: Filling)
+    func didTapAdd3DModel()
+    func didTap3DButton()
+    func didSelectFile(url: URL)
 }
 
 protocol CakeDetailsViewModelOutput {

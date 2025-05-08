@@ -70,6 +70,10 @@ extension NotificationsListViewModelMock {
         let viewModel = NotificationDetailViewModelMock(orderData: orderData)
         return NotificationDetailView(viewModel: viewModel)
     }
+
+    func subscribe() {}
+
+    func didTapReloadButton() {}
 }
 
 // MARK: - Mock Data
@@ -82,9 +86,8 @@ private extension NotificationsListViewModelMock {
                 title: "Доставка \($0)",
                 text: "Вас ожидает доставщик торта по номеру заказа #\($0)",
                 date: Date().description.toCorrectDate,
-                userID: "2",
                 sellerID: "1",
-                productID: String($0 + 1)
+                cakeID: String($0 + 1)
             )
         }
 

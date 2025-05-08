@@ -17,7 +17,7 @@ final class ChatListViewModelMock: ChatListDisplayLogic, ChatListViewModelInput,
     var cells: [ChatListModel.ChatCellModel] {
         uiProperties.searchText.isEmpty
             ? allChatCells
-            : allChatCells.filter { $0.user.name.contains(uiProperties.searchText) }
+            : allChatCells.filter { $0.user.titleName.contains(uiProperties.searchText) }
     }
     @ObservationIgnored
     var delay: TimeInterval
@@ -65,7 +65,7 @@ extension ChatListViewModelMock {
     func configureChatCell(with model: ChatListModel.ChatCellModel) -> TLChatCell.Configuration {
         .basic(
             imageState: model.user.avatarImage,
-            title: model.user.name,
+            title: model.user.titleName,
             subtitle: model.lastMessage,
             time: model.timeMessage.formattedHHmm
         )

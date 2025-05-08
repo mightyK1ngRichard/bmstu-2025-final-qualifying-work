@@ -52,7 +52,7 @@ extension RatingReviewsViewModel {
                 comments = commentsInfo
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: "\(error)")
+                uiProperties.state = .error(message: error.readableGRPCMessage)
             }
         }
     }

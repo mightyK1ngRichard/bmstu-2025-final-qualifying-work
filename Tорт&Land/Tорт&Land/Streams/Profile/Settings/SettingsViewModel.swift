@@ -10,18 +10,30 @@ import Foundation
 import NetworkAPI
 import SwiftUI
 import MapKit
+import Combine
+import GRPC
+import _PhotosUI_SwiftUI
 
 @Observable
 final class SettingsViewModel {
+    var userPublisher = PassthroughSubject<UserModel, Never>()
     var uiProperties = UIProperties()
+
     private(set) var addresses: [AddressEntity] = []
+    private(set) var userModel: UserModel
     @ObservationIgnored
-    private let profileProvider: ProfileGrpcService
+    private let profileProvider: ProfileService
     @ObservationIgnored
     private var coordinator: Coordinator?
 
-    init(profileProvider: ProfileGrpcService) {
+    init(userModel: UserModel, profileProvider: ProfileService) {
+        self.userModel = userModel
         self.profileProvider = profileProvider
+    }
+
+    var updateButtonIsDisable: Bool {
+        (userModel.nickname == uiProperties.inputNickname && userModel.fio == uiProperties.inputFIO)
+            || uiProperties.inputNickname.isEmpty
     }
 }
 
@@ -34,7 +46,7 @@ extension SettingsViewModel {
                 addresses = try await profileProvider.getUserAddresses()
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: "\(error)")
+                uiProperties.state = .error(message: error.readableGRPCMessage)
             }
         }
     }
@@ -72,6 +84,63 @@ extension SettingsViewModel {
         coordinator?.addScreen(SettingsViewModel.Screens.addAddress)
     }
 
+    func didTapUpdateAvatar() {
+        uiProperties.showPhotoPicker = true
+    }
+
+    func didTapUpdateUserData() {
+        Task { @MainActor in
+            do {
+                uiProperties.penState = .loading
+                let fio = uiProperties.inputFIO.isEmpty ? nil : uiProperties.inputFIO
+                try await profileProvider.updateUserData(username: uiProperties.inputNickname, userFIO: fio)
+                userModel.fio = fio
+                userModel.nickname = uiProperties.inputNickname
+                uiProperties.penState = .updated
+                userPublisher.send(userModel)
+            } catch {
+                uiProperties.alert = .init(
+                    isShow: true,
+                    title: "Failed to update info",
+                    message: error.readableGRPCMessage
+                )
+                uiProperties.penState = .failed
+            }
+
+            try await Task.sleep(for: .seconds(1.5))
+            uiProperties.penState = .initial
+        }
+    }
+
+    func didUpdateImage(with item: PhotosPickerItem?) {
+        Task { @MainActor in
+            guard let imageData = try await item?.loadTransferable(type: Data.self) else {
+                return
+            }
+
+            if let uiImage = UIImage(data: imageData) {
+                let imageState: ImageState = .fetched(.uiImage(uiImage))
+                switch uiProperties.selectedImageKind {
+                case .avatar:
+                    userModel.avatarImage = imageState
+                case .header:
+                    userModel.headerImage = imageState
+                }
+
+                userPublisher.send(userModel)
+            }
+
+            let imageKind: ProfileServiceModel.UpdateUserImage.Request.ImageKind
+            switch uiProperties.selectedImageKind {
+            case .avatar:
+                imageKind = .avatar
+            case .header:
+                imageKind = .header
+            }
+            let _ = try await profileProvider.updateUserImage(req: .init(imageData: imageData, imageKind: imageKind))
+        }
+    }
+
     func assemblyMapView() -> some View {
         let viewModel = UserLocationViewModel { [weak self] placemark in
             guard let self else { return }
@@ -88,10 +157,44 @@ extension SettingsViewModel {
 extension SettingsViewModel {
     struct UIProperties: Hashable {
         var state: ScreenState = .initial
+        var showPopover = false
+        var showPhotoPicker = false
+        var alert = Alert()
+        var selectedImage: PhotosPickerItem?
+        var inputNickname = ""
+        var inputFIO = ""
+        var penState: PenState = .initial
+        var selectedImageKind: UserImageKind = .avatar
     }
 
     enum Screens: Hashable {
         case addAddress
+    }
+}
+
+extension SettingsViewModel.UIProperties {
+    enum UserImageKind: String, Hashable, CaseIterable {
+        case avatar
+        case header
+    }
+
+    struct Alert: Hashable {
+        var isShow = false
+        var title = ""
+        var message = ""
+    }
+
+    enum PenState: Hashable {
+        case initial, updated, failed, loading
+
+        var color: Color {
+            switch self {
+            case .failed: .red
+            case .updated: .green
+            case .initial: .primary
+            case .loading: .orange
+            }
+        }
     }
 }
 
@@ -100,5 +203,7 @@ extension SettingsViewModel {
 extension SettingsViewModel {
     func setCoordinator(_ coordinator: Coordinator) {
         self.coordinator = coordinator
+        uiProperties.inputNickname = userModel.nickname
+        uiProperties.inputFIO = userModel.fio ?? ""
     }
 }

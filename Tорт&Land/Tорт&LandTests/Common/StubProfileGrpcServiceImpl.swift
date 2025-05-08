@@ -8,7 +8,7 @@
 
 @testable import NetworkAPI
 
-final class StubProfileGrpcServiceImpl: ProfileGrpcService {
+final class StubProfileGrpcServiceImpl: ProfileService {
     func getUserInfo() async throws -> ProfileServiceModel.GetUserInfo.Response {
         fatalError("No implementation")
     }

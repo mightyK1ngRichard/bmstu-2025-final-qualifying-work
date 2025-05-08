@@ -152,9 +152,8 @@ private extension TLNotificationCell {
                     title: "Доставка",
                     text: "Вас ожидает доставщик торта по номеру заказа #12342",
                     date: Date().description.toCorrectDate,
-                    userID: "2",
                     sellerID: "1",
-                    productID: "1"
+                    cakeID: "1"
                 )
             )
         ) { id in

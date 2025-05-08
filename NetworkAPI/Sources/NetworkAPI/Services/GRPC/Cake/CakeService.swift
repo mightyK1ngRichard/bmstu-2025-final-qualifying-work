@@ -24,6 +24,7 @@ public protocol CakeService: Sendable {
     func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
     func fetchColors() async throws -> [String]
+    func add3DModel(cakeID: String, modelData: Data) async throws -> String
     func closeConnection()
 }
 
@@ -32,10 +33,12 @@ public protocol CakeService: Sendable {
 public final class CakeGrpcServiceImpl: CakeService {
     private let client: Cake_CakeServiceAsyncClientProtocol
     private let channel: GRPCChannel
+    private let authService: AuthService
     private let networkService: NetworkService
 
     public init(
         configuration: GRPCHostPortConfiguration,
+        authService: AuthService,
         networkService: NetworkService
     ) {
         do {
@@ -46,6 +49,7 @@ public final class CakeGrpcServiceImpl: CakeService {
             )
             self.client = Cake_CakeServiceAsyncClient(channel: channel, interceptors: nil)
             self.channel = channel
+            self.authService = authService
             self.networkService = networkService
         } catch {
             #if DEBUG
@@ -140,6 +144,8 @@ public extension CakeGrpcServiceImpl {
     }
 
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
         let request = Cake_CreateCakeRequest.with {
             $0.name = req.name
             $0.previewImageData = req.previewImageData
@@ -212,6 +218,21 @@ public extension CakeGrpcServiceImpl {
             call: client.categoryPreviewCakes,
             with: request,
             mapping: { .init(cakes: $0.previewCakes.map(ProfilePreviewCakeEntity.init(from:))) }
+        )
+    }
+
+    func add3DModel(cakeID: String, modelData: Data) async throws -> String {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Cake_Add3DModelReq.with {
+            $0.cakeID = cakeID
+            $0.modelFileData = modelData
+        }
+
+        return try await networkService.performAndLog(
+            call: client.add3DModel,
+            with: request,
+            mapping: { $0.model3Durl }
         )
     }
 

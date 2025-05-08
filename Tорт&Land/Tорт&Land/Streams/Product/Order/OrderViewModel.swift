@@ -9,43 +9,9 @@
 import SwiftUI
 import NetworkAPI
 
-enum PaymentMethod: String, Hashable, CaseIterable {
-    case cash
-    case ioMoney = "ЮMoney"
-}
-
-extension PaymentMethodEntity {
-    init(from model: PaymentMethod) {
-        switch model {
-        case .cash:
-            self = .cash
-        case .ioMoney:
-            self = .ioMoney
-        }
-    }
-}
-
-extension OrderViewModel {
-    struct UIProperties: Hashable {
-        var state: ScreenState = .initial
-        var isLoading = false
-        var openSuccessScreen = false
-        var selectedFillingID = ""
-        var selectedAddressID: String?
-        var selectedWeightMultiplier = 1.0
-        var paymentMethod: PaymentMethod = .cash
-        var deliveryDate = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
-    }
-
-    enum Screens: Hashable {
-        case updateAddress(AddressEntity)
-        case addAddress
-    }
-}
-
 @Observable
 final class OrderViewModel {
-    var uiProperties = UIProperties()
+    var uiProperties = OrderModel.UIProperties()
     private(set) var cake: CakeModel?
     private(set) var addresses: [AddressEntity] = []
     private(set) var selectedAddress: AddressEntity?
@@ -57,7 +23,7 @@ final class OrderViewModel {
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
-    private let profileProvider: ProfileGrpcService
+    private let profileProvider: ProfileService
     @ObservationIgnored
     private let cakeProvider: CakeService
     @ObservationIgnored
@@ -68,7 +34,7 @@ final class OrderViewModel {
     init(
         cakeID: String,
         orderProvider: OrderService,
-        profileProvider: ProfileGrpcService,
+        profileProvider: ProfileService,
         cakeProvider: CakeService,
         imageProvider: ImageLoaderProvider,
         priceFormatter: PriceFormatterService = .shared
@@ -114,7 +80,7 @@ extension OrderViewModel {
                 uiProperties.selectedFillingID = cakeEntity.fillings.first?.id ?? ""
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: "\(error)")
+                uiProperties.state = .error(message: error.readableGRPCMessage)
             }
         }
     }
@@ -178,10 +144,13 @@ extension OrderViewModel {
             let cake,
             let totalAmount = calculateTotalAmount,
             let selectedAddressID = uiProperties.selectedAddressID,
-            !uiProperties.selectedFillingID.isEmpty,
-            let coordinator
+            !uiProperties.selectedFillingID.isEmpty
         else {
-            // Show error
+            uiProperties.alert = .init(
+                title: "Invalid input data",
+                message: "Please make sure all fields are filled: cake, filling, address, and total amount.",
+                isShown: true
+            )
             return
         }
 
@@ -204,17 +173,21 @@ extension OrderViewModel {
                 uiProperties.openSuccessScreen = true
             } catch {
                 uiProperties.isLoading = false
-                uiProperties.state = .error(message: "\(error)")
+                uiProperties.alert = .init(
+                    title: "Network error",
+                    message: error.readableGRPCMessage,
+                    isShown: true
+                )
             }
         }
     }
 
     func didTapUpdateAddress(address: AddressEntity) {
-        coordinator?.addScreen(Screens.updateAddress(address))
+        coordinator?.addScreen(OrderModel.Screens.updateAddress(address))
     }
 
     func didTapAddAddress() {
-        coordinator?.addScreen(Screens.addAddress)
+        coordinator?.addScreen(OrderModel.Screens.addAddress)
     }
 
     func setCoordinator(_ coordinator: Coordinator) {

@@ -32,7 +32,9 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
     @ObservationIgnored
     private let orderProvider: OrderService
     @ObservationIgnored
-    private let profileService: ProfileGrpcService
+    private let notificationService: NotificationService
+    @ObservationIgnored
+    private let profileService: ProfileService
     @ObservationIgnored
     private let chatProvider: ChatService
     @ObservationIgnored
@@ -44,8 +46,9 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
         cakeService: CakeService,
         reviewsService: ReviewsService,
         chatProvider: ChatService,
-        profileService: ProfileGrpcService,
+        profileService: ProfileService,
         orderProvider: OrderService,
+        notificationService: NotificationService,
         imageProvider: ImageLoaderProvider,
         startScreenControl: StartScreenControl
     ) {
@@ -55,6 +58,7 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
         self.chatProvider = chatProvider
         self.profileService = profileService
         self.orderProvider = orderProvider
+        self.notificationService = notificationService
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
         // FIXME: Сделать получение юзера из SwiftData
@@ -204,9 +208,7 @@ extension RootViewModel {
     }
 
     func assemblyNotificationsListView() -> NotificationsListView {
-        // FIXME: Убрать моки
-        let viewModel = NotificationsListViewModelMock(delay: 3)
-        return NotificationsListView(viewModel: viewModel)
+        NotificationsListAssembler.assemble(notificationService: notificationService)
     }
 
     func assemblyProfileView() -> ProfileView {

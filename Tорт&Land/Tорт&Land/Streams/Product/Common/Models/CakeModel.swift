@@ -46,6 +46,8 @@ struct CakeModel: Identifiable, Hashable {
     var seller: UserModel
     /// Hex цвета торта
     var colorsHex: [String]
+    /// Ссылка на 3Д модель
+    var model3DURL: String?
 }
 
 extension CakeModel {
@@ -57,6 +59,13 @@ extension CakeModel {
             cakeName: model.name,
             price: model.kgPrice,
             mass: model.mass,
+            discountedPrice: {
+                guard let discountKgPrice = model.discountKgPrice else {
+                    return nil
+                }
+
+                return model.discountEndTime < Date.now ? nil : discountKgPrice
+            }(),
             rating: model.rating,
             reviewsCount: model.reviewsCount,
             isSelected: false,
@@ -67,7 +76,8 @@ extension CakeModel {
             categories: [],
             fillings: [],
             seller: UserModel(from: model.owner),
-            colorsHex: []
+            colorsHex: [],
+            model3DURL: model.model3DURL
         )
     }
 
@@ -81,7 +91,13 @@ extension CakeModel {
             cakeName: model.name,
             price: model.kgPrice,
             mass: model.mass,
-            discountedPrice: model.discountKgPrice,
+            discountedPrice: {
+                guard let discountKgPrice = model.discountKgPrice, let discountEndTime = model.discountEndTime else {
+                    return nil
+                }
+
+                return discountEndTime < Date.now ? nil : discountKgPrice
+            }(),
             rating: model.rating,
             reviewsCount: model.reviewsCount,
             isSelected: false,
@@ -92,7 +108,8 @@ extension CakeModel {
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
             seller: UserModel(from: model.owner),
-            colorsHex: model.colorsHex
+            colorsHex: model.colorsHex,
+            model3DURL: model.model3DURL
         )
     }
 }
@@ -103,12 +120,12 @@ extension CakeModel {
 
     init(from model: PreviewCakeEntity) {
         // 1000 ₽/кг * 2 кг = 2000 ₽
-        let cakePrice = model.kgPrice * (model.mass / 1000)
+        let cakePrice = model.kgPrice
         let discountedPrice: Double? = {
-            guard let discount = model.discountKgPrice else {
+            guard let discount = model.discountKgPrice, let discountEndTime = model.discountEndTime else {
                 return nil
             }
-            return discount * (model.mass / 1000)
+            return discountEndTime < Date.now ? nil : discount
         }()
 
         self = CakeModel(
@@ -129,7 +146,8 @@ extension CakeModel {
             categories: model.categories.map(Category.init(from:)),
             fillings: model.fillings.map(Filling.init(from:)),
             seller: UserModel(from: model.owner),
-            colorsHex: model.colorsHex
+            colorsHex: model.colorsHex,
+            model3DURL: model.model3DURL
         )
     }
 
@@ -165,7 +183,7 @@ extension CakeModel {
             imageState: previewImageState,
             imageHeight: 184,
             productText: .init(
-                seller: seller.name,
+                seller: seller.fio ?? seller.nickname,
                 productName: cakeName,
                 productPrice: priceFormatter.formatPrice(price),
                 productDiscountedPrice: productDiscountedPrice
@@ -189,7 +207,7 @@ extension CakeModel {
         return .init(
             imageConfiguration: .init(imageState: previewImageState),
             starsConfiguration: starsConfiguration(),
-            seller: seller.name,
+            seller: seller.fio ?? seller.nickname,
             title: cakeName,
             productPrice: kgPriceLabel,
             mass: "\(Int(mass))г.",
@@ -260,7 +278,7 @@ extension CakeModel {
                 }
                 return priceFormatter.formatPrice(discountedPrice)
             }(),
-            subtitle: seller.name,
+            subtitle: seller.titleName,
             description: description,
             starsConfiguration: starsConfiguration()
         )

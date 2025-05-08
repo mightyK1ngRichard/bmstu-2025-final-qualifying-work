@@ -16,11 +16,15 @@ protocol NotificationsListDisplayLogic: NotificationsListViewModelInput {
 protocol NotificationsListViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
     func fetchNotifications()
+    func didTapReloadButton()
+    func subscribe()
+
     func configureNotificationCell(for notification: NotificationsListModel.NotificationModel) -> TLNotificationCell.Configuration
     func assemblyNotificationDetails(with notification: NotificationsListModel.NotificationModel) -> NotificationDetailView
+
+    func didTapNotificationCell(with notification: NotificationsListModel.NotificationModel)
+    func didDeleteNotification(id: String)
 }
 
 protocol NotificationsListViewModelOutput {
-    func didTapNotificationCell(with notification: NotificationsListModel.NotificationModel)
-    func didDeleteNotification(id: String)
 }

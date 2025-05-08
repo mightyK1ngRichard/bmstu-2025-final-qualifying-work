@@ -56,11 +56,16 @@ struct OrderView: View {
                 ProgressView().tint(.white)
             }
         }
+        .defaultAlert(
+            title: viewModel.uiProperties.alert.title,
+            message: viewModel.uiProperties.alert.message,
+            isPresented: $viewModel.uiProperties.alert.isShown
+        )
         .onFirstAppear {
             viewModel.setCoordinator(coordinator)
             viewModel.onAppear()
         }
-        .navigationDestination(for: OrderViewModel.Screens.self) { screen in
+        .navigationDestination(for: OrderModel.Screens.self) { screen in
             switch screen {
             case .addAddress:
                 viewModel.assemblyAddAddressView()
@@ -265,40 +270,6 @@ private extension OrderView {
         }
     }
 
-}
-
-// MARK: - Preview
-
-#Preview {
-    let network = NetworkServiceImpl()
-    network.setRefreshToken(CommonMockData.refreshToken)
-    let auth = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: network
-    )
-    return NavigationStack {
-        OrderView(
-            viewModel: OrderViewModel(
-                cakeID: "550e8400-e29b-41d4-a716-446655441204",
-                orderProvider: OrderGrpcServiceImpl(
-                    configuration: AppHosts.order,
-                    authService: auth,
-                    networkService: network
-                ),
-                profileProvider: ProfileGrpcServiceImpl(
-                    configuration: AppHosts.profile,
-                    authService: auth,
-                    networkService: network
-                ),
-                cakeProvider: CakeGrpcServiceImpl(
-                    configuration: AppHosts.cake,
-                    networkService: network
-                ),
-                imageProvider: ImageLoaderProviderImpl()
-            )
-        )
-    }
-    .environment(Coordinator())
 }
 
 // MARK: - Constants

@@ -102,7 +102,7 @@ extension ProfileViewModelMock {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func assemblySettingsView() -> SettingsView {
+    func assemblySettingsView(userModel: UserModel) -> SettingsView {
         fatalError("init(coder:) has not been implemented")
     }
 }

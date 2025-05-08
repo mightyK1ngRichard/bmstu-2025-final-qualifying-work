@@ -36,8 +36,8 @@ private extension ProfileView {
             viewModel.assemblyCreateCakeView()
         case let .sendMessage(interlocutor):
             viewModel.assemblyChatView(interlocutor: interlocutor)
-        case .settings:
-            viewModel.assemblySettingsView()
+        case let .settings(userModel):
+            viewModel.assemblySettingsView(userModel: userModel)
         }
     }
 }

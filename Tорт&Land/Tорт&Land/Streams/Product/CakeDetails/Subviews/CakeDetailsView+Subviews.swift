@@ -3,6 +3,7 @@
 //  Tорт&Land
 //
 //  Created by Dmitriy Permyakov on 22.12.2024.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import SwiftUI
@@ -26,7 +27,7 @@ extension CakeDetailsView {
         .overlay(alignment: .bottom) {
             if viewModel.showOwnerButton {
                 TLButton("make order".uppercased(), action: viewModel.didTapMakeOrderButton)
-                    .padding(.horizontal)
+                    .padding()
             }
         }
         .overlay {
@@ -45,13 +46,30 @@ extension CakeDetailsView {
             ToolbarItem(placement: .topBarLeading) {
                 backButton
             }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                button3D
+            }
+        }
+        .sheet(isPresented: $viewModel.bindingData.openFileDirecatory) {
+            DocumentPicker(fileURL: $viewModel.bindingData.selectedFileURL)
+        }
+        .sheet(isPresented: $viewModel.bindingData.show3DModelScreen) {
+            if let urlString = viewModel.cakeModel.model3DURL, let url = URL(string: urlString) {
+//                ARQuickLookView(modelURL: url)
+                RemoteARQuickLookView(remoteURL: url)
+            }
+        }
+        .onChange(of: viewModel.bindingData.selectedFileURL) { _, newValue in
+            guard let newValue else { return }
+            viewModel.didSelectFile(url: newValue)
         }
     }
 }
 
 // MARK: - Private UI Subviews
 
-extension CakeDetailsView {
+private extension CakeDetailsView {
     @ViewBuilder
     var progressView: some View {
         if viewModel.bindingData.isLoading {
@@ -61,16 +79,6 @@ extension CakeDetailsView {
                 ProgressView()
                     .tint(.white)
             }
-        }
-    }
-
-    var backButton: some View {
-        Button {
-            viewModel.didTapBackButton()
-        } label: {
-            Image(.chevronLeft)
-                .renderingMode(.template)
-                .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
         }
     }
 
@@ -217,6 +225,40 @@ extension CakeDetailsView {
     }
 }
 
+// MARK: - Tool Bar Items
+
+private extension CakeDetailsView {
+
+    var backButton: some View {
+        Button {
+            viewModel.didTapBackButton()
+        } label: {
+            Image(.chevronLeft)
+                .renderingMode(.template)
+                .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
+        }
+    }
+
+    @ViewBuilder
+    var button3D: some View {
+        if let model3DURL = viewModel.cakeModel.model3DURL, !model3DURL.isEmpty {
+            Button {
+                viewModel.didTap3DButton()
+            } label: {
+                Image(systemName: "view.3d")
+                    .foregroundStyle(Constants.iconPrimary)
+            }
+        } else {
+            Button {
+                viewModel.didTapAdd3DModel()
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundStyle(Constants.iconPrimary)
+            }
+        }
+    }
+}
+
 // MARK: - Preview
 
 #Preview {
@@ -238,5 +280,7 @@ private extension CakeDetailsView {
         static let sellerInfoTitle = String(localized: "Seller Info")
         static let buyButtonTitle = String(localized: "Make an order")
         static let deleteButtonTitle = String(localized: "Delete product")
+
+        static let iconPrimary = TLColor<IconPalette>.iconPrimary.color
     }
 }

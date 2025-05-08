@@ -10,9 +10,10 @@ import Foundation
 import NetworkAPI
 
 @Observable
-final class CakeDetailsViewModel: CakeDetailsDisplayData & CakeDetailsViewModelInput {
+final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelInput {
     var bindingData = CakeDetailsModel.BindingData()
-    var cakeModel: CakeModel
+    private(set) var cakeModel: CakeModel
+    private(set) var show3DButton = true
     @ObservationIgnored
     private(set) var showOwnerButton: Bool
     @ObservationIgnored
@@ -162,6 +163,22 @@ extension CakeDetailsViewModel {
     func didTapFilling(with filling: Filling) {
         bindingData.selectedFilling = filling
         bindingData.showSheet = true
+    }
+
+    func didTap3DButton() {
+        bindingData.show3DModelScreen = true
+    }
+
+    func didTapAdd3DModel() {
+        bindingData.openFileDirecatory = true
+    }
+
+    func didSelectFile(url: URL) {
+        Task {
+            let fileData = try Data(contentsOf: url)
+            let model3DURL = try await cakeService.add3DModel(cakeID: cakeModel.id, modelData: fileData)
+            cakeModel.model3DURL = model3DURL
+        }
     }
 
 }

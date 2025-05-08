@@ -15,6 +15,7 @@ struct NotificationsListView: View {
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.subscribe()
             viewModel.fetchNotifications()
         }
         .navigationDestination(for: NotificationsListModel.Screens.self) { screen in

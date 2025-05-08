@@ -189,6 +189,9 @@
         }
       }
     },
+    "Edit user info" : {
+
+    },
     "Email" : {
 
     },
@@ -201,6 +204,9 @@
           }
         }
       }
+    },
+    "Error: %@" : {
+
     },
     "Fillings" : {
       "localizations" : {
@@ -231,6 +237,12 @@
           }
         }
       }
+    },
+    "Input new FIO" : {
+
+    },
+    "Input new nickname" : {
+
     },
     "kids" : {
       "localizations" : {
@@ -373,6 +385,12 @@
         }
       }
     },
+    "Popover Content" : {
+
+    },
+    "Preparing 3D viewer..." : {
+
+    },
     "Price range: %lld %@" : {
       "localizations" : {
         "en" : {
@@ -487,6 +505,9 @@
         }
       }
     },
+    "Select header image" : {
+
+    },
     "Select product photos" : {
 
     },
@@ -526,7 +547,7 @@
     "Shipping Address:" : {
 
     },
-    "SHow" : {
+    "Show" : {
 
     },
     "Sign In" : {
@@ -569,6 +590,15 @@
 
     },
     "Try again" : {
+
+    },
+    "Update" : {
+
+    },
+    "Update header image" : {
+
+    },
+    "Update image" : {
 
     },
     "User address not found" : {

@@ -106,7 +106,7 @@ private extension ChatView {
 
     var headerInfo: some View {
         VStack {
-            Text(viewModel.interlocutor.name)
+            Text(viewModel.interlocutor.titleName)
                 .style(17, .medium, TLColor<TextPalette>.textPrimary.color)
             Text(viewModel.interlocutor.mail)
                 .style(13, .regular, TLColor<TextPalette>.textSecondary.color)

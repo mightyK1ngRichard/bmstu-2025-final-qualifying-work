@@ -8,6 +8,7 @@
 
 import Foundation
 import Observation
+import Combine
 import NetworkAPI
 
 @Observable
@@ -24,18 +25,20 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     @ObservationIgnored
     private let cakeProvider: CakeService
     @ObservationIgnored
-    private let profileService: ProfileGrpcService
+    private let profileService: ProfileService
     @ObservationIgnored
     private var coordinator: Coordinator?
     @ObservationIgnored
     private let priceFormatter = PriceFormatterService.shared
+    @ObservationIgnored
+    private var store: Set<AnyCancellable> = []
 
     init(
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
         cakeProvider: CakeService,
         chatProvider: ChatService,
-        profileService: ProfileGrpcService,
+        profileService: ProfileService,
         isCurrentUser: Bool = false,
         rootViewModel: RootViewModel
     ) {
@@ -76,7 +79,7 @@ extension ProfileViewModel {
                 fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
-                uiProperties.screenState = .error(message: "\(error)")
+                uiProperties.screenState = .error(message: error.readableGRPCMessage)
             }
         }
     }
@@ -126,7 +129,9 @@ extension ProfileViewModel {
     }
 
     func didTapOpenSettings() {
-        coordinator?.addScreen(ProfileModel.Screens.settings)
+        if let userModel = user {
+            coordinator?.addScreen(ProfileModel.Screens.settings(userModel: userModel))
+        }
     }
 
     func didTapOpenMap() {
@@ -181,7 +186,13 @@ extension ProfileViewModel {
         )
     }
 
-    func assemblySettingsView() -> SettingsView {
-        SettingsAssembler.assemble(profileProvider: profileService)
+    func assemblySettingsView(userModel: UserModel) -> SettingsView {
+        let view = SettingsAssembler.assemble(userModel: userModel, profileProvider: profileService)
+        view.viewModel.userPublisher
+            .sink { [weak self] updatedUser in
+                self?.user = updatedUser
+            }
+            .store(in: &store)
+        return view
     }
 }

@@ -39,14 +39,11 @@ extension CreateProductView {
                 .opacity(viewModel.uiProperties.nextButtonIsEnabled ? 1.0 : 0.4)
         }
         .background(Constants.bgColor)
-        .alert(
-            viewModel.uiProperties.alertTitle,
+        .defaultAlert(
+            title: viewModel.uiProperties.alertTitle,
+            message: viewModel.uiProperties.alertMessage,
             isPresented: $viewModel.uiProperties.showAlert
-        ) {
-            Button("OK") {}
-        } message: {
-            Text(viewModel.uiProperties.alertMessage)
-        }
+        )
     }
 }
 

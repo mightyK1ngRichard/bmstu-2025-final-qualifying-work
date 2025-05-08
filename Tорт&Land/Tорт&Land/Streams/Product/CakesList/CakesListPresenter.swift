@@ -27,7 +27,7 @@ final class CakesListPresenter: CakesListPresenterInput {
         } catch {
             let errorMessage: String
             if let error = error as? NetworkError {
-                errorMessage = "\(error)"
+                errorMessage = error.readableGRPCMessage
             } else if let grpcStatus = (error as? GRPCStatus) ?? (error as? GRPCStatusTransformable)?.makeGRPCStatus() {
                 switch grpcStatus.code {
                 case .unavailable:

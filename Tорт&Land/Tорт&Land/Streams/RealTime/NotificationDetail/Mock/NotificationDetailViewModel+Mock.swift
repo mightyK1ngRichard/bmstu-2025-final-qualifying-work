@@ -53,9 +53,8 @@ private extension NotificationDetailViewModelMock {
                 title: "Вы купили торт",
                 text: "Это просто длинне текст уведомления",
                 date: Date().description.toCorrectDate,
-                userID: "1",
                 sellerID: "2",
-                productID: "1"
+                cakeID: "1"
             ),
             deliveryAddress: "Просто какая-то улица"
         )

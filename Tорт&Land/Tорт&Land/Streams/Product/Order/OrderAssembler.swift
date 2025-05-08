@@ -13,7 +13,7 @@ final class OrderAssembler {
     static func assemble(
         cakeID: String,
         orderProvider: OrderService,
-        profileProvider: ProfileGrpcService,
+        profileProvider: ProfileService,
         cakeProvider: CakeService,
         imageProvider: ImageLoaderProvider
     ) -> OrderView {

@@ -43,6 +43,8 @@ public struct CakeEntity: Sendable, Hashable {
     public let images: [CakeImageEntity]
     /// Hex цвета торта
     public var colorsHex: [String]
+    /// Ссылка на 3Д модель
+    public let model3DURL: String?
 }
 
 public extension CakeEntity {
@@ -76,7 +78,8 @@ extension CakeEntity {
             fillings:  model.fillings.map(FillingEntity.init(from:)),
             categories: model.categories.map(CategoryEntity.init(from:)),
             images: model.images.map(CakeImageEntity.init(from:)),
-            colorsHex: []
+            colorsHex: [],
+            model3DURL: model.model3Durl
         )
     }
 }
@@ -108,7 +111,8 @@ public extension CakeEntity {
             fillings: model.fillings,
             categories: model.categories,
             images: [],
-            colorsHex: model.colorsHex
+            colorsHex: model.colorsHex,
+            model3DURL: model.model3DURL
         )
     }
 }

@@ -29,7 +29,7 @@ private extension MessageBubble {
 
             VStack(alignment: .leading, spacing: 2) {
                 if !isYou {
-                    Text(message.user.name)
+                    Text(message.user.titleName)
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(.mint.gradient)
                         .padding(.leading, 10)
@@ -73,7 +73,7 @@ private extension MessageBubble {
                 .fill(.mint.gradient)
                 .frame(width: 32, height: 32)
                 .overlay {
-                    Text("\(message.user.name.first?.description.uppercased() ?? "😎")")
+                    Text("\(message.user.titleName.first?.description.uppercased() ?? "😎")")
                         .foregroundStyle(.white)
                         .fontWeight(.semibold)
                         .fontDesign(.rounded)

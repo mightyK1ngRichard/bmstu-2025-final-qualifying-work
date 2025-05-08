@@ -136,7 +136,7 @@ extension CreateProductViewModel {
                 generateCakeColors(cakeID: response.cakeID)
             } catch {
                 uiProperties.alertTitle = "Failed to create product"
-                uiProperties.alertMessage = "\(error)"
+                uiProperties.alertMessage = error.readableGRPCMessage
                 uiProperties.showAlert = true
             }
         }

@@ -236,26 +236,6 @@ private extension ProductsGridView {
 
 }
 
-// MARK: - Preview
-
-#if DEBUG
-import NetworkAPI
-#endif
-
-#Preview {
-    NavigationStack {
-        ProductsGridView(
-            viewModel: ProductsGridViewModelMock(
-                cakeService: CakeGrpcServiceImpl(
-                    configuration: AppHosts.cake,
-                    networkService: NetworkServiceImpl()
-                )
-            )
-        )
-    }
-    .environment(Coordinator())
-}
-
 // MARK: - Constants
 
 private extension ProductsGridView {

@@ -11,6 +11,7 @@ public enum ProfileServiceModel {
     public enum GetUserInfo {}
     public enum UpdateUser {}
     public enum CreateAddress {}
+    public enum UpdateUserImage {}
 }
 
 // MARK: - CreateAddress
@@ -41,6 +42,32 @@ public extension ProfileServiceModel.GetUserInfo {
 
         public init(userInfo: UserInfoEntity) {
             self.userInfo = userInfo
+        }
+    }
+}
+
+// MARK: - UpdateUserImage
+
+public extension ProfileServiceModel.UpdateUserImage {
+    struct Request: Sendable {
+        let imageData: Data
+        let imageKind: ImageKind
+
+        public init(imageData: Data, imageKind: ImageKind) {
+            self.imageData = imageData
+            self.imageKind = imageKind
+        }
+
+        public enum ImageKind: Sendable {
+            case avatar
+            case header
+
+            var toProto: Profile_UpdateUserImageReq.ImageKind  {
+                switch self {
+                case .avatar: .avatar
+                case .header: .header
+                }
+            }
         }
     }
 }

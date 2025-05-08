@@ -47,20 +47,4 @@ import NetworkAPI
     }
     .environment(coordinator)
 }
-
-#Preview("Network") {
-    @Previewable
-    @State var coordinator = Coordinator()
-    NavigationStack(path: $coordinator.navPath) {
-        CakesListAssembler.assemble(
-            rootViewModel: RootViewModelMock(),
-            cakeService: CakeGrpcServiceImpl(
-                configuration: AppHosts.cake,
-                networkService: NetworkServiceImpl()
-            ),
-            imageProvider: ImageLoaderProviderImpl()
-        )
-    }
-    .environment(coordinator)
-}
 #endif

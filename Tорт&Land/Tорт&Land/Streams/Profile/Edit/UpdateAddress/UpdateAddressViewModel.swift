@@ -18,11 +18,11 @@ final class UpdateAddressViewModel {
     @ObservationIgnored
     private var coordinator: Coordinator?
     @ObservationIgnored
-    private let profileProvider: ProfileGrpcService
+    private let profileProvider: ProfileService
 
     init(
         address: AddressEntity,
-        profileProvider: ProfileGrpcService,
+        profileProvider: ProfileService,
         completion: (@MainActor (AddressEntity) -> Void)? = nil
     ) {
         self.address = address
@@ -78,7 +78,7 @@ extension UpdateAddressViewModel {
                 coordinator?.openPreviousScreen()
             } catch {
                 uiProperties.buttonIsLoading = false
-                uiProperties.errorMessage = "\(error)"
+                uiProperties.errorMessage = error.readableGRPCMessage
             }
         }
     }

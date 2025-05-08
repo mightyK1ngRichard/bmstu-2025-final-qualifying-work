@@ -137,18 +137,3 @@ private extension AddFillingsAndCategoriesView {
         })
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    let viewModel = AddFillingsAndCategoriesViewModel(
-        cakeService: CakeGrpcServiceImpl(
-            configuration: AppHosts.cake,
-            networkService: NetworkServiceImpl()
-        ),
-        imageProvider: ImageLoaderProviderImpl()
-    )
-
-    return AddFillingsAndCategoriesView(viewModel: viewModel) {}
-    .background(TLColor<BackgroundPalette>.bgMainColor.color)
-}

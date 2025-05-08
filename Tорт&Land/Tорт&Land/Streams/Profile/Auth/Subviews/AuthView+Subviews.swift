@@ -29,11 +29,11 @@ extension AuthView {
                 ) ? 26 : 0
             )
         )
-        .alert(Constants.errorTitle, isPresented: $viewModel.uiProperties.showingAlert) {
-            Button("OK") {}
-        } message: {
-            Text(viewModel.uiProperties.alertMessage)
-        }
+        .defaultAlert(
+            title: Constants.errorTitle,
+            message: viewModel.uiProperties.alertMessage,
+            isPresented: $viewModel.uiProperties.showingAlert
+        )
     }
 
     var signInView: some View {

@@ -58,14 +58,7 @@ final class CategoriesViewModelMock: CategoriesDisplayLogic & CategoriesViewMode
 
     @MainActor
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {
-        ProductsGridAssemler.assembly(
-            cakes: cakes,
-            sectionKind: .default,
-            cakeService: CakeGrpcServiceImpl(
-                configuration: AppHosts.cake,
-                networkService: NetworkServiceImpl()
-            )
-        )
+        fatalError("not implemented")
     }
 }
 

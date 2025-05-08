@@ -20,6 +20,7 @@ final class RootAssembler {
         )
         let cakeService = CakeGrpcServiceImpl(
             configuration: AppHosts.cake,
+            authService: authService,
             networkService: networkService
         )
         let profileService = ProfileGrpcServiceImpl(
@@ -42,6 +43,11 @@ final class RootAssembler {
             authService: authService,
             networkService: networkService
         )
+        let notificationService = NotificationServiceImpl(
+            configuration: AppHosts.notification,
+            authService: authService,
+            networkService: networkService
+        )
 
         if networkService.refreshToken == nil {
             startScreenControl.update(with: .auth)
@@ -54,6 +60,7 @@ final class RootAssembler {
             chatProvider: chatService,
             profileService: profileService,
             orderProvider: orderService,
+            notificationService: notificationService,
             imageProvider: imageProvider,
             startScreenControl: startScreenControl
         )

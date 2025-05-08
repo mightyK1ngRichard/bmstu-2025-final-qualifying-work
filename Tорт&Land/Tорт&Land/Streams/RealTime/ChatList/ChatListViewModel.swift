@@ -15,7 +15,7 @@ final class ChatListViewModel: ChatListDisplayLogic, ChatListViewModelInput, Cha
     var cells: [ChatListModel.ChatCellModel] {
         uiProperties.searchText.isEmpty
         ? allChatCells
-        : allChatCells.filter { $0.user.name.contains(uiProperties.searchText) }
+        : allChatCells.filter { $0.user.titleName.lowercased().contains(uiProperties.searchText.lowercased()) }
     }
     private var allChatCells: [ChatListModel.ChatCellModel] = []
     private let currentUser: UserModel
@@ -57,7 +57,7 @@ extension ChatListViewModel {
                 }
                 uiProperties.screenState = .finished
             } catch {
-                uiProperties.screenState = .error(message: "\(error)")
+                uiProperties.screenState = .error(message: error.readableGRPCMessage)
             }
         }
     }
@@ -102,7 +102,7 @@ extension ChatListViewModel {
     func configureChatCell(with model: ChatListModel.ChatCellModel) -> TLChatCell.Configuration {
         .basic(
             imageState: model.user.avatarImage,
-            title: model.user.name,
+            title: model.user.titleName,
             subtitle: model.lastMessage,
             time: model.timeMessage.formattedHHmm
         )

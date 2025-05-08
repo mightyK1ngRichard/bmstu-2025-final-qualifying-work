@@ -112,3 +112,18 @@ extension View {
         }
     }
 }
+
+// MARK: - Alert
+
+extension View {
+    func defaultAlert(title: String, message: String, isPresented: Binding<Bool>) -> some View {
+        alert(
+            title,
+            isPresented: isPresented
+        ) {
+            Button("OK") {}
+        } message: {
+            Text(message)
+        }
+    }
+}

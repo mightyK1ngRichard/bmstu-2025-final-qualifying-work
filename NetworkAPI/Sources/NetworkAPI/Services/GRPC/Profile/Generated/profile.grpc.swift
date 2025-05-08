@@ -42,6 +42,16 @@ internal protocol Profile_ProfileServiceClientProtocol: GRPCClient {
     _ request: Profile_CreateAddressReq,
     callOptions: CallOptions?
   ) -> UnaryCall<Profile_CreateAddressReq, Profile_CreateAddressRes>
+
+  func updateUserData(
+    _ request: Profile_UpdateUserDataReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Profile_UpdateUserDataReq, Profile_UpdateUserDataRes>
+
+  func updateUserImage(
+    _ request: Profile_UpdateUserImageReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Profile_UpdateUserImageReq, Profile_UpdateUserImageRes>
 }
 
 extension Profile_ProfileServiceClientProtocol {
@@ -138,6 +148,42 @@ extension Profile_ProfileServiceClientProtocol {
       interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? []
     )
   }
+
+  /// Unary call to UpdateUserData
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to UpdateUserData.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func updateUserData(
+    _ request: Profile_UpdateUserDataReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Profile_UpdateUserDataReq, Profile_UpdateUserDataRes> {
+    return self.makeUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserData.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserDataInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to UpdateUserImage
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to UpdateUserImage.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func updateUserImage(
+    _ request: Profile_UpdateUserImageReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Profile_UpdateUserImageReq, Profile_UpdateUserImageRes> {
+    return self.makeUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserImage.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserImageInterceptors() ?? []
+    )
+  }
 }
 
 @available(*, deprecated)
@@ -227,6 +273,16 @@ internal protocol Profile_ProfileServiceAsyncClientProtocol: GRPCClient {
     _ request: Profile_CreateAddressReq,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Profile_CreateAddressReq, Profile_CreateAddressRes>
+
+  func makeUpdateUserDataCall(
+    _ request: Profile_UpdateUserDataReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Profile_UpdateUserDataReq, Profile_UpdateUserDataRes>
+
+  func makeUpdateUserImageCall(
+    _ request: Profile_UpdateUserImageReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Profile_UpdateUserImageReq, Profile_UpdateUserImageRes>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -298,6 +354,30 @@ extension Profile_ProfileServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? []
     )
   }
+
+  internal func makeUpdateUserDataCall(
+    _ request: Profile_UpdateUserDataReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Profile_UpdateUserDataReq, Profile_UpdateUserDataRes> {
+    return self.makeAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserData.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserDataInterceptors() ?? []
+    )
+  }
+
+  internal func makeUpdateUserImageCall(
+    _ request: Profile_UpdateUserImageReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Profile_UpdateUserImageReq, Profile_UpdateUserImageRes> {
+    return self.makeAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserImage.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserImageInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -361,6 +441,30 @@ extension Profile_ProfileServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeCreateAddressInterceptors() ?? []
     )
   }
+
+  internal func updateUserData(
+    _ request: Profile_UpdateUserDataReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> Profile_UpdateUserDataRes {
+    return try await self.performAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserData.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserDataInterceptors() ?? []
+    )
+  }
+
+  internal func updateUserImage(
+    _ request: Profile_UpdateUserImageReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> Profile_UpdateUserImageRes {
+    return try await self.performAsyncUnaryCall(
+      path: Profile_ProfileServiceClientMetadata.Methods.updateUserImage.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeUpdateUserImageInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -396,6 +500,12 @@ internal protocol Profile_ProfileServiceClientInterceptorFactoryProtocol: Sendab
 
   /// - Returns: Interceptors to use when invoking 'createAddress'.
   func makeCreateAddressInterceptors() -> [ClientInterceptor<Profile_CreateAddressReq, Profile_CreateAddressRes>]
+
+  /// - Returns: Interceptors to use when invoking 'updateUserData'.
+  func makeUpdateUserDataInterceptors() -> [ClientInterceptor<Profile_UpdateUserDataReq, Profile_UpdateUserDataRes>]
+
+  /// - Returns: Interceptors to use when invoking 'updateUserImage'.
+  func makeUpdateUserImageInterceptors() -> [ClientInterceptor<Profile_UpdateUserImageReq, Profile_UpdateUserImageRes>]
 }
 
 internal enum Profile_ProfileServiceClientMetadata {
@@ -408,6 +518,8 @@ internal enum Profile_ProfileServiceClientMetadata {
       Profile_ProfileServiceClientMetadata.Methods.getUserAddresses,
       Profile_ProfileServiceClientMetadata.Methods.updateUserAddresses,
       Profile_ProfileServiceClientMetadata.Methods.createAddress,
+      Profile_ProfileServiceClientMetadata.Methods.updateUserData,
+      Profile_ProfileServiceClientMetadata.Methods.updateUserImage,
     ]
   )
 
@@ -441,6 +553,18 @@ internal enum Profile_ProfileServiceClientMetadata {
       path: "/profile.ProfileService/CreateAddress",
       type: GRPCCallType.unary
     )
+
+    internal static let updateUserData = GRPCMethodDescriptor(
+      name: "UpdateUserData",
+      path: "/profile.ProfileService/UpdateUserData",
+      type: GRPCCallType.unary
+    )
+
+    internal static let updateUserImage = GRPCMethodDescriptor(
+      name: "UpdateUserImage",
+      path: "/profile.ProfileService/UpdateUserImage",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -459,6 +583,10 @@ internal protocol Profile_ProfileServiceProvider: CallHandlerProvider {
   func updateUserAddresses(request: Profile_UpdateUserAddressesReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_UpdateUserAddressesRes>
 
   func createAddress(request: Profile_CreateAddressReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_CreateAddressRes>
+
+  func updateUserData(request: Profile_UpdateUserDataReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_UpdateUserDataRes>
+
+  func updateUserImage(request: Profile_UpdateUserImageReq, context: StatusOnlyCallContext) -> EventLoopFuture<Profile_UpdateUserImageRes>
 }
 
 extension Profile_ProfileServiceProvider {
@@ -518,6 +646,24 @@ extension Profile_ProfileServiceProvider {
         userFunction: self.createAddress(request:context:)
       )
 
+    case "UpdateUserData":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_UpdateUserDataReq>(),
+        responseSerializer: ProtobufSerializer<Profile_UpdateUserDataRes>(),
+        interceptors: self.interceptors?.makeUpdateUserDataInterceptors() ?? [],
+        userFunction: self.updateUserData(request:context:)
+      )
+
+    case "UpdateUserImage":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_UpdateUserImageReq>(),
+        responseSerializer: ProtobufSerializer<Profile_UpdateUserImageRes>(),
+        interceptors: self.interceptors?.makeUpdateUserImageInterceptors() ?? [],
+        userFunction: self.updateUserImage(request:context:)
+      )
+
     default:
       return nil
     }
@@ -556,6 +702,16 @@ internal protocol Profile_ProfileServiceAsyncProvider: CallHandlerProvider, Send
     request: Profile_CreateAddressReq,
     context: GRPCAsyncServerCallContext
   ) async throws -> Profile_CreateAddressRes
+
+  func updateUserData(
+    request: Profile_UpdateUserDataReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Profile_UpdateUserDataRes
+
+  func updateUserImage(
+    request: Profile_UpdateUserImageReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Profile_UpdateUserImageRes
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -622,6 +778,24 @@ extension Profile_ProfileServiceAsyncProvider {
         wrapping: { try await self.createAddress(request: $0, context: $1) }
       )
 
+    case "UpdateUserData":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_UpdateUserDataReq>(),
+        responseSerializer: ProtobufSerializer<Profile_UpdateUserDataRes>(),
+        interceptors: self.interceptors?.makeUpdateUserDataInterceptors() ?? [],
+        wrapping: { try await self.updateUserData(request: $0, context: $1) }
+      )
+
+    case "UpdateUserImage":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Profile_UpdateUserImageReq>(),
+        responseSerializer: ProtobufSerializer<Profile_UpdateUserImageRes>(),
+        interceptors: self.interceptors?.makeUpdateUserImageInterceptors() ?? [],
+        wrapping: { try await self.updateUserImage(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -649,6 +823,14 @@ internal protocol Profile_ProfileServiceServerInterceptorFactoryProtocol: Sendab
   /// - Returns: Interceptors to use when handling 'createAddress'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeCreateAddressInterceptors() -> [ServerInterceptor<Profile_CreateAddressReq, Profile_CreateAddressRes>]
+
+  /// - Returns: Interceptors to use when handling 'updateUserData'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeUpdateUserDataInterceptors() -> [ServerInterceptor<Profile_UpdateUserDataReq, Profile_UpdateUserDataRes>]
+
+  /// - Returns: Interceptors to use when handling 'updateUserImage'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeUpdateUserImageInterceptors() -> [ServerInterceptor<Profile_UpdateUserImageReq, Profile_UpdateUserImageRes>]
 }
 
 internal enum Profile_ProfileServiceServerMetadata {
@@ -661,6 +843,8 @@ internal enum Profile_ProfileServiceServerMetadata {
       Profile_ProfileServiceServerMetadata.Methods.getUserAddresses,
       Profile_ProfileServiceServerMetadata.Methods.updateUserAddresses,
       Profile_ProfileServiceServerMetadata.Methods.createAddress,
+      Profile_ProfileServiceServerMetadata.Methods.updateUserData,
+      Profile_ProfileServiceServerMetadata.Methods.updateUserImage,
     ]
   )
 
@@ -692,6 +876,18 @@ internal enum Profile_ProfileServiceServerMetadata {
     internal static let createAddress = GRPCMethodDescriptor(
       name: "CreateAddress",
       path: "/profile.ProfileService/CreateAddress",
+      type: GRPCCallType.unary
+    )
+
+    internal static let updateUserData = GRPCMethodDescriptor(
+      name: "UpdateUserData",
+      path: "/profile.ProfileService/UpdateUserData",
+      type: GRPCCallType.unary
+    )
+
+    internal static let updateUserImage = GRPCMethodDescriptor(
+      name: "UpdateUserImage",
+      path: "/profile.ProfileService/UpdateUserImage",
       type: GRPCCallType.unary
     )
   }

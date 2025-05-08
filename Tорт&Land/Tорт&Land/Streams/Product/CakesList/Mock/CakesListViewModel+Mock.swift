@@ -78,15 +78,7 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
 
 extension CakesListViewModelMock {
     func assemblyTagsView(cakes: [CakeModel], sectionKind: ProductsGridModel.SectionKind) -> ProductsGridView {
-        let viewModel = ProductsGridViewModelMock(
-            cakes: cakes,
-            sectionKind: sectionKind,
-            cakeService: CakeGrpcServiceImpl(
-                configuration: AppHosts.cake,
-                networkService: NetworkServiceImpl()
-            )
-        )
-        return ProductsGridView(viewModel: viewModel)
+        fatalError()
     }
 
     func configureShimmeringProductCard() -> TLProductCard.Configuration {

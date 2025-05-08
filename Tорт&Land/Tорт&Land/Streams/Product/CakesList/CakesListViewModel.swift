@@ -52,18 +52,10 @@ extension CakesListViewModel: CakesListDisplayLogic {
     func didFetchSections(with sections: [CakesListModel.Section]) {
         bindingData.sections = sections
         bindingData.screenState = .finished
-
-        #if DEBUG
-        MainActor.assertIsolated("Обновление не на главном потоке")
-        #endif
     }
 
     func showError(message: String) {
         bindingData.screenState = .error(message: message)
-
-        #if DEBUG
-        MainActor.assertIsolated("Обновление не на главном потоке")
-        #endif
     }
 
     func updateUserAvatarImage(imageState: ImageState, cakeID: String) {
@@ -117,10 +109,6 @@ extension CakesListViewModel: CakesListDisplayLogic {
         case .new:
             bindingData.sections[arrayIndex] = .new(cakes)
         }
-
-        #if DEBUG
-        MainActor.assertIsolated("Обновление не на главном потоке")
-        #endif
     }
 
 }

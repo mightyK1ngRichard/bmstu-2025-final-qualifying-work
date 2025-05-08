@@ -371,6 +371,33 @@ struct Cake_CakeColorsRes: Sendable {
   init() {}
 }
 
+/// ############### Add3DModel ############### 
+struct Cake_Add3DModelReq: @unchecked Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var modelFileData: Data = Data()
+
+  var cakeID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_Add3DModelRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var model3Durl: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 /// Информация о торте
 struct Cake_Cake: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
@@ -489,6 +516,16 @@ struct Cake_Cake: @unchecked Sendable {
     set {_uniqueStorage()._reviewsCount = newValue}
   }
 
+  /// 3D model url
+  var model3Durl: String {
+    get {return _storage._model3Durl ?? String()}
+    set {_uniqueStorage()._model3Durl = newValue}
+  }
+  /// Returns true if `model3Durl` has been explicitly set.
+  var hasModel3Durl: Bool {return _storage._model3Durl != nil}
+  /// Clears the value of `model3Durl`. Subsequent reads from it will return its default value.
+  mutating func clearModel3Durl() {_uniqueStorage()._model3Durl = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   struct CakeImage: Sendable {
@@ -535,16 +572,6 @@ struct Cake_User: Sendable {
   /// Электронная почта
   var mail: String = String()
 
-  /// Адрес
-  var address: SwiftProtobuf.Google_Protobuf_StringValue {
-    get {return _address ?? SwiftProtobuf.Google_Protobuf_StringValue()}
-    set {_address = newValue}
-  }
-  /// Returns true if `address` has been explicitly set.
-  var hasAddress: Bool {return self._address != nil}
-  /// Clears the value of `address`. Subsequent reads from it will return its default value.
-  mutating func clearAddress() {self._address = nil}
-
   /// Телефон
   var phone: SwiftProtobuf.Google_Protobuf_StringValue {
     get {return _phone ?? SwiftProtobuf.Google_Protobuf_StringValue()}
@@ -580,7 +607,6 @@ struct Cake_User: Sendable {
   init() {}
 
   fileprivate var _fio: SwiftProtobuf.Google_Protobuf_StringValue? = nil
-  fileprivate var _address: SwiftProtobuf.Google_Protobuf_StringValue? = nil
   fileprivate var _phone: SwiftProtobuf.Google_Protobuf_StringValue? = nil
   fileprivate var _imageURL: SwiftProtobuf.Google_Protobuf_StringValue? = nil
   fileprivate var _headerImageURL: SwiftProtobuf.Google_Protobuf_StringValue? = nil
@@ -746,6 +772,16 @@ struct Cake_PreviewCake: @unchecked Sendable {
     get {return _storage._colorsHex}
     set {_uniqueStorage()._colorsHex = newValue}
   }
+
+  /// 3D model url
+  var model3Durl: String {
+    get {return _storage._model3Durl ?? String()}
+    set {_uniqueStorage()._model3Durl = newValue}
+  }
+  /// Returns true if `model3Durl` has been explicitly set.
+  var hasModel3Durl: Bool {return _storage._model3Durl != nil}
+  /// Clears the value of `model3Durl`. Subsequent reads from it will return its default value.
+  mutating func clearModel3Durl() {_uniqueStorage()._model3Durl = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -1423,6 +1459,76 @@ extension Cake_CakeColorsRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
   }
 }
 
+extension Cake_Add3DModelReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Add3DModelReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "modelFileData"),
+    2: .same(proto: "cakeID"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularBytesField(value: &self.modelFileData) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.cakeID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.modelFileData.isEmpty {
+      try visitor.visitSingularBytesField(value: self.modelFileData, fieldNumber: 1)
+    }
+    if !self.cakeID.isEmpty {
+      try visitor.visitSingularStringField(value: self.cakeID, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_Add3DModelReq, rhs: Cake_Add3DModelReq) -> Bool {
+    if lhs.modelFileData != rhs.modelFileData {return false}
+    if lhs.cakeID != rhs.cakeID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_Add3DModelRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Add3DModelRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "model3DURL"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.model3Durl) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.model3Durl.isEmpty {
+      try visitor.visitSingularStringField(value: self.model3Durl, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_Add3DModelRes, rhs: Cake_Add3DModelRes) -> Bool {
+    if lhs.model3Durl != rhs.model3Durl {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Cake"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1442,6 +1548,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     14: .standard(proto: "date_creation"),
     15: .same(proto: "images"),
     16: .same(proto: "reviewsCount"),
+    17: .same(proto: "model3DURL"),
   ]
 
   fileprivate class _StorageClass {
@@ -1461,6 +1568,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     var _dateCreation: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
     var _images: [Cake_Cake.CakeImage] = []
     var _reviewsCount: Int32 = 0
+    var _model3Durl: String? = nil
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1491,6 +1599,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
       _dateCreation = source._dateCreation
       _images = source._images
       _reviewsCount = source._reviewsCount
+      _model3Durl = source._model3Durl
     }
   }
 
@@ -1525,6 +1634,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
         case 14: try { try decoder.decodeSingularMessageField(value: &_storage._dateCreation) }()
         case 15: try { try decoder.decodeRepeatedMessageField(value: &_storage._images) }()
         case 16: try { try decoder.decodeSingularInt32Field(value: &_storage._reviewsCount) }()
+        case 17: try { try decoder.decodeSingularStringField(value: &_storage._model3Durl) }()
         default: break
         }
       }
@@ -1585,6 +1695,9 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
       if _storage._reviewsCount != 0 {
         try visitor.visitSingularInt32Field(value: _storage._reviewsCount, fieldNumber: 16)
       }
+      try { if let v = _storage._model3Durl {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 17)
+      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -1610,6 +1723,7 @@ extension Cake_Cake: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
         if _storage._dateCreation != rhs_storage._dateCreation {return false}
         if _storage._images != rhs_storage._images {return false}
         if _storage._reviewsCount != rhs_storage._reviewsCount {return false}
+        if _storage._model3Durl != rhs_storage._model3Durl {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -1664,7 +1778,6 @@ extension Cake_User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     2: .same(proto: "fio"),
     3: .same(proto: "nickname"),
     4: .same(proto: "mail"),
-    5: .same(proto: "address"),
     6: .same(proto: "phone"),
     7: .same(proto: "imageURL"),
     8: .same(proto: "headerImageURL"),
@@ -1680,7 +1793,6 @@ extension Cake_User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
       case 2: try { try decoder.decodeSingularMessageField(value: &self._fio) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.nickname) }()
       case 4: try { try decoder.decodeSingularStringField(value: &self.mail) }()
-      case 5: try { try decoder.decodeSingularMessageField(value: &self._address) }()
       case 6: try { try decoder.decodeSingularMessageField(value: &self._phone) }()
       case 7: try { try decoder.decodeSingularMessageField(value: &self._imageURL) }()
       case 8: try { try decoder.decodeSingularMessageField(value: &self._headerImageURL) }()
@@ -1706,9 +1818,6 @@ extension Cake_User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     if !self.mail.isEmpty {
       try visitor.visitSingularStringField(value: self.mail, fieldNumber: 4)
     }
-    try { if let v = self._address {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    } }()
     try { if let v = self._phone {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
     } }()
@@ -1726,7 +1835,6 @@ extension Cake_User: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementation
     if lhs._fio != rhs._fio {return false}
     if lhs.nickname != rhs.nickname {return false}
     if lhs.mail != rhs.mail {return false}
-    if lhs._address != rhs._address {return false}
     if lhs._phone != rhs._phone {return false}
     if lhs._imageURL != rhs._imageURL {return false}
     if lhs._headerImageURL != rhs._headerImageURL {return false}
@@ -1864,6 +1972,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     12: .same(proto: "owner"),
     13: .same(proto: "reviewsCount"),
     14: .same(proto: "colorsHex"),
+    15: .same(proto: "model3DURL"),
   ]
 
   fileprivate class _StorageClass {
@@ -1881,6 +1990,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     var _owner: Cake_User? = nil
     var _reviewsCount: Int32 = 0
     var _colorsHex: [String] = []
+    var _model3Durl: String? = nil
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1909,6 +2019,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       _owner = source._owner
       _reviewsCount = source._reviewsCount
       _colorsHex = source._colorsHex
+      _model3Durl = source._model3Durl
     }
   }
 
@@ -1941,6 +2052,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         case 12: try { try decoder.decodeSingularMessageField(value: &_storage._owner) }()
         case 13: try { try decoder.decodeSingularInt32Field(value: &_storage._reviewsCount) }()
         case 14: try { try decoder.decodeRepeatedStringField(value: &_storage._colorsHex) }()
+        case 15: try { try decoder.decodeSingularStringField(value: &_storage._model3Durl) }()
         default: break
         }
       }
@@ -1995,6 +2107,9 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       if !_storage._colorsHex.isEmpty {
         try visitor.visitRepeatedStringField(value: _storage._colorsHex, fieldNumber: 14)
       }
+      try { if let v = _storage._model3Durl {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 15)
+      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -2018,6 +2133,7 @@ extension Cake_PreviewCake: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
         if _storage._owner != rhs_storage._owner {return false}
         if _storage._reviewsCount != rhs_storage._reviewsCount {return false}
         if _storage._colorsHex != rhs_storage._colorsHex {return false}
+        if _storage._model3Durl != rhs_storage._model3Durl {return false}
         return true
       }
       if !storagesAreEqual {return false}

@@ -108,7 +108,7 @@ private extension ProfileView {
                 Group {
                     if let user = viewModel.user {
                         VStack(spacing: 6) {
-                            Text(user.name)
+                            Text(user.titleName)
                                 .bold()
                                 .font(.title)
                             Text(user.mail).font(.callout)

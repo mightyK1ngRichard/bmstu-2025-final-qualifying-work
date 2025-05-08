@@ -58,7 +58,7 @@ extension CakesListInteractor {
 private extension CakesListInteractor {
 
     func identifyСakeSection(for cake: PreviewCakeEntity) -> CakesListModel.Section.Kind {
-        if cake.discountKgPrice != nil {
+        if cake.discountKgPrice != nil, let discountEndTime = cake.discountEndTime, Date.now < discountEndTime {
             return .sale
         } else if cake.isNew {
             return .new

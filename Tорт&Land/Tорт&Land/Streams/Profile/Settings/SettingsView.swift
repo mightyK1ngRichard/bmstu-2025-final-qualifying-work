@@ -9,13 +9,15 @@
 import SwiftUI
 import NetworkAPI
 import MapKit
+import PhotosUI
 
 struct SettingsView: View {
     @State var viewModel: SettingsViewModel
+    @FocusState private var isFocused: Bool
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
-        List {
+        Form {
             content
                 .listRowBackground(Constants.rowColor)
         }
@@ -26,6 +28,19 @@ struct SettingsView: View {
             viewModel.fetchAddresses()
         }
         .navigationTitle("Settings")
+        .photosPicker(
+            isPresented: $viewModel.uiProperties.showPhotoPicker,
+            selection: $viewModel.uiProperties.selectedImage,
+            preferredItemEncoding: .automatic
+        )
+        .defaultAlert(
+            title: viewModel.uiProperties.alert.title,
+            message: viewModel.uiProperties.alert.message,
+            isPresented: $viewModel.uiProperties.alert.isShow
+        )
+        .onChange(of: viewModel.uiProperties.selectedImage) { _, newValue in
+            viewModel.didUpdateImage(with: newValue)
+        }
         .navigationDestination(for: SettingsViewModel.Screens.self) { screen in
             switch screen {
             case .addAddress:
@@ -35,6 +50,8 @@ struct SettingsView: View {
     }
 }
 
+// MARK: - UI Subviews
+
 private extension SettingsView {
 
     @ViewBuilder
@@ -43,10 +60,89 @@ private extension SettingsView {
         case .initial, .loading:
             ProgressView()
         case .finished:
+            avatarView
+            updateHeaderImageButton
+            editUserInfoContainer
             addressesView
         case let .error(message):
             errorView(message: message)
         }
+    }
+
+    var avatarView: some View {
+        VStack {
+            TLImageView(
+                configuration: .init(imageState: viewModel.userModel.avatarImage)
+            )
+            .frame(width: 100, height: 100)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .clipShape(.circle)
+            .overlay {
+                Circle()
+                    .stroke(lineWidth: 1)
+                    .padding(1)
+            }
+
+            Button {
+                viewModel.uiProperties.selectedImageKind = .avatar
+                viewModel.didTapUpdateAvatar()
+            } label: {
+                Text("Update image")
+                    .style(16, .regular)
+            }
+        }
+        .padding()
+        .listRowBackground(Color.clear)
+        .listRowInsets(EdgeInsets())
+        .background {
+            TLImageView(configuration: .init(imageState: viewModel.userModel.headerImage))
+            TLColor<BackgroundPalette>.bgPrimary.color.opacity(0.3)
+        }
+    }
+
+    var editUserInfoContainer: some View {
+        Section(header: Text("Edit user info")) {
+            HStack {
+                pencilImage
+                TextField("Input new nickname", text: $viewModel.uiProperties.inputNickname)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+                    .focused($isFocused)
+            }
+
+            HStack {
+                pencilImage
+                TextField("Input new FIO", text: $viewModel.uiProperties.inputFIO)
+                    .textInputAutocapitalization(.words)
+                    .disableAutocorrection(true)
+                    .focused($isFocused)
+            }
+
+            Button("Update") {
+                isFocused = false
+                viewModel.didTapUpdateUserData()
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .buttonStyle(.bordered)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 4))
+            .disabled(viewModel.updateButtonIsDisable)
+        }
+    }
+
+    var updateHeaderImageButton: some View {
+        Section(header: Text("Update header image")) {
+            Button {
+                viewModel.uiProperties.selectedImageKind = .header
+                viewModel.didTapUpdateAvatar()
+            } label: {
+                Label("Select header image", systemImage: "photo")
+            }
+        }
+    }
+
+    var pencilImage: some View {
+        Image(systemName: "pencil")
+            .foregroundStyle(viewModel.uiProperties.penState.color)
     }
 
     var addressesView: some View {
@@ -88,6 +184,7 @@ private extension SettingsView {
     return NavigationStack {
         SettingsView(
             viewModel: SettingsViewModel(
+                userModel: CommonMockData.generateMockUserModel(id: 1),
                 profileProvider: ProfileGrpcServiceImpl(
                     configuration: AppHosts.profile,
                     authService: AuthGrpcServiceImpl(

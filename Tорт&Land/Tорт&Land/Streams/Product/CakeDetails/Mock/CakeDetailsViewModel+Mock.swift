@@ -13,6 +13,7 @@ import Foundation
 final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewModelInput {
     var bindingData: CakeDetailsModel.BindingData
     private(set) var showOwnerButton: Bool
+    private(set) var show3DButton = true
     private(set) var cakeModel: CakeModel
     @ObservationIgnored
     private var coordinator: Coordinator?
@@ -68,6 +69,12 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewMo
         bindingData.selectedFilling = filling
         bindingData.showSheet = true
     }
+
+    func didTap3DButton() {}
+    
+    func didTapAdd3DModel() {}
+
+    func didSelectFile(url: URL) {}
 }
 
 // MARK: - Configure

@@ -1,5 +1,5 @@
 //
-//  ProfileGrpcService.swift
+//  ProfileService.swift
 //  NetworkAPI
 //
 //  Created by Dmitriy Permyakov on 09.04.2025.
@@ -13,17 +13,19 @@ import SwiftProtobuf
 
 // MARK: - AuthService
 
-public protocol ProfileGrpcService: Sendable {
+public protocol ProfileService: Sendable {
     func getUserInfo() async throws -> ProfileServiceModel.GetUserInfo.Response
     func updateUserAddress(req: ProfileServiceModel.UpdateUser.Request) async throws -> ProfileServiceModel.UpdateUser.Response
     func getUserAddresses() async throws -> [AddressEntity]
     func createAddress(req: ProfileServiceModel.CreateAddress.Request) async throws -> AddressEntity
+    func updateUserImage(req: ProfileServiceModel.UpdateUserImage.Request) async throws -> String
+    func updateUserData(username: String, userFIO: String?) async throws
     func closeConnection()
 }
 
 // MARK: - AuthGrpcServiceImpl
 
-public final class ProfileGrpcServiceImpl: ProfileGrpcService {
+public final class ProfileGrpcServiceImpl: ProfileService {
     private let client: Profile_ProfileServiceAsyncClient
     private let channel: GRPCChannel
     private let authService: AuthService
@@ -46,10 +48,10 @@ public final class ProfileGrpcServiceImpl: ProfileGrpcService {
             self.networkService = networkService
         } catch {
             #if DEBUG
-            fatalError("Ошибка подключения к grpc серверу профиля: \(error)")
+            fatalError("Ошибка подключения к grpc profile серверу профиля: \(error)")
             #else
-            Logger.log(kind: .error, "Ошибка подключения к grpc серверу профиля: \(error)")
-            assertionFailure("Ошибка подключения к grpc серверу: \(error)")
+            Logger.log(kind: .error, "Ошибка подключения к grpc profile серверу профиля: \(error)")
+            assertionFailure("Ошибка подключения к grpc profile серверу: \(error)")
             #endif
         }
     }
@@ -120,6 +122,38 @@ public extension ProfileGrpcServiceImpl {
             call: client.getUserAddresses,
             with: request,
             mapping: { $0.addresses.map(AddressEntity.init(from:)) }
+        )
+    }
+
+    func updateUserImage(req: ProfileServiceModel.UpdateUserImage.Request) async throws -> String {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Profile_UpdateUserImageReq.with {
+            $0.imageData = req.imageData
+            $0.imageKind = req.imageKind.toProto
+        }
+
+        return try await networkService.performAndLog(
+            call: client.updateUserImage,
+            with: request,
+            mapping: { $0.imageURL }
+        )
+    }
+
+    func updateUserData(username: String, userFIO: String?) async throws {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Profile_UpdateUserDataReq.with {
+            $0.updatedUserName = username
+            if let fio = userFIO {
+                $0.updatedFio = fio
+            }
+        }
+
+        return try await networkService.performAndLog(
+            call: client.updateUserData,
+            with: request,
+            mapping: { _ in }
         )
     }
 

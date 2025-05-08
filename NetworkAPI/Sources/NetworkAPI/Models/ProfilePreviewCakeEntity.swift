@@ -34,6 +34,8 @@ public struct ProfilePreviewCakeEntity: Sendable, Hashable {
     public let isOpenForSale: Bool
     /// Владелец
     public let owner: UserEntity
+    /// Ссылка на 3Д модель
+    public let model3DURL: String?
 }
 
 // MARK: - Cake_PreviewCake
@@ -53,7 +55,8 @@ extension ProfilePreviewCakeEntity {
             discountEndTime: model.discountEndTime.date,
             dateCreation: model.dateCreation.date,
             isOpenForSale: model.isOpenForSale,
-            owner: UserEntity(from: model.owner)
+            owner: UserEntity(from: model.owner),
+            model3DURL: model.model3Durl
         )
     }
 }

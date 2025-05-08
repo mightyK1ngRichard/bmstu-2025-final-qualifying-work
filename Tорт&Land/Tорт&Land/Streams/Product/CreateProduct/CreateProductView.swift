@@ -21,16 +21,3 @@ struct CreateProductView: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    CreateProductAssembler.assemble(
-        cakeProvider: CakeGrpcServiceImpl(
-            configuration: AppHosts.cake,
-            networkService: NetworkServiceImpl()
-        ),
-        imageProvider: ImageLoaderProviderImpl()
-    )
-    .environment(Coordinator())
-}

@@ -9,7 +9,6 @@
 import SwiftUI
 
 extension NotificationsListView {
-
     var mainContainer: some View {
         ScrollView {
             LazyVStack {
@@ -18,8 +17,11 @@ extension NotificationsListView {
                     shimmeringView
                 case .finished:
                     notificationsList
-                case .error:
-                    Text("Error")
+                case let .error(errorMessage):
+                    TLErrorView(
+                        configuration: .init(kind: .customError("Network error", errorMessage)),
+                        action: viewModel.didTapReloadButton
+                    )
                 }
             }
             .padding(.horizontal)

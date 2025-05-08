@@ -75,14 +75,15 @@ enum CommonMockData {
     ) -> UserModel {
         UserModel(
             id: String(id),
-            name: name ?? "Имя пользователя #\(id)",
-            mail: "email_\(id)@gmail.com",
+            fio: name ?? "Имя пользователя #\(id)",
+            nickname: "nickname_\(id)",
             avatarImage: avatar ?? .fetched(
                 .uiImage(UIImage(named: "user\(Int.random(in: 1...7))") ?? .user1)
             ),
             headerImage: header ?? .fetched(
                 .uiImage(UIImage(named: "header\(Int.random(in: 1...6))") ?? .header1)
             ),
+            mail: "email_\(id)@gmail.com",
             cakes: []
         )
     }
@@ -99,7 +100,7 @@ enum CommonMockData {
         )
     }
 
-    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDYxNTE3NDYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.t1aSbfDSZLdxYK_Y0WlzaOcwl1hDTbk4WyVcFC973OE"
+    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDY4ODg1OTYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.e8Z8-CHq3ZBushB5BpcFHpkvNtphse516pyDwHys7Dc"
 }
 
 // MARK: - Constants

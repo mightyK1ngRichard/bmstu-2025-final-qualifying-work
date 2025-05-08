@@ -30,13 +30,13 @@ private extension NotificationDetailView {
         case let .purchase(userModel):
             customerOrSellerCell(
                 sectionTitle: Constants.customerSectionTitle,
-                rowTitle: userModel.name,
+                rowTitle: userModel.fio ?? userModel.nickname,
                 action: viewModel.didTapCustomerInfo
             )
         case let .sale(userModel):
             customerOrSellerCell(
                 sectionTitle: Constants.sellerSectionTitle,
-                rowTitle: userModel.name,
+                rowTitle: userModel.titleName,
                 action: viewModel.didTapSellerInfo
             )
         }

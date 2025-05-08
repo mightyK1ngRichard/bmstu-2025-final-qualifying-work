@@ -59,7 +59,7 @@ extension FeedbackViewModel {
                 ratingReviewViewModel.insertNewComment(response.feedback)
                 dismiss()
             } catch {
-                showErrorMessage(message: "\(error)")
+                showErrorMessage(message: error.readableGRPCMessage)
             }
 
             uiProperties.isLoading = false

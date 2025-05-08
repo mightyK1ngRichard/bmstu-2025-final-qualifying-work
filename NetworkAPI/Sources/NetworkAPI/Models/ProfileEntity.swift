@@ -8,7 +8,6 @@
 public struct ProfileEntity: Sendable, Hashable {
     public let id: String
     public let fio: String?
-    public let address: String?
     public let nickname: String
     public let imageURL: String?
     public let headerImageURL: String?
@@ -22,7 +21,6 @@ extension ProfileEntity {
         self = ProfileEntity(
             id: model.id,
             fio: model.hasFio ? model.fio.value : nil,
-            address: model.hasAddress ? model.address.value : nil,
             nickname: model.nickname,
             imageURL: model.hasImageURL ? model.imageURL.value : nil,
             headerImageURL: model.hasHeaderImageURL ? model.headerImageURL.value : nil,

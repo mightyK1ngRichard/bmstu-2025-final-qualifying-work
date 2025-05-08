@@ -52,6 +52,7 @@ public final class AuthGrpcServiceImpl: AuthService, Sendable {
 }
 
 public extension AuthGrpcServiceImpl {
+
     func register(req: AuthServiceModel.Register.Request) async throws -> AuthServiceModel.Register.Response {
         let request = RegisterRequest.with {
             $0.email = req.email
@@ -119,4 +120,5 @@ public extension AuthGrpcServiceImpl {
             Logger.log(kind: .error, error)
         }
     }
+
 }

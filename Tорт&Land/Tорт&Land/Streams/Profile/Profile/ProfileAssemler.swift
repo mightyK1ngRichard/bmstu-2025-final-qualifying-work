@@ -15,7 +15,7 @@ final class ProfileAssemler {
         imageProvider: ImageLoaderProvider,
         cakeProvider: CakeService,
         chatProvider: ChatService,
-        profileService: ProfileGrpcService,
+        profileService: ProfileService,
         isCurrentUser: Bool,
         rootViewModel: RootViewModel
     ) -> ProfileView {

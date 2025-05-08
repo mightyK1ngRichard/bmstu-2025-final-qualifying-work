@@ -11,17 +11,27 @@ import NetworkAPI
 
 struct UserModel: Identifiable, Hashable {
     /// Код пользователя
-    let id: String
-    /// Имя пользователя
-    let name: String
-    /// Почта пользователя
-    let mail: String
+    var id: String
+    /// ФИО пользователя
+    var fio: String?
+    /// Псевдоним пользователя
+    var nickname: String
     /// Аватарка пользователя
     var avatarImage: ImageState
     /// Шапка пользователя
     var headerImage: ImageState
+    /// Почта пользователя
+    var mail: String
+    /// Телефон пользователя
+    var phone: String?
+    /// Номер карты пользователя
+    var cardNumber: String?
     /// Продавайемые торты пользователя
     var cakes: [CakeModel]
+
+    var titleName: String {
+        fio ?? nickname
+    }
 }
 
 extension UserModel {
@@ -30,10 +40,12 @@ extension UserModel {
 
         self = UserModel(
             id: user.id,
-            name: user.fio ?? user.nickname,
-            mail: user.mail,
+            fio: user.fio,
+            nickname: user.nickname,
             avatarImage: .loading,
             headerImage: .loading,
+            mail: user.mail,
+            phone: user.phone,
             cakes: model.previewCakes.map(CakeModel.init(from:))
         )
     }
@@ -41,10 +53,11 @@ extension UserModel {
     init(from model: UserEntity) {
         self = UserModel(
             id: model.id,
-            name: model.fio ?? model.nickname,
-            mail: model.mail,
+            fio: model.fio,
+            nickname: model.nickname,
             avatarImage: .loading,
             headerImage: .loading,
+            mail: model.mail,
             cakes: []
         )
     }
@@ -52,10 +65,11 @@ extension UserModel {
     init(from model: ProfileEntity) {
         self = UserModel(
             id: model.id,
-            name: model.fio ?? model.nickname,
-            mail: model.mail,
+            fio: model.fio,
+            nickname: model.nickname,
             avatarImage: .loading,
             headerImage: .loading,
+            mail: model.mail,
             cakes: []
         )
     }
