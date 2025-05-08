@@ -25,7 +25,7 @@ extension TLProductHCard {
     }
 }
 
-struct TLProductHCard: View {
+struct TLProductHCard: View, Configurable {
     var configuration = Configuration()
 
     var body: some View {

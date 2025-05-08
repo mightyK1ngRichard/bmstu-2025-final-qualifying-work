@@ -60,11 +60,11 @@ enum Order_OrderStatus: SwiftProtobuf.Enum, Swift.CaseIterable {
   /// В ожидании
   case pending // = 0
 
-  /// В обработке
-  case processing // = 1
+  /// Отправлен
+  case shipped // = 1
 
-  /// Завершён
-  case completed // = 2
+  /// Доставлен
+  case delivered // = 2
 
   /// Отменён
   case cancelled // = 3
@@ -77,8 +77,8 @@ enum Order_OrderStatus: SwiftProtobuf.Enum, Swift.CaseIterable {
   init?(rawValue: Int) {
     switch rawValue {
     case 0: self = .pending
-    case 1: self = .processing
-    case 2: self = .completed
+    case 1: self = .shipped
+    case 2: self = .delivered
     case 3: self = .cancelled
     default: self = .UNRECOGNIZED(rawValue)
     }
@@ -87,8 +87,8 @@ enum Order_OrderStatus: SwiftProtobuf.Enum, Swift.CaseIterable {
   var rawValue: Int {
     switch self {
     case .pending: return 0
-    case .processing: return 1
-    case .completed: return 2
+    case .shipped: return 1
+    case .delivered: return 2
     case .cancelled: return 3
     case .UNRECOGNIZED(let i): return i
     }
@@ -97,8 +97,8 @@ enum Order_OrderStatus: SwiftProtobuf.Enum, Swift.CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
   static let allCases: [Order_OrderStatus] = [
     .pending,
-    .processing,
-    .completed,
+    .shipped,
+    .delivered,
     .cancelled,
   ]
 
@@ -152,6 +152,19 @@ struct Order_MakeOrderRes: Sendable {
   init() {}
 }
 
+/// ################# Orders ################# 
+struct Order_OrdersRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var orders: [Order_Order] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 struct Order_Order: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -167,8 +180,8 @@ struct Order_Order: @unchecked Sendable {
     set {_uniqueStorage()._totalPrice = newValue}
   }
 
-  var deliveryAddress: Order_Address {
-    get {return _storage._deliveryAddress ?? Order_Address()}
+  var deliveryAddress: Profile_Address {
+    get {return _storage._deliveryAddress ?? Profile_Address()}
     set {_uniqueStorage()._deliveryAddress = newValue}
   }
   /// Returns true if `deliveryAddress` has been explicitly set.
@@ -244,40 +257,6 @@ struct Order_Order: @unchecked Sendable {
   fileprivate var _storage = _StorageClass.defaultInstance
 }
 
-struct Order_Address: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  /// UUID адреса
-  var id: String = String()
-
-  /// Географическая широта
-  var latitude: Double = 0
-
-  /// Географическая долгота
-  var longitude: Double = 0
-
-  /// Человеко-читаемый адрес (от Google Maps)
-  var formattedAddress: String = String()
-
-  /// Подъезд (необязательно)
-  var entrance: String = String()
-
-  /// Этаж (необязательно)
-  var floor: String = String()
-
-  /// Квартира (необязательно)
-  var apartment: String = String()
-
-  /// Комментарий к доставке
-  var comment: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "order"
@@ -292,8 +271,8 @@ extension Order_PaymentMethod: SwiftProtobuf._ProtoNameProviding {
 extension Order_OrderStatus: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "PENDING"),
-    1: .same(proto: "PROCESSING"),
-    2: .same(proto: "COMPLETED"),
+    1: .same(proto: "SHIPPED"),
+    2: .same(proto: "DELIVERED"),
     3: .same(proto: "CANCELLED"),
   ]
 }
@@ -408,6 +387,38 @@ extension Order_MakeOrderRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
   }
 }
 
+extension Order_OrdersRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".OrdersRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "orders"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.orders) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.orders.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.orders, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Order_OrdersRes, rhs: Order_OrdersRes) -> Bool {
+    if lhs.orders != rhs.orders {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Order_Order: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Order"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -428,7 +439,7 @@ extension Order_Order: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
   fileprivate class _StorageClass {
     var _id: String = String()
     var _totalPrice: Double = 0
-    var _deliveryAddress: Order_Address? = nil
+    var _deliveryAddress: Profile_Address? = nil
     var _mass: Double = 0
     var _filling: Cake_Filling? = nil
     var _deliveryDate: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
@@ -567,80 +578,6 @@ extension Order_Order: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
       }
       if !storagesAreEqual {return false}
     }
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Order_Address: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Address"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "id"),
-    3: .same(proto: "latitude"),
-    4: .same(proto: "longitude"),
-    5: .same(proto: "formattedAddress"),
-    6: .same(proto: "entrance"),
-    7: .same(proto: "floor"),
-    8: .same(proto: "apartment"),
-    9: .same(proto: "comment"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
-      case 3: try { try decoder.decodeSingularDoubleField(value: &self.latitude) }()
-      case 4: try { try decoder.decodeSingularDoubleField(value: &self.longitude) }()
-      case 5: try { try decoder.decodeSingularStringField(value: &self.formattedAddress) }()
-      case 6: try { try decoder.decodeSingularStringField(value: &self.entrance) }()
-      case 7: try { try decoder.decodeSingularStringField(value: &self.floor) }()
-      case 8: try { try decoder.decodeSingularStringField(value: &self.apartment) }()
-      case 9: try { try decoder.decodeSingularStringField(value: &self.comment) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.id.isEmpty {
-      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
-    }
-    if self.latitude.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.latitude, fieldNumber: 3)
-    }
-    if self.longitude.bitPattern != 0 {
-      try visitor.visitSingularDoubleField(value: self.longitude, fieldNumber: 4)
-    }
-    if !self.formattedAddress.isEmpty {
-      try visitor.visitSingularStringField(value: self.formattedAddress, fieldNumber: 5)
-    }
-    if !self.entrance.isEmpty {
-      try visitor.visitSingularStringField(value: self.entrance, fieldNumber: 6)
-    }
-    if !self.floor.isEmpty {
-      try visitor.visitSingularStringField(value: self.floor, fieldNumber: 7)
-    }
-    if !self.apartment.isEmpty {
-      try visitor.visitSingularStringField(value: self.apartment, fieldNumber: 8)
-    }
-    if !self.comment.isEmpty {
-      try visitor.visitSingularStringField(value: self.comment, fieldNumber: 9)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Order_Address, rhs: Order_Address) -> Bool {
-    if lhs.id != rhs.id {return false}
-    if lhs.latitude != rhs.latitude {return false}
-    if lhs.longitude != rhs.longitude {return false}
-    if lhs.formattedAddress != rhs.formattedAddress {return false}
-    if lhs.entrance != rhs.entrance {return false}
-    if lhs.floor != rhs.floor {return false}
-    if lhs.apartment != rhs.apartment {return false}
-    if lhs.comment != rhs.comment {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

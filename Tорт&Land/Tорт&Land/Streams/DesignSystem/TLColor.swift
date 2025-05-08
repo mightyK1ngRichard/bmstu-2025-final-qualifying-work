@@ -82,6 +82,8 @@ extension TLColor where Palette == TextPalette {
     static let textWild = TLColor(hexLight: 0xDB3022, hexDark: 0xFF3E3E)
     /// Красный текст
     static let textRed = TLColor(hexLight: 0xDB3022, hexDark: 0xEF3651)
+    /// Зелёный текст
+    static let textSuccess = TLColor(hexLight: 0x2AA952, hexDark: 0x55D85A)
 }
 
 // MARK: - Icon Colors

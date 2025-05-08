@@ -41,8 +41,8 @@ extension TLErrorView.Configuration.Kind {
     }
 }
 
-struct TLErrorView: View {
-    var configuration: Configuration
+struct TLErrorView: View, Configurable {
+    var configuration = Configuration()
     var action: TLVoidBlock?
 
     var body: some View {
@@ -76,6 +76,6 @@ struct TLErrorView: View {
 }
 
 #Preview {
-    TLErrorView(configuration: .init())
+    TLErrorView()
         .padding(.horizontal, 53)
 }

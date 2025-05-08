@@ -22,6 +22,11 @@ internal protocol Order_OrderServiceClientProtocol: GRPCClient {
     _ request: Order_MakeOrderReq,
     callOptions: CallOptions?
   ) -> UnaryCall<Order_MakeOrderReq, Order_MakeOrderRes>
+
+  func orders(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Order_OrdersRes>
 }
 
 extension Order_OrderServiceClientProtocol {
@@ -44,6 +49,24 @@ extension Order_OrderServiceClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeMakeOrderInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to Orders
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to Orders.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func orders(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Order_OrdersRes> {
+    return self.makeUnaryCall(
+      path: Order_OrderServiceClientMetadata.Methods.orders.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeOrdersInterceptors() ?? []
     )
   }
 }
@@ -115,6 +138,11 @@ internal protocol Order_OrderServiceAsyncClientProtocol: GRPCClient {
     _ request: Order_MakeOrderReq,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Order_MakeOrderReq, Order_MakeOrderRes>
+
+  func makeOrdersCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Order_OrdersRes>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -138,6 +166,18 @@ extension Order_OrderServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeMakeOrderInterceptors() ?? []
     )
   }
+
+  internal func makeOrdersCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, Order_OrdersRes> {
+    return self.makeAsyncUnaryCall(
+      path: Order_OrderServiceClientMetadata.Methods.orders.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeOrdersInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -151,6 +191,18 @@ extension Order_OrderServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeMakeOrderInterceptors() ?? []
+    )
+  }
+
+  internal func orders(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> Order_OrdersRes {
+    return try await self.performAsyncUnaryCall(
+      path: Order_OrderServiceClientMetadata.Methods.orders.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeOrdersInterceptors() ?? []
     )
   }
 }
@@ -176,6 +228,9 @@ internal protocol Order_OrderServiceClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'makeOrder'.
   func makeMakeOrderInterceptors() -> [ClientInterceptor<Order_MakeOrderReq, Order_MakeOrderRes>]
+
+  /// - Returns: Interceptors to use when invoking 'orders'.
+  func makeOrdersInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Order_OrdersRes>]
 }
 
 internal enum Order_OrderServiceClientMetadata {
@@ -184,6 +239,7 @@ internal enum Order_OrderServiceClientMetadata {
     fullName: "order.OrderService",
     methods: [
       Order_OrderServiceClientMetadata.Methods.makeOrder,
+      Order_OrderServiceClientMetadata.Methods.orders,
     ]
   )
 
@@ -191,6 +247,12 @@ internal enum Order_OrderServiceClientMetadata {
     internal static let makeOrder = GRPCMethodDescriptor(
       name: "MakeOrder",
       path: "/order.OrderService/MakeOrder",
+      type: GRPCCallType.unary
+    )
+
+    internal static let orders = GRPCMethodDescriptor(
+      name: "Orders",
+      path: "/order.OrderService/Orders",
       type: GRPCCallType.unary
     )
   }
@@ -203,6 +265,8 @@ internal protocol Order_OrderServiceProvider: CallHandlerProvider {
   var interceptors: Order_OrderServiceServerInterceptorFactoryProtocol? { get }
 
   func makeOrder(request: Order_MakeOrderReq, context: StatusOnlyCallContext) -> EventLoopFuture<Order_MakeOrderRes>
+
+  func orders(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Order_OrdersRes>
 }
 
 extension Order_OrderServiceProvider {
@@ -226,6 +290,15 @@ extension Order_OrderServiceProvider {
         userFunction: self.makeOrder(request:context:)
       )
 
+    case "Orders":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Order_OrdersRes>(),
+        interceptors: self.interceptors?.makeOrdersInterceptors() ?? [],
+        userFunction: self.orders(request:context:)
+      )
+
     default:
       return nil
     }
@@ -244,6 +317,11 @@ internal protocol Order_OrderServiceAsyncProvider: CallHandlerProvider, Sendable
     request: Order_MakeOrderReq,
     context: GRPCAsyncServerCallContext
   ) async throws -> Order_MakeOrderRes
+
+  func orders(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Order_OrdersRes
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -274,6 +352,15 @@ extension Order_OrderServiceAsyncProvider {
         wrapping: { try await self.makeOrder(request: $0, context: $1) }
       )
 
+    case "Orders":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Order_OrdersRes>(),
+        interceptors: self.interceptors?.makeOrdersInterceptors() ?? [],
+        wrapping: { try await self.orders(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -285,6 +372,10 @@ internal protocol Order_OrderServiceServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'makeOrder'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeMakeOrderInterceptors() -> [ServerInterceptor<Order_MakeOrderReq, Order_MakeOrderRes>]
+
+  /// - Returns: Interceptors to use when handling 'orders'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeOrdersInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Order_OrdersRes>]
 }
 
 internal enum Order_OrderServiceServerMetadata {
@@ -293,6 +384,7 @@ internal enum Order_OrderServiceServerMetadata {
     fullName: "order.OrderService",
     methods: [
       Order_OrderServiceServerMetadata.Methods.makeOrder,
+      Order_OrderServiceServerMetadata.Methods.orders,
     ]
   )
 
@@ -300,6 +392,12 @@ internal enum Order_OrderServiceServerMetadata {
     internal static let makeOrder = GRPCMethodDescriptor(
       name: "MakeOrder",
       path: "/order.OrderService/MakeOrder",
+      type: GRPCCallType.unary
+    )
+
+    internal static let orders = GRPCMethodDescriptor(
+      name: "Orders",
+      path: "/order.OrderService/Orders",
       type: GRPCCallType.unary
     )
   }

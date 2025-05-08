@@ -32,8 +32,8 @@ public extension AppHosts {
         switch self {
         case .auth, .cake, .profile, .chat, .reviews, .order, .notification:
         #if DEBUG
-//            return "localhost"
-            return "192.168.1.44"
+            return "localhost"
+//            return "192.168.1.44"
         #else
             return "localhost"
         #endif

@@ -29,6 +29,8 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     @ObservationIgnored
     private var coordinator: Coordinator?
     @ObservationIgnored
+    private var orderService: OrderService
+    @ObservationIgnored
     private let priceFormatter = PriceFormatterService.shared
     @ObservationIgnored
     private var store: Set<AnyCancellable> = []
@@ -39,6 +41,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         cakeProvider: CakeService,
         chatProvider: ChatService,
         profileService: ProfileService,
+        orderService: OrderService,
         isCurrentUser: Bool = false,
         rootViewModel: RootViewModel
     ) {
@@ -47,6 +50,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         self.cakeProvider = cakeProvider
         self.chatProvider = chatProvider
         self.isCurrentUser = isCurrentUser
+        self.orderService = orderService
         self.imageProvider = imageProvider
         self.rootViewModel = rootViewModel
     }
@@ -148,6 +152,10 @@ extension ProfileViewModel {
         print("[DEBUG]: cake with id=\(cake.id) is \(isSelected ? "liked" : "unliked")")
     }
 
+    func didTapOpenOrders() {
+        coordinator?.addScreen(ProfileModel.Screens.orders)
+    }
+
 }
 
 // MARK: - Configurations
@@ -195,4 +203,9 @@ extension ProfileViewModel {
             .store(in: &store)
         return view
     }
+
+    func assemblyOrdersView() -> OrderListView {
+        OrderListAssembler.assemble(orderService: orderService)
+    }
+
 }

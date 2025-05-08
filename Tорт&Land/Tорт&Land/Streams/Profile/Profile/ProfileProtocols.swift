@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NetworkAPI
 
 protocol ProfileDisplayLogic {
     var uiProperties: ProfileModel.UIProperties { get set }
@@ -18,6 +19,7 @@ protocol ProfileViewModelInput {
     func setEnvironmentObjects(coordinator: Coordinator)
     func assemblyCreateCakeView() -> CreateProductView
     func assemblySettingsView(userModel: UserModel) -> SettingsView
+    func assemblyOrdersView() -> OrderListView
     func assemblyChatView(interlocutor: UserModel) -> ChatView
     func configureAvatarImage() -> TLImageView.Configuration
     func configureHeaderImage() -> TLImageView.Configuration
@@ -26,6 +28,7 @@ protocol ProfileViewModelInput {
     func fetchUserData()
 
     func didTapCreateProduct()
+    func didTapOpenOrders()
     func didTapOpenSettings()
     func didTapOpenMap()
     func didTapWriteMessage()

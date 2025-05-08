@@ -55,8 +55,8 @@ private extension ProfileView {
                         action: viewModel.didTapOpenSettings
                     )
                     IconButton(
-                        iconname: Constants.notificationImg,
-                        action: viewModel.didTapOpenMap
+                        iconname: Constants.orderImg,
+                        action: viewModel.didTapOpenOrders
                     )
                 } else {
                     MessageButton(
@@ -277,7 +277,7 @@ private extension ProfileView {
         static let userMailColor = TLColor<TextPalette>.textPrimary.color
         static let bgColor = TLColor<BackgroundPalette>.bgMainColor.color
         static let gearButtonImg = UIImage(systemName: "gear")
-        static let notificationImg = UIImage(systemName: "location.north.circle")
+        static let orderImg = UIImage(systemName: "shippingbox")
         static let createProductTitle = String(localized: "Create a product")
         static let createProductImg = "plus.circle"
         static let writeMessageTitle = String(localized: "Message")

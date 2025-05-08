@@ -15,14 +15,9 @@ struct CakesLandApp: App {
 
     var body: some Scene {
         WindowGroup {
-            #if DEBUG
-//            RootAssembler.assembleMock()
             RootAssembler.assemble(startScreenControl: startScreenControl)
                 .environment(startScreenControl)
-            #else
-            RootAssembler.assemble(startScreenControl: startScreenControl)
-                .environment(startScreenControl)
-            #endif
+//            RemoteARQuickLookView(remoteURL: URL(string: "http://192.168.1.44:9000/cake-land-server/8f66f9c9-a539-4e83-aac9-ea88730595a2")!)
         }
     }
 }

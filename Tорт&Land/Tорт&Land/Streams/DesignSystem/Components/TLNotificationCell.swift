@@ -15,8 +15,8 @@ extension TLNotificationCell {
     }
 }
 
-struct TLNotificationCell: View {
-    var configuration: Configuration
+struct TLNotificationCell: View, Configurable {
+    let configuration: Configuration
     @State private var offsetX: CGFloat = .zero
     @State private var showTrash = false
     var deleteHandler: TLStringBlock?

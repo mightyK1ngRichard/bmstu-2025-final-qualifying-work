@@ -38,6 +38,8 @@ private extension ProfileView {
             viewModel.assemblyChatView(interlocutor: interlocutor)
         case let .settings(userModel):
             viewModel.assemblySettingsView(userModel: userModel)
+        case .orders:
+            viewModel.assemblyOrdersView()
         }
     }
 }

@@ -10,6 +10,7 @@
 
 import Foundation
 import Observation
+import NetworkAPI
 
 @Observable
 final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
@@ -104,6 +105,13 @@ extension ProfileViewModelMock {
 
     func assemblySettingsView(userModel: UserModel) -> SettingsView {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func assemblyOrdersView() -> OrderListView {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func didTapOpenOrders() {
     }
 }
 

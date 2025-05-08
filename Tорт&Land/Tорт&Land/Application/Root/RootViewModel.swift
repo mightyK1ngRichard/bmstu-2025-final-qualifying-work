@@ -168,6 +168,7 @@ extension RootViewModel {
             cakeProvider: cakeService,
             chatProvider: chatProvider,
             profileService: profileService,
+            orderService: orderProvider,
             isCurrentUser: currentUser?.id == userModel.id,
             rootViewModel: self
         )
@@ -218,6 +219,7 @@ extension RootViewModel {
             cakeProvider: cakeService,
             chatProvider: chatProvider,
             profileService: profileService,
+            orderService: orderProvider,
             isCurrentUser: true,
             rootViewModel: self
         )

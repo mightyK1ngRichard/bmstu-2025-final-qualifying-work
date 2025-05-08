@@ -22,7 +22,7 @@ extension TLInputCode {
 
 // MARK: - TLInputCode
 
-struct TLInputCode: View {
+struct TLInputCode: View, Configurable {
     var configuration = Configuration()
     @Binding var inputText: String
 

@@ -22,8 +22,8 @@ extension TLButton.Configuration {
     }
 }
 
-struct TLButton: View {
-    let configuration: Configuration
+struct TLButton: View, Configurable {
+    var configuration = Configuration()
     var action: TLVoidBlock?
     @Environment(\.isEnabled) private var isEnabled
 

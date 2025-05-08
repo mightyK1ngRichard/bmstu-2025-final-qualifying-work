@@ -170,7 +170,13 @@
         }
       }
     },
+    "Delivery address:" : {
+
+    },
     "Desired delivery date:" : {
+
+    },
+    "Details" : {
 
     },
     "Discounted price (Optional field)" : {
@@ -283,6 +289,9 @@
           }
         }
       }
+    },
+    "My orders" : {
+
     },
     "New" : {
       "localizations" : {
