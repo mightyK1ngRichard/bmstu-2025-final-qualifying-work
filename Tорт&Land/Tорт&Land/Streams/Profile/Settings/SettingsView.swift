@@ -37,7 +37,7 @@ struct SettingsView: View {
         .defaultAlert(
             title: viewModel.uiProperties.alert.title,
             message: viewModel.uiProperties.alert.message,
-            isPresented: $viewModel.uiProperties.alert.isShow
+            isPresented: $viewModel.uiProperties.alert.isShown
         )
         .onChange(of: viewModel.uiProperties.selectedImage) { _, newValue in
             viewModel.didUpdateImage(with: newValue)

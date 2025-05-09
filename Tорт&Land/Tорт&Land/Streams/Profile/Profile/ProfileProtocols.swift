@@ -20,7 +20,7 @@ protocol ProfileViewModelInput {
     func assemblyCreateCakeView() -> CreateProductView
     func assemblySettingsView(userModel: UserModel) -> SettingsView
     func assemblyOrdersView() -> OrderListView
-    func assemblyChatView(interlocutor: UserModel) -> ChatView
+    func assemblyChatView(currentUser: UserModel, interlocutor: UserModel) -> ChatView
     func configureAvatarImage() -> TLImageView.Configuration
     func configureHeaderImage() -> TLImageView.Configuration
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration

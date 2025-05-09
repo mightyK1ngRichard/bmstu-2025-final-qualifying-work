@@ -68,6 +68,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
 // MARK: - Network
 
 extension ProfileViewModel {
+
     func fetchUserData() {
         guard isCurrentUser else {
             uiProperties.screenState = .finished
@@ -122,6 +123,7 @@ extension ProfileViewModel {
             }
         }
     }
+
 }
 
 // MARK: - Actions
@@ -147,8 +149,14 @@ extension ProfileViewModel {
     }
 
     func didTapWriteMessage() {
-        if let interlocutor = user {
-            coordinator?.addScreen(ProfileModel.Screens.sendMessage(interlocutor: interlocutor))
+        if let interlocutor = user, let currentUser = rootViewModel.currentUser {
+            coordinator?.addScreen(ProfileModel.Screens.sendMessage(currentUser: currentUser, interlocutor: interlocutor))
+        } else {
+            uiProperties.alert = AlertModel(
+                title: "Current user not found",
+                message: "Inner error. Relaunch this app",
+                isShown: true
+            )
         }
     }
 
@@ -165,6 +173,7 @@ extension ProfileViewModel {
 // MARK: - Configurations
 
 extension ProfileViewModel {
+
     func configureAvatarImage() -> TLImageView.Configuration {
         guard let user else { return .init(imageState: .loading) }
         return .init(imageState: user.avatarImage)
@@ -186,12 +195,8 @@ extension ProfileViewModel {
         )
     }
 
-    func assemblyChatView(interlocutor: UserModel) -> ChatView {
-        guard let currentUser = rootViewModel.currentUser else {
-            fatalError()
-        }
-
-        return ChatAssembler.assemble(
+    func assemblyChatView(currentUser: UserModel, interlocutor: UserModel) -> ChatView {
+        ChatAssembler.assemble(
             currentUser: currentUser,
             interlocutor: interlocutor,
             chatProvider: chatProvider

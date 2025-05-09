@@ -99,7 +99,7 @@ extension ProfileViewModelMock {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func assemblyChatView(interlocutor: UserModel) -> ChatView {
+    func assemblyChatView(currentUser: UserModel, interlocutor: UserModel) -> ChatView {
         fatalError("init(coder:) has not been implemented")
     }
 

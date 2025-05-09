@@ -100,10 +100,10 @@ extension SettingsViewModel {
                 startScreenControl?.update(with: .auth)
                 coordinator?.goToRoot()
             } catch {
-                uiProperties.alert = .init(
-                    isShow: true,
+                uiProperties.alert = AlertModel(
                     title: "Logout failed",
-                    message: error.readableGRPCMessage
+                    message: error.readableGRPCMessage,
+                    isShown: true
                 )
             }
         }
@@ -120,10 +120,10 @@ extension SettingsViewModel {
                 uiProperties.penState = .updated
                 userPublisher.send(userModel)
             } catch {
-                uiProperties.alert = .init(
-                    isShow: true,
+                uiProperties.alert = AlertModel(
                     title: "Failed to update info",
-                    message: error.readableGRPCMessage
+                    message: error.readableGRPCMessage,
+                    isShown: true
                 )
                 uiProperties.penState = .failed
             }
@@ -180,7 +180,7 @@ extension SettingsViewModel {
         var state: ScreenState = .initial
         var showPopover = false
         var showPhotoPicker = false
-        var alert = Alert()
+        var alert = AlertModel()
         var selectedImage: PhotosPickerItem?
         var inputNickname = ""
         var inputFIO = ""
@@ -197,12 +197,6 @@ extension SettingsViewModel.UIProperties {
     enum UserImageKind: String, Hashable, CaseIterable {
         case avatar
         case header
-    }
-
-    struct Alert: Hashable {
-        var isShow = false
-        var title = ""
-        var message = ""
     }
 
     enum PenState: Hashable {

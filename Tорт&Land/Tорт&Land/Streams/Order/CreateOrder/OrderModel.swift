@@ -20,19 +20,13 @@ extension OrderModel {
         var selectedAddressID: String?
         var selectedWeightMultiplier = 1.0
         var paymentMethod: PaymentMethod = .cash
-        var alert = Alert()
+        var alert = AlertModel()
         var deliveryDate = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date()
     }
 
     enum Screens: Hashable {
         case updateAddress(AddressEntity)
         case addAddress
-    }
-
-    struct Alert: Hashable {
-        var title = ""
-        var message = ""
-        var isShown = false
     }
 }
 

@@ -18,13 +18,19 @@ extension ProfileView {
                 contentView
             case let .error(message):
                 TLErrorView(
-                    configuration: .init(kind: .customError("Network Error", message))
+                    configuration: .init(kind: .customError("Network Error", message)),
+                    action: viewModel.fetchUserData
                 )
                 .padding(.horizontal, 30)
             }
         }
         .ignoresSafeArea()
         .background(Constants.bgColor)
+        .defaultAlert(
+            title: viewModel.uiProperties.alert.title,
+            message: viewModel.uiProperties.alert.message,
+            isPresented: $viewModel.uiProperties.alert.isShown
+        )
     }
 }
 

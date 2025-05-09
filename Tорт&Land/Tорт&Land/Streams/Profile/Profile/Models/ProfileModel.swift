@@ -13,12 +13,13 @@ enum ProfileModel {}
 extension ProfileModel {
     struct UIProperties: Hashable {
         var screenState: ScreenState = .initial
+        var alert = AlertModel()
     }
 
     enum Screens: Hashable {
         case createProfile
         case orders
-        case sendMessage(interlocutor: UserModel)
+        case sendMessage(currentUser: UserModel, interlocutor: UserModel)
         case settings(userModel: UserModel)
     }
 }

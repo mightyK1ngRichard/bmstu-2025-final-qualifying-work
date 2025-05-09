@@ -34,8 +34,8 @@ private extension ProfileView {
         switch screen {
         case .createProfile:
             viewModel.assemblyCreateCakeView()
-        case let .sendMessage(interlocutor):
-            viewModel.assemblyChatView(interlocutor: interlocutor)
+        case let .sendMessage(currentUser, interlocutor):
+            viewModel.assemblyChatView(currentUser: currentUser, interlocutor: interlocutor)
         case let .settings(userModel):
             viewModel.assemblySettingsView(userModel: userModel)
         case .orders:

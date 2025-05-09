@@ -116,12 +116,19 @@ extension View {
 // MARK: - Alert
 
 extension View {
-    func defaultAlert(title: String, message: String, isPresented: Binding<Bool>) -> some View {
+    func defaultAlert(
+        title: String,
+        message: String,
+        isPresented: Binding<Bool>,
+        action: TLVoidBlock? = nil
+    ) -> some View {
         alert(
             title,
             isPresented: isPresented
         ) {
-            Button("OK") {}
+            Button("OK") {
+                action?()
+            }
         } message: {
             Text(message)
         }

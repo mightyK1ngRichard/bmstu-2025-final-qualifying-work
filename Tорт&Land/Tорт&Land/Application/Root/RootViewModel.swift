@@ -144,7 +144,7 @@ private extension RootViewModel {
 extension RootViewModel {
 
     func assemblyChatListErrorView() -> TLErrorView.Configuration {
-        .init(kind: .customError("Error", "User not found"))
+        .init(kind: .customError("User not found", "Current user not found. Please try again later."))
     }
 
     func assemblyAuthView() -> AuthView {
