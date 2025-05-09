@@ -9,6 +9,7 @@
 import Foundation
 import Observation
 import Combine
+import Core
 import NetworkAPI
 import DesignSystem
 
@@ -97,7 +98,7 @@ extension ProfileViewModel {
     private func fetchAvatarWithHeaderImage(imageURL: String?, headerImageURL: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                user?.avatarImage = .fetched(.uiImage(.profile))
+                user?.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 

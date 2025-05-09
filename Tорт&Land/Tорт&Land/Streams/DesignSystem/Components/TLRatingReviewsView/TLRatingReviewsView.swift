@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
  Component `TLRatingReviewsView`
@@ -58,7 +59,7 @@ private extension TLRatingReviewsView {
                 HStack {
                     HStack(spacing: 3) {
                         ForEach(0..<5-counter.id, id: \.self) { row in
-                            Image(.starFill)
+                            Image(uiImage: TLAssets.starFill)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: Constants.starSize)

@@ -12,6 +12,7 @@ import Foundation
 import Observation
 import UIKit
 import NetworkAPI
+import Core
 import SwiftUI
 
 @Observable
@@ -82,7 +83,7 @@ private extension CategoriesViewModelMock {
                 title: "\(title) #\(id)",
                 imageState: .fetched(
                     .uiImage(
-                        [UIImage(resource: .cake1), UIImage(resource: .cake2), UIImage(resource: .cake3)].randomElement() ?? .cake1
+                        [TLPreviewAssets.cake1, TLPreviewAssets.cake2, TLPreviewAssets.cake3].randomElement() ?? TLPreviewAssets.cake1
                     )
                 )
             )

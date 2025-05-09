@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import Core
 import DesignSystem
 
 @Observable
@@ -63,7 +64,7 @@ private extension RatingReviewsViewModel {
     func fetchUserImage(index: Int, urlString: String?) {
         Task { @MainActor in
             guard let urlString else {
-                comments[index].author.imageState = .fetched(.uiImage(.profile))
+                comments[index].author.imageState = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 

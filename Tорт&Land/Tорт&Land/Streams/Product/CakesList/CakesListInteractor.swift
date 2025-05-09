@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Core
 import NetworkAPI
 
 final class CakesListInteractor: CakesListBusinessLogic {
@@ -69,7 +70,7 @@ private extension CakesListInteractor {
     func fetchUserImages(user: UserEntity, cakeID: String) {
         Task { @MainActor in
             guard let imageURL = user.imageURL else {
-                presenter.updateUserAvatarImage(imageState: .fetched(.uiImage(.profile)), cakeID: cakeID)
+                presenter.updateUserAvatarImage(imageState: .fetched(.uiImage(TLAssets.profile)), cakeID: cakeID)
                 return
             }
 

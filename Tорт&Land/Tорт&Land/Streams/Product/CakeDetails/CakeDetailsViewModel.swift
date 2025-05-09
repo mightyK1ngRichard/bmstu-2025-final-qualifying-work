@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Core
 import NetworkAPI
 import DesignSystem
 
@@ -78,7 +79,7 @@ extension CakeDetailsViewModel {
     private func fetchSellerImages(imageURL: String?, headerImage: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                cakeModel.seller.avatarImage = .fetched(.uiImage(.profile))
+                cakeModel.seller.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 

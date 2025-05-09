@@ -95,7 +95,7 @@ private extension FillingDetailView {
     FillingDetailView(
         configuration: .init(
             name: "Клубничная начинка Клуб начинка",
-            imageState: .fetched(.uiImage(.filling2)),
+            imageState: .fetched(.uiImage(TLPreviewAssets.filling2)),
             content: "Клубника, сливки, масло",
             kgPrice: "100 руб/кг",
             description: """

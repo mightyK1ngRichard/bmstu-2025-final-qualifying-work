@@ -11,6 +11,7 @@
 import Foundation
 import Observation
 import DesignSystem
+import Core
 
 @Observable
 final class ChatViewModelMock: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelInput {
@@ -56,8 +57,16 @@ final class ChatViewModelMock: ChatDisplayLogic, ChatViewModelOutput, ChatViewMo
 
 private extension ChatViewModelMock {
     enum MockData {
-        static let mockCurrentUser = CommonMockData.generateMockUserModel(id: 1, name: "Пермяков Дмитрий", avatar: .fetched(.uiImage(.king)))
-        static let mockInterlocutor = CommonMockData.generateMockUserModel(id: 2, name: "Машулька", avatar: .fetched(.uiImage(.user7)))
+        static let mockCurrentUser = CommonMockData.generateMockUserModel(
+            id: 1,
+            name: "Пермяков Дмитрий",
+            avatar: .fetched(.uiImage(TLPreviewAssets.king))
+        )
+        static let mockInterlocutor = CommonMockData.generateMockUserModel(
+            id: 2,
+            name: "Машулька",
+            avatar: .fetched(.uiImage(TLPreviewAssets.user7))
+        )
         static let mockMessages: [ChatModel.ChatMessage] = (1...20).map {
             ChatModel.ChatMessage(
                 id: String($0),

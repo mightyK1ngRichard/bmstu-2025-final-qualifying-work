@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Core
 import DesignSystem
 
 extension AuthView {
@@ -51,7 +52,7 @@ extension AuthView {
     }
 
     var logoView: some View {
-        Image(.cakeLogo)
+        Image(uiImage: TLAssets.cakeLogo)
             .renderingMode(.template)
             .resizable()
             .aspectRatio(contentMode: .fit)

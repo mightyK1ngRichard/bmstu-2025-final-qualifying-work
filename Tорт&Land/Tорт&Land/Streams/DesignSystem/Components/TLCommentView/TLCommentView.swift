@@ -95,10 +95,14 @@ private extension Text {
 
 // MARK: - Preview
 
+#if DEBUG
+import Core
+#endif
+
 #Preview {
     TLCommentView(
         configuration: .basic(
-            imageState: .fetched(.uiImage(.cake1)),
+            imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
             userName: "Helene Moore",
             date: "June 5, 2019",
             description: """

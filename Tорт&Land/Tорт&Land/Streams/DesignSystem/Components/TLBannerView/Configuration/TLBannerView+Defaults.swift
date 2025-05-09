@@ -12,7 +12,7 @@ extension TLBannerView.Configuration {
 
     public static func basic(title: String, buttonTitle: String? = nil) -> Self {
         .init(
-            imageConfiguration: .init(imageState: .fetched(.uiImage(.banner))),
+            imageConfiguration: .init(imageState: .fetched(.uiImage(TLAssets.banner))),
             bannerTitle: title,
             buttonTitle: buttonTitle
         )

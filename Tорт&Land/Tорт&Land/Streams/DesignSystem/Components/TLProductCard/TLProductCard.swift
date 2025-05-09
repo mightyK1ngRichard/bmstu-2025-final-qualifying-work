@@ -141,7 +141,7 @@ private extension TLProductCard {
     VStack {
         TLProductCard(
             configuration: .basic(
-                imageState: .fetched(.uiImage(.cake1)),
+                imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
                 imageHeight: 184,
                 productText: .init(
                     seller: "Mango Boy",

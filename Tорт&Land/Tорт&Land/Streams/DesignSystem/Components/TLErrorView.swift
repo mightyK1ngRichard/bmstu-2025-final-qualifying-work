@@ -59,7 +59,7 @@ public struct TLErrorView: View, Configurable {
 
     public var body: some View {
         VStack(spacing: 40) {
-            Image(.noConnection)
+            Image(uiImage: TLAssets.noConnection)
                 .resizable()
                 .scaledToFit()
 

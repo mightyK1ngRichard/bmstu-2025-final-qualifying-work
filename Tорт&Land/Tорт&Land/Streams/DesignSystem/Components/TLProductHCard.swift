@@ -170,6 +170,9 @@ private extension TLProductHCard {
 }
 
 // MARK: - Preview
+#if DEBUG
+import Core
+#endif
 
 #Preview {
     ZStack {
@@ -182,7 +185,7 @@ private extension TLProductHCard {
 
             TLProductHCard(
                 configuration: .init(
-                    imageConfiguration: .init(imageState: .fetched(.uiImage(.cake1))),
+                    imageConfiguration: .init(imageState: .fetched(.uiImage(TLPreviewAssets.cake1))),
                     starsConfiguration: .basic(kind: .five, feedbackCount: 100),
                     seller: "Пермяков Дмитрий",
                     title: "Просто вкусный тортик",
@@ -194,7 +197,7 @@ private extension TLProductHCard {
 
             TLProductHCard(
                 configuration: .init(
-                    imageConfiguration: .init(imageState: .fetched(.uiImage(.cake1))),
+                    imageConfiguration: .init(imageState: .fetched(.uiImage(TLPreviewAssets.cake1))),
                     starsConfiguration: .basic(kind: .five, feedbackCount: 100),
                     seller: "Пермяков Дмитрий",
                     title: "Просто вкусный тортик",

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Core
 import DesignSystem
 
 extension ChatListView {
@@ -87,7 +88,7 @@ private extension ChatListView {
 
     var searchBarView: some View {
         HStack(spacing: 12) {
-            Image(.magnifier)
+            Image(uiImage: TLAssets.magnifier)
                 .renderingMode(.template)
                 .foregroundStyle(TLColor<IconPalette>.iconSecondary.color)
 

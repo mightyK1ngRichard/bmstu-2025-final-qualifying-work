@@ -13,6 +13,7 @@ import NetworkAPI
 import SwiftUI
 import Observation
 import DesignSystem
+import Core
 
 @Observable
 final class RootViewModelMock: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {
@@ -113,7 +114,7 @@ private extension RootViewModelMock {
         static let mockCurrentUser = CommonMockData.generateMockUserModel(
             id: 1,
             name: "Дмитрий Пермяков",
-            avatar: .fetched(.uiImage(.king))
+            avatar: .fetched(.uiImage(TLPreviewAssets.king))
         )
     }
 }

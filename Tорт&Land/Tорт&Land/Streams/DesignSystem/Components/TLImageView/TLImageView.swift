@@ -80,6 +80,8 @@ private extension TLImageView {
             emptyView.overlay {
                 Image(systemName: systemName)
             }
+        @unknown default:
+            fatalError("unknown case")
         }
     }
 
@@ -90,14 +92,17 @@ private extension TLImageView {
 }
 
 // MARK: - Preview
+#if DEBUG
+import Core
+#endif
 
 #Preview {
     ScrollView {
         ForEach([
-            TLImageView.Configuration.init(imageState: .fetched(.uiImage(.cake2))),
+            TLImageView.Configuration.init(imageState: .fetched(.uiImage(TLPreviewAssets.cake2))),
             .init(
                 imageState: .fetched(
-                    .data(UIImage(resource: .cake1).pngData() ?? Data())
+                    .data(TLPreviewAssets.cake1.pngData() ?? Data())
                 )
             ),
             .init(imageState: .loading),

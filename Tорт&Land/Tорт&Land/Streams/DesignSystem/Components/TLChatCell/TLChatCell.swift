@@ -96,7 +96,7 @@ private extension TLChatCell {
     VStack {
         TLChatCell(
             configuration: .basic(
-                imageState: .fetched(.uiImage(.profile)),
+                imageState: .fetched(.uiImage(TLAssets.profile)),
                 title: "Dmitriy Permyakov",
                 subtitle: "Hello, VK! It is CakesHub application",
                 time: "02:10"

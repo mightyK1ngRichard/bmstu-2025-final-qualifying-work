@@ -67,9 +67,13 @@
 		E5FCE74D2DCE3EFB00D420CB /* Exceptions for "Tорт&Land" folder in "Tорт&Land" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Resources/Preview Content/Preview Assets.xcassets",
 				Streams/Core/Core.docc,
 				Streams/Core/Helpers/Typealias.swift,
+				Streams/Core/Models/IconDataSource.swift,
 				Streams/Core/Models/ImageState.swift,
+				Streams/Core/Resources/Assets.xcassets,
+				"Streams/Core/Resources/Preview Content/Preview Assets.xcassets",
 				Streams/DesignSystem/Components/FillingDetailView.swift,
 				Streams/DesignSystem/Components/OrderCell.swift,
 				Streams/DesignSystem/Components/ShimmeringView.swift,
@@ -181,7 +185,10 @@
 				Streams/Core/Core.docc,
 				Streams/Core/Core.h,
 				Streams/Core/Helpers/Typealias.swift,
+				Streams/Core/Models/IconDataSource.swift,
 				Streams/Core/Models/ImageState.swift,
+				Streams/Core/Resources/Assets.xcassets,
+				"Streams/Core/Resources/Preview Content/Preview Assets.xcassets",
 			);
 			publicHeaders = (
 				Streams/Core/Core.h,
@@ -190,23 +197,12 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		E5FCE7A82DCE436D00D420CB /* Exceptions for "Tорт&Land" folder in "Compile Sources" phase from "DesignSystem" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = E5FCE7252DCE3EEC00D420CB /* Sources */;
-			membershipExceptions = (
-				Streams/DesignSystem/Resources/Assets.xcassets,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E5A5F5B52D1647E600140551 /* Tорт&Land */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				E5FCE74D2DCE3EFB00D420CB /* Exceptions for "Tорт&Land" folder in "Tорт&Land" target */,
 				E5FCE74E2DCE3EFB00D420CB /* Exceptions for "Tорт&Land" folder in "DesignSystem" target */,
-				E5FCE7A82DCE436D00D420CB /* Exceptions for "Tорт&Land" folder in "Compile Sources" phase from "DesignSystem" target */,
 				E5FCE7932DCE3FE600D420CB /* Exceptions for "Tорт&Land" folder in "Core" target */,
 			);
 			path = "Tорт&Land";

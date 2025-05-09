@@ -215,7 +215,7 @@ private extension CakeDetailsView {
                     .font(.system(size: 16, weight: .regular))
                     .tint(TLColor<TextPalette>.textPrimary.color)
                 Spacer()
-                Image(.chevronRight)
+                Image(uiImage: TLAssets.chevronRight)
                     .renderingMode(.template)
                     .tint(TLColor<TextPalette>.textPrimary.color)
                     .frame(width: 16, height: 16)
@@ -235,7 +235,7 @@ private extension CakeDetailsView {
         Button {
             viewModel.didTapBackButton()
         } label: {
-            Image(.chevronLeft)
+            Image(uiImage: TLAssets.chevronLeft)
                 .renderingMode(.template)
                 .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
         }

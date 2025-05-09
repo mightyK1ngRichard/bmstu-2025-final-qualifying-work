@@ -50,11 +50,14 @@ public struct TLCategoryCell: View {
 }
 
 // MARK: - Preview
+#if DEBUG
+import Core
+#endif
 
 #Preview {
     TLCategoryCell(
         configuration: .basic(
-            imageState: .fetched(.uiImage(.cake2)),
+            imageState: .fetched(.uiImage(TLPreviewAssets.cake2)),
             title: "Clothes"
         )
     )

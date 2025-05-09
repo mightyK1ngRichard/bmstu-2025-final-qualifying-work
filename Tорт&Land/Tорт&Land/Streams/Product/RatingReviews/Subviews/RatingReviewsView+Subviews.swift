@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Core
 import DesignSystem
 
 extension RatingReviewsView {
@@ -83,7 +84,7 @@ private extension RatingReviewsView {
     var writeReviewButton: some View {
         Button(action: viewModel.didTapWriteReviewButton, label: {
             HStack(spacing: 9) {
-                Image(.pen)
+                Image(uiImage: TLAssets.pen)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 13, height: 13)

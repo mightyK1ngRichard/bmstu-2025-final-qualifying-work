@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import Core
 import DesignSystem
 
 @Observable
@@ -71,7 +72,7 @@ extension ChatListViewModel {
 
         Task { @MainActor in
             guard let urlString else {
-                allChatCells[index].user.avatarImage = .fetched(.uiImage(.profile))
+                allChatCells[index].user.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 

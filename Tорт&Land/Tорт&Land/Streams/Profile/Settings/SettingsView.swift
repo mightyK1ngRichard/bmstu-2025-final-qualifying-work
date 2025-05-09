@@ -11,6 +11,7 @@ import NetworkAPI
 import MapKit
 import PhotosUI
 import DesignSystem
+import Core
 
 struct SettingsView: View {
     @State var viewModel: SettingsViewModel
@@ -143,7 +144,7 @@ private extension SettingsView {
     }
 
     var pencilImage: some View {
-        Image(.pen)
+        Image(uiImage: TLAssets.pen)
             .renderingMode(.template)
             .foregroundStyle(viewModel.uiProperties.penState.color)
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 public extension TLProductButton {
 
@@ -78,9 +79,9 @@ extension TLProductButton.Configuration.Kind {
     func iconImage(isSelected: Bool) -> Image? {
         switch self {
         case .basket:
-            return Image(.basketIcon)
+            return Image(uiImage: TLAssets.basketIcon)
         case .favorite:
-            return isSelected ? Image(.favoritePressed) : Image(.favoriteBorder)
+            return isSelected ? Image(uiImage: TLAssets.favoritePressed) : Image(uiImage: TLAssets.favoriteBorder)
         case .clear:
             return nil
         }
