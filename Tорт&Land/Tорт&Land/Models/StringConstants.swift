@@ -9,6 +9,7 @@
 import Foundation
 
 enum StringConstants {
-    static let anonimeUserName = "Anonymous"
+    static let anonimeUserName = String(localized: "Anonymous")
     static let rub = "₽"
+    static let invalidInputData = String(localized: "Invalid input data")
 }

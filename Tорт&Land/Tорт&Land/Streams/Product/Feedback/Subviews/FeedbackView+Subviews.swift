@@ -22,12 +22,10 @@ extension FeedbackView {
         .overlay {
             loadingView
         }
-        .alert(
-            viewModel.uiProperties.errorMessage,
-            isPresented: $viewModel.uiProperties.showErrorMessage,
-            actions: {
-                Button("OK", action: viewModel.didTapCloseErrorAlert)
-            }
+        .defaultAlert(
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown,
+            action: viewModel.didTapCloseErrorAlert
         )
     }
 

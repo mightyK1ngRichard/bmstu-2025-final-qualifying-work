@@ -53,7 +53,7 @@ extension RatingReviewsViewModel {
                 comments = commentsInfo
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: error.readableGRPCMessage)
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -103,8 +103,8 @@ extension RatingReviewsViewModel {
         }
     }
 
-    func configureErrorView(message: String) -> TLErrorView.Configuration {
-        .init(kind: .customError("Network error", message))
+    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration {
+        .init(from: content)
     }
 
 }

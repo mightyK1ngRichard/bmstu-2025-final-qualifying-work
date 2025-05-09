@@ -15,29 +15,28 @@ struct UpdateAddressView: View {
 
     var body: some View {
         ScrollView {
-            if viewModel.uiProperties.errorMessage == nil {
-                inputCodes
-                    .padding(.horizontal)
-            }
+            inputCodes
+                .padding(.horizontal)
         }
         .frame(maxWidth: .infinity)
         .onFirstAppear {
             viewModel.setCoordinator(coordinator: coordinator)
             viewModel.onAppear()
         }
+        .defaultAlert(
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown
+        )
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .overlay(alignment: .bottom) {
-            if viewModel.uiProperties.errorMessage == nil {
-                TLButton(
-                    configuration: viewModel.saveButtonConfiguration(),
-                    action: viewModel.didTapSaveButton
-                )
-                .padding(.horizontal)
-            }
+            TLButton(
+                configuration: viewModel.saveButtonConfiguration(),
+                action: viewModel.didTapSaveButton
+            )
+            .padding(.horizontal)
         }
         .overlay {
             loadingView
-            errorView
         }
     }
 }
@@ -92,20 +91,6 @@ private extension UpdateAddressView {
             .ignoresSafeArea()
         }
     }
-
-    @ViewBuilder
-    var errorView: some View {
-        if let errorMessage = viewModel.uiProperties.errorMessage {
-            TLErrorView(
-                configuration: .init(
-                    kind: .customError("Network Error", errorMessage)
-                ),
-                action: viewModel.onAppear
-            )
-            .padding(.horizontal)
-        }
-    }
-
 }
 
 private extension UpdateAddressView {

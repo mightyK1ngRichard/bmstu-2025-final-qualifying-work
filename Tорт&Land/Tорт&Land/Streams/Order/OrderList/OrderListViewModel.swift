@@ -37,7 +37,7 @@ extension OrderListViewModel {
                 orders = try await orderService.fetchOrders()
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: error.readableGRPCMessage)
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }

@@ -33,9 +33,9 @@ private extension ChatListView {
             shimmeringView
         case .finished:
             contentView
-        case let .error(errorMessage):
+        case let .error(content):
             TLErrorView(
-                configuration: .init(kind: .customError("Network error", errorMessage))
+                configuration: .init(from: content)
             )
             .padding(.horizontal, 30)
         }

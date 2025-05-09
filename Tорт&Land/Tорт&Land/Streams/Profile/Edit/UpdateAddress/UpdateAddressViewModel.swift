@@ -79,7 +79,10 @@ extension UpdateAddressViewModel {
                 coordinator?.openPreviousScreen()
             } catch {
                 uiProperties.buttonIsLoading = false
-                uiProperties.errorMessage = error.readableGRPCMessage
+                uiProperties.alert = AlertModel(
+                    errorContent: error.readableGRPCContent,
+                    isShown: true
+                )
             }
         }
     }

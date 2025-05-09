@@ -11,9 +11,8 @@ import Foundation
 enum FeedbackModel {
     struct UIProperties: Hashable {
         var countFillStars = 0
-        var errorMessage = ""
         var feedbackText = ""
         var isLoading = false
-        var showErrorMessage = false
+        var alert = AlertModel()
     }
 }

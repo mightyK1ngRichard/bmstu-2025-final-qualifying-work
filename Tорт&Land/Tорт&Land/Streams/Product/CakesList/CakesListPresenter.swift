@@ -26,25 +26,7 @@ final class CakesListPresenter: CakesListPresenterInput {
 
             await viewModel.didFetchSections(with: resSections)
         } catch {
-            let errorMessage: String
-            if let error = error as? NetworkError {
-                errorMessage = error.readableGRPCMessage
-            } else if let grpcStatus = (error as? GRPCStatus) ?? (error as? GRPCStatusTransformable)?.makeGRPCStatus() {
-                switch grpcStatus.code {
-                case .unavailable:
-                    errorMessage = "Нет соединения с сервером"
-                case .deadlineExceeded:
-                    errorMessage = "Превышено время ожидания ответа"
-                default:
-                    errorMessage = "GRPC ошибка: \(grpcStatus)"
-                }
-            } else if let nioError = error as? NIOConnectionError {
-                errorMessage = "NIO ошибка соединения: \(nioError)"
-            } else {
-                errorMessage = "Не удалось получить данные. Попробуйте позже."
-            }
-            Logger.log(kind: .error, error)
-            await viewModel.showError(message: errorMessage)
+            await viewModel.showError(content: error.readableGRPCContent)
         }
     }
 

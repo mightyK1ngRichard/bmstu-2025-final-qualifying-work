@@ -59,8 +59,7 @@ struct OrderView: View {
             }
         }
         .defaultAlert(
-            title: viewModel.uiProperties.alert.title,
-            message: viewModel.uiProperties.alert.message,
+            errorContent: viewModel.uiProperties.alert.errorContent,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
         .onFirstAppear {

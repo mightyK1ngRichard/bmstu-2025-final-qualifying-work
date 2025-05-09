@@ -18,7 +18,7 @@ protocol RatingReviewsDisplayLogic {
 protocol RatingReviewsViewModelInput {
     func configureReviewConfiguration() -> TLRatingReviewsView.Configuration
     func configureCommentConfiguration(comment: CommentInfo) -> TLCommentView.Configuration
-    func configureErrorView(message: String) -> TLErrorView.Configuration
+    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration
     func openSheetView() -> FeedbackView
 
     func fetchComments()

@@ -31,9 +31,8 @@ extension AuthView {
             )
         )
         .defaultAlert(
-            title: Constants.errorTitle,
-            message: viewModel.uiProperties.alertMessage,
-            isPresented: $viewModel.uiProperties.showingAlert
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown
         )
     }
 
@@ -160,6 +159,5 @@ extension AuthView {
         static let registerTitle = String(localized: "Register")
         static let dontHaveAccountTitle = String(localized: "Don't have account?")
         static let haveAccountTitle = String(localized: "Already have account?")
-        static let errorTitle = String(localized: "Error")
     }
 }

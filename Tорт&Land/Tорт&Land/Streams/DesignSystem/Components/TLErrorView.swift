@@ -12,9 +12,11 @@ import Core
 public extension TLErrorView {
     struct Configuration: Hashable {
         var kind: Kind = .noConnection
+        var buttonTitle: String
 
-        public init(kind: Kind = .noConnection) {
+        public init(kind: Kind = .noConnection, buttonTitle: String = "Try again") {
             self.kind = kind
+            self.buttonTitle = buttonTitle
         }
     }
 }
@@ -68,18 +70,7 @@ public struct TLErrorView: View, Configurable {
                     .style(16, .regular, TLColor<TextPalette>.textSecondary.color)
                     .multilineTextAlignment(.center)
 
-                Button {
-                    action?()
-                } label: {
-                    Text("Try again")
-                        .style(16, .medium, .white)
-                        .frame(height: 40)
-                        .padding(.horizontal, 43)
-                }
-                .background(
-                    TLColor<TextPalette>(hexLight: 0x66C3E8, hexDark: 0x66C3E8).color,
-                    in: .capsule
-                )
+                TLButton(configuration.buttonTitle, action: action)
             }
         }
     }

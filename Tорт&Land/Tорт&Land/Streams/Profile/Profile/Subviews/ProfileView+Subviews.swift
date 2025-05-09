@@ -17,9 +17,9 @@ extension ProfileView {
                 shimmeringView
             case .finished:
                 contentView
-            case let .error(message):
+            case let .error(content):
                 TLErrorView(
-                    configuration: .init(kind: .customError("Network Error", message)),
+                    configuration: .init(from: content),
                     action: viewModel.fetchUserData
                 )
                 .padding(.horizontal, 30)
@@ -28,8 +28,7 @@ extension ProfileView {
         .ignoresSafeArea()
         .background(Constants.bgColor)
         .defaultAlert(
-            title: viewModel.uiProperties.alert.title,
-            message: viewModel.uiProperties.alert.message,
+            errorContent: viewModel.uiProperties.alert.errorContent,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
     }

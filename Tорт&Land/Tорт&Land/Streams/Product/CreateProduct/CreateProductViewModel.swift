@@ -94,17 +94,19 @@ extension CreateProductViewModel {
             let kgPrice = Double(uiProperties.inputPrice),
             let mass = Double(uiProperties.inputMass)
         else {
-            uiProperties.alertTitle = alertTitle
-            uiProperties.alertMessage = alertMessage
-            uiProperties.showAlert = true
+            uiProperties.alert = AlertModel(
+                errorContent: .init(title: alertTitle, message: alertMessage),
+                isShown: true
+            )
             return
         }
 
         // Если есть скидка, но она не число
         if !uiProperties.inputDiscountedPrice.isEmpty && Double(uiProperties.inputDiscountedPrice) == nil {
-            uiProperties.alertTitle = alertTitle
-            uiProperties.alertMessage = alertMessage
-            uiProperties.showAlert = true
+            uiProperties.alert = AlertModel(
+                errorContent: .init(title: alertTitle, message: alertMessage),
+                isShown: true
+            )
             return
         }
 
@@ -136,9 +138,7 @@ extension CreateProductViewModel {
                 coordinator.openPreviousScreen()
                 generateCakeColors(cakeID: response.cakeID)
             } catch {
-                uiProperties.alertTitle = "Failed to create product"
-                uiProperties.alertMessage = error.readableGRPCMessage
-                uiProperties.showAlert = true
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
         }
     }

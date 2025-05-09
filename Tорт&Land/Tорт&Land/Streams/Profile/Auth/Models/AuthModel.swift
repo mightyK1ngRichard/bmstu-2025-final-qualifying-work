@@ -14,11 +14,10 @@ extension AuthModel {
     struct UIProperties {
         var isLoading = false
         var isRegister = false
-        var showingAlert = false
         var nickName = ""
         var email = ""
         var password = ""
         var repeatPassword = ""
-        var alertMessage = ""
+        var alert = AlertModel()
     }
 }

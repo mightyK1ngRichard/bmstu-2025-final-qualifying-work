@@ -56,8 +56,8 @@ extension CakesListViewModel: CakesListDisplayLogic {
         bindingData.screenState = .finished
     }
 
-    func showError(message: String) {
-        bindingData.screenState = .error(message: message)
+    func showError(content: ErrorContent) {
+        bindingData.screenState = .error(content: content)
     }
 
     func updateUserAvatarImage(imageState: ImageState, cakeID: String) {
@@ -134,8 +134,8 @@ extension CakesListViewModel {
         model.configureProductCard(priceFormatter: priceFormatter)
     }
 
-    func configureErrorView(message: String) -> TLErrorView.Configuration {
-        .init(kind: .customError("Network Error", message))
+    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration {
+        .init(from: content)
     }
 
 }

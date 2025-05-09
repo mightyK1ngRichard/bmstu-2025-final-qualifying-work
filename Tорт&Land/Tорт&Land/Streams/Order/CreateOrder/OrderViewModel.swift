@@ -81,7 +81,7 @@ extension OrderViewModel {
                 uiProperties.selectedFillingID = cakeEntity.fillings.first?.id ?? ""
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: error.readableGRPCMessage)
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -148,8 +148,10 @@ extension OrderViewModel {
             !uiProperties.selectedFillingID.isEmpty
         else {
             uiProperties.alert = .init(
-                title: "Invalid input data",
-                message: "Please make sure all fields are filled: cake, filling, address, and total amount.",
+                errorContent: ErrorContent(
+                    title: "Invalid input data",
+                    message: "Please make sure all fields are filled: cake, filling, address, and total amount."
+                ),
                 isShown: true
             )
             return
@@ -175,8 +177,7 @@ extension OrderViewModel {
             } catch {
                 uiProperties.isLoading = false
                 uiProperties.alert = .init(
-                    title: "Network error",
-                    message: error.readableGRPCMessage,
+                    errorContent: error.readableGRPCContent,
                     isShown: true
                 )
             }

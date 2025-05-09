@@ -89,7 +89,7 @@ extension ProfileViewModel {
                 fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
-                uiProperties.screenState = .error(message: error.readableGRPCMessage)
+                uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -154,8 +154,10 @@ extension ProfileViewModel {
             coordinator?.addScreen(ProfileModel.Screens.sendMessage(currentUser: currentUser, interlocutor: interlocutor))
         } else {
             uiProperties.alert = AlertModel(
-                title: "Current user not found",
-                message: "Inner error. Relaunch this app",
+                errorContent: ErrorContent(
+                    title: "Current user not found",
+                    message: "Inner error. Relaunch this app"
+                ),
                 isShown: true
             )
         }

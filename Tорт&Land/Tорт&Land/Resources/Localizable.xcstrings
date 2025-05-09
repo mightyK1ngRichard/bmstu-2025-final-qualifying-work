@@ -68,6 +68,9 @@
         }
       }
     },
+    "Anonymous" : {
+
+    },
     "Cake" : {
 
     },
@@ -190,6 +193,7 @@
 
     },
     "Error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -238,6 +242,9 @@
     "Input new nickname" : {
 
     },
+    "Invalid input data" : {
+
+    },
     "kids" : {
       "localizations" : {
         "ru" : {
@@ -282,6 +289,9 @@
       }
     },
     "My orders" : {
+
+    },
+    "Network error" : {
 
     },
     "New" : {

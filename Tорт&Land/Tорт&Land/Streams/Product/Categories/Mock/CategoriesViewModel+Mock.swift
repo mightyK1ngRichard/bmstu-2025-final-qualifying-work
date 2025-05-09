@@ -15,7 +15,7 @@ import NetworkAPI
 import SwiftUI
 
 @Observable
-final class CategoriesViewModelMock: CategoriesDisplayLogic & CategoriesViewModelOutput {
+final class CategoriesViewModelMock: CategoriesDisplayLogic, @preconcurrency CategoriesViewModelOutput {
     var uiProperties = CategoriesModel.UIProperties()
     private(set) var tabs: [CategoriesModel.Tab] = CategoriesModel.Tab.allCases
     private(set) var sections: [CategoriesModel.Tab: [CategoryCardModel]] = [

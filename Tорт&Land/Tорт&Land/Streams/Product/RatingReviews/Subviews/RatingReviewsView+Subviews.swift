@@ -16,9 +16,9 @@ extension RatingReviewsView {
             case .initial, .loading:
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .error(message):
+            case let .error(content):
                 TLErrorView(
-                    configuration: viewModel.configureErrorView(message: message),
+                    configuration: viewModel.configureErrorView(content: content),
                     action: viewModel.fetchComments
                 )
                 .padding(.horizontal, 50)

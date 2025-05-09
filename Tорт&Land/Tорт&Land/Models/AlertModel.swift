@@ -9,7 +9,6 @@
 import Foundation
 
 struct AlertModel: Hashable {
-    var title = ""
-    var message = ""
+    var errorContent: ErrorContent = .init(title: "", message: "")
     var isShown = false
 }

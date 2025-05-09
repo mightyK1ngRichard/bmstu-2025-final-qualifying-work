@@ -101,7 +101,7 @@ enum CommonMockData {
         )
     }
 
-    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDY4ODg1OTYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.e8Z8-CHq3ZBushB5BpcFHpkvNtphse516pyDwHys7Dc"
+    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDczNTUxMjYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.rR6oDNh-QUWiyvDmPAgFCRrTZqeD8-4y5s6PMTjtHoI"
 }
 
 // MARK: - Constants
