@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import NetworkAPI
 import Observation
+import DesignSystem
 
 @Observable
 final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {

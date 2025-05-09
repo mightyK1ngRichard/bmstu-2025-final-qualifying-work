@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Core
 
 extension TLCategoryCell.Configuration {
 
@@ -15,7 +16,7 @@ extension TLCategoryCell.Configuration {
     ///   - imageState: image state
     ///   - title: title of the category view
     /// - Returns: configuration of the view
-    static func basic(
+    public static func basic(
         imageState: ImageState,
         title: String
     ) -> Self {

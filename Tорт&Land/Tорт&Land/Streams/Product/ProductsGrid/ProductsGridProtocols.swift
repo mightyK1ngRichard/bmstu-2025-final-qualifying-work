@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DesignSystem
 
 protocol ProductsGridDisplayData {
     var uiProperties: ProductsGridModel.UIProperties { get set }

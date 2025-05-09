@@ -9,6 +9,8 @@
 import Foundation
 import Observation
 import NetworkAPI
+import DesignSystem
+import Core
 
 @Observable
 final class AddFillingsAndCategoriesViewModel {

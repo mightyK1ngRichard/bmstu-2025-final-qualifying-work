@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import DesignSystem
+import Core
 #if DEBUG
 import NetworkAPI
 #endif

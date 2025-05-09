@@ -14,7 +14,7 @@ extension TLStarsView.Configuration {
     ///   - kind: count of the fill stars
     ///   - feedbackCount: count of the feedback
     /// - Returns: configuration of the view
-    static func basic(
+    public static func basic(
         kind: Kind,
         feedbackCount: Int? = nil
     ) -> Self {
@@ -30,7 +30,7 @@ extension TLStarsView.Configuration {
         )
     }
 
-    static var shimmering: Self {
+    public static var shimmering: Self {
         .init(
             countFillStars: Kind.five.rawValue,
             starWidth: Constants.starWidth,
@@ -39,7 +39,7 @@ extension TLStarsView.Configuration {
         )
     }
 
-    static var shimmeringInverted: Self {
+    public static var shimmeringInverted: Self {
         .init(
             countFillStars: Kind.five.rawValue,
             starWidth: Constants.starWidth,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension TLProductDescriptionView {
+public extension TLProductDescriptionView {
 
     struct Configuration {
         /// Product title
@@ -29,10 +29,10 @@ extension TLProductDescriptionView {
 
 // MARK: - PickerItem
 
-extension TLProductDescriptionView.Configuration {
+public extension TLProductDescriptionView.Configuration {
 
     struct PickerItem: Identifiable {
-        let id: Int
+        public let id: Int
         let title: String
     }
 }

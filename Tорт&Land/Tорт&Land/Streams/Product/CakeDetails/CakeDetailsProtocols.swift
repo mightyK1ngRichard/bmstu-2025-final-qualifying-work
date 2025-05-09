@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DesignSystem
 
 protocol CakeDetailsDisplayData {
     var bindingData: CakeDetailsModel.BindingData { get set }

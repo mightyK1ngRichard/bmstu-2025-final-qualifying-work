@@ -8,8 +8,9 @@
 
 import UIKit
 
-extension TLChatCell {
-    struct Configuration {
+public extension TLChatCell {
+
+    struct Configuration: Hashable {
         /// Configuration of the image view
         var imageConfiguration: TLImageView.Configuration = .init()
 
@@ -24,4 +25,5 @@ extension TLChatCell {
         /// Shimmering flag
         var isShimmering = false
     }
+
 }

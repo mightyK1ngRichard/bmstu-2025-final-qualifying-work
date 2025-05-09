@@ -23,10 +23,14 @@ import SwiftUI
  )
  ```
 */
-struct TLCategoryCell: View {
+public struct TLCategoryCell: View {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         GeometryReader { proxy in
             let size = proxy.size
             HStack {

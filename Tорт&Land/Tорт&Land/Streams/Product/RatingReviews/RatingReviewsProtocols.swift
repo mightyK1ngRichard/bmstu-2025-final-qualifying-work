@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
 
 protocol RatingReviewsDisplayLogic {
     var uiProperties: RatingReviewsModel.UIProperties { get set }

@@ -6,15 +6,28 @@
 //
 
 import SwiftUI
+import Core
 
-struct LimitedTextField: View {
-    var configuration: Configuration
+public struct LimitedTextField: View {
+    let configuration: Configuration
     var hint: String
     @Binding var value: String
     @FocusState private var isKeyboardShowing: Bool
-    var onSubmit: TLVoidBlock?
+    public var onSubmit: TLVoidBlock?
 
-    var body: some View {
+    public init(
+        configuration: Configuration,
+        hint: String,
+        value: Binding<String>,
+        onSubmit: TLVoidBlock? = nil
+    ) {
+        self.configuration = configuration
+        self.hint = hint
+        _value = value
+        self.onSubmit = onSubmit
+    }
+
+    public var body: some View {
         VStack(alignment: configuration.progressConfig.alignment, spacing: 12) {
             ZStack(alignment: .top) {
                 TappedView

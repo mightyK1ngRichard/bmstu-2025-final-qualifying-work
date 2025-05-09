@@ -10,6 +10,7 @@
 
 import Foundation
 import Observation
+import DesignSystem
 
 @Observable
 final class ChatListViewModelMock: ChatListDisplayLogic, ChatListViewModelInput, ChatListViewModelOutput {

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 extension ProfileView {
     var mainContainer: some View {

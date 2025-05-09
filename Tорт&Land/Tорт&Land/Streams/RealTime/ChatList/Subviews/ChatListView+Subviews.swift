@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 extension ChatListView {
     var mainContainer: some View {

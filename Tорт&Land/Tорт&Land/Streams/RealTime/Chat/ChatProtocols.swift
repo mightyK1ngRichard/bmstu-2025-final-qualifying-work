@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DesignSystem
 
 protocol ChatDisplayLogic {
     var uiProperties: ChatModel.UIProperties { get set }

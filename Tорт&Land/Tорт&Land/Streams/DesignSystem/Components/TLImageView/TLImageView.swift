@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import Core
 
-struct TLImageView: View, Configurable {
-    var configuration: Configuration
+public struct TLImageView: View, Configurable {
+    let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         GeometryReader { geo in
             imageView
                 .frame(width: geo.size.width, height: geo.size.height)
@@ -34,6 +39,8 @@ private extension TLImageView {
             errorImage(kind: errorKind)
         case .empty:
             emptyView
+        @unknown default:
+            fatalError("unknown case")
         }
     }
 
@@ -44,6 +51,8 @@ private extension TLImageView {
             getImage(uiImage: uiImage)
         case let .data(imageData):
             getImage(imageData: imageData)
+        @unknown default:
+            fatalError("unknown case")
         }
     }
 

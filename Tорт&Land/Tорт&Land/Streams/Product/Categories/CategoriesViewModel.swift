@@ -9,6 +9,7 @@
 import Foundation
 import NetworkAPI
 import SwiftUI
+import Core
 
 @Observable
 final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutput {

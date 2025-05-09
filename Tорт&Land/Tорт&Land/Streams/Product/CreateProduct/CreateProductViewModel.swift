@@ -11,6 +11,7 @@ import NetworkAPI
 import Observation
 import UIKit
 import _PhotosUI_SwiftUI
+import DesignSystem
 
 @Observable
 final class CreateProductViewModel: CreateProductDisplayLogic, CreateProductViewModelInput {

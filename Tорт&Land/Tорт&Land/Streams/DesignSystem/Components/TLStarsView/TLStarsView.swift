@@ -17,10 +17,14 @@ let view = TLStarsView(
 )
 ```
 */
-struct TLStarsView: View, Configurable {
+public struct TLStarsView: View, Configurable {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         HStack(spacing: configuration.leftPadding) {
             HStack(spacing: configuration.padding) {
                 ForEach(0..<configuration.countFillStars, id: \.self) { _ in

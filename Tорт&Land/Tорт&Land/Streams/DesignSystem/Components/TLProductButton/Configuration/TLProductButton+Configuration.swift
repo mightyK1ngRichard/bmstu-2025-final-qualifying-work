@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension TLProductButton {
+public extension TLProductButton {
 
     struct Configuration: Hashable {
         /// Color of the background view
@@ -22,12 +22,28 @@ extension TLProductButton {
         var isShimmering: Bool = false
         /// Icon kind
         var kind: Kind = .clear
+
+        public init(
+            backgroundColor: Color = .clear,
+            buttonSize: CGFloat = .zero,
+            iconSize: CGFloat = .zero,
+            shadowColor: Color = .clear,
+            isShimmering: Bool = false,
+            kind: Kind = .clear
+        ) {
+            self.backgroundColor = backgroundColor
+            self.buttonSize = buttonSize
+            self.iconSize = iconSize
+            self.shadowColor = shadowColor
+            self.isShimmering = isShimmering
+            self.kind = kind
+        }
     }
 }
 
 // MARK: - Kind
 
-extension TLProductButton.Configuration {
+public extension TLProductButton.Configuration {
 
     /// Kind of the component icon
     enum Kind: Hashable {

@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension View {
     func onFirstAppear(perform action: @escaping () -> Void) -> some View {

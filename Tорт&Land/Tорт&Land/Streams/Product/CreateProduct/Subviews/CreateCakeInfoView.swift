@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct CreateCakeInfoView: View {
     @Bindable var viewModel: CreateProductViewModel

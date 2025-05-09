@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct MessageBubble: View {
     let message: ChatModel.ChatMessage

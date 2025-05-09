@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension CakesListView {
 

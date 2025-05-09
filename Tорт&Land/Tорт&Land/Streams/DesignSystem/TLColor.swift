@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-final class TLColor<Palette: Hashable> {
-    let color: Color
-    let uiColor: UIColor
+public final class TLColor<Palette: Hashable> {
+    public let color: Color
+    public let uiColor: UIColor
 
     init(hexLight: Int, hexDark: Int, alphaLight: CGFloat = 1.0, alphaDark: CGFloat = 1.0) {
         let lightColor = UIColor(hex: hexLight, alpha: alphaLight)
@@ -19,7 +19,7 @@ final class TLColor<Palette: Hashable> {
         self.color = Color(uiColor: uiColor)
     }
 
-    init(hexLight: Int, hexDark: Int, alpha: CGFloat = 1.0) {
+    public init(hexLight: Int, hexDark: Int, alpha: CGFloat = 1.0) {
         let chmColor = TLColor(hexLight: hexLight, hexDark: hexDark, alphaLight: alpha, alphaDark: alpha)
         self.uiColor = chmColor.uiColor
         self.color = chmColor.color
@@ -33,16 +33,16 @@ final class TLColor<Palette: Hashable> {
 
 // MARK: - Palettes
 
-enum BackgroundPalette: Hashable {}
-enum IconPalette: Hashable {}
-enum SeparatorPalette: Hashable {}
-enum TextPalette: Hashable {}
-enum ShadowPalette: Hashable {}
-enum CustomPalette: Hashable {}
+public enum BackgroundPalette: Hashable {}
+public enum IconPalette: Hashable {}
+public enum SeparatorPalette: Hashable {}
+public enum TextPalette: Hashable {}
+public enum ShadowPalette: Hashable {}
+public enum CustomPalette: Hashable {}
 
 // MARK: - Background Colors
 
-extension TLColor where Palette == BackgroundPalette {
+public extension TLColor where Palette == BackgroundPalette {
 
     /// Красный задний фон. Ex: Кнопка покупки
     static let bgRed = TLColor(hexLight: 0xDB3022, hexDark: 0xEF3651)
@@ -70,7 +70,7 @@ extension TLColor where Palette == BackgroundPalette {
 
 // MARK: - Text Colors
 
-extension TLColor where Palette == TextPalette {
+public extension TLColor where Palette == TextPalette {
 
     /// Основной текст
     static let textPrimary = TLColor(hexLight: 0x222222, hexDark: 0xF6F6F6)
@@ -88,7 +88,7 @@ extension TLColor where Palette == TextPalette {
 
 // MARK: - Icon Colors
 
-extension TLColor where Palette == IconPalette {
+public extension TLColor where Palette == IconPalette {
 
     static let iconRed = TLColor(hexLight: 0xDB3022, hexDark: 0xEF3651)
     static let iconSecondary = TLColor(hexLight: 0x9B9B9B, hexDark: 0x8E8E93)
@@ -100,7 +100,7 @@ extension TLColor where Palette == IconPalette {
 
 // MARK: - Separator Colors
 
-extension TLColor where Palette == SeparatorPalette {
+public extension TLColor where Palette == SeparatorPalette {
 
     /// Красная граница
     static let selectedBorder = TLColor(hexLight: 0xF01F0E, hexDark: 0xFF2424)
@@ -116,7 +116,7 @@ extension TLColor where Palette == SeparatorPalette {
 
 // MARK: - Shadow Colors
 
-extension TLColor where Palette == ShadowPalette {
+public extension TLColor where Palette == ShadowPalette {
 
     static let basket = TLColor(hexLight: 0xF9F9F9, hexDark: 0xEF3651, alpha: 0.5)
     static let favoriteSeletected = TLColor(hexLight: 0x9B9B9B, hexDark: 0xEF3651, alphaLight: 0.5, alphaDark: 0)

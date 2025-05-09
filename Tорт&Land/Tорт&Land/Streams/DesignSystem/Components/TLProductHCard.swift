@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-extension TLProductHCard {
+public extension TLProductHCard {
     struct Configuration: Hashable {
         var imageConfiguration: TLImageView.Configuration = .init()
         var starsConfiguration: TLStarsView.Configuration = .init()
@@ -19,16 +19,40 @@ extension TLProductHCard {
         var productDiscountedPrice: String?
         var isShimmering = false
 
-        static var shimmering: Configuration {
+        public static var shimmering: Configuration {
             .init(isShimmering: true)
+        }
+
+        public init(
+            imageConfiguration: TLImageView.Configuration = .init(),
+            starsConfiguration: TLStarsView.Configuration = .init(),
+            seller: String = "",
+            title: String = "",
+            productPrice: String = "",
+            mass: String = "",
+            productDiscountedPrice: String? = nil,
+            isShimmering: Bool = false
+        ) {
+            self.imageConfiguration = imageConfiguration
+            self.starsConfiguration = starsConfiguration
+            self.seller = seller
+            self.title = title
+            self.productPrice = productPrice
+            self.mass = mass
+            self.productDiscountedPrice = productDiscountedPrice
+            self.isShimmering = isShimmering
         }
     }
 }
 
-struct TLProductHCard: View, Configurable {
-    var configuration = Configuration()
+public struct TLProductHCard: View, Configurable {
+    let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration = Configuration()) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         HStack(alignment: .top, spacing: 0) {
             if configuration.isShimmering {
                 shimmeringContainer

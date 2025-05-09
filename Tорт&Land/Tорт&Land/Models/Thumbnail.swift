@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Core
 
 struct Thumbnail: Identifiable, Hashable {
     var id: String

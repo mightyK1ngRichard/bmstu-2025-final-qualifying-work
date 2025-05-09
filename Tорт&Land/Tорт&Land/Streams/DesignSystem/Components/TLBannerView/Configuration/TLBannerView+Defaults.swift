@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Core
 
 extension TLBannerView.Configuration {
 
-    static func basic(title: String, buttonTitle: String? = nil) -> Self {
+    public static func basic(title: String, buttonTitle: String? = nil) -> Self {
         .init(
             imageConfiguration: .init(imageState: .fetched(.uiImage(.banner))),
             bannerTitle: title,

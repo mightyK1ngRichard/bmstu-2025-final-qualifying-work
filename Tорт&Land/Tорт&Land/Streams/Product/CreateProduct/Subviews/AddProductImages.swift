@@ -8,6 +8,8 @@
 
 import SwiftUI
 import PhotosUI
+import Core
+import DesignSystem
 
 struct AddProductImages: View {
     @State private var selectedItems: [PhotosPickerItem] = []

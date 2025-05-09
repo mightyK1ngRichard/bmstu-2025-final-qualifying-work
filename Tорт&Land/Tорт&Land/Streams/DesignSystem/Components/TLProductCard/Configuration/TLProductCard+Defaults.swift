@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Core
 
-extension TLProductCard.Configuration {
+public extension TLProductCard.Configuration {
 
     /// Basic configuration
     /// - Parameters:

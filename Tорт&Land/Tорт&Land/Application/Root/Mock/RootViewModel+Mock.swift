@@ -12,6 +12,7 @@ import Foundation
 import NetworkAPI
 import SwiftUI
 import Observation
+import DesignSystem
 
 @Observable
 final class RootViewModelMock: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {

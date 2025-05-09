@@ -9,7 +9,7 @@ import SwiftUI
 
 extension TLBadgeView.Configuration {
 
-    static func basic(
+    public static func basic(
         text: String,
         kind: Kind = .red
     ) -> Self {

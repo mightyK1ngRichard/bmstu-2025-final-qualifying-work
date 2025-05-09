@@ -8,10 +8,12 @@
 
 import UIKit
 
-extension TLCategoryCell {
+public extension TLCategoryCell {
+
     struct Configuration {
         /// Configuration of the image view
         var imageConfiguration: TLImageView.Configuration = .init()
         var title = ""
     }
+
 }

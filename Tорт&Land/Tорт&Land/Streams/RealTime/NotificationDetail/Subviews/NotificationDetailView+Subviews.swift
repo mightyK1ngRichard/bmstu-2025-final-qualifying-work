@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension NotificationDetailView {
     var mainContainer: some View {

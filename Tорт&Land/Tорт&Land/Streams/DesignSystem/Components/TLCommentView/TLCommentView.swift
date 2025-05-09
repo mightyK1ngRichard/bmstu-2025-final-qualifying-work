@@ -25,10 +25,14 @@ import SwiftUI
  )
  ```
 */
-struct TLCommentView: View {
+public struct TLCommentView: View {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         VStack(alignment: .leading) {
             Text(configuration.userName)
                 .userNameFont

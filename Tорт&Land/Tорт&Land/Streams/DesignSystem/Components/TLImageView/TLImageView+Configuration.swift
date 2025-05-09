@@ -6,18 +6,27 @@
 //
 
 import SwiftUI
+import Core
 
-extension TLImageView {
+public extension TLImageView {
 
     struct Configuration: Hashable {
         var imageState: ImageState = .empty
         var contentMode: ContentMode = .fill
+
+        public init(
+            imageState: ImageState = .empty,
+            contentMode: ContentMode = .fill
+        ) {
+            self.imageState = imageState
+            self.contentMode = contentMode
+        }
     }
 }
 
 // MARK: - Shimmering
 
-extension TLImageView.Configuration {
+public extension TLImageView.Configuration {
 
     var isShimmering: Bool {
         imageState == .loading

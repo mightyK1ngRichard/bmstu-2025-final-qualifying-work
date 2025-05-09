@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 extension RatingReviewsView {
     var mainContainer: some View {

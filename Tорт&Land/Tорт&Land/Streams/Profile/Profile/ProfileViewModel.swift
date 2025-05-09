@@ -10,6 +10,7 @@ import Foundation
 import Observation
 import Combine
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {

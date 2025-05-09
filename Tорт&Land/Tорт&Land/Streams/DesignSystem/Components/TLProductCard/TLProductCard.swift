@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
 Component `TLProductCard`
@@ -29,11 +30,16 @@ let view = TLProductCard(
 )
 ```
 */
-struct TLProductCard: View, Configurable {
+public struct TLProductCard: View, Configurable {
     let configuration: Configuration
     var didTapButton: TLBoolBlock?
 
-    var body: some View {
+    public init(configuration: Configuration, didTapButton: TLBoolBlock? = nil) {
+        self.configuration = configuration
+        self.didTapButton = didTapButton
+    }
+
+    public var body: some View {
         VStack(alignment: .leading) {
             imageBlock
             footerBlockView

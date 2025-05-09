@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension TLProductCard {
+public extension TLProductCard {
 
     struct Configuration: Hashable {
         /// Configuration of the image view
@@ -28,19 +28,31 @@ extension TLProductCard {
 
 // MARK: - ProductText
 
-extension TLProductCard.Configuration {
+public extension TLProductCard.Configuration {
 
     struct ProductText: Hashable {
         var seller: String?
         var productName: String?
-        var productPrice: String = ""
+        var productPrice: String
         var productDiscountedPrice: String?
+
+        public init(
+            seller: String? = nil,
+            productName: String? = nil,
+            productPrice: String = "",
+            productDiscountedPrice: String? = nil
+        ) {
+            self.seller = seller
+            self.productName = productName
+            self.productPrice = productPrice
+            self.productDiscountedPrice = productDiscountedPrice
+        }
     }
 }
 
 // MARK: - Shimmering
 
-extension TLProductCard.Configuration {
+public extension TLProductCard.Configuration {
 
     var isShimmering: Bool {
         productButtonConfiguration.isShimmering || starsViewConfiguration.isShimmering

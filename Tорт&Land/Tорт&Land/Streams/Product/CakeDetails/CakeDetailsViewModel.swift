@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelInput {

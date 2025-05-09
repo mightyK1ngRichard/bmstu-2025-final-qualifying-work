@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DesignSystem
 
 protocol CreateProductDisplayLogic {
     var uiProperties: CreateProductModel.UIProperties { get set }

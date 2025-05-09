@@ -7,21 +7,26 @@
 //
 
 import SwiftUI
+import Core
 
-extension TLErrorView {
+public extension TLErrorView {
     struct Configuration: Hashable {
         var kind: Kind = .noConnection
+
+        public init(kind: Kind = .noConnection) {
+            self.kind = kind
+        }
     }
 }
 
-extension TLErrorView.Configuration {
+public extension TLErrorView.Configuration {
     enum Kind: Hashable {
         case noConnection
         case customError(String, String)
     }
 }
 
-extension TLErrorView.Configuration.Kind {
+public extension TLErrorView.Configuration.Kind {
     var title: String {
         switch self {
         case .noConnection:
@@ -41,11 +46,16 @@ extension TLErrorView.Configuration.Kind {
     }
 }
 
-struct TLErrorView: View, Configurable {
+public struct TLErrorView: View, Configurable {
     var configuration = Configuration()
     var action: TLVoidBlock?
 
-    var body: some View {
+    public init(configuration: Configuration = Configuration(), action: TLVoidBlock? = nil) {
+        self.configuration = configuration
+        self.action = action
+    }
+
+    public var body: some View {
         VStack(spacing: 40) {
             Image(.noConnection)
                 .resizable()
@@ -74,6 +84,8 @@ struct TLErrorView: View, Configurable {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     TLErrorView()

@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import DesignSystem
+import Core
 
 struct ProductResultScreen: View {
     @Bindable var viewModel: CreateProductViewModel

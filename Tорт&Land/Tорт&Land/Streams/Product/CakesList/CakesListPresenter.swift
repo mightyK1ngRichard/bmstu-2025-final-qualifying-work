@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Core
 import NetworkAPI
 import GRPC
 import NIO

@@ -9,6 +9,7 @@
 import Foundation
 import Observation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class UpdateAddressViewModel {

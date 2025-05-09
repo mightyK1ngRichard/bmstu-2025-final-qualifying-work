@@ -10,6 +10,7 @@ import SwiftUI
 import NetworkAPI
 import MapKit
 import PhotosUI
+import DesignSystem
 
 struct SettingsView: View {
     @State var viewModel: SettingsViewModel

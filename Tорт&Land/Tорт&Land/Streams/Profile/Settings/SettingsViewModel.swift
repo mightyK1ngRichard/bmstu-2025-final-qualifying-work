@@ -11,6 +11,7 @@ import NetworkAPI
 import SwiftUI
 import MapKit
 import Combine
+import Core
 import GRPC
 import _PhotosUI_SwiftUI
 

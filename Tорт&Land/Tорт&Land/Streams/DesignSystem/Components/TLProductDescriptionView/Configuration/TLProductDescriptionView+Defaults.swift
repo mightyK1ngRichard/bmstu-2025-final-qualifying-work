@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension TLProductDescriptionView.Configuration {
+public extension TLProductDescriptionView.Configuration {
 
     /// Basic configuration
     /// - Parameters:

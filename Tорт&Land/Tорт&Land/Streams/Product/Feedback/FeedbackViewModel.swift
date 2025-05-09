@@ -9,6 +9,7 @@
 import Foundation
 import NetworkAPI
 import SwiftUICore
+import Core
 
 @Observable
 final class FeedbackViewModel: FeedbackDisplayLogic, FeedbackViewModelInput {

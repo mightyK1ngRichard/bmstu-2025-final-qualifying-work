@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
+import Core
 
 struct CakeModel: Identifiable, Hashable {
     /// Код торта

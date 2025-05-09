@@ -7,6 +7,7 @@
 
 import Foundation
 import NetworkAPI
+import Core
 
 struct CategoryCardModel: Identifiable, Hashable {
     var id: String

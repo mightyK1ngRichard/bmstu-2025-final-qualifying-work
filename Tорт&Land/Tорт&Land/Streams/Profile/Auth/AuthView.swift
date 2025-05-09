@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct AuthView: View {
     @State var viewModel: AuthDisplayLogic & AuthViewModelOutput

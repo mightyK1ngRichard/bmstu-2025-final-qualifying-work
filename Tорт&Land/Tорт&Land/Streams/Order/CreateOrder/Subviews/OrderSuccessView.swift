@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 struct OrderSuccessView: View {
     var action: TLVoidBlock?
@@ -16,10 +18,10 @@ struct OrderSuccessView: View {
             Image(.bags)
             VStack(spacing: 12) {
                 Text("Success!")
-                    .style(34, .bold)
+//                    .styleDS(34, .bold)
 
                 Text("Your order will be delivered soon.\nThank you for choosing our app!")
-                    .style(14, .regular)
+//                    .styleDS(14, .regular)
                     .multilineTextAlignment(.center)
             }
         }

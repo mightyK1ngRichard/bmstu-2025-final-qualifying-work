@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import DesignSystem
+import Core
 
 extension ProductsGridView {
 

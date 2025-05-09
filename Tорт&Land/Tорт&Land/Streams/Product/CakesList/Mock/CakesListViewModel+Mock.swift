@@ -11,6 +11,8 @@
 import Foundation
 import NetworkAPI
 import Observation
+import DesignSystem
+import Core
 
 @Observable
 final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLogic, CakesListDisplayData {

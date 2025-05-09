@@ -11,6 +11,7 @@
 import Foundation
 import Observation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {

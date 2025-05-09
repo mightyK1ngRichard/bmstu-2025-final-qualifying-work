@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
+import Core
 
 // MARK: - View Model
 

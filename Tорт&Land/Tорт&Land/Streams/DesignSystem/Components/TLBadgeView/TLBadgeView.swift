@@ -17,10 +17,14 @@ let badgeView = TLBadgeView(
 )
 ```
 */
-struct TLBadgeView: View, Configurable {
+public struct TLBadgeView: View, Configurable {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         Text(configuration.text)
             .font(
                 .system(size: configuration.fontSize, weight: .semibold, design: .rounded)

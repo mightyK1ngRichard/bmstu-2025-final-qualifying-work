@@ -10,6 +10,7 @@
 import Foundation
 import NetworkAPI
 import UIKit
+import Core
 
 enum CommonMockData {
     static func generateMockCakeModel(id: Int, withDiscount: Bool = true) -> CakeModel {

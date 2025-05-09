@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension TLBannerView {
+public extension TLBannerView {
 
     struct Configuration: Hashable {
         /// Конфигурация фотографии

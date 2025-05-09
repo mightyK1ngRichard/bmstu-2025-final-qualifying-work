@@ -8,6 +8,7 @@
 
 import SwiftUI
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class OrderViewModel {

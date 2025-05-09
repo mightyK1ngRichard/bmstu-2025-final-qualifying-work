@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUICore
+import Core
 import NetworkAPI
 
 final class FeedbackAssembler {

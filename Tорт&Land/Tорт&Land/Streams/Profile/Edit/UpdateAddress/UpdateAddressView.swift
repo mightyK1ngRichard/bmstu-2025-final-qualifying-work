@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct UpdateAddressView: View {
     @State var viewModel: UpdateAddressViewModel

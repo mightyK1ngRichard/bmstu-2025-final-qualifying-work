@@ -7,37 +7,43 @@
 //
 
 import SwiftUI
+import Core
 
-extension TLButton {
+public extension TLButton {
     struct Configuration: Hashable {
-        var title = ""
-        var kind: Kind = .default
+        var title: String
+        var kind: Kind
+
+        public init(title: String = "", kind: Kind = .default) {
+            self.title = title
+            self.kind = kind
+        }
     }
 }
 
-extension TLButton.Configuration {
+public extension TLButton.Configuration {
     enum Kind: Hashable {
         case `default`
         case loading
     }
 }
 
-struct TLButton: View, Configurable {
+public struct TLButton: View, Configurable {
     var configuration = Configuration()
     var action: TLVoidBlock?
     @Environment(\.isEnabled) private var isEnabled
 
-    init(configuration: Configuration, action: TLVoidBlock? = nil) {
+    public init(configuration: Configuration, action: TLVoidBlock? = nil) {
         self.configuration = configuration
         self.action = action
     }
 
-    init(_ title: String, action: TLVoidBlock? = nil) {
+    public init(_ title: String, action: TLVoidBlock? = nil) {
         configuration = Configuration(title: title)
         self.action = action
     }
 
-    var body: some View {
+    public var body: some View {
         Button {
             action?()
         } label: {

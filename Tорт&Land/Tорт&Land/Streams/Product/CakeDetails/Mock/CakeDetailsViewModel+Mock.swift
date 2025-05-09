@@ -8,6 +8,7 @@
 #if DEBUG
 
 import Foundation
+import DesignSystem
 
 @Observable
 final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewModelInput {

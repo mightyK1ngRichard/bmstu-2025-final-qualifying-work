@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "(%lld)" : {
-
-    },
     "*Kg price, %@" : {
 
     },
@@ -14,9 +11,6 @@
 
     },
     "%@" : {
-
-    },
-    "%lld" : {
 
     },
     "%lld %@" : {
@@ -170,13 +164,7 @@
         }
       }
     },
-    "Delivery address:" : {
-
-    },
     "Desired delivery date:" : {
-
-    },
-    "Details" : {
 
     },
     "Discounted price (Optional field)" : {
@@ -593,9 +581,6 @@
 
     },
     "Total Amount:" : {
-
-    },
-    "Try again" : {
 
     },
     "Update" : {
