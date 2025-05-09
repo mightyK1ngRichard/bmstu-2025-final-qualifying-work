@@ -76,6 +76,8 @@ final class CakeDetailsViewModelMock: CakeDetailsDisplayData & CakeDetailsViewMo
     func didTapAdd3DModel() {}
 
     func didSelectFile(url: URL) {}
+
+    func didTapUpdateVisable() {}
 }
 
 // MARK: - Configure
@@ -110,6 +112,10 @@ extension CakeDetailsViewModelMock {
             kgPrice: priceFormatter.formatKgPrice(filling.kgPrice),
             description: filling.description
         )
+    }
+
+    func visableButtonConfiguration() -> TLButton.Configuration {
+        .init(title: "Open for sale", kind: .default)
     }
 }
 

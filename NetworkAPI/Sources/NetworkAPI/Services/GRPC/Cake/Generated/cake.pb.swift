@@ -398,6 +398,21 @@ struct Cake_Add3DModelRes: Sendable {
   init() {}
 }
 
+/// ############### Add3DModel ############### 
+struct Cake_SetCakeVisibilityReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var cakeID: String = String()
+
+  var isOpenForSale: Bool = false
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 /// Информация о торте
 struct Cake_Cake: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
@@ -1524,6 +1539,44 @@ extension Cake_Add3DModelRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
 
   static func ==(lhs: Cake_Add3DModelRes, rhs: Cake_Add3DModelRes) -> Bool {
     if lhs.model3Durl != rhs.model3Durl {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_SetCakeVisibilityReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SetCakeVisibilityReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "cakeID"),
+    2: .same(proto: "isOpenForSale"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.cakeID) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self.isOpenForSale) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.cakeID.isEmpty {
+      try visitor.visitSingularStringField(value: self.cakeID, fieldNumber: 1)
+    }
+    if self.isOpenForSale != false {
+      try visitor.visitSingularBoolField(value: self.isOpenForSale, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_SetCakeVisibilityReq, rhs: Cake_SetCakeVisibilityReq) -> Bool {
+    if lhs.cakeID != rhs.cakeID {return false}
+    if lhs.isOpenForSale != rhs.isOpenForSale {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

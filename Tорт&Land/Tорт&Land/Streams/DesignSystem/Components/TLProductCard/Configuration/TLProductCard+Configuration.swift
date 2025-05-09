@@ -23,6 +23,8 @@ public extension TLProductCard {
         var starsViewConfiguration: TLStarsView.Configuration = .init()
         /// Product info
         var productText: ProductText = .init()
+        /// Disable text
+        var disableText: String?
     }
 }
 

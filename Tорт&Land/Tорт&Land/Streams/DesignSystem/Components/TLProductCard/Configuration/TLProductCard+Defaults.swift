@@ -23,6 +23,7 @@ public extension TLProductCard.Configuration {
         imageState: ImageState,
         imageHeight: CGFloat,
         productText: ProductText,
+        disableText: String? = nil,
         badgeViewConfiguration: TLBadgeView.Configuration? = nil,
         productButtonConfiguration: TLProductButton.Configuration = .init(),
         starsViewConfiguration: TLStarsView.Configuration = .init()
@@ -33,7 +34,8 @@ public extension TLProductCard.Configuration {
             imageHeight: imageHeight,
             productButtonConfiguration: productButtonConfiguration,
             starsViewConfiguration: starsViewConfiguration,
-            productText: productText
+            productText: productText,
+            disableText: disableText
         )
     }
 

@@ -63,6 +63,11 @@ internal protocol Cake_CakeServiceClientProtocol: GRPCClient {
     callOptions: CallOptions?
   ) -> UnaryCall<Cake_Add3DModelReq, Cake_Add3DModelRes>
 
+  func setCakeVisibility(
+    _ request: Cake_SetCakeVisibilityReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Cake_SetCakeVisibilityReq, SwiftProtobuf.Google_Protobuf_Empty>
+
   func createCategory(
     _ request: Cake_CreateCategoryRequest,
     callOptions: CallOptions?
@@ -246,6 +251,24 @@ extension Cake_CakeServiceClientProtocol {
     )
   }
 
+  /// Unary call to SetCakeVisibility
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to SetCakeVisibility.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func setCakeVisibility(
+    _ request: Cake_SetCakeVisibilityReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Cake_SetCakeVisibilityReq, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.setCakeVisibility.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSetCakeVisibilityInterceptors() ?? []
+    )
+  }
+
   /// Unary call to CreateCategory
   ///
   /// - Parameters:
@@ -409,6 +432,11 @@ internal protocol Cake_CakeServiceAsyncClientProtocol: GRPCClient {
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Cake_Add3DModelReq, Cake_Add3DModelRes>
 
+  func makeSetCakeVisibilityCall(
+    _ request: Cake_SetCakeVisibilityReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Cake_SetCakeVisibilityReq, SwiftProtobuf.Google_Protobuf_Empty>
+
   func makeCreateCategoryCall(
     _ request: Cake_CreateCategoryRequest,
     callOptions: CallOptions?
@@ -540,6 +568,18 @@ extension Cake_CakeServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeAdd3DModelInterceptors() ?? []
+    )
+  }
+
+  internal func makeSetCakeVisibilityCall(
+    _ request: Cake_SetCakeVisibilityReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Cake_SetCakeVisibilityReq, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.setCakeVisibility.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSetCakeVisibilityInterceptors() ?? []
     )
   }
 
@@ -690,6 +730,18 @@ extension Cake_CakeServiceAsyncClientProtocol {
     )
   }
 
+  internal func setCakeVisibility(
+    _ request: Cake_SetCakeVisibilityReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: Cake_CakeServiceClientMetadata.Methods.setCakeVisibility.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSetCakeVisibilityInterceptors() ?? []
+    )
+  }
+
   internal func createCategory(
     _ request: Cake_CreateCategoryRequest,
     callOptions: CallOptions? = nil
@@ -773,6 +825,9 @@ internal protocol Cake_CakeServiceClientInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when invoking 'add3DModel'.
   func makeAdd3DModelInterceptors() -> [ClientInterceptor<Cake_Add3DModelReq, Cake_Add3DModelRes>]
 
+  /// - Returns: Interceptors to use when invoking 'setCakeVisibility'.
+  func makeSetCakeVisibilityInterceptors() -> [ClientInterceptor<Cake_SetCakeVisibilityReq, SwiftProtobuf.Google_Protobuf_Empty>]
+
   /// - Returns: Interceptors to use when invoking 'createCategory'.
   func makeCreateCategoryInterceptors() -> [ClientInterceptor<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse>]
 
@@ -797,6 +852,7 @@ internal enum Cake_CakeServiceClientMetadata {
       Cake_CakeServiceClientMetadata.Methods.addCakeColors,
       Cake_CakeServiceClientMetadata.Methods.getColors,
       Cake_CakeServiceClientMetadata.Methods.add3DModel,
+      Cake_CakeServiceClientMetadata.Methods.setCakeVisibility,
       Cake_CakeServiceClientMetadata.Methods.createCategory,
       Cake_CakeServiceClientMetadata.Methods.categories,
       Cake_CakeServiceClientMetadata.Methods.getCategoriesByGenderName,
@@ -858,6 +914,12 @@ internal enum Cake_CakeServiceClientMetadata {
       type: GRPCCallType.unary
     )
 
+    internal static let setCakeVisibility = GRPCMethodDescriptor(
+      name: "SetCakeVisibility",
+      path: "/cake.CakeService/SetCakeVisibility",
+      type: GRPCCallType.unary
+    )
+
     internal static let createCategory = GRPCMethodDescriptor(
       name: "CreateCategory",
       path: "/cake.CakeService/CreateCategory",
@@ -901,6 +963,8 @@ internal protocol Cake_CakeServiceProvider: CallHandlerProvider {
   func getColors(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CakeColorsRes>
 
   func add3DModel(request: Cake_Add3DModelReq, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_Add3DModelRes>
+
+  func setCakeVisibility(request: Cake_SetCakeVisibilityReq, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
 
   func createCategory(request: Cake_CreateCategoryRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Cake_CreateCategoryResponse>
 
@@ -1002,6 +1066,15 @@ extension Cake_CakeServiceProvider {
         userFunction: self.add3DModel(request:context:)
       )
 
+    case "SetCakeVisibility":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Cake_SetCakeVisibilityReq>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeSetCakeVisibilityInterceptors() ?? [],
+        userFunction: self.setCakeVisibility(request:context:)
+      )
+
     case "CreateCategory":
       return UnaryServerHandler(
         context: context,
@@ -1087,6 +1160,11 @@ internal protocol Cake_CakeServiceAsyncProvider: CallHandlerProvider, Sendable {
     request: Cake_Add3DModelReq,
     context: GRPCAsyncServerCallContext
   ) async throws -> Cake_Add3DModelRes
+
+  func setCakeVisibility(
+    request: Cake_SetCakeVisibilityReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
 
   func createCategory(
     request: Cake_CreateCategoryRequest,
@@ -1204,6 +1282,15 @@ extension Cake_CakeServiceAsyncProvider {
         wrapping: { try await self.add3DModel(request: $0, context: $1) }
       )
 
+    case "SetCakeVisibility":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Cake_SetCakeVisibilityReq>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeSetCakeVisibilityInterceptors() ?? [],
+        wrapping: { try await self.setCakeVisibility(request: $0, context: $1) }
+      )
+
     case "CreateCategory":
       return GRPCAsyncServerHandler(
         context: context,
@@ -1275,6 +1362,10 @@ internal protocol Cake_CakeServiceServerInterceptorFactoryProtocol: Sendable {
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeAdd3DModelInterceptors() -> [ServerInterceptor<Cake_Add3DModelReq, Cake_Add3DModelRes>]
 
+  /// - Returns: Interceptors to use when handling 'setCakeVisibility'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeSetCakeVisibilityInterceptors() -> [ServerInterceptor<Cake_SetCakeVisibilityReq, SwiftProtobuf.Google_Protobuf_Empty>]
+
   /// - Returns: Interceptors to use when handling 'createCategory'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeCreateCategoryInterceptors() -> [ServerInterceptor<Cake_CreateCategoryRequest, Cake_CreateCategoryResponse>]
@@ -1302,6 +1393,7 @@ internal enum Cake_CakeServiceServerMetadata {
       Cake_CakeServiceServerMetadata.Methods.addCakeColors,
       Cake_CakeServiceServerMetadata.Methods.getColors,
       Cake_CakeServiceServerMetadata.Methods.add3DModel,
+      Cake_CakeServiceServerMetadata.Methods.setCakeVisibility,
       Cake_CakeServiceServerMetadata.Methods.createCategory,
       Cake_CakeServiceServerMetadata.Methods.categories,
       Cake_CakeServiceServerMetadata.Methods.getCategoriesByGenderName,
@@ -1360,6 +1452,12 @@ internal enum Cake_CakeServiceServerMetadata {
     internal static let add3DModel = GRPCMethodDescriptor(
       name: "Add3DModel",
       path: "/cake.CakeService/Add3DModel",
+      type: GRPCCallType.unary
+    )
+
+    internal static let setCakeVisibility = GRPCMethodDescriptor(
+      name: "SetCakeVisibility",
+      path: "/cake.CakeService/SetCakeVisibility",
       type: GRPCCallType.unary
     )
 

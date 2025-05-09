@@ -25,6 +25,7 @@ public protocol CakeService: Sendable {
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
     func fetchColors() async throws -> [String]
     func add3DModel(cakeID: String, modelData: Data) async throws -> String
+    func updateCakeVisibility(cakeID: String, isOpenForSale: Bool) async throws
     func closeConnection()
 }
 
@@ -63,6 +64,22 @@ public final class CakeGrpcServiceImpl: CakeService {
 }
 
 public extension CakeGrpcServiceImpl {
+
+    func updateCakeVisibility(cakeID: String, isOpenForSale: Bool) async throws {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Cake_SetCakeVisibilityReq.with {
+            $0.cakeID = cakeID
+            $0.isOpenForSale = isOpenForSale
+        }
+
+        return try await networkService.performAndLog(
+            call: client.setCakeVisibility,
+            with: request,
+            mapping: { _ in }
+        )
+    }
+
     func fetchColors() async throws -> [String] {
         return try await networkService.performAndLog(
             call: client.getColors,

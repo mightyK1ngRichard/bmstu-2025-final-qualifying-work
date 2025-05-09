@@ -73,17 +73,13 @@ extension CategoriesViewModel {
         Task {
             do {
                 let result = try await cakeProvider.fetchCategoryCakes(categoryID: section.id)
-                var cakesModel: [CakeModel] = []
-                cakesModel.reserveCapacity(result.cakes.count)
 
-                // сначала заполняем массив
-                for cake in result.cakes {
-                    cakesModel.append(CakeModel(from: cake))
-                }
+                let cakes = result.cakes.filter { $0.isOpenForSale }
+                var cakesModel: [CakeModel] = cakes.map(CakeModel.init(from:))
 
-                // теперь подгружаем картинки параллельно
+                // Подгружаем картинки
                 await withTaskGroup(of: (Int, ImageState).self) { group in
-                    for (index, cake) in result.cakes.enumerated() {
+                    for (index, cake) in cakes.enumerated() {
                         group.addTask {
                             let imageState = await self.imageProvider.fetchImage(for: cake.previewImageURL)
                             return (index, imageState)

@@ -33,6 +33,7 @@ let view = TLProductCard(
 public struct TLProductCard: View, Configurable {
     let configuration: Configuration
     var didTapButton: TLBoolBlock?
+    @State private var offset = CGFloat.zero
 
     public init(configuration: Configuration, didTapButton: TLBoolBlock? = nil) {
         self.configuration = configuration
@@ -44,6 +45,9 @@ public struct TLProductCard: View, Configurable {
             imageBlock
             footerBlockView
                 .padding(.top, 2)
+        }
+        .overlay {
+            disableOverlayView
         }
         .contentShape(.rect)
     }
@@ -64,12 +68,35 @@ private extension TLProductCard {
                 }
             }
             .overlay(alignment: .bottomTrailing) {
-                TLProductButton(
-                    configuration: configuration.productButtonConfiguration,
-                    didTapButton: didTapButton
-                )
-                .offset(x: 0, y: 18)
+                if configuration.disableText == nil {
+                    TLProductButton(
+                        configuration: configuration.productButtonConfiguration,
+                        didTapButton: didTapButton
+                    )
+                    .offset(x: 0, y: 18)
+                }
             }
+    }
+
+    @ViewBuilder
+    var disableOverlayView: some View {
+        if let disableText = configuration.disableText {
+            ZStack(alignment: .top) {
+                TLColor<BackgroundPalette>.bgCommentView.color
+                    .opacity(0.5)
+
+                Text(disableText)
+                    .style(11, .regular)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 5)
+                    .background {
+                        TLColor<BackgroundPalette>.bgCommentView.color
+                            .opacity(0.7)
+                    }
+                    .offset(y: configuration.imageHeight - 35)
+            }
+            .clipShape(.rect(cornerRadius: 9))
+        }
     }
 
     var footerBlockView: some View {
@@ -153,13 +180,27 @@ private extension TLProductCard {
                 starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
             )
         )
-        .frame(width: 148)
-        
+        .frame(width: 164)
+
         TLProductCard(
-            configuration: .shimmering(imageHeight: 184)
+            configuration: .basic(
+                imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
+                imageHeight: 184,
+                productText: .init(
+                    seller: "Mango Boy",
+                    productName: "T-Shirt Sailing",
+                    productPrice: "22$",
+                    productDiscountedPrice: "10$"
+                ),
+                disableText: "Sorry, this item is currently closed for sale",
+                productButtonConfiguration: .basic(kind: .favorite()),
+                starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
+            )
         )
-        .frame(width: 148)
+        .frame(width: 164)
     }
+    .padding(50)
+    .background(TLColor<BackgroundPalette>.bgMainColor.color)
 }
 
 // MARK: - Preview
@@ -168,7 +209,7 @@ private extension TLProductCard {
     TLProductCard(
         configuration: .shimmering(imageHeight: 184)
     )
-    .frame(width: 148)
+    .frame(width: 164)
 }
 
 // MARK: - Constants
