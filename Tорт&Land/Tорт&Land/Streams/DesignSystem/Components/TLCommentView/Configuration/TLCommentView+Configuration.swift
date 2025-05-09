@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension TLCommentView {
+public extension TLCommentView {
     struct Configuration {
         var userImageConfiguration: TLImageView.Configuration = .init()
         var userName = ""

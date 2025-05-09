@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
 Component `TLStarsView`
@@ -17,10 +18,14 @@ let view = TLStarsView(
 )
 ```
 */
-struct TLStarsView: View, Configurable {
+public struct TLStarsView: View, Configurable {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         HStack(spacing: configuration.leftPadding) {
             HStack(spacing: configuration.padding) {
                 ForEach(0..<configuration.countFillStars, id: \.self) { _ in
@@ -28,13 +33,13 @@ struct TLStarsView: View, Configurable {
                         ShimmeringView(kind: configuration.shimmeringKind)
                             .frame(width: configuration.starWidth, height: configuration.starWidth)
                             .mask {
-                                Image(.starFill)
+                                Image(uiImage: TLAssets.starFill)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: configuration.starWidth)
                             }
                     } else {
-                        Image(.starFill)
+                        Image(uiImage: TLAssets.starFill)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: configuration.starWidth)
@@ -42,7 +47,7 @@ struct TLStarsView: View, Configurable {
                 }
 
                 ForEach(0..<5-configuration.countFillStars, id: \.self) { _ in
-                    Image(.starOutline)
+                    Image(uiImage: TLAssets.starOutline)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: configuration.starWidth)

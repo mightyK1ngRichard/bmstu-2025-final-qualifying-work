@@ -68,13 +68,17 @@ extension AuthViewModel {
 
     func didTapRegisterButton() {
         guard !uiProperties.email.isEmpty, !uiProperties.password.isEmpty, !uiProperties.repeatPassword.isEmpty else {
-            uiProperties.alertMessage = "Заполните все поля!"
-            uiProperties.showingAlert = true
+            uiProperties.alert = AlertModel(
+                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: "Fill in all the fields"),
+                isShown: true
+            )
             return
         }
         if uiProperties.password != uiProperties.repeatPassword {
-            uiProperties.alertMessage = "Пароли не совпадают!"
-            uiProperties.showingAlert = true
+            uiProperties.alert = AlertModel(
+                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: "Password does not match"),
+                isShown: true
+            )
             return
         }
 
@@ -84,8 +88,7 @@ extension AuthViewModel {
                 try await registerUser()
                 startScreenControl?.update(with: .cakesList)
             } catch {
-                uiProperties.alertMessage = error.localizedDescription
-                uiProperties.showingAlert = true
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
             uiProperties.isLoading = false
         }
@@ -93,8 +96,13 @@ extension AuthViewModel {
 
     func didTapSignInButton() {
         guard !uiProperties.email.isEmpty, !uiProperties.password.isEmpty else {
-            uiProperties.alertMessage = "Заполните все поля!"
-            uiProperties.showingAlert = true
+            uiProperties.alert = AlertModel(
+                errorContent: ErrorContent(
+                    title: StringConstants.invalidInputData,
+                    message: "Fill in all the fields"
+                ),
+                isShown: true
+            )
             return
         }
 
@@ -104,8 +112,7 @@ extension AuthViewModel {
                 try await loginUser()
                 startScreenControl?.update(with: .cakesList)
             } catch {
-                uiProperties.alertMessage = error.localizedDescription
-                uiProperties.showingAlert = true
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
             uiProperties.isLoading = false
         }

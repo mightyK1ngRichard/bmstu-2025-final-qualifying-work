@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension CakesListView {
 
@@ -52,8 +54,8 @@ private extension CakesListView {
                 ForEach(viewModel.bindingData.sections) { section in
                     sectionView(for: section)
                 }
-            case let .error(errorMessage):
-                errorView(with: errorMessage)
+            case let .error(content):
+                errorView(with: content)
             }
         }
         .padding(.vertical, 13)
@@ -62,9 +64,9 @@ private extension CakesListView {
         .padding(.top, -20)
     }
 
-    func errorView(with message: String) -> some View {
+    func errorView(with content: ErrorContent) -> some View {
         TLErrorView(
-            configuration: viewModel.configureErrorView(message: message),
+            configuration: viewModel.configureErrorView(content: content),
             action: viewModel.fetchData
         )
         .padding(.horizontal, 53)

@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
+import Core
 
 struct CakeModel: Identifiable, Hashable {
     /// Код торта
@@ -48,6 +50,8 @@ struct CakeModel: Identifiable, Hashable {
     var colorsHex: [String]
     /// Ссылка на 3Д модель
     var model3DURL: String?
+    /// Флаг, открыт ли для продажи
+    var isOpenForSale: Bool
 }
 
 extension CakeModel {
@@ -77,7 +81,8 @@ extension CakeModel {
             fillings: [],
             seller: UserModel(from: model.owner),
             colorsHex: [],
-            model3DURL: model.model3DURL
+            model3DURL: model.model3DURL,
+            isOpenForSale: model.isOpenForSale
         )
     }
 
@@ -109,7 +114,8 @@ extension CakeModel {
             fillings: model.fillings.map(Filling.init(from:)),
             seller: UserModel(from: model.owner),
             colorsHex: model.colorsHex,
-            model3DURL: model.model3DURL
+            model3DURL: model.model3DURL,
+            isOpenForSale: model.isOpenForSale
         )
     }
 }
@@ -147,7 +153,8 @@ extension CakeModel {
             fillings: model.fillings.map(Filling.init(from:)),
             seller: UserModel(from: model.owner),
             colorsHex: model.colorsHex,
-            model3DURL: model.model3DURL
+            model3DURL: model.model3DURL,
+            isOpenForSale: model.isOpenForSale
         )
     }
 
@@ -156,6 +163,7 @@ extension CakeModel {
         cakeCopy.thumbnails = cakeEntity.images.map { Thumbnail(id: $0.id, imageState: .loading, url: $0.imageURL) }
         cakeCopy.categories = cakeEntity.categories.map(Category.init(from:))
         cakeCopy.fillings = cakeEntity.fillings.map(Filling.init(from:))
+        cakeCopy.isOpenForSale = cakeEntity.isOpenForSale
         return cakeCopy
     }
 }
@@ -188,6 +196,7 @@ extension CakeModel {
                 productPrice: priceFormatter.formatPrice(price),
                 productDiscountedPrice: productDiscountedPrice
             ),
+            disableText: isOpenForSale ? nil : "Sorry, this item is currently closed for sale",
             badgeViewConfiguration: badgeViewConfiguration,
             productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected)),
             starsViewConfiguration: starsConfiguration()

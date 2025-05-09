@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "(%lld)" : {
-
-    },
     "*Kg price, %@" : {
 
     },
@@ -14,9 +11,6 @@
 
     },
     "%@" : {
-
-    },
-    "%lld" : {
 
     },
     "%lld %@" : {
@@ -73,6 +67,9 @@
           }
         }
       }
+    },
+    "Anonymous" : {
+
     },
     "Cake" : {
 
@@ -170,13 +167,7 @@
         }
       }
     },
-    "Delivery address:" : {
-
-    },
     "Desired delivery date:" : {
-
-    },
-    "Details" : {
 
     },
     "Discounted price (Optional field)" : {
@@ -202,6 +193,7 @@
 
     },
     "Error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -250,6 +242,9 @@
     "Input new nickname" : {
 
     },
+    "Invalid input data" : {
+
+    },
     "kids" : {
       "localizations" : {
         "ru" : {
@@ -294,6 +289,9 @@
       }
     },
     "My orders" : {
+
+    },
+    "Network error" : {
 
     },
     "New" : {
@@ -593,9 +591,6 @@
 
     },
     "Total Amount:" : {
-
-    },
-    "Try again" : {
 
     },
     "Update" : {

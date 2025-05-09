@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension TLNotificationCell {
     struct Configuration: Hashable {
@@ -15,7 +17,7 @@ extension TLNotificationCell {
     }
 }
 
-struct TLNotificationCell: View, Configurable {
+struct TLNotificationCell: View {
     let configuration: Configuration
     @State private var offsetX: CGFloat = .zero
     @State private var showTrash = false

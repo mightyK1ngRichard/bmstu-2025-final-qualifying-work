@@ -10,23 +10,40 @@ import SwiftUI
 
 // MARK: - Configuration
 
-extension TLInputCode {
+public extension TLInputCode {
     struct Configuration: Hashable {
         var title: String?
-        var placeholder = ""
+        var placeholder: String
+
         var vPaddings: CGFloat {
             title == nil ? 22 : 14
+        }
+
+        public init(
+            title: String? = nil,
+            placeholder: String = ""
+        ) {
+            self.title = title
+            self.placeholder = placeholder
         }
     }
 }
 
 // MARK: - TLInputCode
 
-struct TLInputCode: View, Configurable {
-    var configuration = Configuration()
+public struct TLInputCode: View, Configurable {
+    let configuration: Configuration
     @Binding var inputText: String
 
-    var body: some View {
+    public init(
+        configuration: Configuration = Configuration(),
+        inputText: Binding<String>
+    ) {
+        self.configuration = configuration
+        _inputText = inputText
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if let title = configuration.title {
                 Text(title)

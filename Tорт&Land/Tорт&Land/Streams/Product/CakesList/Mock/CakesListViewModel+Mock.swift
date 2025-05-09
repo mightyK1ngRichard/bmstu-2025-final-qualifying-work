@@ -11,6 +11,8 @@
 import Foundation
 import NetworkAPI
 import Observation
+import DesignSystem
+import Core
 
 @Observable
 final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLogic, CakesListDisplayData {
@@ -43,8 +45,6 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
 
     func didFetchSections(with sections: [CakesListModel.Section]) {}
 
-    func showError(message: String) {}
-
     func addCakesToRootViewModel(_ cakes: [CakeEntity]) {}
 
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind) {}
@@ -69,9 +69,7 @@ final class CakesListViewModelMock: CakesListViewModelInput, CakesListDisplayLog
     func updateUserHeaderImage(imageState: ImageState, cakeID: String) {
     }
 
-    func configureErrorView(message: String) -> TLErrorView.Configuration {
-        .init(kind: .noConnection)
-    }
+    func showError(content: ErrorContent) {}
 }
 
 // MARK: - Configuration
@@ -87,6 +85,10 @@ extension CakesListViewModelMock {
 
     func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
         model.configureProductCard(priceFormatter: priceFormatter)
+    }
+
+    func configureErrorView(content: ErrorContent) -> DesignSystem.TLErrorView.Configuration {
+        .init(kind: .noConnection)
     }
 }
 

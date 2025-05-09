@@ -9,6 +9,7 @@
 import Foundation
 import NetworkAPI
 import SwiftUICore
+import Core
 
 @Observable
 final class FeedbackViewModel: FeedbackDisplayLogic, FeedbackViewModelInput {
@@ -38,11 +39,21 @@ extension FeedbackViewModel {
 
     func didTapSendFeedbackButton() {
         guard uiProperties.countFillStars > 0 && uiProperties.countFillStars < 6 else {
-            showErrorMessage(message: String(localized: "choose rating"))
+            showErrorMessage(
+                content: ErrorContent(
+                    title: "Invalid input data",
+                    message: String(localized: "choose rating").capitalized
+                )
+            )
             return
         }
         guard !uiProperties.feedbackText.isEmpty else {
-            showErrorMessage(message: "text is required")
+            showErrorMessage(
+                content: ErrorContent(
+                    title: "Invalid input data",
+                    message: "Text cannot be empty"
+                )
+            )
             return
         }
 
@@ -59,7 +70,7 @@ extension FeedbackViewModel {
                 ratingReviewViewModel.insertNewComment(response.feedback)
                 dismiss()
             } catch {
-                showErrorMessage(message: error.readableGRPCMessage)
+                showErrorMessage(content: error.readableGRPCContent)
             }
 
             uiProperties.isLoading = false
@@ -71,11 +82,13 @@ extension FeedbackViewModel {
     }
 
     func didTapCloseErrorAlert() {
-        uiProperties.errorMessage = ""
+        uiProperties.alert = .init()
     }
 
-    private func showErrorMessage(message: String) {
-        uiProperties.errorMessage = message
-        uiProperties.showErrorMessage = true
+    private func showErrorMessage(content: ErrorContent) {
+        uiProperties.alert = AlertModel(
+            errorContent: content,
+            isShown: true
+        )
     }
 }

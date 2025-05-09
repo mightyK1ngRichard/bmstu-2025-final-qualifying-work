@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DesignSystem
 
 protocol CakeDetailsDisplayData {
     var bindingData: CakeDetailsModel.BindingData { get set }
@@ -26,6 +27,7 @@ protocol CakeDetailsViewModelInput {
     func assemblyRatingReviewsView() -> RatingReviewsView
 
     func didTapMakeOrderButton()
+    func didTapUpdateVisable()
     func didTapSellerInfoButton()
     func didTapRatingReviewsButton()
     func didTapBackButton()
@@ -34,6 +36,7 @@ protocol CakeDetailsViewModelInput {
     func didTapFilling(with filling: Filling)
     func didTapAdd3DModel()
     func didTap3DButton()
+    func visableButtonConfiguration() -> TLButton.Configuration
     func didSelectFile(url: URL)
 }
 

@@ -19,7 +19,7 @@ extension TLRatingReviewsView.Configuration {
     ///   - commonRating: average rating
     ///   - commonCount: count of the feedbacks
     /// - Returns: configuration of the view
-    static func basic(
+    public static func basic(
         fiveStarRating: RatingData,
         fourStarRating: RatingData,
         threeStarRating: RatingData,

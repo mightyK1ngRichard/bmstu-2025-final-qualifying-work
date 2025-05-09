@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 struct MessageBubble: View {
     let message: ChatModel.ChatMessage
@@ -96,12 +98,12 @@ private extension MessageBubble {
     let kingUser = CommonMockData.generateMockUserModel(
         id: 1,
         name: "mightyK1ngRichard",
-        avatar: .fetched(.uiImage(.king))
+        avatar: .fetched(.uiImage(TLPreviewAssets.king))
     )
     let mashulaUser = CommonMockData.generateMockUserModel(
         id: 2,
         name: "kakashka",
-        avatar: .fetched(.uiImage(.user7))
+        avatar: .fetched(.uiImage(TLPreviewAssets.user7))
     )
 
     VStack {

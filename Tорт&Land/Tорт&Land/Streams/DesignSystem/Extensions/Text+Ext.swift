@@ -1,8 +1,9 @@
 //
-//  Text+Extensions.swift
+//  Text+Ext.swift
 //  Tорт&Land
 //
-//  Created by Dmitriy Permyakov on 21.12.2024.
+//  Created by Dmitriy Permyakov on 09.05.2025.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
 //
 
 import SwiftUI

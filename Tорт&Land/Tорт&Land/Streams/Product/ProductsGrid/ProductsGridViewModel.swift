@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class ProductsGridViewModel: ProductsGridDisplayData & ProductsGridViewModelInput {

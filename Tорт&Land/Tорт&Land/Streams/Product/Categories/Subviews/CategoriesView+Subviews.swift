@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension CategoriesView {
     var mainContainer: some View {
@@ -34,7 +36,7 @@ private extension CategoriesView {
                 Button {
                     viewModel.didTapSearchToggle()
                 } label: {
-                    Image(.magnifier)
+                    Image(uiImage: TLAssets.magnifier)
                         .renderingMode(.template)
                 }
             }
@@ -58,7 +60,7 @@ private extension CategoriesView {
 
     var searchBar: some View {
         HStack(spacing: 12) {
-            Image(.magnifier)
+            Image(uiImage: TLAssets.magnifier)
                 .renderingMode(.template)
                 .foregroundStyle(TLColor<IconPalette>.iconSecondary.color)
             TextField(Constants.searchTitle, text: $viewModel.uiProperties.searchText)

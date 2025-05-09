@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 struct CreateCakeInfoView: View {
     @Bindable var viewModel: CreateProductViewModel
@@ -192,7 +194,7 @@ private extension CreateCakeInfoView {
         static let discountedEndDateTitle = String(localized: "Discounted price end date (Optional field)")
         static let procductDescriptionPlaceholder = String(localized: "Write a description of the product...")
         static let discountedPriceBar = String(localized: "Discounted price (Optional field)")
-        static let logoImage = Image(.cakeLogo)
+        static let logoImage = Image(uiImage: TLAssets.cakeLogo)
         static let logoColor = TLColor<IconPalette>.iconRed.color.gradient
     }
 }

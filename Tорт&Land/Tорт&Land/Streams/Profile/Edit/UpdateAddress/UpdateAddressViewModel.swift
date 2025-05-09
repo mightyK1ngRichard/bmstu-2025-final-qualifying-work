@@ -9,6 +9,7 @@
 import Foundation
 import Observation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class UpdateAddressViewModel {
@@ -78,7 +79,10 @@ extension UpdateAddressViewModel {
                 coordinator?.openPreviousScreen()
             } catch {
                 uiProperties.buttonIsLoading = false
-                uiProperties.errorMessage = error.readableGRPCMessage
+                uiProperties.alert = AlertModel(
+                    errorContent: error.readableGRPCContent,
+                    isShown: true
+                )
             }
         }
     }

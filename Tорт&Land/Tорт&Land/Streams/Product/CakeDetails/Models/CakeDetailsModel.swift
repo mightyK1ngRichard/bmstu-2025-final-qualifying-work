@@ -15,6 +15,7 @@ enum CakeDetailsModel {
         var openFileDirecatory = false
         var selectedFilling: Filling?
         var selectedFileURL: URL?
+        var visableButtonIsLoading = false
     }
 }
 

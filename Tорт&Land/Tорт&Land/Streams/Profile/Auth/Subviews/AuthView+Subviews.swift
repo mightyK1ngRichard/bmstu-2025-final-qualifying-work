@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension AuthView {
 
@@ -30,9 +32,8 @@ extension AuthView {
             )
         )
         .defaultAlert(
-            title: Constants.errorTitle,
-            message: viewModel.uiProperties.alertMessage,
-            isPresented: $viewModel.uiProperties.showingAlert
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown
         )
     }
 
@@ -51,7 +52,7 @@ extension AuthView {
     }
 
     var logoView: some View {
-        Image(.cakeLogo)
+        Image(uiImage: TLAssets.cakeLogo)
             .renderingMode(.template)
             .resizable()
             .aspectRatio(contentMode: .fit)
@@ -159,6 +160,5 @@ extension AuthView {
         static let registerTitle = String(localized: "Register")
         static let dontHaveAccountTitle = String(localized: "Don't have account?")
         static let haveAccountTitle = String(localized: "Already have account?")
-        static let errorTitle = String(localized: "Error")
     }
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import Core
 
 struct UserModel: Identifiable, Hashable {
     /// Код пользователя

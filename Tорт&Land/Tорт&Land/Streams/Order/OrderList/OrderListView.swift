@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct OrderListView: View {
     @State var viewModel: OrderListViewModel
@@ -49,8 +50,8 @@ private extension OrderListView {
             }
         case .finished:
             contentView
-        case let .error(message):
-            errorView(message: message)
+        case let .error(content):
+            errorView(content: content)
         }
     }
 
@@ -64,11 +65,9 @@ private extension OrderListView {
         }
     }
 
-    func errorView(message: String) -> some View {
+    func errorView(content: ErrorContent) -> some View {
         TLErrorView(
-            configuration: .init(
-                kind: .customError("Network error", message)
-            ),
+            configuration: .init(from: content),
             action: viewModel.fetchData
         )
     }

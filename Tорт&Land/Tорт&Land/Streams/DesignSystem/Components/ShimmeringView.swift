@@ -7,13 +7,17 @@
 
 import SwiftUI
 
-struct ShimmeringView: View {
+public struct ShimmeringView: View {
     var kind: ShimmeringKind = .default
     @State private var isAnimating = false
     @State private var startPoint = UnitPoint(x: -1.8, y: -1.2)
     @State private var endPoint = UnitPoint(x: 0, y: -0.2)
 
-    var body: some View {
+    public init(kind: ShimmeringKind = .default) {
+        self.kind = kind
+    }
+
+    public var body: some View {
         LinearGradient(
             colors: kind.colors,
             startPoint: startPoint,
@@ -33,7 +37,7 @@ struct ShimmeringView: View {
 
 // MARK: - ShimmeringKind
 
-extension ShimmeringView {
+public extension ShimmeringView {
     enum ShimmeringKind: Hashable {
         case `default`
         case inverted
@@ -72,10 +76,6 @@ private extension ShimmeringView.ShimmeringKind {
         }
 
         VStack {
-            TLNotificationCell(
-                configuration: .init(isShimmering: true)
-            )
-
             TLProductCard(
                 configuration: .shimmering(imageHeight: 140)
             )

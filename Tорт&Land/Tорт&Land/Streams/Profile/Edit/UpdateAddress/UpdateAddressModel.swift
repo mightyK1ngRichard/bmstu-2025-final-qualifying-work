@@ -18,6 +18,6 @@ enum UpdateAddressModel {
         var inputComment = ""
         var isLoading = false
         var buttonIsLoading = false
-        var errorMessage: String?
+        var alert = AlertModel()
     }
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import Core
 
 struct Filling: Identifiable, Hashable {
     /// ID начинки

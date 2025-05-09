@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUICore
 
-extension TLStarsView {
+public extension TLStarsView {
 
     struct Configuration: Hashable {
         /// Count of the fill star
@@ -29,12 +29,34 @@ extension TLStarsView {
         var isShimmering: Bool = false
         /// Shimmering kind
         var shimmeringKind: ShimmeringView.ShimmeringKind = .default
+
+        public init(
+            countFillStars: Int = .zero,
+            starWidth: CGFloat = .zero,
+            padding: CGFloat = .zero,
+            feedbackCount: Int? = nil,
+            foregroundColor: Color = .clear,
+            lineHeigth: CGFloat = .zero,
+            leftPadding: CGFloat = .zero,
+            isShimmering: Bool = false,
+            shimmeringKind: ShimmeringView.ShimmeringKind = .default
+        ) {
+            self.countFillStars = countFillStars
+            self.starWidth = starWidth
+            self.padding = padding
+            self.feedbackCount = feedbackCount
+            self.foregroundColor = foregroundColor
+            self.lineHeigth = lineHeigth
+            self.leftPadding = leftPadding
+            self.isShimmering = isShimmering
+            self.shimmeringKind = shimmeringKind
+        }
     }
 }
 
 // MARK: - Kind
 
-extension TLStarsView.Configuration {
+public extension TLStarsView.Configuration {
 
     /// Kind of stars block
     enum Kind: Int {

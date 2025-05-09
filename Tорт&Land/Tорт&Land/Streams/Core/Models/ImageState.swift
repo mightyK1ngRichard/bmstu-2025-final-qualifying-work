@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-enum ImageState: Hashable {
+public enum ImageState: Hashable {
     case loading
     case fetched(ImageKind)
     case error(ImageErrorKind)
     case empty
 }
 
-extension ImageState {
+public extension ImageState {
     enum ImageKind: Hashable {
         case uiImage(UIImage)
         case data(Data)

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
  Component `TLChatCell`
@@ -23,10 +24,14 @@ import SwiftUI
  )
  ```
 */
-struct TLChatCell: View {
+public struct TLChatCell: View, Configurable {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         HStack(spacing: 15) {
             TLImageView(configuration: configuration.imageConfiguration)
                 .frame(width: 60, height: 60)
@@ -91,7 +96,7 @@ private extension TLChatCell {
     VStack {
         TLChatCell(
             configuration: .basic(
-                imageState: .fetched(.uiImage(.user2)),
+                imageState: .fetched(.uiImage(TLAssets.profile)),
                 title: "Dmitriy Permyakov",
                 subtitle: "Hello, VK! It is CakesHub application",
                 time: "02:10"

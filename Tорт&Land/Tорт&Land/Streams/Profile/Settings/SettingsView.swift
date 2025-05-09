@@ -10,6 +10,8 @@ import SwiftUI
 import NetworkAPI
 import MapKit
 import PhotosUI
+import DesignSystem
+import Core
 
 struct SettingsView: View {
     @State var viewModel: SettingsViewModel
@@ -35,8 +37,7 @@ struct SettingsView: View {
             preferredItemEncoding: .automatic
         )
         .defaultAlert(
-            title: viewModel.uiProperties.alert.title,
-            message: viewModel.uiProperties.alert.message,
+            errorContent: viewModel.uiProperties.alert.errorContent,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
         .onChange(of: viewModel.uiProperties.selectedImage) { _, newValue in
@@ -66,8 +67,8 @@ private extension SettingsView {
             editUserInfoContainer
             addressesView
             logoutButton
-        case let .error(message):
-            errorView(message: message)
+        case let .error(content):
+            errorView(content: content)
         }
     }
 
@@ -143,7 +144,8 @@ private extension SettingsView {
     }
 
     var pencilImage: some View {
-        Image(systemName: "pencil")
+        Image(uiImage: TLAssets.pen)
+            .renderingMode(.template)
             .foregroundStyle(viewModel.uiProperties.penState.color)
     }
 
@@ -176,11 +178,10 @@ private extension SettingsView {
         }
     }
 
-    func errorView(message: String) -> some View {
+    func errorView(content: ErrorContent) -> some View {
         TLErrorView(
-            configuration: .init(
-                kind: .customError("Network error", message)
-            )
+            configuration: .init(from: content),
+            action: viewModel.fetchAddresses
         )
     }
 
@@ -189,7 +190,7 @@ private extension SettingsView {
 // MARK: - Preview
 
 #Preview {
-    var network = NetworkServiceImpl()
+    let network = NetworkServiceImpl()
     network.setRefreshToken(CommonMockData.refreshToken)
     let authService = AuthGrpcServiceImpl(
         configuration: AppHosts.auth,
@@ -209,6 +210,7 @@ private extension SettingsView {
         )
     }
     .environment(Coordinator())
+    .environment(StartScreenControl())
 }
 
 // MARK: - Constants

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension TLBadgeView {
+public extension TLBadgeView {
 
     struct Configuration: Hashable {
         var text = ""
@@ -22,7 +22,7 @@ extension TLBadgeView {
 
 // MARK: - Kind
 
-extension TLBadgeView.Configuration {
+public extension TLBadgeView.Configuration {
 
     /// Kind of the background color
     enum Kind {

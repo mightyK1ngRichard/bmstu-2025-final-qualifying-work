@@ -7,6 +7,8 @@
 
 import Foundation
 import NetworkAPI
+import Core
+import DesignSystem
 
 struct CommentInfo: Identifiable, Hashable {
     /// Код комментария

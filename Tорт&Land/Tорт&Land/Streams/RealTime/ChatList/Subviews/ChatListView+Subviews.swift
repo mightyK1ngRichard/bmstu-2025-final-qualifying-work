@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension ChatListView {
     var mainContainer: some View {
@@ -32,9 +34,9 @@ private extension ChatListView {
             shimmeringView
         case .finished:
             contentView
-        case let .error(errorMessage):
+        case let .error(content):
             TLErrorView(
-                configuration: .init(kind: .customError("Network error", errorMessage))
+                configuration: .init(from: content)
             )
             .padding(.horizontal, 30)
         }
@@ -86,7 +88,7 @@ private extension ChatListView {
 
     var searchBarView: some View {
         HStack(spacing: 12) {
-            Image(.magnifier)
+            Image(uiImage: TLAssets.magnifier)
                 .renderingMode(.template)
                 .foregroundStyle(TLColor<IconPalette>.iconSecondary.color)
 

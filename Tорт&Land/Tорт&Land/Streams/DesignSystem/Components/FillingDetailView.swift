@@ -7,8 +7,9 @@
 //
 
 import SwiftUI
+import Core
 
-extension FillingDetailView {
+public extension FillingDetailView {
     struct Configuration: Hashable {
         /// Название начинки
         var name: String
@@ -20,13 +21,31 @@ extension FillingDetailView {
         var kgPrice: String
         /// Описание начинки
         var description: String
+
+        public init(
+            name: String,
+            imageState: ImageState,
+            content: String,
+            kgPrice: String,
+            description: String
+        ) {
+            self.name = name
+            self.imageState = imageState
+            self.content = content
+            self.kgPrice = kgPrice
+            self.description = description
+        }
     }
 }
 
-struct FillingDetailView: View, Configurable {
+public struct FillingDetailView: View, Configurable {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         VStack(alignment: .leading) {
             imageView
             VStack(alignment: .leading, spacing: 16) {
@@ -76,7 +95,7 @@ private extension FillingDetailView {
     FillingDetailView(
         configuration: .init(
             name: "Клубничная начинка Клуб начинка",
-            imageState: .fetched(.uiImage(.filling2)),
+            imageState: .fetched(.uiImage(TLPreviewAssets.filling2)),
             content: "Клубника, сливки, масло",
             kgPrice: "100 руб/кг",
             description: """

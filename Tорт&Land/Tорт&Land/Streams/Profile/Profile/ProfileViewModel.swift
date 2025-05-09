@@ -9,7 +9,9 @@
 import Foundation
 import Observation
 import Combine
+import Core
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
@@ -88,7 +90,7 @@ extension ProfileViewModel {
                 fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
-                uiProperties.screenState = .error(message: error.readableGRPCMessage)
+                uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -96,7 +98,7 @@ extension ProfileViewModel {
     private func fetchAvatarWithHeaderImage(imageURL: String?, headerImageURL: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                user?.avatarImage = .fetched(.uiImage(.profile))
+                user?.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
@@ -153,8 +155,10 @@ extension ProfileViewModel {
             coordinator?.addScreen(ProfileModel.Screens.sendMessage(currentUser: currentUser, interlocutor: interlocutor))
         } else {
             uiProperties.alert = AlertModel(
-                title: "Current user not found",
-                message: "Inner error. Relaunch this app",
+                errorContent: ErrorContent(
+                    title: "Current user not found",
+                    message: "Inner error. Relaunch this app"
+                ),
                 isShown: true
             )
         }

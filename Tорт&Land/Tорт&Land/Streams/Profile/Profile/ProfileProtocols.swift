@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
 
 protocol ProfileDisplayLogic {
     var uiProperties: ProfileModel.UIProperties { get set }

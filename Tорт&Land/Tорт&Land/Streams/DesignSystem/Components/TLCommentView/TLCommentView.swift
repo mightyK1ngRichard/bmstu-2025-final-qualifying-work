@@ -25,10 +25,14 @@ import SwiftUI
  )
  ```
 */
-struct TLCommentView: View {
+public struct TLCommentView: View {
     let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         VStack(alignment: .leading) {
             Text(configuration.userName)
                 .userNameFont
@@ -91,10 +95,14 @@ private extension Text {
 
 // MARK: - Preview
 
+#if DEBUG
+import Core
+#endif
+
 #Preview {
     TLCommentView(
         configuration: .basic(
-            imageState: .fetched(.uiImage(.cake1)),
+            imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
             userName: "Helene Moore",
             date: "June 5, 2019",
             description: """

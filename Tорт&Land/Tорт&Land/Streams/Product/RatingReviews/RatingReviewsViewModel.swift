@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import Core
+import DesignSystem
 
 @Observable
 final class RatingReviewsViewModel: RatingReviewsDisplayLogic, RatingReviewsViewModelInput, RatingReviewsViewModelOutput {
@@ -52,7 +54,7 @@ extension RatingReviewsViewModel {
                 comments = commentsInfo
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: error.readableGRPCMessage)
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -62,7 +64,7 @@ private extension RatingReviewsViewModel {
     func fetchUserImage(index: Int, urlString: String?) {
         Task { @MainActor in
             guard let urlString else {
-                comments[index].author.imageState = .fetched(.uiImage(.profile))
+                comments[index].author.imageState = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
@@ -102,8 +104,8 @@ extension RatingReviewsViewModel {
         }
     }
 
-    func configureErrorView(message: String) -> TLErrorView.Configuration {
-        .init(kind: .customError("Network error", message))
+    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration {
+        .init(from: content)
     }
 
 }

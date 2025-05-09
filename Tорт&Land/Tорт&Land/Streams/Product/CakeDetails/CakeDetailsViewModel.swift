@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import Core
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelInput {
@@ -46,6 +48,10 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
         self.priceFormatter = priceFormatter
         self.rootViewModel = rootViewModel
     }
+
+    private var visableButtonTitle: String {
+        cakeModel.isOpenForSale ? "Close for sale" : "Open for sale"
+    }
 }
 
 // MARK: - Network
@@ -54,11 +60,13 @@ extension CakeDetailsViewModel {
 
     func fetchCakeDetails() {
         bindingData.isLoading = true
+
         Task { @MainActor in
             do {
                 let cakeEntity = try await cakeService.fetchCakeDetails(cakeID: cakeModel.id)
                 cakeModel = cakeModel.applyDetails(cakeEntity)
                 bindingData.isLoading = false
+
                 fetchThumbnails(cakeImages: cakeModel.thumbnails)
                 fetchCategoriesImages(categories: cakeEntity.categories)
                 fetchFillingsImages(fillings: cakeEntity.fillings)
@@ -77,7 +85,7 @@ extension CakeDetailsViewModel {
     private func fetchSellerImages(imageURL: String?, headerImage: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                cakeModel.seller.avatarImage = .fetched(.uiImage(.profile))
+                cakeModel.seller.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
@@ -181,6 +189,21 @@ extension CakeDetailsViewModel {
         }
     }
 
+    func didTapUpdateVisable() {
+        bindingData.visableButtonIsLoading = true
+        Task { @MainActor in
+            let isOpenForSale = !cakeModel.isOpenForSale
+
+            do {
+                try await cakeService.updateCakeVisibility(cakeID: cakeModel.id, isOpenForSale: isOpenForSale)
+                cakeModel.isOpenForSale = isOpenForSale
+            } catch {
+            }
+
+            bindingData.visableButtonIsLoading = false
+        }
+    }
+
 }
 
 // MARK: - Configuration
@@ -220,7 +243,11 @@ extension CakeDetailsViewModel {
             description: filling.description
         )
     }
-    
+
+    func visableButtonConfiguration() -> TLButton.Configuration {
+        .init(title: visableButtonTitle, kind: bindingData.visableButtonIsLoading ? .loading : .default)
+    }
+
 }
 
 // MARK: - Setters

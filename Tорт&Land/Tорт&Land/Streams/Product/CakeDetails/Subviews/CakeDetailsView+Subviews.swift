@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import DesignSystem
+import Core
 
 extension CakeDetailsView {
     var mainContainer: some View {
@@ -25,10 +27,8 @@ extension CakeDetailsView {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .overlay(alignment: .bottom) {
-            if viewModel.showOwnerButton {
-                TLButton("make order".uppercased(), action: viewModel.didTapMakeOrderButton)
-                    .padding()
-            }
+            bottomButton
+                .padding()
         }
         .overlay {
             progressView
@@ -213,7 +213,7 @@ private extension CakeDetailsView {
                     .font(.system(size: 16, weight: .regular))
                     .tint(TLColor<TextPalette>.textPrimary.color)
                 Spacer()
-                Image(.chevronRight)
+                Image(uiImage: TLAssets.chevronRight)
                     .renderingMode(.template)
                     .tint(TLColor<TextPalette>.textPrimary.color)
                     .frame(width: 16, height: 16)
@@ -222,6 +222,18 @@ private extension CakeDetailsView {
         }
         .padding(.horizontal)
         Divider()
+    }
+
+    @ViewBuilder
+    var bottomButton: some View {
+        if viewModel.showOwnerButton {
+            TLButton("make order".uppercased(), action: viewModel.didTapMakeOrderButton)
+        } else {
+            TLButton(
+                configuration: viewModel.visableButtonConfiguration(),
+                action: viewModel.didTapUpdateVisable
+            )
+        }
     }
 }
 
@@ -233,7 +245,7 @@ private extension CakeDetailsView {
         Button {
             viewModel.didTapBackButton()
         } label: {
-            Image(.chevronLeft)
+            Image(uiImage: TLAssets.chevronLeft)
                 .renderingMode(.template)
                 .foregroundStyle(TLColor<IconPalette>.iconPrimary.color)
         }
@@ -265,7 +277,7 @@ private extension CakeDetailsView {
     @Previewable
     @State var coordinator = Coordinator()
     NavigationStack(path: $coordinator.navPath) {
-        CakeDetailsView(viewModel: CakeDetailsViewModelMock(isOwnedByUser: false))
+        CakeDetailsView(viewModel: CakeDetailsViewModelMock(isOwnedByUser: true))
     }
     .environment(coordinator)
 }

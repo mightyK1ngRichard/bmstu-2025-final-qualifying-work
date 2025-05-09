@@ -11,6 +11,7 @@
 import Foundation
 import Observation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic, RatingReviewsViewModelInput, RatingReviewsViewModelOutput {
@@ -55,8 +56,8 @@ final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic, RatingReviews
         }
     }
 
-    func configureErrorView(message: String) -> TLErrorView.Configuration {
-        .init(kind: .customError("Network error", message))
+    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration {
+        .init(from: content)
     }
 
     func insertNewComment(_ feedback: FeedbackEntity) {}

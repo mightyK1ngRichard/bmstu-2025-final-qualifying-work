@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct TLCustomTabBarView: View {
     @State private var allTabs: [AnimatedTab] = TabBarItem.allCases.compactMap {

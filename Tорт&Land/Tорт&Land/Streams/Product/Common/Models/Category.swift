@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import Core
 
 /// Информация о категории
 struct Category: Identifiable, Hashable {

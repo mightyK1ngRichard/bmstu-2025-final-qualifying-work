@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Core
 
 protocol ImageLoaderProvider: AnyObject {
     func fetchImagesData(

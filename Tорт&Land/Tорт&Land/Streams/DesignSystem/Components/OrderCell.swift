@@ -7,23 +7,75 @@
 //
 
 import SwiftUI
-import NetworkAPI
 
-extension OrderCell {
+public extension OrderCell {
     struct Configuration: Hashable {
         var title = ""
         var date = ""
         var addressTitle = ""
         var mass = ""
         var totalAmount = ""
-        var status: OrderStatusEntity = .pending
+        var status: OrderStatus = .pending
+
+        public init(
+            title: String = "",
+            date: String = "",
+            addressTitle: String = "",
+            mass: String = "",
+            totalAmount: String = "",
+            status: OrderStatus = .pending
+        ) {
+            self.title = title
+            self.date = date
+            self.addressTitle = addressTitle
+            self.mass = mass
+            self.totalAmount = totalAmount
+            self.status = status
+        }
+    }
+
+    enum OrderStatus: Sendable, Hashable {
+        /// Заказ создан и ожидает обработки.
+        case pending
+        /// Заказ находится в пути
+        case shipped
+        /// Заказ был успешно выполнен и доставлен.
+        case delivered
+        /// Заказ отменён.
+        case cancelled
     }
 }
 
-struct OrderCell: View, Configurable {
-    var configuration = Configuration()
+public extension OrderCell.OrderStatus {
+    var title: String {
+        String(describing: self)
+    }
 
-    var body: some View {
+    /// Цвет текста статуса
+    var textColor: Color {
+        switch self {
+        case .pending:
+            return .orange
+        case .shipped:
+            return .blue
+        case .delivered:
+            return .green
+        case .cancelled:
+            return .red
+        }
+    }
+}
+
+// MARK: - OrderCell
+
+public struct OrderCell: View, Configurable {
+    let configuration: Configuration
+
+    public init(configuration: Configuration = Configuration()) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             headerContainer
             bodyContainer

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
 Component `TLProductButton`
@@ -17,12 +18,12 @@ let view = TLProductButton(
 )
 ```
 */
-struct TLProductButton: View, Configurable {
+public struct TLProductButton: View, Configurable {
     let configuration: Configuration
     var didTapButton: TLBoolBlock?
     @State private var isSelected: Bool
 
-    init(
+    public init(
         configuration: Configuration,
         didTapButton: TLBoolBlock? = nil
     ) {
@@ -31,7 +32,7 @@ struct TLProductButton: View, Configurable {
         self.isSelected = configuration.kind.isSelected
     }
 
-    var body: some View {
+    public var body: some View {
         if configuration.isShimmering {
             ShimmeringView()
                 .frame(width: configuration.buttonSize, height: configuration.buttonSize)

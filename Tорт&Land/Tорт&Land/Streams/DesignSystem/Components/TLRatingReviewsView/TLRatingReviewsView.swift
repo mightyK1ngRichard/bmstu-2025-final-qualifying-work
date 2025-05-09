@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
  Component `TLRatingReviewsView`
@@ -25,10 +26,14 @@ import SwiftUI
  )
  ```
 */
-struct TLRatingReviewsView: View, Configurable {
-    var configuration: Configuration
+public struct TLRatingReviewsView: View, Configurable {
+    let configuration: Configuration
 
-    var body: some View {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         HStack {
             VStack {
                 Text(configuration.commontRating)
@@ -54,7 +59,7 @@ private extension TLRatingReviewsView {
                 HStack {
                     HStack(spacing: 3) {
                         ForEach(0..<5-counter.id, id: \.self) { row in
-                            Image(.starFill)
+                            Image(uiImage: TLAssets.starFill)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: Constants.starSize)

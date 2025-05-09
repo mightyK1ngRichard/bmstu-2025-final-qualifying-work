@@ -12,6 +12,7 @@ import Foundation
 import UIKit
 import NetworkAPI
 import Observation
+import DesignSystem
 
 @Observable
 final class ProductsGridViewModelMock: ProductsGridDisplayData, ProductsGridViewModelInput {

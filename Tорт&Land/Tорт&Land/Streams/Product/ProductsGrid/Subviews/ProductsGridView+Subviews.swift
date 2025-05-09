@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import DesignSystem
+import Core
 
 extension ProductsGridView {
 
@@ -39,7 +41,7 @@ private extension ProductsGridView {
 
     var emptyContainer: some View {
         GroupBox {
-            Image(.cakeLogo)
+            Image(uiImage: TLAssets.cakeLogo)
                 .renderingMode(.template)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -80,14 +82,14 @@ private extension ProductsGridView {
 
     func tabView(
         title: String,
-        imageResource: ImageResource,
+        uiImage: UIImage,
         action: @escaping TLVoidBlock
     ) -> some View {
         Button {
             action()
         } label: {
             HStack(spacing: 7) {
-                Image(imageResource)
+                Image(uiImage: uiImage)
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
@@ -110,13 +112,13 @@ private extension ProductsGridView {
     var tabBarItems: some View {
         tabView(
             title: viewModel.uiProperties.selectedSortMode.rawValue.capitalized,
-            imageResource: .sort,
+            uiImage: TLAssets.sort,
             action: viewModel.didTapSortButton
         )
 
         tabView(
             title: "Filters",
-            imageResource: .filter,
+            uiImage: TLAssets.filter,
             action: viewModel.didTapFilterButton
         )
     }

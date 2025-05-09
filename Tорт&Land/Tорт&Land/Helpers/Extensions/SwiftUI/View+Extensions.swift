@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension View {
     func onFirstAppear(perform action: @escaping () -> Void) -> some View {
@@ -117,20 +119,19 @@ extension View {
 
 extension View {
     func defaultAlert(
-        title: String,
-        message: String,
+        errorContent: ErrorContent,
         isPresented: Binding<Bool>,
         action: TLVoidBlock? = nil
     ) -> some View {
         alert(
-            title,
+            errorContent.title,
             isPresented: isPresented
         ) {
             Button("OK") {
                 action?()
             }
         } message: {
-            Text(message)
+            Text(errorContent.message)
         }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 extension CreateProductView {
 
@@ -40,9 +41,8 @@ extension CreateProductView {
         }
         .background(Constants.bgColor)
         .defaultAlert(
-            title: viewModel.uiProperties.alertTitle,
-            message: viewModel.uiProperties.alertMessage,
-            isPresented: $viewModel.uiProperties.showAlert
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown
         )
     }
 }

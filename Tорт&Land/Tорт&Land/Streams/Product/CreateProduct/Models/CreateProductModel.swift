@@ -18,10 +18,8 @@ extension CreateProductModel {
         var inputPrice = ""
         var inputMass = ""
         var inputDiscountedPrice = ""
-        var alertTitle = ""
-        var alertMessage = ""
+        var alert = AlertModel()
         var selectedPhotosData: [Data] = []
-        var showAlert = false
         var discountEndDate = Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()
         let totalCount = 4
 

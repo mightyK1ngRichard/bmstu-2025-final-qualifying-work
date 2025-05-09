@@ -9,8 +9,10 @@
 import Foundation
 import NetworkAPI
 import SwiftUI
+import DesignSystem
 import MapKit
 import Combine
+import Core
 import GRPC
 import _PhotosUI_SwiftUI
 
@@ -51,7 +53,7 @@ extension SettingsViewModel {
                 addresses = try await profileProvider.getUserAddresses()
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: error.readableGRPCMessage)
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -101,8 +103,7 @@ extension SettingsViewModel {
                 coordinator?.goToRoot()
             } catch {
                 uiProperties.alert = AlertModel(
-                    title: "Logout failed",
-                    message: error.readableGRPCMessage,
+                    errorContent: error.readableGRPCContent,
                     isShown: true
                 )
             }
@@ -121,8 +122,7 @@ extension SettingsViewModel {
                 userPublisher.send(userModel)
             } catch {
                 uiProperties.alert = AlertModel(
-                    title: "Failed to update info",
-                    message: error.readableGRPCMessage,
+                    errorContent: error.readableGRPCContent,
                     isShown: true
                 )
                 uiProperties.penState = .failed
@@ -176,6 +176,7 @@ extension SettingsViewModel {
 // MARK: - Models
 
 extension SettingsViewModel {
+
     struct UIProperties: Hashable {
         var state: ScreenState = .initial
         var showPopover = false
@@ -191,9 +192,11 @@ extension SettingsViewModel {
     enum Screens: Hashable {
         case addAddress
     }
+
 }
 
 extension SettingsViewModel.UIProperties {
+
     enum UserImageKind: String, Hashable, CaseIterable {
         case avatar
         case header
@@ -204,13 +207,14 @@ extension SettingsViewModel.UIProperties {
 
         var color: Color {
             switch self {
-            case .failed: .red
+            case .failed: TLColor<IconPalette>.iconRed.color
             case .updated: .green
-            case .initial: .primary
+            case .initial: TLColor<IconPalette>.iconPrimary.color
             case .loading: .orange
             }
         }
     }
+
 }
 
 // MARK: - Setter

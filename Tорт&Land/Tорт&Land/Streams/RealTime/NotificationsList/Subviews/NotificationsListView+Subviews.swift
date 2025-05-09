@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 extension NotificationsListView {
     var mainContainer: some View {
@@ -17,9 +18,9 @@ extension NotificationsListView {
                     shimmeringView
                 case .finished:
                     notificationsList
-                case let .error(errorMessage):
+                case let .error(content):
                     TLErrorView(
-                        configuration: .init(kind: .customError("Network error", errorMessage)),
+                        configuration: .init(from: content),
                         action: viewModel.didTapReloadButton
                     )
                 }

@@ -23,10 +23,14 @@ import SwiftUI
  )
  ```
 */
-struct TLProductDescriptionView: View {
+public struct TLProductDescriptionView: View {
     let configuration: Configuration
 
-    var body: some View  {
+    public init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View  {
         VStack(alignment: .leading) {
             textBlock
                 .padding(.horizontal, configuration.innerHPadding)

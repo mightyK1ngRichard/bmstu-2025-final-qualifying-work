@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 extension TLCommentView.Configuration {
 
@@ -17,7 +18,7 @@ extension TLCommentView.Configuration {
     ///   - description: comment description
     ///   - starsConfiguration: stars view configuration
     /// - Returns: configuration of the view
-    static func basic(
+    public static func basic(
         imageState: ImageState,
         userName: String,
         date: String,

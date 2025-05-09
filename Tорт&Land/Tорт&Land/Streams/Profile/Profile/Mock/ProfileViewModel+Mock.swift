@@ -11,6 +11,8 @@
 import Foundation
 import Observation
 import NetworkAPI
+import Core
+import DesignSystem
 
 @Observable
 final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
@@ -26,8 +28,8 @@ final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, Pr
         var userInfo = CommonMockData.generateMockUserModel(
             id: 1,
             name: "Пермяков Дмитрий",
-            avatar: .fetched(.uiImage(.king)),
-            header: .fetched(.uiImage(.headerKing))
+            avatar: .fetched(.uiImage(TLPreviewAssets.king)),
+            header: .fetched(.uiImage(TLPreviewAssets.headerKing))
         )
         userInfo.cakes = (1...10).map {
             var cake = CommonMockData.generateMockCakeModel(id: $0)
@@ -47,6 +49,7 @@ final class ProfileViewModelMock: ProfileDisplayLogic, ProfileViewModelInput, Pr
 // MARK: - Actions
 
 extension ProfileViewModelMock {
+
     func didTapCakeCard(with cake: CakeModel) {
         print("[DEBUG]: did tap cake with id=\(cake.id)")
         coordinator?.addScreen(RootModel.Screens.details(cake))
@@ -78,11 +81,13 @@ extension ProfileViewModelMock {
             uiProperties.screenState = .finished
         }
     }
+
 }
 
 // MARK: - Configurations
 
 extension ProfileViewModelMock {
+
     func configureAvatarImage() -> TLImageView.Configuration {
         .init(imageState: user!.avatarImage)
     }
@@ -111,8 +116,8 @@ extension ProfileViewModelMock {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func didTapOpenOrders() {
-    }
+    func didTapOpenOrders() {}
+
 }
 
 #endif

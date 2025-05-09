@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import Core
+import DesignSystem
 
 @Observable
 final class ChatListViewModel: ChatListDisplayLogic, ChatListViewModelInput, ChatListViewModelOutput {
@@ -57,7 +59,7 @@ extension ChatListViewModel {
                 }
                 uiProperties.screenState = .finished
             } catch {
-                uiProperties.screenState = .error(message: error.readableGRPCMessage)
+                uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -70,7 +72,7 @@ extension ChatListViewModel {
 
         Task { @MainActor in
             guard let urlString else {
-                allChatCells[index].user.avatarImage = .fetched(.uiImage(.profile))
+                allChatCells[index].user.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 

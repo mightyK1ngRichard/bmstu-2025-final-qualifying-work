@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 /**
  Component `TLBannerView`
@@ -20,11 +21,16 @@ import SwiftUI
  )
  ```
 */
-struct TLBannerView: View, Configurable {
+public struct TLBannerView: View, Configurable {
     let configuration: Configuration
     var didTapButton: TLVoidBlock?
 
-    var body: some View {
+    public init(configuration: Configuration, didTapButton: TLVoidBlock? = nil) {
+        self.configuration = configuration
+        self.didTapButton = didTapButton
+    }
+
+    public var body: some View {
         TLImageView(configuration: configuration.imageConfiguration)
             .overlay(alignment: .bottomLeading) {
                 VStack(alignment: .leading, spacing: 18) {

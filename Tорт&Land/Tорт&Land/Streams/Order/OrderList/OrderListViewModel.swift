@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
 
 @Observable
 final class OrderListViewModel {
@@ -36,7 +37,7 @@ extension OrderListViewModel {
                 orders = try await orderService.fetchOrders()
                 uiProperties.state = .finished
             } catch {
-                uiProperties.state = .error(message: error.readableGRPCMessage)
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -51,7 +52,18 @@ extension OrderListViewModel {
             addressTitle: order.deliveryAddress.formattedAddress,
             mass: "\(Int(order.mass)) гр",
             totalAmount: priceFormatter.formatPrice(order.totalPrice),
-            status: order.status
+            status: {
+                switch order.status {
+                case .pending:
+                    return .pending
+                case .shipped:
+                    return .shipped
+                case .delivered:
+                    return .delivered
+                case .cancelled:
+                    return .cancelled
+                }
+            }()
         )
     }
 

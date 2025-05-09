@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import Core
 
-extension TLChatCell.Configuration {
+public extension TLChatCell.Configuration {
 
     /// Basic configuration
     /// - Parameters:

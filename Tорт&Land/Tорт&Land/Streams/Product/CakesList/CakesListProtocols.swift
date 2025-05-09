@@ -8,6 +8,8 @@
 
 import Foundation
 import NetworkAPI
+import DesignSystem
+import Core
 
 // MARK: - View Model
 
@@ -24,13 +26,13 @@ protocol CakesListViewModelInput {
     func didTapCell(model: CakeModel)
     func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind)
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
-    func configureErrorView(message: String) -> TLErrorView.Configuration
+    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration
 }
 
 @MainActor
 protocol CakesListDisplayLogic {
     func didFetchSections(with sections: [CakesListModel.Section])
-    func showError(message: String)
+    func showError(content: ErrorContent)
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind)
     func addCakesToRootViewModel(_ cakes: [CakeEntity])
     func updateUserAvatarImage(imageState: ImageState, cakeID: String)

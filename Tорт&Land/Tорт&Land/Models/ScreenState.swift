@@ -7,10 +7,26 @@
 //
 
 import Foundation
+import DesignSystem
 
 enum ScreenState: Hashable {
     case initial
     case loading
     case finished
-    case error(message: String)
+    case error(content: ErrorContent)
+}
+
+// MARK: - ErrorContent
+
+struct ErrorContent: Hashable {
+    var title: String = String(localized: "Network error")
+    var message: String
+}
+
+extension TLErrorView.Configuration {
+    init(from content: ErrorContent) {
+        self = .init(
+            kind: .customError(content.title, content.message)
+        )
+    }
 }

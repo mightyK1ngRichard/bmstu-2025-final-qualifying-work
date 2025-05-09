@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DesignSystem
 
 protocol NotificationDetailDisplayLogic: NotificationDetailViewModelInput {
     var uiProperties: NotificationDetailModel.UIProperties { get set }

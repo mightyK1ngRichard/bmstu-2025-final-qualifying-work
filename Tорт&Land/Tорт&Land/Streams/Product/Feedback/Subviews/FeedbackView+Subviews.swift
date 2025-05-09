@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import Core
+import DesignSystem
 
 extension FeedbackView {
 
@@ -21,12 +23,10 @@ extension FeedbackView {
         .overlay {
             loadingView
         }
-        .alert(
-            viewModel.uiProperties.errorMessage,
-            isPresented: $viewModel.uiProperties.showErrorMessage,
-            actions: {
-                Button("OK", action: viewModel.didTapCloseErrorAlert)
-            }
+        .defaultAlert(
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown,
+            action: viewModel.didTapCloseErrorAlert
         )
     }
 
@@ -45,9 +45,9 @@ extension FeedbackView {
             HStack(spacing: 8) {
                 ForEach(1...5, id: \.self) { index in
                     Image(
-                        index > viewModel.uiProperties.countFillStars
-                            ? .starOutline
-                            : .starFill
+                        uiImage: index > viewModel.uiProperties.countFillStars
+                            ? TLAssets.starOutline
+                            : TLAssets.starFill
                     )
                     .resizable()
                     .aspectRatio(contentMode: .fit)

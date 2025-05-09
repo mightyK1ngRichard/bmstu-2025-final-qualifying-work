@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import NetworkAPI
+import DesignSystem
 
 protocol RootDisplayData {
     var uiProperties: RootModel.UIProperties { get set }

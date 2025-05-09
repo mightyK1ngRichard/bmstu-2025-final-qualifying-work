@@ -13,7 +13,7 @@ extension TLProductButton.Configuration {
     /// - Parameters:
     ///   - kind: icon style
     /// - Returns: configuration of the view
-    static func basic(kind: Kind) -> Self {
+    public static func basic(kind: Kind) -> Self {
         .init(
             backgroundColor: kind.backgroundColor,
             buttonSize: Constants.buttonSize,
@@ -23,7 +23,7 @@ extension TLProductButton.Configuration {
         )
     }
 
-    static var shimmering: Self {
+    public static var shimmering: Self {
         .init(
             buttonSize: Constants.buttonSize,
             isShimmering: true

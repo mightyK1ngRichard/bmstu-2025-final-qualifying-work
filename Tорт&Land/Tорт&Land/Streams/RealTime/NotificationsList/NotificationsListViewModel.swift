@@ -46,7 +46,7 @@ extension NotificationsListViewModel {
                 notifications = entities.map(NotificationsListModel.NotificationModel.init(from:))
                 uiProperties.screenState = .finished
             } catch {
-                uiProperties.screenState = .error(message: error.readableGRPCMessage)
+                uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
     }
