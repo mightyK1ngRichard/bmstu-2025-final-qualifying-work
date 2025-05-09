@@ -17,6 +17,7 @@ public protocol AuthService: Sendable {
     func register(req: AuthServiceModel.Register.Request) async throws -> AuthServiceModel.Register.Response
     func login(req: AuthServiceModel.Login.Request) async throws -> AuthServiceModel.Login.Response
     func updateAccessToken() async throws -> AuthServiceModel.UpdateAccessToken.Response
+    func logout() async throws
     func closeConnection()
 }
 
@@ -110,6 +111,23 @@ public extension AuthGrpcServiceImpl {
             with: request,
             options: callOptions,
             mapping: { .init(from: $0) }
+        )
+    }
+
+    func logout() async throws {
+        guard let refreshToken = networkService.refreshToken, !refreshToken.isEmpty else {
+            throw NetworkError.missingRefreshToken
+        }
+
+        let request = Google_Protobuf_Empty()
+        var callOptions = networkService.callOptions
+        callOptions.customMetadata.add(name: "authorization", value: "Bearer \(refreshToken)")
+
+        try await networkService.performAndLog(
+            call: client.logout,
+            with: request,
+            options: callOptions,
+            mapping: { _ in }
         )
     }
 

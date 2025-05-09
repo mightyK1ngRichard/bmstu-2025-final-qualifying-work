@@ -10,8 +10,12 @@ import Foundation
 import NetworkAPI
 
 final class SettingsAssembler {
-    static func assemble(userModel: UserModel, profileProvider: ProfileService) -> SettingsView {
-        let viewModel = SettingsViewModel(userModel: userModel, profileProvider: profileProvider)
+    static func assemble(userModel: UserModel, authService: AuthService, profileProvider: ProfileService) -> SettingsView {
+        let viewModel = SettingsViewModel(
+            userModel: userModel,
+            authProvider: authService,
+            profileProvider: profileProvider
+        )
         return SettingsView(viewModel: viewModel)
     }
 }

@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State var viewModel: SettingsViewModel
     @FocusState private var isFocused: Bool
     @Environment(Coordinator.self) private var coordinator
+    @Environment(StartScreenControl.self) private var startScreenControl
 
     var body: some View {
         Form {
@@ -24,7 +25,7 @@ struct SettingsView: View {
         .background(Constants.bgColor)
         .scrollContentBackground(.hidden)
         .onFirstAppear {
-            viewModel.setCoordinator(coordinator)
+            viewModel.setCoordinator(coordinator, startScreenControl)
             viewModel.fetchAddresses()
         }
         .navigationTitle("Settings")
@@ -64,6 +65,7 @@ private extension SettingsView {
             updateHeaderImageButton
             editUserInfoContainer
             addressesView
+            logoutButton
         case let .error(message):
             errorView(message: message)
         }
@@ -165,6 +167,15 @@ private extension SettingsView {
         }
     }
 
+    var logoutButton: some View {
+        Button(action: {
+            viewModel.didTapLogout()
+        }) {
+            Label("Logout", systemImage: "rectangle.portrait.and.arrow.right")
+                .foregroundStyle(TLColor<TextPalette>.textWild.color)
+        }
+    }
+
     func errorView(message: String) -> some View {
         TLErrorView(
             configuration: .init(
@@ -180,17 +191,18 @@ private extension SettingsView {
 #Preview {
     var network = NetworkServiceImpl()
     network.setRefreshToken(CommonMockData.refreshToken)
-
+    let authService = AuthGrpcServiceImpl(
+        configuration: AppHosts.auth,
+        networkService: network
+    )
     return NavigationStack {
         SettingsView(
             viewModel: SettingsViewModel(
                 userModel: CommonMockData.generateMockUserModel(id: 1),
+                authProvider: authService,
                 profileProvider: ProfileGrpcServiceImpl(
                     configuration: AppHosts.profile,
-                    authService: AuthGrpcServiceImpl(
-                        configuration: AppHosts.auth,
-                        networkService: network
-                    ),
+                    authService: authService,
                     networkService: network
                 )
             )

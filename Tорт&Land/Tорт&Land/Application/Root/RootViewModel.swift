@@ -61,8 +61,6 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
         self.notificationService = notificationService
         self.imageProvider = imageProvider
         self.startScreenControl = startScreenControl
-        // FIXME: Сделать получение юзера из SwiftData
-        // currentUser = UserDefaults
     }
 }
 
@@ -83,6 +81,9 @@ extension RootViewModel {
 extension RootViewModel {
 
     func fetchUserInfoIfNeeded() {
+        // FIXME: Сделать получение юзера из SwiftData
+        // currentUser = UserDefaults
+
         guard currentUser == nil && startScreenControl.screenKind == .cakesList else {
             return
         }
@@ -168,6 +169,7 @@ extension RootViewModel {
             cakeProvider: cakeService,
             chatProvider: chatProvider,
             profileService: profileService,
+            authService: authService,
             orderService: orderProvider,
             isCurrentUser: currentUser?.id == userModel.id,
             rootViewModel: self
@@ -219,6 +221,7 @@ extension RootViewModel {
             cakeProvider: cakeService,
             chatProvider: chatProvider,
             profileService: profileService,
+            authService: authService,
             orderService: orderProvider,
             isCurrentUser: true,
             rootViewModel: self

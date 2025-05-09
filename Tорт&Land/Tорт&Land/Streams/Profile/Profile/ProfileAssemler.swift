@@ -16,6 +16,7 @@ final class ProfileAssemler {
         cakeProvider: CakeService,
         chatProvider: ChatService,
         profileService: ProfileService,
+        authService: AuthService,
         orderService: OrderService,
         isCurrentUser: Bool,
         rootViewModel: RootViewModel
@@ -25,6 +26,7 @@ final class ProfileAssemler {
             imageProvider: imageProvider,
             cakeProvider: cakeProvider,
             chatProvider: chatProvider,
+            authService: authService,
             profileService: profileService,
             orderService: orderService,
             isCurrentUser: isCurrentUser,

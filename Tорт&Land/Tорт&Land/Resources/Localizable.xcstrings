@@ -260,6 +260,9 @@
         }
       }
     },
+    "Logout" : {
+
+    },
     "Make an order" : {
       "localizations" : {
         "ru" : {
@@ -393,9 +396,6 @@
           }
         }
       }
-    },
-    "Popover Content" : {
-
     },
     "Preparing 3D viewer..." : {
 
@@ -554,9 +554,6 @@
 
     },
     "Shipping Address:" : {
-
-    },
-    "Show" : {
 
     },
     "Sign In" : {

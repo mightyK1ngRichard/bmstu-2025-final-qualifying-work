@@ -22,12 +22,17 @@ final class SettingsViewModel {
     private(set) var addresses: [AddressEntity] = []
     private(set) var userModel: UserModel
     @ObservationIgnored
+    private let authProvider: AuthService
+    @ObservationIgnored
     private let profileProvider: ProfileService
     @ObservationIgnored
     private var coordinator: Coordinator?
+    @ObservationIgnored
+    private var startScreenControl: StartScreenControl?
 
-    init(userModel: UserModel, profileProvider: ProfileService) {
+    init(userModel: UserModel, authProvider: AuthService, profileProvider: ProfileService) {
         self.userModel = userModel
+        self.authProvider = authProvider
         self.profileProvider = profileProvider
     }
 
@@ -86,6 +91,22 @@ extension SettingsViewModel {
 
     func didTapUpdateAvatar() {
         uiProperties.showPhotoPicker = true
+    }
+
+    func didTapLogout() {
+        Task { @MainActor in
+            do {
+                try await authProvider.logout()
+                startScreenControl?.update(with: .auth)
+                coordinator?.goToRoot()
+            } catch {
+                uiProperties.alert = .init(
+                    isShow: true,
+                    title: "Logout failed",
+                    message: error.readableGRPCMessage
+                )
+            }
+        }
     }
 
     func didTapUpdateUserData() {
@@ -201,8 +222,9 @@ extension SettingsViewModel.UIProperties {
 // MARK: - Setter
 
 extension SettingsViewModel {
-    func setCoordinator(_ coordinator: Coordinator) {
+    func setCoordinator(_ coordinator: Coordinator, _ startScreenControl: StartScreenControl) {
         self.coordinator = coordinator
+        self.startScreenControl = startScreenControl
         uiProperties.inputNickname = userModel.nickname
         uiProperties.inputFIO = userModel.fio ?? ""
     }

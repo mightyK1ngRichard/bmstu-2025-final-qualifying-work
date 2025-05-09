@@ -25,6 +25,8 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     @ObservationIgnored
     private let cakeProvider: CakeService
     @ObservationIgnored
+    private let authService: AuthService
+    @ObservationIgnored
     private let profileService: ProfileService
     @ObservationIgnored
     private var coordinator: Coordinator?
@@ -40,6 +42,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         imageProvider: ImageLoaderProvider,
         cakeProvider: CakeService,
         chatProvider: ChatService,
+        authService: AuthService,
         profileService: ProfileService,
         orderService: OrderService,
         isCurrentUser: Bool = false,
@@ -48,6 +51,7 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         self.user = user
         self.profileService = profileService
         self.cakeProvider = cakeProvider
+        self.authService = authService
         self.chatProvider = chatProvider
         self.isCurrentUser = isCurrentUser
         self.orderService = orderService
@@ -195,7 +199,7 @@ extension ProfileViewModel {
     }
 
     func assemblySettingsView(userModel: UserModel) -> SettingsView {
-        let view = SettingsAssembler.assemble(userModel: userModel, profileProvider: profileService)
+        let view = SettingsAssembler.assemble(userModel: userModel, authService: authService, profileProvider: profileService)
         view.viewModel.userPublisher
             .sink { [weak self] updatedUser in
                 self?.user = updatedUser
