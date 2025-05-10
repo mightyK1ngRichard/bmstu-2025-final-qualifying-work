@@ -36,8 +36,23 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
     func fetchMessages() {
         uiProperties.isLoading = true
 
-        Task {
+        Task { @MainActor in
             try await chatProvider.startChat()
+
+            chatProvider.handler = { [weak self] message in
+                guard let self else { return }
+                
+                let isYou = message.senderID == currentUser.id
+
+                messages.append(ChatModel.ChatMessage(
+                    id: message.id,
+                    isYou: isYou,
+                    message: message.text,
+                    user: isYou ? currentUser : interlocutor,
+                    time: message.dateCreation.formattedHHmm,
+                    state: .received
+                ))
+            }
         }
 
         Task { @MainActor in

@@ -72,10 +72,10 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
 extension ProfileViewModel {
 
     func fetchUserData() {
-        guard isCurrentUser else {
-            uiProperties.screenState = .finished
-            return
-        }
+//        guard isCurrentUser else {
+//            uiProperties.screenState = .finished
+//            return
+//        }
 
         uiProperties.screenState = .loading
         Task { @MainActor in
@@ -218,7 +218,12 @@ extension ProfileViewModel {
     }
 
     func assemblyOrdersView() -> OrderListView {
-        OrderListAssembler.assemble(orderService: orderService)
+        OrderListAssembler.assemble(
+            cakeService: cakeProvider,
+            orderService: orderService,
+            imageProvider: imageProvider,
+            priceFormatter: priceFormatter
+        )
     }
 
 }

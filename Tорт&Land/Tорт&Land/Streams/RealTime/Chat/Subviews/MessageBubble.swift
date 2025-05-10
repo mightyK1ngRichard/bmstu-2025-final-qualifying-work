@@ -198,7 +198,7 @@ extension ChatModel.ChatMessage.MessageState {
 
 private extension ChatModel.ChatMessage.MessageState {
     enum Constants {
-        static let receivedImage = Image("checkMark2")
+        static let receivedImage = Image(uiImage: TLAssets.checkMark2)
         static let errorImage = Image(systemName: "exclamationmark.arrow.circlepath")
         static let progressImage = Image(systemName: "clock.arrow.circlepath")
     }

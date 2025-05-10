@@ -8,6 +8,7 @@
 
 import NetworkAPI
 import DesignSystem
+import UIKit
 
 @Observable
 final class OrderDetailsViewModel {
@@ -69,6 +70,16 @@ extension OrderDetailsViewModel {
 
     func configureCakeCard(cakeModel: CakeModel) -> TLProductDescriptionView.Configuration {
         cakeModel.configureDescriptionView(priceFormatter: priceFormatter)
+    }
+
+}
+
+// MARK: - Action
+
+extension OrderDetailsViewModel {
+
+    func copyOrderID() {
+        UIPasteboard.general.string = orderEntity.id
     }
 
 }

@@ -127,7 +127,7 @@ private extension TLNotificationCell {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
 
-                Text(notification.createdAt.formattedDDMMYYYY)
+                Text(notification.createdAt.formattedDDMMYYYYHHmm)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 12, weight: .medium, design: .serif))
 

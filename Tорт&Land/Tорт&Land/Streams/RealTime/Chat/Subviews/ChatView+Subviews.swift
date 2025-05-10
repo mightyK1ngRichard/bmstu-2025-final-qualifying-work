@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Core
 import DesignSystem
 
 extension ChatView {
@@ -141,9 +142,9 @@ private extension ChatView {
         static let scrollIdentifier = "EMPTY"
         static let imageSize: CGFloat = 200
         static let imageCornerRadius: CGFloat = 20
-        static let tgBackground = Image("tg_layer")
-        static let paperClip = Image("paperClip")
-        static let record = Image("record")
+        static let tgBackground = Image(uiImage: TLAssets.tgLayer)
+        static let paperClip = Image(uiImage: TLAssets.paperClip)
+        static let record = Image(uiImage: TLAssets.record)
         static let messageBackgroundColor = Color(red: 103/255, green: 77/255, blue: 122/255)
         static let textColor: Color = TLColor<TextPalette>.textPrimary.color
         static let textFieldBackgroundColor = TLColor<BackgroundPalette>.bgPrimary.color

@@ -16,6 +16,7 @@ public protocol NotificationService: Sendable {
     func getNotifications() async throws -> [NotificationEntity]
     func startStreamingNotifications()
     func sendNotification(req: NotificationServiceModel.SendNotification.Request) async throws -> NotificationEntity
+    func deleteNotification(notificationID: String) async throws
     func closeConnection()
 }
 
@@ -53,6 +54,20 @@ public final class NotificationServiceImpl: NotificationService, @unchecked Send
 }
 
 public extension NotificationServiceImpl {
+
+    func deleteNotification(notificationID: String) async throws {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Notification_DeleteNotificationReq.with {
+            $0.notificationID = notificationID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.deleteNotification,
+            with: request,
+            mapping: { _ in }
+        )
+    }
 
     func sendNotification(req: NotificationServiceModel.SendNotification.Request) async throws -> NotificationEntity {
         try await networkService.maybeRefreshAccessToken(using: authService)

@@ -81,6 +81,10 @@ extension NotificationsListViewModel {
     }
 
     func didDeleteNotification(id: String) {
+        Task {
+            try await notificationService.deleteNotification(notificationID: id)
+        }
+
         guard let index = notifications.firstIndex(where: { $0.id == id }) else { return }
         notifications.remove(at: index)
     }

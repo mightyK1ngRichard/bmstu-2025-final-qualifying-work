@@ -141,6 +141,19 @@ struct Notification_GetNotificationsResponse: Sendable {
   init() {}
 }
 
+/// ################# GetNotifications ################# 
+struct Notification_DeleteNotificationReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var notificationID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 /// Модель уведомления
 struct Notification_Notification: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
@@ -327,6 +340,38 @@ extension Notification_GetNotificationsResponse: SwiftProtobuf.Message, SwiftPro
 
   static func ==(lhs: Notification_GetNotificationsResponse, rhs: Notification_GetNotificationsResponse) -> Bool {
     if lhs.notifications != rhs.notifications {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Notification_DeleteNotificationReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".DeleteNotificationReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "notificationID"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.notificationID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.notificationID.isEmpty {
+      try visitor.visitSingularStringField(value: self.notificationID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Notification_DeleteNotificationReq, rhs: Notification_DeleteNotificationReq) -> Bool {
+    if lhs.notificationID != rhs.notificationID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

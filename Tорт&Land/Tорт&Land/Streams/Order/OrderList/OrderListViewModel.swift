@@ -16,14 +16,25 @@ final class OrderListViewModel {
     private(set) var orders: [OrderEntity] = []
 
     @ObservationIgnored
+    private let cakeService: CakeService
+    @ObservationIgnored
     private let orderService: OrderService
+    @ObservationIgnored
+    private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
     @ObservationIgnored
     private var coordinator: Coordinator!
 
-    init(orderService: OrderService, priceFormatter: PriceFormatterService = .shared) {
+    init(
+        cakeService: CakeService,
+        orderService: OrderService,
+        imageProvider: ImageLoaderProvider,
+        priceFormatter: PriceFormatterService = .shared
+    ) {
+        self.cakeService = cakeService
         self.orderService = orderService
+        self.imageProvider = imageProvider
         self.priceFormatter = priceFormatter
     }
 }
@@ -73,6 +84,14 @@ extension OrderListViewModel {
 
     func setCoordinators(_ coord: Coordinator) {
         coordinator = coord
+    }
+
+    func assemblyOrderDetails(orderEntity: OrderEntity) -> OrderDetailsView {
+        OrderDetailsAssemler.assemble(
+            orderEntity: orderEntity,
+            cakeService: cakeService,
+            imageProvider: imageProvider
+        )
     }
 
 }

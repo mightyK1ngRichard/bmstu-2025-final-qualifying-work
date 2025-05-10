@@ -49,6 +49,11 @@ private extension OrderDetailsView {
                 Text(viewModel.orderEntity.id)
                     .style(12, .regular, TLColor<TextPalette>.textSecondary.color)
                     .multilineTextAlignment(.trailing)
+                    .contextMenu {
+                        Button(action: viewModel.copyOrderID) {
+                            Label("Скопировать", systemImage: "doc.on.doc")
+                        }
+                    }
             }
 
             HStack {

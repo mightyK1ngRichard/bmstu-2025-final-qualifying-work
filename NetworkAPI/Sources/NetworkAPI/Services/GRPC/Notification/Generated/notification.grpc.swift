@@ -33,6 +33,11 @@ internal protocol Notification_NotificationServiceClientProtocol: GRPCClient {
     callOptions: CallOptions?,
     handler: @escaping (Notification_NotificationResponse) -> Void
   ) -> ServerStreamingCall<SwiftProtobuf.Google_Protobuf_Empty, Notification_NotificationResponse>
+
+  func deleteNotification(
+    _ request: Notification_DeleteNotificationReq,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Notification_DeleteNotificationReq, SwiftProtobuf.Google_Protobuf_Empty>
 }
 
 extension Notification_NotificationServiceClientProtocol {
@@ -94,6 +99,24 @@ extension Notification_NotificationServiceClientProtocol {
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeStreamNotificationsInterceptors() ?? [],
       handler: handler
+    )
+  }
+
+  /// Unary call to DeleteNotification
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to DeleteNotification.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func deleteNotification(
+    _ request: Notification_DeleteNotificationReq,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Notification_DeleteNotificationReq, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: Notification_NotificationServiceClientMetadata.Methods.deleteNotification.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeDeleteNotificationInterceptors() ?? []
     )
   }
 }
@@ -175,6 +198,11 @@ internal protocol Notification_NotificationServiceAsyncClientProtocol: GRPCClien
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> GRPCAsyncServerStreamingCall<SwiftProtobuf.Google_Protobuf_Empty, Notification_NotificationResponse>
+
+  func makeDeleteNotificationCall(
+    _ request: Notification_DeleteNotificationReq,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Notification_DeleteNotificationReq, SwiftProtobuf.Google_Protobuf_Empty>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -222,6 +250,18 @@ extension Notification_NotificationServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeStreamNotificationsInterceptors() ?? []
     )
   }
+
+  internal func makeDeleteNotificationCall(
+    _ request: Notification_DeleteNotificationReq,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Notification_DeleteNotificationReq, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: Notification_NotificationServiceClientMetadata.Methods.deleteNotification.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeDeleteNotificationInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -261,6 +301,18 @@ extension Notification_NotificationServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeStreamNotificationsInterceptors() ?? []
     )
   }
+
+  internal func deleteNotification(
+    _ request: Notification_DeleteNotificationReq,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: Notification_NotificationServiceClientMetadata.Methods.deleteNotification.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeDeleteNotificationInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -290,6 +342,9 @@ internal protocol Notification_NotificationServiceClientInterceptorFactoryProtoc
 
   /// - Returns: Interceptors to use when invoking 'streamNotifications'.
   func makeStreamNotificationsInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Notification_NotificationResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'deleteNotification'.
+  func makeDeleteNotificationInterceptors() -> [ClientInterceptor<Notification_DeleteNotificationReq, SwiftProtobuf.Google_Protobuf_Empty>]
 }
 
 internal enum Notification_NotificationServiceClientMetadata {
@@ -300,6 +355,7 @@ internal enum Notification_NotificationServiceClientMetadata {
       Notification_NotificationServiceClientMetadata.Methods.createNotification,
       Notification_NotificationServiceClientMetadata.Methods.getNotifications,
       Notification_NotificationServiceClientMetadata.Methods.streamNotifications,
+      Notification_NotificationServiceClientMetadata.Methods.deleteNotification,
     ]
   )
 
@@ -321,6 +377,12 @@ internal enum Notification_NotificationServiceClientMetadata {
       path: "/notification.NotificationService/StreamNotifications",
       type: GRPCCallType.serverStreaming
     )
+
+    internal static let deleteNotification = GRPCMethodDescriptor(
+      name: "DeleteNotification",
+      path: "/notification.NotificationService/DeleteNotification",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -335,6 +397,8 @@ internal protocol Notification_NotificationServiceProvider: CallHandlerProvider 
   func getNotifications(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<Notification_GetNotificationsResponse>
 
   func streamNotifications(request: SwiftProtobuf.Google_Protobuf_Empty, context: StreamingResponseCallContext<Notification_NotificationResponse>) -> EventLoopFuture<GRPCStatus>
+
+  func deleteNotification(request: Notification_DeleteNotificationReq, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
 }
 
 extension Notification_NotificationServiceProvider {
@@ -376,6 +440,15 @@ extension Notification_NotificationServiceProvider {
         userFunction: self.streamNotifications(request:context:)
       )
 
+    case "DeleteNotification":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Notification_DeleteNotificationReq>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeDeleteNotificationInterceptors() ?? [],
+        userFunction: self.deleteNotification(request:context:)
+      )
+
     default:
       return nil
     }
@@ -405,6 +478,11 @@ internal protocol Notification_NotificationServiceAsyncProvider: CallHandlerProv
     responseStream: GRPCAsyncResponseStreamWriter<Notification_NotificationResponse>,
     context: GRPCAsyncServerCallContext
   ) async throws
+
+  func deleteNotification(
+    request: Notification_DeleteNotificationReq,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -453,6 +531,15 @@ extension Notification_NotificationServiceAsyncProvider {
         wrapping: { try await self.streamNotifications(request: $0, responseStream: $1, context: $2) }
       )
 
+    case "DeleteNotification":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Notification_DeleteNotificationReq>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeDeleteNotificationInterceptors() ?? [],
+        wrapping: { try await self.deleteNotification(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -472,6 +559,10 @@ internal protocol Notification_NotificationServiceServerInterceptorFactoryProtoc
   /// - Returns: Interceptors to use when handling 'streamNotifications'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeStreamNotificationsInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, Notification_NotificationResponse>]
+
+  /// - Returns: Interceptors to use when handling 'deleteNotification'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeDeleteNotificationInterceptors() -> [ServerInterceptor<Notification_DeleteNotificationReq, SwiftProtobuf.Google_Protobuf_Empty>]
 }
 
 internal enum Notification_NotificationServiceServerMetadata {
@@ -482,6 +573,7 @@ internal enum Notification_NotificationServiceServerMetadata {
       Notification_NotificationServiceServerMetadata.Methods.createNotification,
       Notification_NotificationServiceServerMetadata.Methods.getNotifications,
       Notification_NotificationServiceServerMetadata.Methods.streamNotifications,
+      Notification_NotificationServiceServerMetadata.Methods.deleteNotification,
     ]
   )
 
@@ -502,6 +594,12 @@ internal enum Notification_NotificationServiceServerMetadata {
       name: "StreamNotifications",
       path: "/notification.NotificationService/StreamNotifications",
       type: GRPCCallType.serverStreaming
+    )
+
+    internal static let deleteNotification = GRPCMethodDescriptor(
+      name: "DeleteNotification",
+      path: "/notification.NotificationService/DeleteNotification",
+      type: GRPCCallType.unary
     )
   }
 }

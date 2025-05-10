@@ -11,7 +11,7 @@ extension Date {
     private static let formatters: [String: DateFormatter] = {
         var dict: [String: DateFormatter] = [:]
 
-        let formats = ["dd-MM-yyyy", "HH:mm"]
+        let formats = ["dd-MM-yyyy", "HH:mm", "dd-MM-yyyy HH:mm"]
         for format in formats {
             let formatter = DateFormatter()
             formatter.dateFormat = format
@@ -36,5 +36,9 @@ extension Date {
 
     var formattedDDMMYYYY: String {
         formattedString(format: "dd-MM-yyyy")
+    }
+
+    var formattedDDMMYYYYHHmm: String {
+        formattedString(format: "dd-MM-yyyy HH:mm")
     }
 }
