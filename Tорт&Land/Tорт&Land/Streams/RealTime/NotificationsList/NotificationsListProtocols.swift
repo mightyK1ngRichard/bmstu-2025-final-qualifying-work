@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import NetworkAPI
 
 protocol NotificationsListDisplayLogic: NotificationsListViewModelInput {
     var uiProperties: NotificationsListModel.UIProperties { get set }
-    var notifications: [NotificationsListModel.NotificationModel] { get }
+    var notifications: [NotificationEntity] { get }
 }
 
 protocol NotificationsListViewModelInput {
@@ -19,10 +20,10 @@ protocol NotificationsListViewModelInput {
     func didTapReloadButton()
     func subscribe()
 
-    func configureNotificationCell(for notification: NotificationsListModel.NotificationModel) -> TLNotificationCell.Configuration
-    func assemblyNotificationDetails(with notification: NotificationsListModel.NotificationModel) -> NotificationDetailView
+    func assemblyOrderView(with notification: NotificationEntity, orderEntity: OrderEntity) -> OrderDetailsView
+    func configureNotificationCell(for notification: NotificationEntity) -> TLNotificationCell.Configuration
 
-    func didTapNotificationCell(with notification: NotificationsListModel.NotificationModel)
+    func didTapNotificationCell(with notification: NotificationEntity)
     func didDeleteNotification(id: String)
 }
 

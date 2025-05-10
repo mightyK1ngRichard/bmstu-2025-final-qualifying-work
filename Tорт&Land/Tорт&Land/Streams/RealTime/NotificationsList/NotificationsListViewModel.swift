@@ -12,25 +12,39 @@ import NetworkAPI
 import Combine
 
 @Observable
-final class NotificationsListViewModel: NotificationsListDisplayLogic & NotificationsListViewModelOutput {
+final class NotificationsListViewModel: NotificationsListDisplayLogic, NotificationsListViewModelOutput {
     var uiProperties = NotificationsListModel.UIProperties()
-    private(set) var notifications: [NotificationsListModel.NotificationModel] = []
+    private(set) var notifications: [NotificationEntity] = []
     @ObservationIgnored
-    var notificationService: NotificationService
+    private let cakeService: CakeService
+    @ObservationIgnored
+    private let orderService: OrderService
+    @ObservationIgnored
+    private let notificationService: NotificationService
+    @ObservationIgnored
+    private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private var coordinator: Coordinator?
     @ObservationIgnored
     private var cancallables: Set<AnyCancellable> = []
 
-    init(notificationService: NotificationService) {
+    init(
+        notificationService: NotificationService,
+        orderService: OrderService,
+        cakeService: CakeService,
+        imageProvider: ImageLoaderProvider
+    ) {
+        self.orderService = orderService
         self.notificationService = notificationService
+        self.cakeService = cakeService
+        self.imageProvider = imageProvider
     }
 
     func subscribe() {
         notificationService.notificationPublisher
             .sink { [weak self] entity in
                 Task { @MainActor in
-                    self?.notifications.append(.init(from: entity))
+                    self?.notifications.insert(entity, at: 0)
                 }
             }
             .store(in: &cancallables)
@@ -39,11 +53,12 @@ final class NotificationsListViewModel: NotificationsListDisplayLogic & Notifica
 
 extension NotificationsListViewModel {
     func fetchNotifications() {
+        notificationService.startStreamingNotifications()
+
         uiProperties.screenState = .loading
         Task { @MainActor in
             do {
-                let entities = try await notificationService.getNotifications()
-                notifications = entities.map(NotificationsListModel.NotificationModel.init(from:))
+                notifications = try await notificationService.getNotifications()
                 uiProperties.screenState = .finished
             } catch {
                 uiProperties.screenState = .error(content: error.readableGRPCContent)
@@ -54,8 +69,15 @@ extension NotificationsListViewModel {
 
 extension NotificationsListViewModel {
 
-    func didTapNotificationCell(with notification: NotificationsListModel.NotificationModel) {
-        coordinator?.addScreen(NotificationsListModel.Screens.details(notification))
+    func didTapNotificationCell(with notification: NotificationEntity) {
+        if notification.notificationKind == .orderUpdate, let orderID = notification.orderID {
+            Task { @MainActor in
+                do {
+                    let orderEntity = try await orderService.fetchOrderByID(orderID: orderID)
+                    coordinator?.addScreen(NotificationsListModel.Screens.order(notification, orderEntity))
+                }
+            }
+        }
     }
 
     func didDeleteNotification(id: String) {
@@ -67,19 +89,16 @@ extension NotificationsListViewModel {
         fetchNotifications()
     }
 
-    func configureNotificationCell(for notification: NotificationsListModel.NotificationModel) -> TLNotificationCell.Configuration {
-        .init(notification: notification)
+    func assemblyOrderView(with notification: NotificationEntity, orderEntity: OrderEntity) -> OrderDetailsView {
+        OrderDetailsAssemler.assemble(
+            orderEntity: orderEntity,
+            cakeService: cakeService,
+            imageProvider: imageProvider
+        )
     }
 
-    func assemblyNotificationDetails(with notification: NotificationsListModel.NotificationModel) -> NotificationDetailView {
-        let orderData = NotificationDetailModel.OrderData(
-            kind: .purchase(CommonMockData.generateMockUserModel(id: 1)),
-            cake: CommonMockData.generateMockCakeModel(id: 1, withDiscount: true),
-            notification: notification,
-            deliveryAddress: nil
-        )
-        let viewModel = NotificationDetailViewModelMock(orderData: orderData)
-        return NotificationDetailView(viewModel: viewModel)
+    func configureNotificationCell(for notification: NotificationEntity) -> TLNotificationCell.Configuration {
+        .init(notification: notification)
     }
 
     func setEnvironmentObjects(coordinator: Coordinator) {

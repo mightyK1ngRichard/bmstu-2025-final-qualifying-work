@@ -37,4 +37,8 @@ public extension TLProductDescriptionView.Configuration {
             starsConfiguration: starsConfiguration
         )
     }
+
+    static func shimmering() -> Self {
+        .init(isShimmering: true)
+    }
 }

@@ -212,7 +212,12 @@ extension RootViewModel {
     }
 
     func assemblyNotificationsListView() -> NotificationsListView {
-        NotificationsListAssembler.assemble(notificationService: notificationService)
+        NotificationsListAssembler.assemble(
+            notificationService: notificationService,
+            cakeService: cakeService,
+            orderService: orderProvider,
+            imageProvider: imageProvider
+        )
     }
 
     func assemblyProfileView() -> ProfileView {

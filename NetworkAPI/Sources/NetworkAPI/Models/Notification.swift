@@ -7,19 +7,19 @@
 
 import Foundation
 
-public struct NotificationEntity: Sendable {
+public struct NotificationEntity: Sendable, Hashable {
     public let id: String
     public let title: String
     public let message: String
     public let createdAt: Date
     public let notificationKind: NotificationKind
-    public let cakeID: String?
+    public let orderID: String?
     public let senderID: String
 }
 
 // MARK: - NotificationKind
 
-public enum NotificationKind: Sendable {
+public enum NotificationKind: Sendable, Hashable {
     /// Личное сообщение
     case message
     /// Отзыв
@@ -78,7 +78,7 @@ extension NotificationEntity {
             message: model.message,
             createdAt: model.createdAt.date,
             notificationKind: NotificationKind(from: model.kind),
-            cakeID: model.hasCakeID ? model.cakeID : nil,
+            orderID: model.hasOrderID ? model.orderID : nil,
             senderID: model.senderID
         )
     }

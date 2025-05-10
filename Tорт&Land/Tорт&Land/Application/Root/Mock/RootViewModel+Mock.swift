@@ -69,9 +69,7 @@ extension RootViewModelMock {
     }
 
     func assemblyNotificationsListView() -> NotificationsListView {
-        // FIXME: Assembler моки
-        let viewModel = NotificationsListViewModelMock(delay: 3)
-        return NotificationsListView(viewModel: viewModel)
+        fatalError("Not implemented")
     }
 
     func assemblyProfileView() -> ProfileView {

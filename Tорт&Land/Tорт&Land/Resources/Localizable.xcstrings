@@ -10,6 +10,12 @@
     "*Weight in grams" : {
 
     },
+    "%.0f г" : {
+
+    },
+    "%.2f ₽" : {
+
+    },
     "%@" : {
 
     },
@@ -135,6 +141,7 @@
       }
     },
     "Customer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -158,6 +165,7 @@
       }
     },
     "Delivery address" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -226,7 +234,11 @@
         }
       }
     },
+    "ID заказа" : {
+
+    },
     "ID: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -243,6 +255,9 @@
 
     },
     "Invalid input data" : {
+
+    },
+    "IO-деньги" : {
 
     },
     "kids" : {
@@ -330,9 +345,6 @@
         }
       }
     },
-    "Notification content" : {
-
-    },
     "Notifications" : {
       "localizations" : {
         "ru" : {
@@ -354,6 +366,7 @@
       }
     },
     "Order" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -364,9 +377,6 @@
       }
     },
     "Order address" : {
-
-    },
-    "Order date" : {
 
     },
     "Order information" : {
@@ -409,6 +419,7 @@
       }
     },
     "Product" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -469,9 +480,6 @@
         }
       }
     },
-    "Reload data" : {
-
-    },
     "Repeat Password" : {
       "localizations" : {
         "ru" : {
@@ -519,6 +527,7 @@
 
     },
     "Seller" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -603,6 +612,7 @@
 
     },
     "User address not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -701,7 +711,67 @@
     "Your order will be delivered soon.\nThank you for choosing our app!" : {
 
     },
+    "Временные метки" : {
+
+    },
+    "Данные торта" : {
+
+    },
+    "Дата" : {
+
+    },
+    "Доставка" : {
+
+    },
+    "Информация о заказе" : {
+
+    },
+    "Квартира" : {
+
+    },
+    "Комментарий" : {
+
+    },
+    "Масса" : {
+
+    },
+    "Название" : {
+
+    },
+    "Наличные" : {
+
+    },
+    "Начинка" : {
+
+    },
+    "Обновлён" : {
+
+    },
+    "Оплата" : {
+
+    },
+    "Подъезд" : {
+
+    },
+    "Создан" : {
+
+    },
+    "Состав" : {
+
+    },
+    "Статус" : {
+
+    },
     "Торт&\nLand" : {
+
+    },
+    "Цена" : {
+
+    },
+    "Цена за кг" : {
+
+    },
+    "Этаж" : {
 
     }
   },

@@ -29,7 +29,6 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
     }
 
     func onAppear() {
-        uiProperties.errorMessage = nil
         fetchCategories()
     }
 
@@ -127,13 +126,14 @@ private extension CategoriesViewModel {
                     }
                 }
             } catch {
-                uiProperties.errorMessage = error.localizedDescription
+                uiProperties.state = .error(content: error.readableGRPCContent)
             }
         }
     }
 
     func fetchCategories() {
-        uiProperties.showLoading = true
+        uiProperties.state = .loading
+
         Task { @MainActor in
             do {
                 let result = try await cakeProvider.fetchCategories()
@@ -159,11 +159,11 @@ private extension CategoriesViewModel {
                 sections[.women] = females
                 sections[.men] = males
                 sections[.kids] = childs
-            } catch {
-                uiProperties.errorMessage = error.localizedDescription
-            }
 
-            uiProperties.showLoading = false
+                uiProperties.state = .finished
+            } catch {
+                uiProperties.state = .error(content: error.readableGRPCContent)
+            }
         }
     }
 

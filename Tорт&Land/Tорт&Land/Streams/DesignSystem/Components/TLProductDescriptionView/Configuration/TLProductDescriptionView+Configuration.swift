@@ -24,6 +24,8 @@ public extension TLProductDescriptionView {
         var innerHPadding: CGFloat = .zero
         /// Configurations of the stars
         var starsConfiguration: TLStarsView.Configuration = .init()
+        /// Shimmering flag
+        var isShimmering = false
     }
 }
 

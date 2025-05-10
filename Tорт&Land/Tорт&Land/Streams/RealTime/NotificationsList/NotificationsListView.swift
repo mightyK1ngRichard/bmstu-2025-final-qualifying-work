@@ -30,17 +30,8 @@ private extension NotificationsListView {
     @ViewBuilder
     func openNextScreen(for screen: NotificationsListModel.Screens) -> some View {
         switch screen {
-        case let .details(notification):
-            viewModel.assemblyNotificationDetails(with: notification)
+        case let .order(notification, order):
+            viewModel.assemblyOrderView(with: notification, orderEntity: order)
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    NotificationsListView(
-        viewModel: NotificationsListViewModelMock(delay: 1)
-    )
-    .environment(Coordinator())
 }

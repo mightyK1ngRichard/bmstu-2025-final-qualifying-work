@@ -15,20 +15,17 @@ extension CategoriesView {
         VStack(spacing: 0) {
             navigationBarBlock
             customTabBar
-            sectionsBlock
-            errorView
+            contentContainer
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
-        .overlay {
-            loadingView
-        }
     }
 }
 
 // MARK: - UI Subviews
 
 private extension CategoriesView {
+
     var navigationBarBlock: some View {
         VStack {
             HStack {
@@ -101,6 +98,19 @@ private extension CategoriesView {
         }
     }
 
+    @ViewBuilder
+    var contentContainer: some View {
+        switch viewModel.uiProperties.state {
+        case .initial, .loading:
+            loadingView
+        case .finished:
+            sectionsBlock
+        case let .error(content):
+            TLErrorView(configuration: .init(from: content), action: viewModel.onAppear)
+                .padding()
+        }
+    }
+
     var sectionsBlock: some View {
         GeometryReader {
             let size = $0.size
@@ -129,22 +139,6 @@ private extension CategoriesView {
         }
     }
 
-    @ViewBuilder
-    var errorView: some View {
-        if let errorMessage = viewModel.uiProperties.errorMessage {
-            VStack {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .font(.title)
-                Text(errorMessage)
-                    .font(.body)
-                Button("Reload data", action: viewModel.onAppear)
-                    .buttonStyle(.bordered)
-                Spacer()
-            }
-            .foregroundStyle(TLColor<TextPalette>.textPrimary.color)
-        }
-    }
-
     func scrollSections(items: [CategoryCardModel]) -> some View {
         ScrollView {
             LazyVStack(spacing: 16) {
@@ -163,14 +157,16 @@ private extension CategoriesView {
         }
     }
 
-    @ViewBuilder
     var loadingView: some View {
-        if viewModel.uiProperties.showLoading {
-            ZStack {
-                Color.black.opacity(0.5)
-                ProgressView()
+        ScrollView {
+            VStack(spacing: 16) {
+                ForEach(1...10, id: \.self) { _ in
+                    ShimmeringView()
+                        .frame(height: 100)
+                        .clipShape(.rect(cornerRadius: 8))
+                }
             }
-            .ignoresSafeArea()
+            .padding([.horizontal, .top])
         }
     }
 }

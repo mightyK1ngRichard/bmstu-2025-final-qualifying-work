@@ -16,6 +16,7 @@ import SwiftProtobuf
 public protocol OrderService: Sendable {
     func makeOrder(req: OrderServiceModel.MakeOrder.Request) async throws -> String
     func fetchOrders() async throws -> [OrderEntity]
+    func fetchOrderByID(orderID: String) async throws -> OrderEntity
     func closeConnection()
 }
 
@@ -54,6 +55,20 @@ public final class OrderGrpcServiceImpl: OrderService {
 }
 
 public extension OrderGrpcServiceImpl {
+
+    func fetchOrderByID(orderID: String) async throws -> OrderEntity {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
+        let request = Order_OrderByIDReq.with {
+            $0.orderID = orderID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.orderByID,
+            with: request,
+            mapping: { OrderEntity(from: $0.order) }
+        )
+    }
 
     func fetchOrders() async throws -> [OrderEntity] {
         try await networkService.maybeRefreshAccessToken(using: authService)

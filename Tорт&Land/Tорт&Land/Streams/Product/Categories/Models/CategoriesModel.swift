@@ -13,12 +13,11 @@ enum CategoriesModel {}
 
 extension CategoriesModel {
     struct UIProperties: Hashable {
+        var state: ScreenState = .initial
         var tabBarProgess: CGFloat = .zero
         var selectedTab: Tab? = .women
         var searchText = ""
-        var errorMessage: String?
         var showSearchBar = false
-        var showLoading = false
     }
 
     enum Tab: String, Hashable, CaseIterable {

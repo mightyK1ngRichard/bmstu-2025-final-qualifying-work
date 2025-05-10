@@ -55,7 +55,12 @@ final class CategoriesViewModelMock: CategoriesDisplayLogic, @preconcurrency Cat
         print("[DEBUG]: \(section)")
     }
 
-    func onAppear() {}
+    func onAppear() {
+        Task { @MainActor in
+            try await Task.sleep(for: .seconds(2))
+            uiProperties.state = .finished
+        }
+    }
 
     @MainActor
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {

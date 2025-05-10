@@ -19,20 +19,20 @@ public extension NotificationServiceModel.SendNotification {
         let message: String
         let recipientID: String
         let notificationKind: NotificationKind
-        let cakeID: String?
+        let orderID: String?
 
         public init(
             title: String,
             message: String,
             recipientID: String,
             notificationKind: NotificationKind,
-            cakeID: String?
+            orderID: String?
         ) {
             self.title = title
             self.message = message
             self.recipientID = recipientID
             self.notificationKind = notificationKind
-            self.cakeID = cakeID
+            self.orderID = orderID
         }
     }
 }

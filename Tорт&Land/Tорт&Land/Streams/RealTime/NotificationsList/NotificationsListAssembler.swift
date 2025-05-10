@@ -10,8 +10,18 @@ import Foundation
 import NetworkAPI
 
 final class NotificationsListAssembler {
-    static func assemble(notificationService: NotificationService) -> NotificationsListView {
-        let viewModel = NotificationsListViewModel(notificationService: notificationService)
+    static func assemble(
+        notificationService: NotificationService,
+        cakeService: CakeService,
+        orderService: OrderService,
+        imageProvider: ImageLoaderProvider
+    ) -> NotificationsListView {
+        let viewModel = NotificationsListViewModel(
+            notificationService: notificationService,
+            orderService: orderService,
+            cakeService: cakeService,
+            imageProvider: imageProvider
+        )
         return NotificationsListView(viewModel: viewModel)
     }
 }

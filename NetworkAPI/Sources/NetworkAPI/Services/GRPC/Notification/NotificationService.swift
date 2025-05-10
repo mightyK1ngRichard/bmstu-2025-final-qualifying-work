@@ -63,8 +63,8 @@ public extension NotificationServiceImpl {
             $0.message = req.message
             $0.recipientID = req.recipientID
 
-            if let cakeID = req.cakeID {
-                $0.cakeID = cakeID
+            if let orderID = req.orderID {
+                $0.orderID = orderID
             }
         }
 

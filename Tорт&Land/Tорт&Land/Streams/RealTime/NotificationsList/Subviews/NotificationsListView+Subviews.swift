@@ -35,7 +35,7 @@ extension NotificationsListView {
 
 private extension NotificationsListView {
     var notificationsList: some View {
-        ForEach(viewModel.notifications) { notification in
+        ForEach(viewModel.notifications, id: \.id) { notification in
             TLNotificationCell(
                 configuration: viewModel.configureNotificationCell(for: notification),
                 deleteHandler: viewModel.didDeleteNotification(id:)
@@ -56,9 +56,35 @@ private extension NotificationsListView {
 
 // MARK: - Preview
 
-#Preview("Mockable delay") {
-    NotificationsListView(
-        viewModel: NotificationsListViewModelMock(delay: 3)
+#if DEBUG
+import NetworkAPI
+#endif
+
+#Preview {
+    let network = NetworkServiceImpl()
+    network.setRefreshToken(CommonMockData.refreshToken)
+    let authService = AuthGrpcServiceImpl(
+        configuration: AppHosts.auth,
+        networkService: network
+    )
+
+    return NotificationsListAssembler.assemble(
+        notificationService: NotificationServiceImpl(
+            configuration: AppHosts.notification,
+            authService: authService,
+            networkService: network
+        ),
+        cakeService: CakeGrpcServiceImpl(
+            configuration: AppHosts.cake,
+            authService: authService,
+            networkService: network
+        ),
+        orderService: OrderGrpcServiceImpl(
+            configuration: AppHosts.order,
+            authService: authService,
+            networkService: network
+        ),
+        imageProvider: ImageLoaderProviderImpl()
     )
     .environment(Coordinator())
 }

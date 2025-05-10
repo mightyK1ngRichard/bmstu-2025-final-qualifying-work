@@ -87,14 +87,14 @@ struct Notification_CreateNotificationRequest: Sendable {
 
   var message: String = String()
 
-  var cakeID: String {
-    get {return _cakeID ?? String()}
-    set {_cakeID = newValue}
+  var orderID: String {
+    get {return _orderID ?? String()}
+    set {_orderID = newValue}
   }
-  /// Returns true if `cakeID` has been explicitly set.
-  var hasCakeID: Bool {return self._cakeID != nil}
-  /// Clears the value of `cakeID`. Subsequent reads from it will return its default value.
-  mutating func clearCakeID() {self._cakeID = nil}
+  /// Returns true if `orderID` has been explicitly set.
+  var hasOrderID: Bool {return self._orderID != nil}
+  /// Clears the value of `orderID`. Subsequent reads from it will return its default value.
+  mutating func clearOrderID() {self._orderID = nil}
 
   var recipientID: String = String()
 
@@ -104,7 +104,7 @@ struct Notification_CreateNotificationRequest: Sendable {
 
   init() {}
 
-  fileprivate var _cakeID: String? = nil
+  fileprivate var _orderID: String? = nil
 }
 
 struct Notification_NotificationResponse: Sendable {
@@ -173,21 +173,21 @@ struct Notification_Notification: Sendable {
   var kind: Notification_NotificationKind = .message
 
   /// Код торта
-  var cakeID: String {
-    get {return _cakeID ?? String()}
-    set {_cakeID = newValue}
+  var orderID: String {
+    get {return _orderID ?? String()}
+    set {_orderID = newValue}
   }
-  /// Returns true if `cakeID` has been explicitly set.
-  var hasCakeID: Bool {return self._cakeID != nil}
-  /// Clears the value of `cakeID`. Subsequent reads from it will return its default value.
-  mutating func clearCakeID() {self._cakeID = nil}
+  /// Returns true if `orderID` has been explicitly set.
+  var hasOrderID: Bool {return self._orderID != nil}
+  /// Clears the value of `orderID`. Subsequent reads from it will return its default value.
+  mutating func clearOrderID() {self._orderID = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 
   fileprivate var _createdAt: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
-  fileprivate var _cakeID: String? = nil
+  fileprivate var _orderID: String? = nil
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
@@ -209,7 +209,7 @@ extension Notification_CreateNotificationRequest: SwiftProtobuf.Message, SwiftPr
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     2: .same(proto: "title"),
     3: .same(proto: "message"),
-    4: .same(proto: "cakeID"),
+    4: .same(proto: "orderID"),
     5: .same(proto: "recipientID"),
     6: .same(proto: "kind"),
   ]
@@ -222,7 +222,7 @@ extension Notification_CreateNotificationRequest: SwiftProtobuf.Message, SwiftPr
       switch fieldNumber {
       case 2: try { try decoder.decodeSingularStringField(value: &self.title) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.message) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self._cakeID) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self._orderID) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.recipientID) }()
       case 6: try { try decoder.decodeSingularEnumField(value: &self.kind) }()
       default: break
@@ -241,7 +241,7 @@ extension Notification_CreateNotificationRequest: SwiftProtobuf.Message, SwiftPr
     if !self.message.isEmpty {
       try visitor.visitSingularStringField(value: self.message, fieldNumber: 3)
     }
-    try { if let v = self._cakeID {
+    try { if let v = self._orderID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 4)
     } }()
     if !self.recipientID.isEmpty {
@@ -256,7 +256,7 @@ extension Notification_CreateNotificationRequest: SwiftProtobuf.Message, SwiftPr
   static func ==(lhs: Notification_CreateNotificationRequest, rhs: Notification_CreateNotificationRequest) -> Bool {
     if lhs.title != rhs.title {return false}
     if lhs.message != rhs.message {return false}
-    if lhs._cakeID != rhs._cakeID {return false}
+    if lhs._orderID != rhs._orderID {return false}
     if lhs.recipientID != rhs.recipientID {return false}
     if lhs.kind != rhs.kind {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -341,7 +341,7 @@ extension Notification_Notification: SwiftProtobuf.Message, SwiftProtobuf._Messa
     4: .same(proto: "createdAt"),
     5: .same(proto: "senderID"),
     6: .same(proto: "kind"),
-    7: .same(proto: "cakeID"),
+    7: .same(proto: "orderID"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -356,7 +356,7 @@ extension Notification_Notification: SwiftProtobuf.Message, SwiftProtobuf._Messa
       case 4: try { try decoder.decodeSingularMessageField(value: &self._createdAt) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.senderID) }()
       case 6: try { try decoder.decodeSingularEnumField(value: &self.kind) }()
-      case 7: try { try decoder.decodeSingularStringField(value: &self._cakeID) }()
+      case 7: try { try decoder.decodeSingularStringField(value: &self._orderID) }()
       default: break
       }
     }
@@ -385,7 +385,7 @@ extension Notification_Notification: SwiftProtobuf.Message, SwiftProtobuf._Messa
     if self.kind != .message {
       try visitor.visitSingularEnumField(value: self.kind, fieldNumber: 6)
     }
-    try { if let v = self._cakeID {
+    try { if let v = self._orderID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 7)
     } }()
     try unknownFields.traverse(visitor: &visitor)
@@ -398,7 +398,7 @@ extension Notification_Notification: SwiftProtobuf.Message, SwiftProtobuf._Messa
     if lhs._createdAt != rhs._createdAt {return false}
     if lhs.senderID != rhs.senderID {return false}
     if lhs.kind != rhs.kind {return false}
-    if lhs._cakeID != rhs._cakeID {return false}
+    if lhs._orderID != rhs._orderID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

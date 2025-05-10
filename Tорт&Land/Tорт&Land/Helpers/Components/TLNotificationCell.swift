@@ -8,11 +8,12 @@
 
 import SwiftUI
 import Core
+import NetworkAPI
 import DesignSystem
 
 extension TLNotificationCell {
     struct Configuration: Hashable {
-        var notification: NotificationsListModel.NotificationModel?
+        var notification: NotificationEntity?
         var isShimmering = false
     }
 }
@@ -126,48 +127,19 @@ private extension TLNotificationCell {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
 
-                Text(notification.date)
+                Text(notification.createdAt.formattedDDMMYYYY)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 12, weight: .medium, design: .serif))
 
-                if let message = notification.text {
-                    Text(message)
-                        .font(.system(size: 15, weight: .regular, design: .rounded))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, 3)
-                }
+                Text(notification.message)
+                    .font(.system(size: 15, weight: .regular, design: .rounded))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 3)
             }
             .padding()
             .background(Constants.notificationBgColor, in: .rect(cornerRadius: 16))
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    VStack {
-        TLNotificationCell(
-            configuration: .init(
-                notification: .init(
-                    id: "-1",
-                    title: "Доставка",
-                    text: "Вас ожидает доставщик торта по номеру заказа #12342",
-                    date: Date().description.toCorrectDate,
-                    sellerID: "1",
-                    cakeID: "1"
-                )
-            )
-        ) { id in
-            print("delete: \(id)")
-        }
-
-        TLNotificationCell(
-            configuration: .init(isShimmering: true)
-        )
-    }
-    .padding()
-    .background(.bar)
 }
 
 // MARK: - Constants
