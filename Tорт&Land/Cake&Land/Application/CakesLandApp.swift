@@ -1,0 +1,22 @@
+//
+//  CakesLandApp.swift
+//  Tорт&Land
+//
+//  Created by Dmitriy Permyakov on 21.12.2024.
+//  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
+//
+
+import SwiftUI
+import NetworkAPI
+
+@main
+struct CakesLandApp: App {
+    @State private var startScreenControl = StartScreenControl()
+
+    var body: some Scene {
+        WindowGroup {
+            RootAssembler.assemble(startScreenControl: startScreenControl)
+                .environment(startScreenControl)
+        }
+    }
+}
