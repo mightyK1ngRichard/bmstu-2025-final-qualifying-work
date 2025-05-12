@@ -74,14 +74,14 @@
 			membershipExceptions = (
 				Core/Core.docc,
 				"Core/Helpers/String+Extensions.swift",
-				Core/Helpers/SystemInfo.swift,
-				Core/Helpers/Typealias.swift,
 				"Core/Helpers/UIDevice+ModelName.swift",
 				Core/Models/AppConfig.swift,
 				Core/Models/Config.swift,
 				Core/Models/IconDataSource.swift,
 				Core/Models/ImageState.swift,
 				Core/Models/Logger.swift,
+				Core/Models/SystemInfo.swift,
+				Core/Models/Typealias.swift,
 				Core/Resources/Assets.xcassets,
 				"Core/Resources/Preview Content/Preview Assets.xcassets",
 				DesignSystem/Components/FillingDetailView.swift,
@@ -245,14 +245,14 @@
 				Core/Core.docc,
 				Core/Core.h,
 				"Core/Helpers/String+Extensions.swift",
-				Core/Helpers/SystemInfo.swift,
-				Core/Helpers/Typealias.swift,
 				"Core/Helpers/UIDevice+ModelName.swift",
 				Core/Models/AppConfig.swift,
 				Core/Models/Config.swift,
 				Core/Models/IconDataSource.swift,
 				Core/Models/ImageState.swift,
 				Core/Models/Logger.swift,
+				Core/Models/SystemInfo.swift,
+				Core/Models/Typealias.swift,
 				Core/Resources/Assets.xcassets,
 				"Core/Resources/Preview Content/Preview Assets.xcassets",
 			);
@@ -331,6 +331,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E51162C32DD0F939001A040A /* Configurations */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Configurations;
+			sourceTree = "<group>";
+		};
 		E563C0E12DD02BF200B9C022 /* Modules */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -407,6 +412,7 @@
 		E5A5F5AA2D1647E600140551 = {
 			isa = PBXGroup;
 			children = (
+				E51162C32DD0F939001A040A /* Configurations */,
 				E563C0E12DD02BF200B9C022 /* Modules */,
 				E5A5F5B52D1647E600140551 /* Cake&Land */,
 				E5FA818D2D936452004047DE /* Cake&LandTests */,
@@ -499,6 +505,7 @@
 				E5FCE7872DCE3FD700D420CB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				E51162C32DD0F939001A040A /* Configurations */,
 				E563C0E12DD02BF200B9C022 /* Modules */,
 				E5A5F5B52D1647E600140551 /* Cake&Land */,
 			);

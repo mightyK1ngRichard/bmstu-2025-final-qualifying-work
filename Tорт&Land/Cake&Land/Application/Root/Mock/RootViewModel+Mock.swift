@@ -103,6 +103,8 @@ extension RootViewModelMock {
         .init(kind: .noConnection)
     }
 
+    func didTapAlertButton() {}
+
 }
 
 // MARK: - Mock Data

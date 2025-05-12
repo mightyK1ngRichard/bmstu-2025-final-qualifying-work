@@ -12,6 +12,7 @@ import NetworkAPI
 import Observation
 import DesignSystem
 import Core
+import GRPC
 
 @Observable
 final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency RootViewModelInput {
@@ -84,7 +85,7 @@ extension RootViewModel {
 
     func fetchUserInfoIfNeeded() {
         // FIXME: Сделать получение юзера из SwiftData
-        // currentUser = UserDefaults
+        // currentUser =
 
         guard currentUser == nil && startScreenControl.screenKind == .cakesList else {
             return
@@ -98,8 +99,17 @@ extension RootViewModel {
                 fetchUserAvatar(urlString: result.userInfo.profile.imageURL)
                 fetchUserHeaderImage(urlString: result.userInfo.profile.headerImageURL)
                 fetchCakesImages(cakes: result.userInfo.previewCakes)
-            } catch {
-                Logger.log(kind: .error, error)
+            } catch let grpcError as GRPCStatus {
+                if grpcError.code == .unauthenticated {
+                    uiProperties.sessionIsExpired = true
+                    uiProperties.alert = AlertModel(
+                        errorContent: ErrorContent(
+                            title: "Session Expired",
+                            message: "Your session has expired. Please log in again to continue."
+                        ),
+                        isShown: true
+                    )
+                }
             }
         }
     }
@@ -243,6 +253,12 @@ extension RootViewModel {
 
     func reloadGetUserInfo() {
         fetchUserInfoIfNeeded()
+    }
+
+    func didTapAlertButton() {
+        guard uiProperties.sessionIsExpired else { return }
+
+        startScreenControl.update(with: .auth)
     }
 
 }

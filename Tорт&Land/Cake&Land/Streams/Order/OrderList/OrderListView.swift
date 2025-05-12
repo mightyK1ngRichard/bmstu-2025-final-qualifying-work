@@ -107,6 +107,7 @@ private extension OrderListView {
             action: viewModel.fetchData
         )
         .padding()
+        .frame(minHeight: .infinity)
     }
 
 }

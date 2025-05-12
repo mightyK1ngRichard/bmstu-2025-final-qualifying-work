@@ -178,7 +178,7 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         }
 
         await MainActor.run {
-            UserDefaults.standard.set(refreshToken, forKey: UserDefaultsKeys.refreshToken.rawValue)
+            UserDefaults.standard.set(accessToken, forKey: UserDefaultsKeys.accessToken.rawValue)
             UserDefaults.standard.set(refreshToken, forKey: UserDefaultsKeys.refreshToken.rawValue)
         }
     }

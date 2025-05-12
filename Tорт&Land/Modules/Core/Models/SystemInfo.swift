@@ -15,8 +15,5 @@ public struct SystemInfo {
     private static let bundle = Bundle.main
     public static let systemVersion = device.systemVersion
     public static let modelName = device.modelName
-    public static let width = screen.bounds.width
-    public static let height = screen.bounds.height
-    public static let bounds = screen.bounds
     public static let appVersion = bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
 }

@@ -32,6 +32,7 @@ private extension NotificationsListView {
                 action: viewModel.didTapReloadButton
             )
             .padding()
+            .frame(minHeight: .infinity)
         }
     }
 
