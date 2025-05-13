@@ -17,6 +17,31 @@ struct Category: Identifiable, Hashable {
     let name: String
     /// Состояние изображения категории
     var thumbnail: Thumbnail
+    /// Теги категории (по полу)
+    let genderTags: [Gender]
+}
+
+// MARK: - Gender
+
+extension Category {
+    enum Gender: String, Hashable, CaseIterable {
+        case male
+        case female
+        case child
+    }
+}
+
+extension Category.Gender {
+    init(from model: CategoryGender) {
+        switch model {
+        case .child:
+            self = .child
+        case .female:
+            self = .female
+        case .male:
+            self = .male
+        }
+    }
 }
 
 // MARK: - CategoryEntity
@@ -30,7 +55,8 @@ extension Category {
                 id: UUID().uuidString,
                 imageState: .loading,
                 url: model.imageURL
-            )
+            ),
+            genderTags: model.genderTags.map(Category.Gender.init(from:))
         )
     }
 }

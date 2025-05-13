@@ -20,10 +20,17 @@ final class RootViewModel {
     private let networkManager: NetworkManager
     @ObservationIgnored
     private let imageProvider: ImageLoaderProviderImpl
+    @ObservationIgnored
+    private let priceFormatter: PriceFormatterService
 
-    init(networkManager: NetworkManager, imageProvider: ImageLoaderProviderImpl) {
+    init(
+        networkManager: NetworkManager,
+        imageProvider: ImageLoaderProviderImpl,
+        priceFormatter: PriceFormatterService = .shared
+    ) {
         self.networkManager = networkManager
         self.imageProvider = imageProvider
+        self.priceFormatter = priceFormatter
 
         bindingData = RootModel.BinindingData()
 
@@ -93,7 +100,18 @@ extension RootViewModel {
 extension RootViewModel {
 
     func assembleOrderListViwe() -> OrderListView {
-        OrdersListAssembler.assemble(networkManager: networkManager, imageProvider: imageProvider)
+        OrdersListAssembler.assemble(
+            networkManager: networkManager,
+            imageProvider: imageProvider
+        )
+    }
+
+    func assemblerCategoriesView() -> CategoriesView {
+        CategoriesAssembler.assemble(
+            networkManager: networkManager,
+            imageProvider: imageProvider,
+            priceFormatter: priceFormatter
+        )
     }
 
 }

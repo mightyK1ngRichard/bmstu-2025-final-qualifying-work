@@ -11,4 +11,8 @@ import Foundation
 struct AlertModel: Hashable {
     var errorContent: ErrorContent = .init(title: "", message: "")
     var isShown = false
+
+    var isEmpty: Bool {
+        errorContent.isEmpty && !isShown
+    }
 }

@@ -15,7 +15,7 @@ struct Filling: Identifiable, Hashable {
     /// Название начинки
     let name: String
     /// Состояние изображения начинки
-    var imageState: Thumbnail
+    var thumbnail: Thumbnail
     /// Состав начинки
     let content: String
     /// Цена за кг
@@ -31,7 +31,7 @@ extension Filling {
         self = Filling(
             id: model.id,
             name: model.name,
-            imageState: .init(id: UUID().uuidString, imageState: .loading, url: model.imageURL),
+            thumbnail: .init(id: UUID().uuidString, imageState: .loading, url: model.imageURL),
             content: model.content,
             kgPrice: model.kgPrice,
             description: model.description

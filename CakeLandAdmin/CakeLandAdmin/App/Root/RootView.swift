@@ -44,7 +44,8 @@ extension RootView {
     }
 
     var sideBarContainer: some View {
-        List(AppSection.allCases, id: \.self, selection: $viewModel.bindingData.selectedTab) { section in
+        List(AppSection.allCases, id: \.self,
+             selection: $viewModel.bindingData.selectedTab) { section in
             NavigationLink(value: section) {
                 Label(
                     title: { Text(section.rawValue) },
@@ -65,7 +66,7 @@ extension RootView {
         case .profile:
             Text("Детали: Профиль")
         case .settings:
-            Text("Детали: Настройки")
+            viewModel.assemblerCategoriesView()
         }
     }
 

@@ -20,4 +20,8 @@ enum ScreenState: Hashable {
 struct ErrorContent: Hashable {
     var title: String = String(localized: "Network error")
     var message: String
+
+    var isEmpty: Bool {
+        message.isEmpty && title.isEmpty
+    }
 }

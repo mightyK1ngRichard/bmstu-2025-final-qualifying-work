@@ -230,6 +230,8 @@ struct Cake_CreateCategoryRequest: @unchecked Sendable {
 
   var imageData: Data = Data()
 
+  var genderTags: [Cake_CategoryGender] = []
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
@@ -407,6 +409,31 @@ struct Cake_SetCakeVisibilityReq: Sendable {
   var cakeID: String = String()
 
   var isOpenForSale: Bool = false
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+/// ############### GetUserCakes ############### 
+struct Cake_GetUserCakesReq: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var userID: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Cake_GetUserCakesRes: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var cakes: [Cake_PreviewCake] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -1111,6 +1138,7 @@ extension Cake_CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._Mess
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "name"),
     2: .standard(proto: "image_data"),
+    3: .standard(proto: "gender_tags"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1121,6 +1149,7 @@ extension Cake_CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._Mess
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
       case 2: try { try decoder.decodeSingularBytesField(value: &self.imageData) }()
+      case 3: try { try decoder.decodeRepeatedEnumField(value: &self.genderTags) }()
       default: break
       }
     }
@@ -1133,12 +1162,16 @@ extension Cake_CreateCategoryRequest: SwiftProtobuf.Message, SwiftProtobuf._Mess
     if !self.imageData.isEmpty {
       try visitor.visitSingularBytesField(value: self.imageData, fieldNumber: 2)
     }
+    if !self.genderTags.isEmpty {
+      try visitor.visitPackedEnumField(value: self.genderTags, fieldNumber: 3)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Cake_CreateCategoryRequest, rhs: Cake_CreateCategoryRequest) -> Bool {
     if lhs.name != rhs.name {return false}
     if lhs.imageData != rhs.imageData {return false}
+    if lhs.genderTags != rhs.genderTags {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1577,6 +1610,70 @@ extension Cake_SetCakeVisibilityReq: SwiftProtobuf.Message, SwiftProtobuf._Messa
   static func ==(lhs: Cake_SetCakeVisibilityReq, rhs: Cake_SetCakeVisibilityReq) -> Bool {
     if lhs.cakeID != rhs.cakeID {return false}
     if lhs.isOpenForSale != rhs.isOpenForSale {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_GetUserCakesReq: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetUserCakesReq"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "userID"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.userID) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.userID.isEmpty {
+      try visitor.visitSingularStringField(value: self.userID, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_GetUserCakesReq, rhs: Cake_GetUserCakesReq) -> Bool {
+    if lhs.userID != rhs.userID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Cake_GetUserCakesRes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetUserCakesRes"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "cakes"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.cakes) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.cakes.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.cakes, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Cake_GetUserCakesRes, rhs: Cake_GetUserCakesRes) -> Bool {
+    if lhs.cakes != rhs.cakes {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
