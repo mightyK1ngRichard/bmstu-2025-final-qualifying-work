@@ -52,7 +52,7 @@ extension RootViewModel {
             } catch let grpcError as GRPCStatus {
                 if grpcError.code == .unauthenticated {
                     bindingData.alert = AlertModel(
-                        errorContent: ErrorContent(
+                        content: AlertContent(
                             title: "Session Expired",
                             message: "Your session has expired. Please log in again to continue."
                         ),
@@ -62,7 +62,7 @@ extension RootViewModel {
                     updateStartScreenKind(.needAuth)
                 }
             } catch {
-                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
         }
     }
@@ -86,10 +86,22 @@ extension RootViewModel {
 
                 updateStartScreenKind(.authed)
             } catch {
-                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
             
             bindingData.signInButtonIsLoading = false
+        }
+    }
+
+    func didTapLogout() {
+        Task { @MainActor in
+            do {
+                try await networkManager.authService.logout()
+            } catch {
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
+            }
+            bindingData.startScreenKind = .needAuth
+            UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.startScreenKind.rawValue)
         }
     }
 
@@ -106,11 +118,18 @@ extension RootViewModel {
         )
     }
 
-    func assemblerCategoriesView() -> CategoriesView {
+    func assembleCategoriesView() -> CategoriesView {
         CategoriesAssembler.assemble(
             networkManager: networkManager,
             imageProvider: imageProvider,
             priceFormatter: priceFormatter
+        )
+    }
+
+    func assembleCakesList() -> CakeListView {
+        CakeListAssembler.assemble(
+            networkManager: networkManager,
+            imageProvider: imageProvider
         )
     }
 

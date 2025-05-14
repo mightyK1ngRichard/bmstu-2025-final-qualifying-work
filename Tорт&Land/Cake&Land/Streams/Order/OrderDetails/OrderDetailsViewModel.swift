@@ -41,7 +41,7 @@ extension OrderDetailsViewModel {
     func fetchCakeData() {
         Task { @MainActor in
             do {
-                let cake = try await cakeService.fetchCakeDetails(cakeID: orderEntity.cakeID)
+                let cake = try await cakeService.fetchCakeByID(cakeID: orderEntity.cakeID)
                 cakeModel = CakeModel(from: cake)
                 fetchCakeImages(previewImage: cake.imageURL, images: cake.images)
             }

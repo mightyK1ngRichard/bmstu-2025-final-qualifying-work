@@ -73,7 +73,7 @@ extension CategoriesViewModel {
             do {
                 let result = try await cakeProvider.fetchCategoryCakes(categoryID: section.id)
 
-                let cakes = result.cakes.filter { $0.isOpenForSale }
+                let cakes = result.cakes.filter { $0.status == .approved }
                 var cakesModel: [CakeModel] = cakes.map(CakeModel.init(from:))
 
                 // Подгружаем картинки

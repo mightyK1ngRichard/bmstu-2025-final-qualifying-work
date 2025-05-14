@@ -24,7 +24,7 @@ struct OrderListView: View {
             viewModel.fetchOrders()
         }
         .defaultAlert(
-            errorContent: viewModel.bindingData.alert.errorContent,
+            errorContent: viewModel.bindingData.alert.content,
             isPresented: $viewModel.bindingData.alert.isShown
         )
     }

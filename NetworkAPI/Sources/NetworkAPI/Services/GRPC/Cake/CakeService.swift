@@ -10,27 +10,31 @@ import GRPC
 import NIO
 import SwiftProtobuf
 
-// MARK: - AuthService
+// MARK: - CakeService
 
 public protocol CakeService: Sendable {
+    // Торты
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response
-    func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response
-    func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response
-    func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response
-    func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response
     func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
-    func fetchCakeDetails(cakeID: String) async throws -> CakeEntity
-    func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response
-    func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
+    func fetchAllCakesWithAllStatuses() async throws -> [PreviewCakeEntity]
+    func fetchCakeByID(cakeID: String) async throws -> CakeEntity
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
     func fetchColors() async throws -> [String]
     func add3DModel(cakeID: String, modelData: Data) async throws -> String
-    func updateCakeVisibility(cakeID: String, isOpenForSale: Bool) async throws
-    func fetchCakeByID(cakeID: String) async throws -> CakeEntity
+    func updateCakeVisibility(cakeID: String, status: CakeStatusEntity) async throws
+    // Начинки
+    func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response
+    func fetchFillings() async throws -> CakeServiceModel.FetchFillings.Response
+    // Категории
+    func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response
+    func fetchCategoriesByGenderName(gender: CategoryGender) async throws -> CakeServiceModel.FetchCategoriesByGenderName.Response
+    func fetchCategories() async throws -> CakeServiceModel.FetchCategories.Response
+    func fetchCategoryCakes(categoryID: String) async throws -> CakeServiceModel.FetchCategoryCakes.Response
+
     func closeConnection()
 }
 
-// MARK: - AuthGrpcServiceImpl
+// MARK: - CakeGrpcServiceImpl
 
 public final class CakeGrpcServiceImpl: CakeService {
     private let client: Cake_CakeServiceAsyncClientProtocol
@@ -66,24 +70,22 @@ public final class CakeGrpcServiceImpl: CakeService {
 
 public extension CakeGrpcServiceImpl {
 
-    func fetchCakeByID(cakeID: String) async throws -> CakeEntity {
-        let request = Cake_CakeRequest.with {
-            $0.cakeID = cakeID
-        }
+    func fetchAllCakesWithAllStatuses() async throws -> [PreviewCakeEntity] {
+        let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
-            call: client.cake,
+            call: client.getAllCakesWithAllStatuses,
             with: request,
-            mapping: { CakeEntity(from: $0.cake) }
+            mapping: { $0.cakes.map(PreviewCakeEntity.init(from:)) }
         )
     }
 
-    func updateCakeVisibility(cakeID: String, isOpenForSale: Bool) async throws {
+    func updateCakeVisibility(cakeID: String, status: CakeStatusEntity) async throws {
         try await networkService.maybeRefreshAccessToken(using: authService)
 
         let request = Cake_SetCakeVisibilityReq.with {
             $0.cakeID = cakeID
-            $0.isOpenForSale = isOpenForSale
+            $0.status = status.toProto()
         }
 
         return try await networkService.performAndLog(
@@ -188,7 +190,6 @@ public extension CakeGrpcServiceImpl {
             $0.kgPrice = req.kgPrice
             $0.description_p = req.description
             $0.mass = req.mass
-            $0.isOpenForSale = req.isOpenForSale
             $0.fillingIds = req.fillingIDs
             $0.categoryIds = req.categoryIDs
             $0.images = req.imagesData
@@ -221,7 +222,8 @@ public extension CakeGrpcServiceImpl {
         )
     }
 
-    func fetchCakeDetails(cakeID: String) async throws -> CakeEntity {
+
+    func fetchCakeByID(cakeID: String) async throws -> CakeEntity {
         let request = Cake_CakeRequest.with {
             $0.cakeID = cakeID
         }

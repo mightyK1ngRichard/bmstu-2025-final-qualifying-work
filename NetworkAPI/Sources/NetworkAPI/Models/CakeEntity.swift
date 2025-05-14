@@ -25,8 +25,8 @@ public struct CakeEntity: Sendable, Hashable {
     public let description: String
     /// Масса торта
     public let mass: Double
-    /// Флаг возможности продажи торта
-    public let isOpenForSale: Bool
+    /// Статус торта
+    public let status: CakeStatusEntity
     /// Дата создания торта
     public let dateCreation: Date
     /// Скидочная цена за кг
@@ -45,6 +45,20 @@ public struct CakeEntity: Sendable, Hashable {
     public var colorsHex: [String]
     /// Ссылка на 3Д модель
     public let model3DURL: String?
+}
+
+/// Статусы торта
+public enum CakeStatusEntity: Int, Sendable {
+    /// Не указано
+    case unspecified = 0
+    /// Ожидает
+    case pending = 1
+    /// Одобрено и открыто для продажи/
+    case approved = 2
+    /// Отказано
+    case rejected = 3
+    /// Скрыто
+    case hidden = 4
 }
 
 public extension CakeEntity {
@@ -70,7 +84,7 @@ extension CakeEntity {
             reviewsCount: Int(model.reviewsCount),
             description: model.description_p,
             mass: model.mass,
-            isOpenForSale: model.isOpenForSale,
+            status: CakeStatusEntity(from: model.status),
             dateCreation: model.dateCreation.date,
             discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice : nil,
             discountEndTime: model.hasDiscountEndTime ? model.discountEndTime.date : nil,
@@ -81,6 +95,40 @@ extension CakeEntity {
             colorsHex: [],
             model3DURL: model.model3Durl
         )
+    }
+}
+
+extension CakeStatusEntity {
+    init(from model: Cake_CakeStatus) {
+        switch model {
+        case .unspecified:
+            self = .unspecified
+        case .pending:
+            self = .pending
+        case .approved:
+            self = .approved
+        case .rejected:
+            self = .rejected
+        case .hidden:
+            self = .hidden
+        case .UNRECOGNIZED:
+            self = .unspecified
+        }
+    }
+
+    func toProto() -> Cake_CakeStatus {
+        switch self {
+        case .unspecified:
+            return .unspecified
+        case .pending:
+            return .pending
+        case .approved:
+            return .approved
+        case .rejected:
+            return .rejected
+        case .hidden:
+            return .hidden
+        }
     }
 }
 
@@ -103,7 +151,7 @@ public extension CakeEntity {
             reviewsCount: model.reviewsCount,
             description: model.description,
             mass: model.mass,
-            isOpenForSale: model.isOpenForSale,
+            status: model.status,
             dateCreation: model.dateCreation,
             discountKgPrice: model.discountKgPrice,
             discountEndTime: model.discountEndTime,

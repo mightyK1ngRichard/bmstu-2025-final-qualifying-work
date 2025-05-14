@@ -22,7 +22,7 @@ struct CategoriesView: View {
             sheetContent
         }
         .defaultAlert(
-            errorContent: viewModel.bindingData.alert.errorContent,
+            errorContent: viewModel.bindingData.alert.content,
             isPresented: $viewModel.bindingData.alert.isShown
         )
         .onFirstAppear {
@@ -33,10 +33,7 @@ struct CategoriesView: View {
     }
 
     private let columns = [
-        GridItem(),
-        GridItem(),
-        GridItem(),
-        GridItem(),
+        GridItem(.adaptive(minimum: 280, maximum: 400))
     ]
 }
 

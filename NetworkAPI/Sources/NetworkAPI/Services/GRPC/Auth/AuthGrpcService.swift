@@ -123,12 +123,17 @@ public extension AuthGrpcServiceImpl {
         var callOptions = networkService.callOptions
         callOptions.customMetadata.add(name: "authorization", value: "Bearer \(refreshToken)")
 
-        try await networkService.performAndLog(
-            call: client.logout,
-            with: request,
-            options: callOptions,
-            mapping: { _ in }
-        )
+        do {
+            try await networkService.performAndLog(
+                call: client.logout,
+                with: request,
+                options: callOptions,
+                mapping: { _ in }
+            )
+            networkService.resetTokens()
+        } catch {
+            throw error
+        }
     }
 
     func closeConnection() {

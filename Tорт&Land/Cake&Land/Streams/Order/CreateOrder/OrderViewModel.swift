@@ -66,7 +66,7 @@ extension OrderViewModel {
         uiProperties.state = .loading
         Task { @MainActor in
             do {
-                let cakeEntity = try await networkManager.cakeService.fetchCakeDetails(cakeID: cakeID)
+                let cakeEntity = try await networkManager.cakeService.fetchCakeByID(cakeID: cakeID)
                 cake = CakeModel(from: cakeEntity)
                 fetchCakeImages(fillings: cakeEntity.fillings)
                 fetchCakePreview(url: cakeEntity.imageURL)

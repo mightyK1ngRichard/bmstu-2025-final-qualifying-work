@@ -12,13 +12,13 @@ enum ScreenState: Hashable {
     case initial
     case loading
     case finished
-    case error(content: ErrorContent)
+    case error(content: AlertContent)
 }
 
 // MARK: - ErrorContent
 
-struct ErrorContent: Hashable {
-    var title: String = String(localized: "Network error")
+struct AlertContent: Hashable {
+    var title: String
     var message: String
 
     var isEmpty: Bool {

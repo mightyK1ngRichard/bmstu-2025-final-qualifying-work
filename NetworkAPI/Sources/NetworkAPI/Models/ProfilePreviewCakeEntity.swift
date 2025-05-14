@@ -30,12 +30,14 @@ public struct ProfilePreviewCakeEntity: Sendable, Hashable {
     public let discountEndTime: Date
     /// Время создания
     public let dateCreation: Date
-    /// Продается ли
-    public let isOpenForSale: Bool
+    /// Статус торта
+    public let status: CakeStatusEntity
     /// Владелец
     public let owner: UserEntity
     /// Ссылка на 3Д модель
     public let model3DURL: String?
+    /// Hex цвета торта
+    public let colorsHex: [String]
 }
 
 // MARK: - Cake_PreviewCake
@@ -54,9 +56,10 @@ extension ProfilePreviewCakeEntity {
             discountKgPrice: model.hasDiscountKgPrice ? model.discountKgPrice.value : nil,
             discountEndTime: model.discountEndTime.date,
             dateCreation: model.dateCreation.date,
-            isOpenForSale: model.isOpenForSale,
+            status: CakeStatusEntity(from: model.status),
             owner: UserEntity(from: model.owner),
-            model3DURL: model.model3Durl
+            model3DURL: model.model3Durl,
+            colorsHex: model.colorsHex
         )
     }
 }

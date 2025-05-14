@@ -50,7 +50,7 @@ extension OrdersListViewModel {
             do {
                 try await networkManager.orderService.updateOrderStatus(orderID: orderID, newStatus: newStatus)
             } catch {
-                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
         }
     }
@@ -73,7 +73,7 @@ extension OrdersListViewModel {
                         do {
                             try await self.networkManager.orderService.updateOrderStatus(orderID: orderID, newStatus: newStatus)
                         } catch {
-                            self.bindingData.alert = .init(errorContent: error.readableGRPCContent, isShown: true)
+                            self.bindingData.alert = .init(content: error.readableGRPCContent, isShown: true)
                         }
                     }
                 }
@@ -141,7 +141,7 @@ private extension OrdersListViewModel {
             do {
                 try await perform()
             } catch {
-                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
 
             bindingData.state = .finished

@@ -11,7 +11,7 @@ import GRPC
 import NIO
 
 struct ConfigProvider: Sendable {
-    static func makeDefaultCallOptions(modelName: String, systemVersion: String) -> CallOptions {
+    static func makeDefaultCallOptions(modelName: String, systemVersion: String, fingerprint: String) -> CallOptions {
         let device = modelName + " (\(systemVersion))"
         let requestId = UUID().uuidString
 
@@ -19,7 +19,7 @@ struct ConfigProvider: Sendable {
             customMetadata: [
                 StringConst.requestId: requestId,
                 StringConst.agent: device,
-                StringConst.fingerprint: StringConst.ios,
+                StringConst.fingerprint: fingerprint,
             ],
             timeLimit: .timeout(.seconds(8))
         )

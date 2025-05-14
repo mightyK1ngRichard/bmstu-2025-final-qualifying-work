@@ -86,21 +86,26 @@ extension ProductsGridViewModel {
 
     func didTapFilterButton() {
         uiProperties.bottomSheetKind = .filter
-        uiProperties.showFilterLoader = true
 
-        Task { @MainActor in
-            let hexStrings = try await cakeService.fetchColors()
-            colors = hexStrings.compactMap {
-                guard let uiColor = UIColor(hexString: $0, alpha: 1) else {
-                    return nil
-                }
-
-                return .init(hex: $0, uiColor: uiColor)
-            }
-
+        // Получаем все цвета тортов
+        if colors.isEmpty {
+            uiProperties.showFilterLoader = true
+            var uniqueColors: Set<ProductsGridModel.ColorCell> = []
+            uniqueColors.formUnion(
+                cakes
+                    .flatMap { $0.colorsHex }
+                    .compactMap { hex -> ProductsGridModel.ColorCell? in
+                        guard let uiColor = UIColor(hexString: hex, alpha: 1) else {
+                            return nil
+                        }
+                        return .init(hex: hex, uiColor: uiColor)
+                    }
+            )
+            colors = Array(uniqueColors)
             uiProperties.showFilterLoader = false
-            uiProperties.showBottomSheet = true
         }
+
+        uiProperties.showBottomSheet = true
     }
 
     func didTapSortButton() {

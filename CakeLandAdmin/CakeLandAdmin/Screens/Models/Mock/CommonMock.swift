@@ -10,7 +10,7 @@ import Foundation
 @testable import NetworkAPI
 
 enum CommonMock {
-    static var orderMock = OrderModel(
+    static let orderMock = OrderModel(
         id: "cf4ed963-f2d9-4c3b-ac99-a935be0a8c1a",
         totalPrice: 3689.99,
         deliveryAddress: AddressEntity(
@@ -38,6 +38,32 @@ enum CommonMock {
         status: .delivered,
         cakeID: "550e8400-e29b-41d4-a716-446655441203",
         createdAt: Date().description
+    )
+    static let cakeMock = CakeModel(
+        id: "57ae877b-64b0-4ac2-8775-d453e5116f9b",
+        previewImage: Thumbnail(id: "1", imageState: .nsImage(.defaultHeader), url: "http://localhost:9000/cake-land-server/d20b6cdf-f37f-4f96-96a6-1338057d5429"),
+        thumbnails: [],
+        cakeName: "Птичье молоко",
+        kgPrice: 2300,
+        mass: 340,
+        discountedKgPrice: 2200,
+        discountedEndDate: Date(),
+        rating: 0,
+        reviewsCount: 0,
+        description: "Торт “Птичье молоко” — это легендарный десерт с нежнейшей структурой, сочетающий воздушный суфле-мусс и тонкие слои бисквита.\nЛегкая, почти невесомая текстура тает во рту, оставляя приятное сливочно-ванильное послевкусие.\nТончайший слой шоколадной глазури придаёт торту утончённую сладость и завершённость вкуса.\n“Птичье молоко” идеально подойдёт для торжественного события или уютного чаепития, наполняя момент лёгкостью и нежностью.",
+        establishmentDate: Date(),
+        categories: [],
+        fillings: [],
+        seller: UserModel(
+            id: "32067e38-0271-4487-b0f7-2c54dacbbf75",
+            fio: "Месси",
+            nickname: "messi",
+            avatarImage: Thumbnail(id: "1", imageState: .nsImage(.profile), url: ""),
+            headerImage: Thumbnail(id: "2", imageState: .nsImage(.defaultHeader), url: ""),
+            mail: "testuser4@gmail.com"
+        ),
+        colorsHex: ["#9ca8b7", "#b96d43", "#d16768", "#dcd8c7", "#c6ad7b"],
+        status: .approved
     )
 }
 #endif

@@ -50,7 +50,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     }
 
     private var visableButtonTitle: String {
-        cakeModel.isOpenForSale ? "Close for sale" : "Open for sale"
+        cakeModel.status == .approved ? "Hide for sale" : "Open for sale"
     }
 }
 
@@ -63,7 +63,7 @@ extension CakeDetailsViewModel {
 
         Task { @MainActor in
             do {
-                let cakeEntity = try await cakeService.fetchCakeDetails(cakeID: cakeModel.id)
+                let cakeEntity = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
                 cakeModel = cakeModel.applyDetails(cakeEntity)
                 bindingData.isLoading = false
 
@@ -203,11 +203,11 @@ extension CakeDetailsViewModel {
     func didTapUpdateVisable() {
         bindingData.visableButtonIsLoading = true
         Task { @MainActor in
-            let isOpenForSale = !cakeModel.isOpenForSale
+            let updatedStatus: CakeStatus = cakeModel.status == .approved ? .hidden : .approved
 
             do {
-                try await cakeService.updateCakeVisibility(cakeID: cakeModel.id, isOpenForSale: isOpenForSale)
-                cakeModel.isOpenForSale = isOpenForSale
+                try await cakeService.updateCakeVisibility(cakeID: cakeModel.id, status: updatedStatus.toProto)
+                cakeModel.status = updatedStatus
             } catch {
             }
 

@@ -24,8 +24,8 @@ public struct PreviewCakeEntity: Sendable, Hashable {
     public let description: String
     /// Масса торта (кг)
     public let mass: Double
-    /// Доступен ли для продажи
-    public let isOpenForSale: Bool
+    /// Статус торта
+    public let status: CakeStatusEntity
     /// Информация о владельце
     public let owner: UserEntity
     /// Список начинок
@@ -58,7 +58,7 @@ extension PreviewCakeEntity {
             reviewsCount: Int(model.reviewsCount),
             description: model.description_p,
             mass: model.mass,
-            isOpenForSale: model.isOpenForSale,
+            status: CakeStatusEntity(from: model.status),
             owner: UserEntity(from: model.owner),
             fillings: model.fillings.map { FillingEntity(from: $0) },
             categories: model.categories.map { CategoryEntity(from: $0) },
@@ -80,7 +80,7 @@ extension PreviewCakeEntity {
             reviewsCount: Int(model.reviewsCount),
             description: model.description_p.value,
             mass: model.mass,
-            isOpenForSale: model.isOpenForSale,
+            status: CakeStatusEntity(from: model.status),
             owner: UserEntity(from: model.owner),
             fillings: [],
             categories: [],

@@ -17,7 +17,8 @@ final class NetworkManager {
     init() {
         let networkService = NetworkServiceImpl(
             modelName: SystemInfo.modelIdentifier,
-            systemVersion: SystemInfo.systemVersion
+            systemVersion: SystemInfo.systemVersion,
+            fingerprint: "macos"
         )
 
         authService = AuthGrpcServiceImpl(

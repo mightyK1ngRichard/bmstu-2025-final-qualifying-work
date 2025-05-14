@@ -15,7 +15,7 @@ struct RootView: View {
     var body: some View {
         contentContainer
             .defaultAlert(
-                errorContent: viewModel.bindingData.alert.errorContent,
+                errorContent: viewModel.bindingData.alert.content,
                 isPresented: $viewModel.bindingData.alert.isShown
             )
     }
@@ -23,7 +23,7 @@ struct RootView: View {
 
 // MARK: - UI Subviews
 
-extension RootView {
+private extension RootView {
 
     @ViewBuilder
     var contentContainer: some View {
@@ -38,6 +38,7 @@ extension RootView {
     var contentView: some View {
         NavigationSplitView {
             sideBarContainer
+            logoutButton
         } detail: {
             detailContainer
         }
@@ -66,7 +67,9 @@ extension RootView {
         case .profile:
             Text("Детали: Профиль")
         case .settings:
-            viewModel.assemblerCategoriesView()
+            viewModel.assembleCategoriesView()
+        case .cakes:
+            viewModel.assembleCakesList()
         }
     }
 
@@ -103,6 +106,16 @@ extension RootView {
             .keyboardShortcut(.defaultAction)
         }
         .padding()
+    }
+
+    var logoutButton: some View {
+        Button {
+            viewModel.didTapLogout()
+        } label: {
+            Label("Выйти", systemImage: "rectangle.portrait.and.arrow.right")
+        }
+        .buttonStyle(.plain)
+        .padding(.bottom)
     }
 
 }

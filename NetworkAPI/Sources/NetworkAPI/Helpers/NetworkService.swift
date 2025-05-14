@@ -33,6 +33,7 @@ public protocol NetworkService: Sendable {
     func setAccessToken(_ accessToken: String, expiresIn: Date)
     func setRefreshToken(_ refreshToken: String)
     func setTokens(accessToken: String, expiresIn: Date, refreshToken: String) async
+    func resetTokens()
 }
 
 extension NetworkService {
@@ -84,9 +85,9 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     private var _callOptions: CallOptions
 
     @MainActor
-    public required init(modelName: String, systemVersion: String) {
+    public required init(modelName: String, systemVersion: String, fingerprint: String) {
         let jwtTokens = ConfigProvider.makeJWTTokens()
-        self._callOptions = ConfigProvider.makeDefaultCallOptions(modelName: modelName, systemVersion: systemVersion)
+        self._callOptions = ConfigProvider.makeDefaultCallOptions(modelName: modelName, systemVersion: systemVersion, fingerprint: fingerprint)
         self._accessToken = jwtTokens.accessToken
         self._refreshToken = jwtTokens.refreshToken
 
@@ -138,7 +139,14 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             UserDefaults.standard.set(refreshToken, forKey: UserDefaultsKeys.refreshToken.rawValue)
         }
     }
-    
+
+    public func resetTokens() {
+        Task { @MainActor in
+            UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.refreshToken.rawValue)
+            UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.accessToken.rawValue)
+        }
+    }
+
     /// Обновление access token при необходимости
     /// - Parameter authService: authService
     /// - Returns: Нужно ли обновить токен

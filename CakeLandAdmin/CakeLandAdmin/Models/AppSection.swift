@@ -10,7 +10,7 @@ enum AppSection: String, Hashable, CaseIterable {
     case profile = "Профиль"
     case orders = "Заказы"
     case settings = "Настройки"
-
+    case cakes = "Торты"
 
     var iconName: String {
         switch self {
@@ -18,6 +18,7 @@ enum AppSection: String, Hashable, CaseIterable {
         case .profile: return "person.circle"
         case .settings: return "gearshape"
         case .orders: return "shippingbox"
+        case .cakes: return "doc.plaintext"
         }
     }
 }

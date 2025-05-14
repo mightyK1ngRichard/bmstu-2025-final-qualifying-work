@@ -52,11 +52,11 @@ private extension OrderDetailView {
 
                 // Цена
                 title("Цена:") {
-                    Text(String(format: "%.1f ₽", cake.price))
+                    Text(String(format: "%.1f ₽", cake.kgPrice))
                 }
 
                 // Цена со скидкой
-                if let discountedPrice = cake.discountedPrice {
+                if let discountedPrice = cake.discountedKgPrice {
                     title("Цена со скидкой:") {
                         Text(String(format: "%.1f ₽", discountedPrice))
                     }
