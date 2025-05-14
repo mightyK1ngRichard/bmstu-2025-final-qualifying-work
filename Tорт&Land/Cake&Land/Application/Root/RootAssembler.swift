@@ -8,59 +8,21 @@
 
 import Foundation
 import NetworkAPI
+import Core
 
 final class RootAssembler {
     @MainActor
     static func assemble(startScreenControl: StartScreenControl) -> RootView {
-        let networkService = NetworkServiceImpl()
+        let networkService = NetworkServiceImpl(modelName: SystemInfo.modelName, systemVersion: SystemInfo.appVersion)
         let imageProvider = ImageLoaderProviderImpl()
-        let authService = AuthGrpcServiceImpl(
-            configuration: AppHosts.auth,
-            networkService: networkService
-        )
-        let cakeService = CakeGrpcServiceImpl(
-            configuration: AppHosts.cake,
-            authService: authService,
-            networkService: networkService
-        )
-        let profileService = ProfileGrpcServiceImpl(
-            configuration: AppHosts.profile,
-            authService: authService,
-            networkService: networkService
-        )
-        let chatService = ChatServiceImpl(
-            configuration: AppHosts.chat,
-            authService: authService,
-            networkService: networkService
-        )
-        let reviewsService = ReviewsGrpcServiceImpl(
-            configuration: AppHosts.reviews,
-            authService: authService,
-            networkService: networkService
-        )
-        let orderService = OrderGrpcServiceImpl(
-            configuration: AppHosts.order,
-            authService: authService,
-            networkService: networkService
-        )
-        let notificationService = NotificationServiceImpl(
-            configuration: AppHosts.notification,
-            authService: authService,
-            networkService: networkService
-        )
+        let networkManager = NetworkManager(networkService: networkService)
 
         if networkService.refreshToken == nil {
             startScreenControl.update(with: .auth)
         }
 
         let viewModel = RootViewModel(
-            authService: authService,
-            cakeService: cakeService,
-            reviewsService: reviewsService,
-            chatProvider: chatService,
-            profileService: profileService,
-            orderProvider: orderService,
-            notificationService: notificationService,
+            networkManager: networkManager,
             imageProvider: imageProvider,
             startScreenControl: startScreenControl
         )

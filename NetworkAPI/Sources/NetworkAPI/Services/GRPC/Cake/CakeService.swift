@@ -114,10 +114,14 @@ public extension CakeGrpcServiceImpl {
         )
     }
 
+    /// - Important: Может только админ
     func createCategory(req: CakeServiceModel.CreateCategory.Request) async throws -> CakeServiceModel.CreateCategory.Response {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
         let request = Cake_CreateCategoryRequest.with {
             $0.name = req.name
             $0.imageData = req.imageData
+            $0.genderTags = req.genderTags.map { $0.convertToGrpcModel() }
         }
 
         return try await networkService.performAndLog(
@@ -130,6 +134,8 @@ public extension CakeGrpcServiceImpl {
     }
 
     func createFilling(req: CakeServiceModel.CreateFilling.Request) async throws -> CakeServiceModel.CreateFilling.Response {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
         let request = Cake_CreateFillingRequest.with {
             $0.name = req.name
             $0.imageData = req.imageData

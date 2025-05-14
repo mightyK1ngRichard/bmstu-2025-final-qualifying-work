@@ -113,31 +113,6 @@ private extension RatingReviewsView {
     .environment(Coordinator())
 }
 
-#if DEBUG
-import NetworkAPI
-#Preview("Network") {
-    NavigationStack {
-        RatingReviewsAssembler.assemble(
-            cakeID: "550e8400-e29b-41d4-a716-446655441001",
-            reviewsService: {
-                let networkService = NetworkServiceImpl()
-                let authProvider = AuthGrpcServiceImpl(
-                    configuration: AppHosts.auth,
-                    networkService: networkService
-                )
-                return ReviewsGrpcServiceImpl(
-                    configuration: AppHosts.reviews,
-                    authService: authProvider,
-                    networkService: networkService
-                )
-            }(),
-            imageProvider: ImageLoaderProviderImpl()
-        )
-    }
-    .environment(Coordinator())
-}
-#endif
-
 // MARK: - Constants
 
 private extension RatingReviewsView {

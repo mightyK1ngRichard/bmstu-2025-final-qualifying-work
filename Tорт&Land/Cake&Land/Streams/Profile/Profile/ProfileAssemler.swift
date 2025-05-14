@@ -13,22 +13,14 @@ final class ProfileAssemler {
     static func assemble(
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
-        cakeProvider: CakeService,
-        chatProvider: ChatService,
-        profileService: ProfileService,
-        authService: AuthService,
-        orderService: OrderService,
+        networkManager: NetworkManager,
         isCurrentUser: Bool,
         rootViewModel: RootViewModel
     ) -> ProfileView {
         let viewModel = ProfileViewModel(
             user: user,
             imageProvider: imageProvider,
-            cakeProvider: cakeProvider,
-            chatProvider: chatProvider,
-            authService: authService,
-            profileService: profileService,
-            orderService: orderService,
+            networkManager: networkManager,
             isCurrentUser: isCurrentUser,
             rootViewModel: rootViewModel
         )

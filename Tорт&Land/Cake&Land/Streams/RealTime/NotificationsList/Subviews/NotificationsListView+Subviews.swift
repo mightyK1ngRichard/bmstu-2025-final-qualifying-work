@@ -96,38 +96,3 @@ private extension NotificationsListView {
         }
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-import NetworkAPI
-#endif
-
-#Preview {
-    let network = NetworkServiceImpl()
-    network.setRefreshToken(CommonMockData.refreshToken)
-    let authService = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: network
-    )
-
-    return NotificationsListAssembler.assemble(
-        notificationService: NotificationServiceImpl(
-            configuration: AppHosts.notification,
-            authService: authService,
-            networkService: network
-        ),
-        cakeService: CakeGrpcServiceImpl(
-            configuration: AppHosts.cake,
-            authService: authService,
-            networkService: network
-        ),
-        orderService: OrderGrpcServiceImpl(
-            configuration: AppHosts.order,
-            authService: authService,
-            networkService: network
-        ),
-        imageProvider: ImageLoaderProviderImpl()
-    )
-    .environment(Coordinator())
-}

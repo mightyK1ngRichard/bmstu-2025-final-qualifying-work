@@ -205,25 +205,3 @@ private extension OrderDetailsView {
         .scrollIndicators(.hidden)
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    let networkService = NetworkServiceImpl()
-    networkService.setRefreshToken(CommonMockData.refreshToken)
-
-    return OrderDetailsView(
-        viewModel: OrderDetailsViewModel(
-            orderEntity: CommonMockData.generateOrder(),
-            cakeService: CakeGrpcServiceImpl(
-                configuration: AppHosts.cake,
-                authService: AuthGrpcServiceImpl(
-                    configuration: AppHosts.auth,
-                    networkService: networkService
-                ),
-                networkService: networkService
-            ),
-            imageProvider: ImageLoaderProviderImpl()
-        )
-    )
-}

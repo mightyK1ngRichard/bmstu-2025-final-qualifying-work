@@ -26,7 +26,7 @@ public enum CategoryGender: Sendable, Hashable {
     case child
 }
 
-// MARK: - Category
+// MARK: - Proto
 
 extension CategoryEntity {
     init(from model: Cake_Category) {

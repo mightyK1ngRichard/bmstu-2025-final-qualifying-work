@@ -25,10 +25,12 @@ public extension CakeServiceModel.CreateCategory {
     struct Request: Sendable {
         let name: String
         let imageData: Data
+        let genderTags: [CategoryGender]
 
-        public init(name: String, imageData: Data) {
+        public init(name: String, imageData: Data, genderTags: [CategoryGender]) {
             self.name = name
             self.imageData = imageData
+            self.genderTags = genderTags
         }
     }
 

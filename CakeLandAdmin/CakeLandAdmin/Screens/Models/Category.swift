@@ -42,6 +42,17 @@ extension Category.Gender {
             self = .male
         }
     }
+
+    var toProto: CategoryGender {
+        switch self {
+        case .male:
+            return .male
+        case .female:
+            return .female
+        case .child:
+            return .child
+        }
+    }
 }
 
 // MARK: - CategoryEntity

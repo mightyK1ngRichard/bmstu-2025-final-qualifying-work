@@ -21,19 +21,11 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     @ObservationIgnored
     private let rootViewModel: RootViewModel
     @ObservationIgnored
-    private let chatProvider: ChatService
-    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
-    private let cakeProvider: CakeService
-    @ObservationIgnored
-    private let authService: AuthService
-    @ObservationIgnored
-    private let profileService: ProfileService
+    private let networkManager: NetworkManager
     @ObservationIgnored
     private var coordinator: Coordinator?
-    @ObservationIgnored
-    private var orderService: OrderService
     @ObservationIgnored
     private let priceFormatter = PriceFormatterService.shared
     @ObservationIgnored
@@ -42,21 +34,13 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     init(
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
-        cakeProvider: CakeService,
-        chatProvider: ChatService,
-        authService: AuthService,
-        profileService: ProfileService,
-        orderService: OrderService,
+        networkManager: NetworkManager,
         isCurrentUser: Bool = false,
         rootViewModel: RootViewModel
     ) {
         self.user = user
-        self.profileService = profileService
-        self.cakeProvider = cakeProvider
-        self.authService = authService
-        self.chatProvider = chatProvider
+        self.networkManager = networkManager
         self.isCurrentUser = isCurrentUser
-        self.orderService = orderService
         self.imageProvider = imageProvider
         self.rootViewModel = rootViewModel
     }
@@ -80,7 +64,7 @@ extension ProfileViewModel {
         uiProperties.screenState = .loading
         Task { @MainActor in
             do {
-                let res = try await profileService.getUserInfo()
+                let res = try await networkManager.profileService.getUserInfo()
                 user = UserModel(from: res.userInfo)
                 uiProperties.screenState = .finished
                 let user = res.userInfo.profile
@@ -194,7 +178,7 @@ extension ProfileViewModel {
 
     func assemblyCreateCakeView() -> CreateProductView {
         CreateProductAssembler.assemble(
-            cakeProvider: cakeProvider,
+            cakeProvider: networkManager.cakeService,
             imageProvider: imageProvider
         )
     }
@@ -203,12 +187,16 @@ extension ProfileViewModel {
         ChatAssembler.assemble(
             currentUser: currentUser,
             interlocutor: interlocutor,
-            chatProvider: chatProvider
+            chatProvider: networkManager.chatService
         )
     }
 
     func assemblySettingsView(userModel: UserModel) -> SettingsView {
-        let view = SettingsAssembler.assemble(userModel: userModel, authService: authService, profileProvider: profileService)
+        let view = SettingsAssembler.assemble(
+            userModel: userModel,
+            authService: networkManager.authService,
+            profileProvider: networkManager.profileService
+        )
         view.viewModel.userPublisher
             .sink { [weak self] updatedUser in
                 self?.user = updatedUser
@@ -219,8 +207,8 @@ extension ProfileViewModel {
 
     func assemblyOrdersView() -> OrderListView {
         OrderListAssembler.assemble(
-            cakeService: cakeProvider,
-            orderService: orderService,
+            cakeService: networkManager.cakeService,
+            orderService: networkManager.orderService,
             imageProvider: imageProvider,
             priceFormatter: priceFormatter
         )

@@ -187,32 +187,6 @@ private extension SettingsView {
 
 }
 
-// MARK: - Preview
-
-#Preview {
-    let network = NetworkServiceImpl()
-    network.setRefreshToken(CommonMockData.refreshToken)
-    let authService = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: network
-    )
-    return NavigationStack {
-        SettingsView(
-            viewModel: SettingsViewModel(
-                userModel: CommonMockData.generateMockUserModel(id: 1),
-                authProvider: authService,
-                profileProvider: ProfileGrpcServiceImpl(
-                    configuration: AppHosts.profile,
-                    authService: authService,
-                    networkService: network
-                )
-            )
-        )
-    }
-    .environment(Coordinator())
-    .environment(StartScreenControl())
-}
-
 // MARK: - Constants
 
 private extension SettingsView {

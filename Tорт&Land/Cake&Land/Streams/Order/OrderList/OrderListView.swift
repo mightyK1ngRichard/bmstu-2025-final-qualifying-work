@@ -111,39 +111,3 @@ private extension OrderListView {
     }
 
 }
-
-// MARK: - Preview
-
-#if DEBUG
-import NetworkAPI
-#endif
-
-#Preview {
-    @Previewable
-    @State var coordinator = Coordinator()
-    let networkService = NetworkServiceImpl()
-    networkService.setRefreshToken(CommonMockData.refreshToken)
-    let auth = AuthGrpcServiceImpl(
-        configuration: AppHosts.auth,
-        networkService: networkService
-    )
-
-    return NavigationStack(path: $coordinator.navPath) {
-        OrderListView(
-            viewModel: OrderListViewModel(
-                cakeService: CakeGrpcServiceImpl(
-                    configuration: AppHosts.cake,
-                    authService: auth,
-                    networkService: networkService
-                ),
-                orderService:  OrderGrpcServiceImpl(
-                    configuration: AppHosts.order,
-                    authService: auth,
-                    networkService: networkService
-                ),
-                imageProvider: ImageLoaderProviderImpl()
-            )
-        )
-    }
-    .environment(coordinator)
-}

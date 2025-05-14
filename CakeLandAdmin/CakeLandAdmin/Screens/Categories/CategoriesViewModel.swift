@@ -159,7 +159,7 @@ extension CategoriesViewModel {
                     req: .init(
                         name: bindingData.createCategoryModel.inputName.trimmingCharacters(in: .whitespacesAndNewlines),
                         imageData: nsImageData,
-                        genderTags: [] // FIXME: Добавить тут
+                        genderTags: bindingData.createCategoryModel.selectedGenderTags.map { $0.toProto }
                     )
                 )
 

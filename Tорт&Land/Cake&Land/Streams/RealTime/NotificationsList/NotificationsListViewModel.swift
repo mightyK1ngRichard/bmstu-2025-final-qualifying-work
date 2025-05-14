@@ -16,11 +16,7 @@ final class NotificationsListViewModel: NotificationsListDisplayLogic, Notificat
     var uiProperties = NotificationsListModel.UIProperties()
     private(set) var notifications: [NotificationEntity] = []
     @ObservationIgnored
-    private let cakeService: CakeService
-    @ObservationIgnored
-    private let orderService: OrderService
-    @ObservationIgnored
-    private let notificationService: NotificationService
+    private let networkManager: NetworkManager
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
@@ -29,19 +25,15 @@ final class NotificationsListViewModel: NotificationsListDisplayLogic, Notificat
     private var cancallables: Set<AnyCancellable> = []
 
     init(
-        notificationService: NotificationService,
-        orderService: OrderService,
-        cakeService: CakeService,
+        networkManager: NetworkManager,
         imageProvider: ImageLoaderProvider
     ) {
-        self.orderService = orderService
-        self.notificationService = notificationService
-        self.cakeService = cakeService
+        self.networkManager = networkManager
         self.imageProvider = imageProvider
     }
 
     func subscribe() {
-        notificationService.notificationPublisher
+        networkManager.notificationService.notificationPublisher
             .sink { [weak self] entity in
                 Task { @MainActor in
                     self?.notifications.insert(entity, at: 0)
@@ -53,12 +45,12 @@ final class NotificationsListViewModel: NotificationsListDisplayLogic, Notificat
 
 extension NotificationsListViewModel {
     func fetchNotifications() {
-        notificationService.startStreamingNotifications()
+        networkManager.notificationService.startStreamingNotifications()
 
         uiProperties.screenState = .loading
         Task { @MainActor in
             do {
-                notifications = try await notificationService.getNotifications()
+                notifications = try await networkManager.notificationService.getNotifications()
                 uiProperties.screenState = .finished
             } catch {
                 uiProperties.screenState = .error(content: error.readableGRPCContent)
@@ -73,7 +65,7 @@ extension NotificationsListViewModel {
         if notification.notificationKind == .orderUpdate, let orderID = notification.orderID {
             Task { @MainActor in
                 do {
-                    let orderEntity = try await orderService.fetchOrderByID(orderID: orderID)
+                    let orderEntity = try await networkManager.orderService.fetchOrderByID(orderID: orderID)
                     coordinator?.addScreen(NotificationsListModel.Screens.order(notification, orderEntity))
                 }
             }
@@ -82,7 +74,7 @@ extension NotificationsListViewModel {
 
     func didDeleteNotification(id: String) {
         Task {
-            try await notificationService.deleteNotification(notificationID: id)
+            try await networkManager.notificationService.deleteNotification(notificationID: id)
         }
 
         guard let index = notifications.firstIndex(where: { $0.id == id }) else { return }
@@ -96,7 +88,7 @@ extension NotificationsListViewModel {
     func assemblyOrderView(with notification: NotificationEntity, orderEntity: OrderEntity) -> OrderDetailsView {
         OrderDetailsAssemler.assemble(
             orderEntity: orderEntity,
-            cakeService: cakeService,
+            cakeService: networkManager.cakeService,
             imageProvider: imageProvider
         )
     }
