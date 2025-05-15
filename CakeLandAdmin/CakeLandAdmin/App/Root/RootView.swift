@@ -65,7 +65,7 @@ private extension RootView {
         case .orders:
             viewModel.assembleOrderListViwe()
         case .profile:
-            Text("Детали: Профиль")
+            viewModel.assembleProfile()
         case .settings:
             viewModel.assembleCategoriesView()
         case .cakes:

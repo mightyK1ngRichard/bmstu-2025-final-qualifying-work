@@ -37,7 +37,7 @@ enum CommonMock {
         paymentMethod: .cash,
         status: .delivered,
         cakeID: "550e8400-e29b-41d4-a716-446655441203",
-        createdAt: Date().description
+        createdAt: Date()
     )
     static let cakeMock = CakeModel(
         id: "57ae877b-64b0-4ac2-8775-d453e5116f9b",

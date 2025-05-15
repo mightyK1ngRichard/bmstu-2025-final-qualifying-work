@@ -133,6 +133,13 @@ extension RootViewModel {
         )
     }
 
+    func assembleProfile() -> ProfileView {
+        ProfileAssembler.assemble(
+            networkManager: networkManager,
+            imageProvider: imageProvider
+        )
+    }
+
 }
 
 // MARK: - Helpers

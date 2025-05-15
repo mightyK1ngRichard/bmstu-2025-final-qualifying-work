@@ -1,6 +1,6 @@
 //
-//  Config.xcconfig
-//  Tорт&Land
+//  Config-Release.xcconfig
+//  Cake&Land
 //
 //  Created by Dmitriy Permyakov on 11.05.2025.
 //  Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.
@@ -11,10 +11,10 @@
 
 NETWORK_IP=192.168.1.44
 
-PORT_CAKE=44044
-PORT_AUTH=44045
-PORT_PROFILE=44046
-PORT_CHAT=44047
-PORT_REVIEWS=44048
-PORT_ORDER=44049
-PORT_NOTIFICATION=44050
+PORT_CAKE = 44044
+PORT_AUTH = 44045
+PORT_PROFILE = 44046
+PORT_CHAT = 44047
+PORT_REVIEWS = 44048
+PORT_ORDER = 44049
+PORT_NOTIFICATION = 44050

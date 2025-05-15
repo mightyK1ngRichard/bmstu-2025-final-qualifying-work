@@ -58,22 +58,43 @@ private extension OrderListView {
         }
     }
 
-    var mainContainer: some View {
-        ordersTable
-            .overlay(alignment: .bottomTrailing) {
-                Button {
-                    viewModel.didTapSave()
-                } label: {
-                    if viewModel.bindingData.saveButtonIsLoading {
-                        ProgressView()
-                            .controlSize(.small)
-                    } else {
-                        Text("Save changes")
-                    }
+    var controlContainer: some View {
+        HStack {
+            sortMenu
+
+            Button {
+                viewModel.didTapSave()
+            } label: {
+                if viewModel.bindingData.saveButtonIsLoading {
+                    ProgressView()
+                        .controlSize(.small)
+                } else {
+                    Text("Save changes")
                 }
-                .padding()
-                .keyboardShortcut(.defaultAction)
             }
+            .keyboardShortcut(.defaultAction)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+    }
+
+    var mainContainer: some View {
+        VStack(spacing: 0) {
+            controlContainer
+            ordersTable
+        }
+    }
+
+    var sortMenu: some View {
+        Menu("Сортировать по дате создания") {
+            Button("По возрастанию") {
+                viewModel.bindingData.sortDirection = .ascending
+            }
+
+            Button("По убыванию") {
+                viewModel.bindingData.sortDirection = .descending
+            }
+        }
     }
 
     var ordersTable: some View {
@@ -82,12 +103,12 @@ private extension OrderListView {
                 Text(order.id)
             }
 
-            TableColumn("Начинка") { order in
-                Text(order.filling.name)
-            }
-
             TableColumn("Цена") { order in
                 Text(String(format: "%.2f ₽", order.totalPrice))
+            }
+
+            TableColumn("Дата формирования") { order in
+                Text(order.createdAt.formattedDDMMYYYY)
             }
 
             TableColumn("Адрес") { order in

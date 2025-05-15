@@ -52,4 +52,28 @@ extension UserModel {
             mail: model.mail
         )
     }
+
+    init(from model: ProfileEntity) {
+        let avatar: Thumbnail = {
+            if let imageURL = model.imageURL {
+                return Thumbnail(url: imageURL)
+            }
+            return Thumbnail(url: "", imageState: .nsImage(.profile))
+        }()
+        let headerImage: Thumbnail = {
+            if let imageURL = model.headerImageURL {
+                return Thumbnail(url: imageURL)
+            }
+            return Thumbnail(url: "", imageState: .nsImage(.defaultHeader))
+        }()
+
+        self = UserModel(
+            id: model.id,
+            fio: model.fio,
+            nickname: model.nickname,
+            avatarImage: avatar,
+            headerImage: headerImage,
+            mail: model.mail
+        )
+    }
 }
