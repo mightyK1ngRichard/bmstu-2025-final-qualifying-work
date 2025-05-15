@@ -56,10 +56,13 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
 extension ProfileViewModel {
 
     func fetchUserData() {
-//        guard isCurrentUser else {
-//            uiProperties.screenState = .finished
-//            return
-//        }
+        guard let userID = user?.id else { return }
+
+        // Если не текущий пользователь, получаем данные его тортов
+        guard isCurrentUser else {
+            fetchUserCakes(userID: userID)
+            return
+        }
 
         uiProperties.screenState = .loading
         Task { @MainActor in
@@ -76,6 +79,20 @@ extension ProfileViewModel {
             } catch {
                 uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
+        }
+    }
+
+    private func fetchUserCakes(userID: String) {
+        Task { @MainActor in
+            let res = try await networkManager.cakeService.getUserCakes(userID: userID)
+            user?.cakes = res.map(CakeModel.init(from:))
+            for (index, cake) in res.enumerated() {
+                Task { @MainActor in
+                    let imageState = await imageProvider.fetchImage(for: cake.imageURL)
+                    user?.cakes[index].previewImageState = imageState
+                }
+            }
+            uiProperties.screenState = .finished
         }
     }
 

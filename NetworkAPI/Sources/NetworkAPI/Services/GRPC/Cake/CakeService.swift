@@ -16,6 +16,7 @@ public protocol CakeService: Sendable {
     // Торты
     func createCake(req: CakeServiceModel.CreateCake.Request) async throws -> CakeServiceModel.CreateCake.Response
     func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
+    func getUserCakes(userID: String) async throws -> [PreviewCakeEntity]
     func fetchAllCakesWithAllStatuses() async throws -> [PreviewCakeEntity]
     func fetchCakeByID(cakeID: String) async throws -> CakeEntity
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
@@ -70,6 +71,18 @@ public final class CakeGrpcServiceImpl: CakeService {
 }
 
 public extension CakeGrpcServiceImpl {
+
+    func getUserCakes(userID: String) async throws -> [PreviewCakeEntity] {
+        let request = Cake_GetUserCakesReq.with {
+            $0.userID = userID
+        }
+
+        return try await networkService.performAndLog(
+            call: client.getUserCakes,
+            with: request,
+            mapping: { $0.cakes.map(PreviewCakeEntity.init(from:)) }
+        )
+    }
 
     func fetchAllCakesWithAllStatuses() async throws -> [PreviewCakeEntity] {
         let request = Google_Protobuf_Empty()

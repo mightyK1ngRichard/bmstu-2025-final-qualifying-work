@@ -78,6 +78,8 @@ public extension OrderGrpcServiceImpl {
     /// - Important: Этот метод предназначен **только для администратора**.
     /// Не используйте его на клиентской стороне без соответствующих проверок доступа.
     func fetchAllOrders() async throws -> [OrderEntity] {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
         let request = Google_Protobuf_Empty()
 
         return try await networkService.performAndLog(
