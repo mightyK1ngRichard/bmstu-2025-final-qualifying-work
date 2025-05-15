@@ -6,58 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 
-public enum PaymentMethodEntity: Int, Sendable, Hashable {
-    case cash = 0
-    case ioMoney = 1
-}
-
-public enum OrderStatusEntity: Sendable, Hashable, CaseIterable {
-    /// Заказ создан и ожидает обработки.
-    case pending
-    /// Заказ находится в пути
-    case shipped
-    /// Заказ был успешно выполнен и доставлен.
-    case delivered
-    /// Заказ отменён.
-    case cancelled
-}
-
-extension OrderStatusEntity {
-    var toProto: Order_OrderStatus {
-        switch self {
-        case .pending:
-            return .pending
-        case .shipped:
-            return .shipped
-        case .delivered:
-            return .delivered
-        case .cancelled:
-            return .cancelled
-        }
-    }
-}
-
-public extension OrderStatusEntity {
-    var title: String {
-        String(describing: self)
-    }
-
-    /// Цвет текста статуса
-    var textColor: Color {
-        switch self {
-        case .pending:
-            return .orange
-        case .shipped:
-            return .blue
-        case .delivered:
-            return .green
-        case .cancelled:
-            return .red
-        }
-    }
-}
+// MARK: - OrderEntity
 
 public struct OrderEntity: Sendable, Hashable {
     public let id: String
@@ -74,7 +24,27 @@ public struct OrderEntity: Sendable, Hashable {
     public let updatedAt: Date
 }
 
-// MARK: - Order_Order
+// MARK: - PaymentMethodEntity
+
+public enum PaymentMethodEntity: Int, Sendable, Hashable {
+    case cash = 0
+    case ioMoney = 1
+}
+
+// MARK: - OrderStatusEntity
+
+public enum OrderStatusEntity: Sendable, Hashable, CaseIterable {
+    /// Заказ создан и ожидает обработки.
+    case pending
+    /// Заказ находится в пути
+    case shipped
+    /// Заказ был успешно выполнен и доставлен.
+    case delivered
+    /// Заказ отменён.
+    case cancelled
+}
+
+// MARK: - Proto
 
 extension OrderEntity {
     init(from model: Order_Order) {
@@ -117,5 +87,20 @@ extension OrderEntity {
             createdAt: model.createdAt.date,
             updatedAt: model.updatedAt.date
         )
+    }
+}
+
+extension OrderStatusEntity {
+    var toProto: Order_OrderStatus {
+        switch self {
+        case .pending:
+            return .pending
+        case .shipped:
+            return .shipped
+        case .delivered:
+            return .delivered
+        case .cancelled:
+            return .cancelled
+        }
     }
 }

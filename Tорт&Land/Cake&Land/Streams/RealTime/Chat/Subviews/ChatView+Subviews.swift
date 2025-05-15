@@ -124,17 +124,6 @@ private extension ChatView {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    NavigationStack {
-        ChatView(
-            viewModel: ChatViewModelMock()
-        )
-    }
-    .environment(Coordinator())
-}
-
 // MARK: - Constants
 
 private extension ChatView {

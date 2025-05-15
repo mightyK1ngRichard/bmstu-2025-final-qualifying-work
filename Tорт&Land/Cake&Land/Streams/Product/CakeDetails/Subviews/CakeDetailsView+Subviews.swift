@@ -269,17 +269,6 @@ private extension CakeDetailsView {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    @Previewable
-    @State var coordinator = Coordinator()
-    NavigationStack(path: $coordinator.navPath) {
-        CakeDetailsView(viewModel: CakeDetailsViewModelMock(isOwnedByUser: true))
-    }
-    .environment(coordinator)
-}
-
 // MARK: - Constants
 
 private extension CakeDetailsView {

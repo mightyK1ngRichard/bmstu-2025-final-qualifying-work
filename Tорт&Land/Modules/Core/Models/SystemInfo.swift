@@ -16,4 +16,5 @@ public struct SystemInfo {
     public static let systemVersion = device.systemVersion
     public static let modelName = device.modelName
     public static let appVersion = bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    public static let ios = "ios"
 }

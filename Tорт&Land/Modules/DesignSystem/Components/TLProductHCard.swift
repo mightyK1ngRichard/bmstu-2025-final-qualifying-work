@@ -172,7 +172,6 @@ private extension TLProductHCard {
 // MARK: - Preview
 #if DEBUG
 import Core
-#endif
 
 #Preview {
     ZStack {
@@ -209,6 +208,7 @@ import Core
         .padding()
     }
 }
+#endif
 
 // MARK: - Constants
 

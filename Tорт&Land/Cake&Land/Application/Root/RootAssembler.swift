@@ -13,7 +13,11 @@ import Core
 final class RootAssembler {
     @MainActor
     static func assemble(startScreenControl: StartScreenControl) -> RootView {
-        let networkService = NetworkServiceImpl(modelName: SystemInfo.modelName, systemVersion: SystemInfo.appVersion)
+        let networkService = NetworkServiceImpl(
+            modelName: SystemInfo.modelName,
+            systemVersion: SystemInfo.appVersion,
+            fingerprint: SystemInfo.ios
+        )
         let imageProvider = ImageLoaderProviderImpl()
         let networkManager = NetworkManager(networkService: networkService)
 
@@ -27,11 +31,6 @@ final class RootAssembler {
             startScreenControl: startScreenControl
         )
         
-        return RootView(viewModel: viewModel)
-    }
-
-    static func assembleMock() -> RootView {
-        let viewModel = RootViewModelMock()
         return RootView(viewModel: viewModel)
     }
 }

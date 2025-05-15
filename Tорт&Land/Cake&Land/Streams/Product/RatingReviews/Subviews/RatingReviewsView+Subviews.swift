@@ -104,15 +104,6 @@ private extension RatingReviewsView {
     }
 }
 
-// MARK: - Preview
-
-#Preview("Mockable") {
-    NavigationStack {
-        RatingReviewsView(viewModel: RatingReviewsViewModelMock())
-    }
-    .environment(Coordinator())
-}
-
 // MARK: - Constants
 
 private extension RatingReviewsView {

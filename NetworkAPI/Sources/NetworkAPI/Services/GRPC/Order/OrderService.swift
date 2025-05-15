@@ -51,6 +51,7 @@ public final class OrderGrpcServiceImpl: OrderService {
             #else
             Logger.log(kind: .error, "Ошибка подключения к grpc серверу заказа: \(error)")
             assertionFailure("Ошибка подключения к grpc серверу: \(error)")
+            fatalError("Ошибка подключения к grpc серверу профиля: \(error)")
             #endif
         }
     }

@@ -47,6 +47,7 @@ public final class ReviewsGrpcServiceImpl: ReviewsService {
             #else
             Logger.log(kind: .error, "Ошибка подключения к grpc серверу отзывов: \(error)")
             assertionFailure("Ошибка подключения к grpc серверу: \(error)")
+            fatalError("Ошибка подключения к grpc серверу профиля: \(error)")
             #endif
         }
     }

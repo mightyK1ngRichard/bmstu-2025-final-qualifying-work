@@ -19,12 +19,3 @@ struct ChatView: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    ChatView(
-        viewModel: ChatViewModelMock()
-    )
-    .environment(Coordinator())
-}

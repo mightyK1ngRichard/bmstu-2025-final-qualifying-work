@@ -49,6 +49,7 @@ public final class ChatServiceImpl: ChatService, @unchecked Sendable {
             #else
             Logger.log(kind: .error, "Ошибка подключения к grpc серверу: \(error)")
             assertionFailure("Ошибка подключения к grpc серверу: \(error)")
+            fatalError("Ошибка подключения к grpc серверу профиля: \(error)")
             #endif
         }
     }

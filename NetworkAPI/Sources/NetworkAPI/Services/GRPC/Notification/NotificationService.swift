@@ -48,6 +48,7 @@ public final class NotificationServiceImpl: NotificationService, @unchecked Send
             #else
             Logger.log(kind: .error, "Ошибка подключения к notification grpc серверу: \(error)")
             assertionFailure("Ошибка подключения к notification grpc серверу: \(error)")
+            fatalError("Ошибка подключения к grpc серверу профиля: \(error)")
             #endif
         }
     }

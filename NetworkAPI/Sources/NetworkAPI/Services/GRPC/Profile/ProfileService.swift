@@ -53,6 +53,7 @@ public final class ProfileGrpcServiceImpl: ProfileService {
             #else
             Logger.log(kind: .error, "Ошибка подключения к grpc profile серверу профиля: \(error)")
             assertionFailure("Ошибка подключения к grpc profile серверу: \(error)")
+            fatalError("Ошибка подключения к grpc серверу профиля: \(error)")
             #endif
         }
     }

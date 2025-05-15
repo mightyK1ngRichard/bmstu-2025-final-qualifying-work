@@ -91,6 +91,7 @@ private extension FillingDetailView {
 
 // MARK: - Preview
 
+#if DEBUG
 #Preview {
     FillingDetailView(
         configuration: .init(
@@ -104,3 +105,4 @@ private extension FillingDetailView {
         )
     )
 }
+#endif

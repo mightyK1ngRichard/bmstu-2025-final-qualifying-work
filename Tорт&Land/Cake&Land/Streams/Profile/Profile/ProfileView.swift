@@ -43,12 +43,3 @@ private extension ProfileView {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview("Mockable") {
-    ProfileView(
-        viewModel: ProfileViewModelMock(isCurrentUser: true)
-    )
-    .environment(Coordinator())
-}

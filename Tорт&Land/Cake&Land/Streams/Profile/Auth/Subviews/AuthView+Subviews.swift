@@ -135,13 +135,6 @@ extension AuthView {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    AuthView(viewModel: AuthViewModelMock())
-        .environment(StartScreenControl())
-}
-
 // MARK: - Constants
 
 extension AuthView {

@@ -34,12 +34,3 @@ private extension CategoriesView {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    CategoriesView(
-        viewModel: CategoriesViewModelMock()
-    )
-    .environment(Coordinator())
-}

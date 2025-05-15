@@ -47,10 +47,3 @@ private extension RootView {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    RootAssembler.assembleMock()
-        .environment(Coordinator())
-}

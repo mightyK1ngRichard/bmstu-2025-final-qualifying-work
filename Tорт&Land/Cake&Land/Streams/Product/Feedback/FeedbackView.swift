@@ -15,7 +15,3 @@ struct FeedbackView: View {
         mainContainer
     }
 }
-
-#Preview {
-    FeedbackView(viewModel: FeedbackViewModelMock())
-}

@@ -229,15 +229,6 @@ private extension CakesListView {
     }
 }
 
-// MARK: - Preview
-
-#Preview("Mockable delay") {
-    CakesListView(
-        viewModel: CakesListViewModelMock(delay: 2)
-    )
-    .environment(Coordinator())
-}
-
 // MARK: - Constants
 
 private extension CakesListView {
