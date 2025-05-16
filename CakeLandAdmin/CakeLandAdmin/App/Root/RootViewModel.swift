@@ -17,7 +17,7 @@ final class RootViewModel {
     private(set) var profileInfo: ProfileEntity?
     private(set) var cakes: [PreviewCakeEntity] = []
     @ObservationIgnored
-    private let networkManager: NetworkManager
+    private var networkManager: NetworkManager
     @ObservationIgnored
     private let imageProvider: ImageLoaderProviderImpl
     @ObservationIgnored
@@ -102,6 +102,9 @@ extension RootViewModel {
             }
             bindingData.startScreenKind = .needAuth
             UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.startScreenKind.rawValue)
+            // Кастыльное решение с прекращение grpc соединением
+            networkManager.closeConnections()
+            networkManager = NetworkManager()
         }
     }
 

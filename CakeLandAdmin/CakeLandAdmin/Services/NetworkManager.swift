@@ -44,4 +44,11 @@ final class NetworkManager {
             networkService: networkService
         )
     }
+
+    func closeConnections() {
+        authService.closeConnection()
+        cakeService.closeConnection()
+        orderService.closeConnection()
+        profileService.closeConnection()
+    }
 }
