@@ -63,6 +63,8 @@ public extension ProfileGrpcServiceImpl {
 
     /// - Important: Для админа
     func getUserByID(userID: String) async throws -> ProfileEntity {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
         let request = Profile_GetUserInfoByIDReq.with {
             $0.userID = userID
         }
@@ -79,16 +81,18 @@ public extension ProfileGrpcServiceImpl {
 
         let request = Google_Protobuf_Empty()
 
-        return try await networkService.performAndLog(
+        let res = try await networkService.performAndLog(
             call: client.getUserInfo,
             with: request,
             mapping: {
-                .init(userInfo: .init(
+                ProfileServiceModel.GetUserInfo.Response(userInfo: .init(
                     previewCakes: $0.userInfo.cakes.map(ProfilePreviewCakeEntity.init(from:)),
                     profile: ProfileEntity(from: $0.userInfo.user)
                 ))
             }
         )
+
+        return res
     }
 
     func createAddress(req: ProfileServiceModel.CreateAddress.Request) async throws -> AddressEntity {

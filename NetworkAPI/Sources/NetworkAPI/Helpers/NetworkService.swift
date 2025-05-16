@@ -34,6 +34,7 @@ public protocol NetworkService: Sendable {
     func setRefreshToken(_ refreshToken: String)
     func setTokens(accessToken: String, expiresIn: Date, refreshToken: String) async
     func resetTokens()
+    func addAuthorizationHeaderIfNeeded()
 }
 
 extension NetworkService {
@@ -145,6 +146,11 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.refreshToken.rawValue)
             UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.accessToken.rawValue)
         }
+
+        lock.withLock {
+            _accessToken = nil
+            _refreshToken = nil
+        }
     }
 
     /// Обновление access token при необходимости
@@ -201,7 +207,7 @@ public final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         return options
     }
 
-    private func addAuthorizationHeaderIfNeeded() {
+    public func addAuthorizationHeaderIfNeeded() {
         guard let accessToken else { return }
         callOptions.customMetadata.replaceOrAdd(name: "authorization", value: "Bearer \(accessToken)")
     }

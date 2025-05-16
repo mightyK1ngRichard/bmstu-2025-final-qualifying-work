@@ -63,6 +63,7 @@ public extension ChatServiceImpl {
 
         // Обновляем рефреш токен если это необходимо
         try await networkService.maybeRefreshAccessToken(using: authService)
+        networkService.addAuthorizationHeaderIfNeeded()
         var options = networkService.callOptions
         options.timeLimit = .none
         chatStream = client.makeChatCall(callOptions: options)
@@ -121,7 +122,9 @@ public extension ChatServiceImpl {
 
     func closeConnection() {
         do {
-            chatStream.cancel()
+            if chatStream != nil {
+                chatStream.cancel()
+            }
             try channel.close().wait()
             isStreaming = false
         } catch {

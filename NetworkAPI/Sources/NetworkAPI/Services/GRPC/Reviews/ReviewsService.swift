@@ -16,6 +16,7 @@ import SwiftProtobuf
 public protocol ReviewsService: Sendable {
     func cakeFeedbacks(cakeID: String) async throws -> [FeedbackEntity]
     func createFeedback(request: ReviewsServiceModel.CreateFeedback.Request) async throws -> ReviewsServiceModel.CreateFeedback.Response
+    func closeConnection()
 }
 
 // MARK: - ReviewsGrpcServiceImpl
@@ -79,5 +80,13 @@ public extension ReviewsGrpcServiceImpl {
             with: request,
             mapping: { .init(feedback: FeedbackEntity(from: $0.feedback)) }
         )
+    }
+
+    func closeConnection() {
+        do {
+            try channel.close().wait()
+        } catch {
+            Logger.log(kind: .error, error)
+        }
     }
 }
