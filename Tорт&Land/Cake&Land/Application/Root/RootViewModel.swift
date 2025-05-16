@@ -26,12 +26,13 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
 
     // MARK: Private values
     @ObservationIgnored
-    private let networkManager: NetworkManager
+    private var networkManager: NetworkManager
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
-    private let startScreenControl: StartScreenControl
+    let startScreenControl: StartScreenControl
     private var coordinator: Coordinator!
 
+    @MainActor
     init(
         networkManager: NetworkManager,
         imageProvider: ImageLoaderProvider,
@@ -51,6 +52,11 @@ extension RootViewModel {
 
     var activeTab: TabBarItem {
         coordinator?.activeTab ?? .house
+    }
+
+    @MainActor
+    func updateNetworkManager() {
+        self.networkManager = NetworkManager()
     }
 
 }
@@ -231,8 +237,9 @@ extension RootViewModel {
 
 extension RootViewModel {
 
-    func updateCurrentUser(_ user: ProfileEntity) {
-        currentUser = UserModel(from: .init(from: user))
+    @MainActor
+    func updateCurrentUser(_ user: UserModel?) {
+        currentUser = user
     }
 
     func setCakes(_ newCakes: [CakeEntity]) {

@@ -32,7 +32,7 @@ private extension NotificationsListView {
                 action: viewModel.didTapReloadButton
             )
             .padding()
-            .frame(minHeight: .infinity)
+            .frame(maxHeight: .infinity)
         }
     }
 
@@ -93,6 +93,7 @@ private extension NotificationsListView {
                     TLNotificationCell(configuration: .init(isShimmering: true))
                 }
             }
+            .padding(.horizontal)
         }
     }
 }

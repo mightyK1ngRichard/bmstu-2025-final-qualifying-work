@@ -18,7 +18,13 @@ final class NetworkManager {
     let notificationService: NotificationService
     let reviewsService: ReviewsService
 
-    init(networkService: NetworkService) {
+    init() {
+        let networkService = NetworkServiceImpl(
+            modelName: SystemInfo.modelName,
+            systemVersion: SystemInfo.appVersion,
+            fingerprint: SystemInfo.ios
+        )
+
         authService = AuthGrpcServiceImpl(
             configuration: AppHosts.auth,
             networkService: networkService
@@ -59,5 +65,15 @@ final class NetworkManager {
             authService: authService,
             networkService: networkService
         )
+    }
+
+    func closeConnections() {
+        authService.closeConnection()
+        cakeService.closeConnection()
+        orderService.closeConnection()
+        profileService.closeConnection()
+        chatService.closeConnection()
+        notificationService.closeConnection()
+        reviewsService.closeConnection()
     }
 }

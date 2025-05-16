@@ -7,9 +7,6 @@
 //
 
 import SwiftUI
-#if DEBUG
-import NetworkAPI
-#endif
 
 struct ProfileView: View {
     @State var viewModel: ProfileDisplayLogic & ProfileViewModelInput

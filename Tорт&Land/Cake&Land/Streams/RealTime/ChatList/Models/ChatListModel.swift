@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NetworkAPI
 
 enum ChatListModel {}
 
@@ -25,5 +26,16 @@ extension ChatListModel {
         var user: UserModel
         var lastMessage: String
         var timeMessage: Date
+    }
+}
+
+extension ChatListModel.ChatCellModel {
+    init(from model: UserEntity) {
+        self = .init(
+            id: UUID().uuidString,
+            user: UserModel(from: model),
+            lastMessage: "У вас новое сообщение!",
+            timeMessage: Date()
+        )
     }
 }

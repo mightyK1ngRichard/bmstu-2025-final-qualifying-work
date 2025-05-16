@@ -17,9 +17,14 @@ extension AuthView {
             if !viewModel.uiProperties.isRegister {
                 signInView
                     .transition(.flip)
+                    .safeAreaPadding(.bottom, 50)
             } else {
-                registerView
-                    .transition(.reverseFlip)
+                ScrollView {
+                    registerView
+                }
+                .transition(.reverseFlip)
+                .safeAreaPadding(.bottom, 130)
+                .safeAreaPadding(.top, 20)
             }
         }
         .frame(maxHeight: .infinity)

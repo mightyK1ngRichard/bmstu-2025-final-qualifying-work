@@ -24,18 +24,22 @@ final class SettingsViewModel {
     private(set) var addresses: [AddressEntity] = []
     private(set) var userModel: UserModel
     @ObservationIgnored
-    private let authProvider: AuthService
-    @ObservationIgnored
-    private let profileProvider: ProfileService
+    private let networkManager: NetworkManager
     @ObservationIgnored
     private var coordinator: Coordinator?
     @ObservationIgnored
     private var startScreenControl: StartScreenControl?
+    @ObservationIgnored
+    private let rootViewModel: RootViewModel
 
-    init(userModel: UserModel, authProvider: AuthService, profileProvider: ProfileService) {
+    init(
+        userModel: UserModel,
+        networkManager: NetworkManager,
+        rootViewModel: RootViewModel
+    ) {
         self.userModel = userModel
-        self.authProvider = authProvider
-        self.profileProvider = profileProvider
+        self.networkManager = networkManager
+        self.rootViewModel = rootViewModel
     }
 
     var updateButtonIsDisable: Bool {
@@ -50,7 +54,7 @@ extension SettingsViewModel {
         uiProperties.state = .loading
         Task { @MainActor in
             do {
-                addresses = try await profileProvider.getUserAddresses()
+                addresses = try await networkManager.profileService.getUserAddresses()
                 uiProperties.state = .finished
             } catch {
                 uiProperties.state = .error(content: error.readableGRPCContent)
@@ -60,7 +64,7 @@ extension SettingsViewModel {
 
     @MainActor
     func addUserAddress(placemark: MKPlacemark) async throws {
-        let createdAddress = try await profileProvider.createAddress(
+        let createdAddress = try await networkManager.profileService.createAddress(
             req: .init(
                 latitude: placemark.coordinate.latitude,
                 longitude: placemark.coordinate.longitude,
@@ -74,11 +78,10 @@ extension SettingsViewModel {
     func assemblyUpdateAddressView(address: AddressEntity) -> some View {
         let viewModel = UpdateAddressViewModel(
             address: address,
-            profileProvider: profileProvider
+            profileProvider: networkManager.profileService
         ) { [weak self] updatedAddress in
-            guard
-                let self,
-                let index = addresses.firstIndex(where: { $0.id == updatedAddress.id })
+            guard let self,
+                  let index = addresses.firstIndex(where: { $0.id == updatedAddress.id })
             else { return }
 
             addresses[index] = updatedAddress
@@ -98,9 +101,13 @@ extension SettingsViewModel {
     func didTapLogout() {
         Task { @MainActor in
             do {
-                try await authProvider.logout()
+                try await networkManager.authService.logout()
+                networkManager.closeConnections()
+                rootViewModel.updateNetworkManager()
                 startScreenControl?.update(with: .auth)
                 coordinator?.goToRoot()
+                coordinator?.activeTab = .house
+                rootViewModel.updateCurrentUser(nil)
             } catch {
                 uiProperties.alert = AlertModel(
                     errorContent: error.readableGRPCContent,
@@ -115,7 +122,7 @@ extension SettingsViewModel {
             do {
                 uiProperties.penState = .loading
                 let fio = uiProperties.inputFIO.isEmpty ? nil : uiProperties.inputFIO
-                try await profileProvider.updateUserData(username: uiProperties.inputNickname, userFIO: fio)
+                try await networkManager.profileService.updateUserData(username: uiProperties.inputNickname, userFIO: fio)
                 userModel.fio = fio
                 userModel.nickname = uiProperties.inputNickname
                 uiProperties.penState = .updated
@@ -158,7 +165,7 @@ extension SettingsViewModel {
             case .header:
                 imageKind = .header
             }
-            let _ = try await profileProvider.updateUserImage(req: .init(imageData: imageData, imageKind: imageKind))
+            let _ = try await networkManager.profileService.updateUserImage(req: .init(imageData: imageData, imageKind: imageKind))
         }
     }
 

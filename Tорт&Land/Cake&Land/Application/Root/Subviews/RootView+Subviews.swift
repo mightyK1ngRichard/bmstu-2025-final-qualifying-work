@@ -56,14 +56,3 @@ private extension RootView {
         }
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-#Preview {
-    RootView(
-        viewModel: RootViewModelMock()
-    )
-    .environment(Coordinator())
-}
-#endif
