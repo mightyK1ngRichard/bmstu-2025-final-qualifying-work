@@ -118,17 +118,7 @@ extension CakeListViewModel {
     }
 
     private func showSuccessAlert() {
-        let alert = NSAlert()
-        alert.messageText = "Успешно"
-        alert.informativeText = "Статусы тортов обновлены"
-        alert.alertStyle = .informational
-
-        if let image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: nil) {
-            alert.icon = image
-        }
-
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
+        AlertManager.shared.showAlert(title: "Успешно", message: "Статусы тортов обновлены")
     }
 
 }

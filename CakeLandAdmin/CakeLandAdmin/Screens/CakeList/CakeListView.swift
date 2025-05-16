@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CakeListView: View {
     @State var viewModel: CakeListViewModel
+    @State private var isExpanded = true
+    @State private var isHovered = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,7 +39,41 @@ private extension CakeListView {
     var headerContainer: some View {
         VStack(spacing: 0) {
             filterContainer
-            CakeStatusChartView(data: viewModel.cakeStatusDistribution)
+
+            DisclosureGroup(isExpanded: $isExpanded) {
+                CakeStatusChartView(data: viewModel.cakeStatusDistribution)
+            } label: {
+                HStack {
+                    Image(systemName: "chart.bar.fill")
+                        .foregroundColor(.accentColor)
+                    Text("График статусов тортов")
+                        .font(.headline)
+                }
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(isHovered && !isExpanded ? Color(.darkGray).opacity(0.3) : Color(.clear))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .stroke(
+                        isHovered ? Color.accentColor : Color.gray.opacity(0.2),
+                        lineWidth: 1
+                    )
+            )
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+            .contentShape(.rect)
+            .onTapGesture {
+                isExpanded.toggle()
+            }
+            .onHover { hovering in
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isHovered = hovering
+                }
+            }
         }
         .clipShape(.rect(cornerRadius: 12))
     }
@@ -101,5 +137,5 @@ private extension CakeListView {
             networkManager: NetworkManager(),
             imageProvider: ImageLoaderProviderImpl()
         )
-        .frame(minWidth: 500)
+        .frame(minWidth: 600, minHeight: 800)
 }

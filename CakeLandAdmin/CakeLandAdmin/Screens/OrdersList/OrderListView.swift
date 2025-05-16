@@ -5,13 +5,17 @@
 //  Created by Dmitriy Permyakov on 11.05.2025.
 //
 
+import NetworkAPI
 import SwiftUI
+import Charts
 import MacDS
 
 struct OrderListView: View {
     @State var viewModel: OrdersListViewModel
     @State private var coordinator = Coordinator()
     @State private var selectedOrder: OrderModel?
+    @State private var isHovered = false
+    @State private var isExpanded = true
 
     var body: some View {
         NavigationStack(path: $coordinator.navPath) {
@@ -61,7 +65,6 @@ private extension OrderListView {
     var controlContainer: some View {
         HStack {
             sortMenu
-
             Button {
                 viewModel.didTapSave()
             } label: {
@@ -73,14 +76,79 @@ private extension OrderListView {
                 }
             }
             .keyboardShortcut(.defaultAction)
+            .disabled(viewModel.updatedStatuses.isEmpty)
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
     }
 
+    var miniChartView: some View {
+        Chart {
+            ForEach(viewModel.statusCountsSorted, id: \.status) { item in
+                BarMark(
+                    x: .value("Orders Count", item.count),
+                    y: .value("Status", item.status.title)
+                )
+                .foregroundStyle(item.status.textColor)
+                .cornerRadius(3)
+                .annotation(position: .trailing) {
+                    Text("\(item.count)")
+                        .font(.caption2)
+                        .foregroundColor(.primary)
+                }
+            }
+        }
+        .chartXAxisLabel(position: .bottom) {
+            Text("Число заказов")
+                .font(.footnote)
+        }
+        .chartYAxisLabel(position: .leading) {
+            Text("Статус заказа")
+                .font(.footnote)
+        }
+        .frame(height: 200)
+        .padding(.horizontal, 8)
+    }
+
     var mainContainer: some View {
         VStack(spacing: 0) {
             controlContainer
+
+            DisclosureGroup(isExpanded: $isExpanded) {
+                miniChartView
+            } label: {
+                HStack {
+                    Image(systemName: "chart.bar.fill")
+                        .foregroundColor(.accentColor)
+                    Text("График статусов заказов")
+                        .font(.headline)
+                }
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(isHovered && !isExpanded ? Color(.darkGray).opacity(0.3) : Color(.clear))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .stroke(
+                        isHovered ? Color.accentColor : Color.gray.opacity(0.2),
+                        lineWidth: 1
+                    )
+            )
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+            .contentShape(.rect)
+            .onTapGesture {
+                isExpanded.toggle()
+            }
+            .onHover { hovering in
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isHovered = hovering
+                }
+            }
+
             ordersTable
         }
     }
@@ -98,7 +166,7 @@ private extension OrderListView {
     }
 
     var ordersTable: some View {
-        Table(viewModel.orders, selection: $viewModel.bindingData.selectedOrder) {
+        Table(viewModel.sortedOrders, selection: $viewModel.bindingData.selectedOrder) {
             TableColumn("ID") { order in
                 Text(order.id)
             }
@@ -108,7 +176,7 @@ private extension OrderListView {
             }
 
             TableColumn("Дата формирования") { order in
-                Text(order.createdAt.formattedDDMMYYYY)
+                Text(order.createdAt.formattedDDMMYYYYHHmm)
             }
 
             TableColumn("Адрес") { order in

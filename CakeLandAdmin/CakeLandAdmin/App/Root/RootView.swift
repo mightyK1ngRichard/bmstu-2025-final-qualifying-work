@@ -61,7 +61,7 @@ private extension RootView {
     var detailContainer: some View {
         switch viewModel.bindingData.selectedTab {
         case .home:
-            Text("Детали: Главная")
+            onboardingView
         case .orders:
             viewModel.assembleOrderListViwe()
         case .profile:
@@ -116,6 +116,86 @@ private extension RootView {
         }
         .buttonStyle(.plain)
         .padding(.bottom)
+    }
+
+    var onboardingView: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("👩‍💼 Админ-панель")
+                    .font(.largeTitle.bold())
+
+                Text("Добро пожаловать! Вы зашли как администратор.")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+
+                Divider()
+
+                Group {
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "list.bullet.rectangle")
+                            .foregroundColor(.blue)
+                        VStack(alignment: .leading) {
+                            Text("Просмотр всех заказов")
+                                .font(.headline)
+                            Text("Откройте список всех заказов, чтобы отслеживать их статус и содержимое.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "birthday.cake.fill")
+                            .foregroundColor(.pink)
+                        VStack(alignment: .leading) {
+                            Text("Просмотр всех тортов")
+                                .font(.headline)
+                            Text("Посмотрите все доступные торты, их цены и описание.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "square.and.pencil")
+                            .foregroundColor(.orange)
+                        VStack(alignment: .leading) {
+                            Text("Изменение статусов")
+                                .font(.headline)
+                            Text("Вы можете менять статус как заказов, так и тортов.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "folder.badge.plus")
+                            .foregroundColor(.green)
+                        VStack(alignment: .leading) {
+                            Text("Создание категорий")
+                                .font(.headline)
+                            Text("Добавляйте новые категории для организации тортов.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "drop.fill")
+                            .foregroundColor(.purple)
+                        VStack(alignment: .leading) {
+                            Text("Создание начинок")
+                                .font(.headline)
+                            Text("Добавляйте новые вкусы и начинки в базу.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+
+                Spacer()
+            }
+            .padding()
+        }
     }
 
 }

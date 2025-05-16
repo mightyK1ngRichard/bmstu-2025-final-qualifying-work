@@ -11,6 +11,28 @@ import Observation
 import SwiftUI
 import MacDS
 
+extension OrdersListViewModel {
+    var sortedOrders: [OrderModel] {
+        switch bindingData.sortDirection {
+        case .ascending:
+            return orders.sorted { $0.createdAt < $1.createdAt }
+        case .descending:
+            return orders.sorted { $0.createdAt > $1.createdAt }
+        }
+    }
+
+    var ordersCountByStatus: [OrderStatusEntity: Int] {
+        Dictionary(grouping: orders, by: { $0.status })
+            .mapValues { $0.count }
+    }
+
+    var statusCountsSorted: [(status: OrderStatusEntity, count: Int)] {
+        OrderStatusEntity.allCases.map { status in
+            (status, ordersCountByStatus[status] ?? 0)
+        }
+    }
+}
+
 @Observable
 final class OrdersListViewModel {
     var bindingData = OrdersListModel.BindingData()
@@ -64,24 +86,37 @@ extension OrdersListViewModel {
     func didTapSave() {
         bindingData.saveButtonIsLoading = true
 
-        Task {
-            await withTaskGroup(of: Void.self) { [weak self] group in
-                guard let self else { return }
+        Task { @MainActor in
+            bindingData.saveButtonIsLoading = true
 
-                for (orderID, newStatus) in updatedStatuses {
-                    group.addTask {
-                        do {
+            do {
+                try await withThrowingTaskGroup(of: Void.self) { [weak self] group in
+                    guard let self = self else { return }
+
+                    for (orderID, newStatus) in updatedStatuses {
+                        group.addTask {
                             try await self.networkManager.orderService.updateOrderStatus(orderID: orderID, newStatus: newStatus)
-                        } catch {
-                            self.bindingData.alert = .init(content: error.readableGRPCContent, isShown: true)
                         }
                     }
+
+                    try await group.waitForAll()
                 }
+
+                AlertManager.shared.showAlert(title: "Успешно", message: "Статусы заказов обновлены")
+
+                // Обновляем локально статусы заказов
+                for (updatedStatusID, newStatus) in updatedStatuses {
+                    guard let index = orders.firstIndex(where: { $0.id == updatedStatusID }) else {
+                        continue
+                    }
+                    orders[index].status = newStatus
+                }
+
+            } catch {
+                bindingData.alert = .init(content: error.readableGRPCContent, isShown: true)
             }
 
-            await MainActor.run {
-                bindingData.saveButtonIsLoading = false
-            }
+            bindingData.saveButtonIsLoading = false
         }
     }
 
