@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ChatView: View {
-    @State var viewModel: ChatDisplayLogic & ChatViewModelOutput & ChatViewModelInput
+    @State var viewModel: ChatDisplayLogic & ChatViewModelInput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
@@ -17,14 +17,9 @@ struct ChatView: View {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
             viewModel.fetchMessages()
         }
+        .defaultAlert(
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown
+        )
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    ChatView(
-        viewModel: ChatViewModelMock()
-    )
-    .environment(Coordinator())
 }

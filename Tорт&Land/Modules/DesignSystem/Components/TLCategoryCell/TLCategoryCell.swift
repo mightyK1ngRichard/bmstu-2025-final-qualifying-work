@@ -52,7 +52,6 @@ public struct TLCategoryCell: View {
 // MARK: - Preview
 #if DEBUG
 import Core
-#endif
 
 #Preview {
     TLCategoryCell(
@@ -64,3 +63,4 @@ import Core
     .padding()
     .background(.bar)
 }
+#endif

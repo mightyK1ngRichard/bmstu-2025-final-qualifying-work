@@ -63,14 +63,3 @@ extension AuthView {
         .padding(.top, 20)
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    AuthView(
-        viewModel: AuthViewModelMock(
-            uiProperties: .init(isRegister: true)
-        )
-    )
-}
-

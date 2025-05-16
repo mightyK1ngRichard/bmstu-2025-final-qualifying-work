@@ -33,18 +33,3 @@ private extension CakesListView {
         }
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-import NetworkAPI
-
-#Preview("Mockable") {
-    @Previewable
-    @State var coordinator = Coordinator()
-    NavigationStack(path: $coordinator.navPath) {
-        CakesListAssembler.assembleMock()
-    }
-    .environment(coordinator)
-}
-#endif

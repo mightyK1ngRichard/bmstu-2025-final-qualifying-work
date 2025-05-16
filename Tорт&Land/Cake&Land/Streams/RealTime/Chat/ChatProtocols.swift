@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 import DesignSystem
 
 protocol ChatDisplayLogic {
@@ -22,7 +23,4 @@ protocol ChatViewModelInput {
     func configureInterlocutorAvatar() -> TLImageView.Configuration
     func didTapSendMessageButton()
     func fetchMessages()
-}
-
-protocol ChatViewModelOutput {
 }

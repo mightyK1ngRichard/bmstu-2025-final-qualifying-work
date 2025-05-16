@@ -8,11 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E5296C372DBFD10B004887BB /* ColorThiefSwift */; };
-		E52AD3262DD0242E00B0FFED /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = E52AD3252DD0242E00B0FFED /* GRPC */; };
-		E52AD3292DD0245100B0FFED /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = E52AD3282DD0245100B0FFED /* SwiftProtobuf */; };
-		E52AD32E2DD025EB00B0FFED /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7802DCE3FD700D420CB /* Core.framework */; platformFilter = ios; };
-		E563C0DF2DD02BA900B9C022 /* NetworkAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52AD29C2DD0236C00B0FFED /* NetworkAPI.framework */; };
-		E563C0E02DD02BA900B9C022 /* NetworkAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E52AD29C2DD0236C00B0FFED /* NetworkAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E542A5DC2DD5767900480F84 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E542A5DB2DD5767900480F84 /* NetworkAPI */; };
+		E55935F62DD576F9007128C4 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5B12F312DD3C071003DE48C /* NetworkAPI */; };
 		E5FCE73E2DCE3EEC00D420CB /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7292DCE3EEC00D420CB /* DesignSystem.framework */; };
 		E5FCE73F2DCE3EEC00D420CB /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7292DCE3EEC00D420CB /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E5FCE7882DCE3FD700D420CB /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7802DCE3FD700D420CB /* Core.framework */; };
@@ -52,7 +49,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				E5FCE73F2DCE3EEC00D420CB /* DesignSystem.framework in Embed Frameworks */,
-				E563C0E02DD02BA900B9C022 /* NetworkAPI.framework in Embed Frameworks */,
 				E5FCE7892DCE3FD700D420CB /* Core.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -61,7 +57,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E52AD29C2DD0236C00B0FFED /* NetworkAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NetworkAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5A5F5B32D1647E600140551 /* Cake&Land.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cake&Land.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FA818C2D936452004047DE /* Cake&LandTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Cake&LandTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FCE7292DCE3EEC00D420CB /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,14 +69,14 @@
 			membershipExceptions = (
 				Core/Core.docc,
 				"Core/Helpers/String+Extensions.swift",
-				Core/Helpers/SystemInfo.swift,
-				Core/Helpers/Typealias.swift,
 				"Core/Helpers/UIDevice+ModelName.swift",
 				Core/Models/AppConfig.swift,
 				Core/Models/Config.swift,
 				Core/Models/IconDataSource.swift,
 				Core/Models/ImageState.swift,
 				Core/Models/Logger.swift,
+				Core/Models/SystemInfo.swift,
+				Core/Models/Typealias.swift,
 				Core/Resources/Assets.xcassets,
 				"Core/Resources/Preview Content/Preview Assets.xcassets",
 				DesignSystem/Components/FillingDetailView.swift,
@@ -129,56 +124,6 @@
 				"DesignSystem/Extensions/UIColor+Extensions.swift",
 				DesignSystem/Protocols/Configurable.swift,
 				DesignSystem/TLColor.swift,
-				NetworkAPI/Helpers/ConfigProvider.swift,
-				NetworkAPI/Helpers/GrpcConvertable.swift,
-				NetworkAPI/Helpers/GRPCHostPortConfiguration.swift,
-				NetworkAPI/Helpers/JWTTokens.swift,
-				NetworkAPI/Helpers/NetworkError.swift,
-				NetworkAPI/Helpers/NetworkService.swift,
-				NetworkAPI/Helpers/StringConst.swift,
-				NetworkAPI/Models/AddressEntity.swift,
-				NetworkAPI/Models/CakeEntity.swift,
-				NetworkAPI/Models/CategoryEntity.swift,
-				NetworkAPI/Models/ChatMessageEntity.swift,
-				NetworkAPI/Models/FeedbackEntity.swift,
-				NetworkAPI/Models/FillingEntity.swift,
-				NetworkAPI/Models/Notification.swift,
-				NetworkAPI/Models/OrderEntity.swift,
-				NetworkAPI/Models/PreviewCakeEntity.swift,
-				NetworkAPI/Models/ProfileEntity.swift,
-				NetworkAPI/Models/ProfilePreviewCakeEntity.swift,
-				NetworkAPI/Models/UserDefaultsKeys.swift,
-				NetworkAPI/Models/UserEntity.swift,
-				NetworkAPI/Models/UserInfoEntity.swift,
-				NetworkAPI/NetworkAPI.docc,
-				NetworkAPI/Services/GRPC/Auth/AuthGrpcService.swift,
-				NetworkAPI/Services/GRPC/Auth/AuthServiceModel.swift,
-				NetworkAPI/Services/GRPC/Auth/Generated/auth.grpc.swift,
-				NetworkAPI/Services/GRPC/Auth/Generated/auth.pb.swift,
-				NetworkAPI/Services/GRPC/Cake/CakeService.swift,
-				NetworkAPI/Services/GRPC/Cake/CakeServiceModel.swift,
-				NetworkAPI/Services/GRPC/Cake/Generated/cake.grpc.swift,
-				NetworkAPI/Services/GRPC/Cake/Generated/cake.pb.swift,
-				NetworkAPI/Services/GRPC/Chat/ChatService.swift,
-				NetworkAPI/Services/GRPC/Chat/Generated/chat.grpc.swift,
-				NetworkAPI/Services/GRPC/Chat/Generated/chat.pb.swift,
-				NetworkAPI/Services/GRPC/Notification/Generated/notification.grpc.swift,
-				NetworkAPI/Services/GRPC/Notification/Generated/notification.pb.swift,
-				NetworkAPI/Services/GRPC/Notification/NotificationService.swift,
-				NetworkAPI/Services/GRPC/Notification/NotificationServiceModel.swift,
-				NetworkAPI/Services/GRPC/Order/Generated/order.grpc.swift,
-				NetworkAPI/Services/GRPC/Order/Generated/order.pb.swift,
-				NetworkAPI/Services/GRPC/Order/OrderService.swift,
-				NetworkAPI/Services/GRPC/Order/OrderServiceModel.swift,
-				NetworkAPI/Services/GRPC/Profile/Generated/profile.grpc.swift,
-				NetworkAPI/Services/GRPC/Profile/Generated/profile.pb.swift,
-				NetworkAPI/Services/GRPC/Profile/ProfileService.swift,
-				NetworkAPI/Services/GRPC/Profile/ProfileServiceModel.swift,
-				NetworkAPI/Services/GRPC/Reviews/Generated/feedback.grpc.swift,
-				NetworkAPI/Services/GRPC/Reviews/Generated/feedback.pb.swift,
-				NetworkAPI/Services/GRPC/Reviews/ReviewsService.swift,
-				NetworkAPI/Services/GRPC/Reviews/ReviewsServiceModel.swift,
-				NetworkAPI/Services/KeychainTokenStorage.swift,
 			);
 			target = E5A5F5B22D1647E600140551 /* Cake&Land */;
 		};
@@ -245,14 +190,14 @@
 				Core/Core.docc,
 				Core/Core.h,
 				"Core/Helpers/String+Extensions.swift",
-				Core/Helpers/SystemInfo.swift,
-				Core/Helpers/Typealias.swift,
 				"Core/Helpers/UIDevice+ModelName.swift",
 				Core/Models/AppConfig.swift,
 				Core/Models/Config.swift,
 				Core/Models/IconDataSource.swift,
 				Core/Models/ImageState.swift,
 				Core/Models/Logger.swift,
+				Core/Models/SystemInfo.swift,
+				Core/Models/Typealias.swift,
 				Core/Resources/Assets.xcassets,
 				"Core/Resources/Preview Content/Preview Assets.xcassets",
 			);
@@ -260,66 +205,6 @@
 				Core/Core.h,
 			);
 			target = E5FCE77F2DCE3FD700D420CB /* Core */;
-		};
-		E563C0E52DD02BFB00B9C022 /* Exceptions for "Modules" folder in "NetworkAPI" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				NetworkAPI/Helpers/ConfigProvider.swift,
-				NetworkAPI/Helpers/GrpcConvertable.swift,
-				NetworkAPI/Helpers/GRPCHostPortConfiguration.swift,
-				NetworkAPI/Helpers/JWTTokens.swift,
-				NetworkAPI/Helpers/NetworkError.swift,
-				NetworkAPI/Helpers/NetworkService.swift,
-				NetworkAPI/Helpers/StringConst.swift,
-				NetworkAPI/Models/AddressEntity.swift,
-				NetworkAPI/Models/CakeEntity.swift,
-				NetworkAPI/Models/CategoryEntity.swift,
-				NetworkAPI/Models/ChatMessageEntity.swift,
-				NetworkAPI/Models/FeedbackEntity.swift,
-				NetworkAPI/Models/FillingEntity.swift,
-				NetworkAPI/Models/Notification.swift,
-				NetworkAPI/Models/OrderEntity.swift,
-				NetworkAPI/Models/PreviewCakeEntity.swift,
-				NetworkAPI/Models/ProfileEntity.swift,
-				NetworkAPI/Models/ProfilePreviewCakeEntity.swift,
-				NetworkAPI/Models/UserDefaultsKeys.swift,
-				NetworkAPI/Models/UserEntity.swift,
-				NetworkAPI/Models/UserInfoEntity.swift,
-				NetworkAPI/NetworkAPI.docc,
-				NetworkAPI/NetworkAPI.h,
-				NetworkAPI/Services/GRPC/Auth/AuthGrpcService.swift,
-				NetworkAPI/Services/GRPC/Auth/AuthServiceModel.swift,
-				NetworkAPI/Services/GRPC/Auth/Generated/auth.grpc.swift,
-				NetworkAPI/Services/GRPC/Auth/Generated/auth.pb.swift,
-				NetworkAPI/Services/GRPC/Cake/CakeService.swift,
-				NetworkAPI/Services/GRPC/Cake/CakeServiceModel.swift,
-				NetworkAPI/Services/GRPC/Cake/Generated/cake.grpc.swift,
-				NetworkAPI/Services/GRPC/Cake/Generated/cake.pb.swift,
-				NetworkAPI/Services/GRPC/Chat/ChatService.swift,
-				NetworkAPI/Services/GRPC/Chat/Generated/chat.grpc.swift,
-				NetworkAPI/Services/GRPC/Chat/Generated/chat.pb.swift,
-				NetworkAPI/Services/GRPC/Notification/Generated/notification.grpc.swift,
-				NetworkAPI/Services/GRPC/Notification/Generated/notification.pb.swift,
-				NetworkAPI/Services/GRPC/Notification/NotificationService.swift,
-				NetworkAPI/Services/GRPC/Notification/NotificationServiceModel.swift,
-				NetworkAPI/Services/GRPC/Order/Generated/order.grpc.swift,
-				NetworkAPI/Services/GRPC/Order/Generated/order.pb.swift,
-				NetworkAPI/Services/GRPC/Order/OrderService.swift,
-				NetworkAPI/Services/GRPC/Order/OrderServiceModel.swift,
-				NetworkAPI/Services/GRPC/Profile/Generated/profile.grpc.swift,
-				NetworkAPI/Services/GRPC/Profile/Generated/profile.pb.swift,
-				NetworkAPI/Services/GRPC/Profile/ProfileService.swift,
-				NetworkAPI/Services/GRPC/Profile/ProfileServiceModel.swift,
-				NetworkAPI/Services/GRPC/Reviews/Generated/feedback.grpc.swift,
-				NetworkAPI/Services/GRPC/Reviews/Generated/feedback.pb.swift,
-				NetworkAPI/Services/GRPC/Reviews/ReviewsService.swift,
-				NetworkAPI/Services/GRPC/Reviews/ReviewsServiceModel.swift,
-				NetworkAPI/Services/KeychainTokenStorage.swift,
-			);
-			publicHeaders = (
-				NetworkAPI/NetworkAPI.h,
-			);
-			target = E52AD29B2DD0236C00B0FFED /* NetworkAPI */;
 		};
 		E5FCE74D2DCE3EFB00D420CB /* Exceptions for "Cake&Land" folder in "Cake&Land" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -331,13 +216,17 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E559392C2DD579D9007128C4 /* Configurations */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Configurations;
+			sourceTree = "<group>";
+		};
 		E563C0E12DD02BF200B9C022 /* Modules */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				E563C0E22DD02BFB00B9C022 /* Exceptions for "Modules" folder in "Cake&Land" target */,
 				E563C0E32DD02BFB00B9C022 /* Exceptions for "Modules" folder in "DesignSystem" target */,
 				E563C0E42DD02BFB00B9C022 /* Exceptions for "Modules" folder in "Core" target */,
-				E563C0E52DD02BFB00B9C022 /* Exceptions for "Modules" folder in "NetworkAPI" target */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -358,23 +247,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E52AD2992DD0236C00B0FFED /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E52AD3262DD0242E00B0FFED /* GRPC in Frameworks */,
-				E52AD32E2DD025EB00B0FFED /* Core.framework in Frameworks */,
-				E52AD3292DD0245100B0FFED /* SwiftProtobuf in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E5A5F5B02D1647E600140551 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E563C0DF2DD02BA900B9C022 /* NetworkAPI.framework in Frameworks */,
+				E55935F62DD576F9007128C4 /* NetworkAPI in Frameworks */,
 				E5FCE73E2DCE3EEC00D420CB /* DesignSystem.framework in Frameworks */,
 				E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */,
+				E542A5DC2DD5767900480F84 /* NetworkAPI in Frameworks */,
 				E5FCE7882DCE3FD700D420CB /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +287,7 @@
 		E5A5F5AA2D1647E600140551 = {
 			isa = PBXGroup;
 			children = (
+				E559392C2DD579D9007128C4 /* Configurations */,
 				E563C0E12DD02BF200B9C022 /* Modules */,
 				E5A5F5B52D1647E600140551 /* Cake&Land */,
 				E5FA818D2D936452004047DE /* Cake&LandTests */,
@@ -422,7 +303,6 @@
 				E5FA818C2D936452004047DE /* Cake&LandTests.xctest */,
 				E5FCE7292DCE3EEC00D420CB /* DesignSystem.framework */,
 				E5FCE7802DCE3FD700D420CB /* Core.framework */,
-				E52AD29C2DD0236C00B0FFED /* NetworkAPI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -437,13 +317,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		E52AD2972DD0236C00B0FFED /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E5FCE7242DCE3EEC00D420CB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -461,28 +334,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E52AD29B2DD0236C00B0FFED /* NetworkAPI */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E52AD2A32DD0236C00B0FFED /* Build configuration list for PBXNativeTarget "NetworkAPI" */;
-			buildPhases = (
-				E52AD2972DD0236C00B0FFED /* Headers */,
-				E52AD2982DD0236C00B0FFED /* Sources */,
-				E52AD2992DD0236C00B0FFED /* Frameworks */,
-				E52AD29A2DD0236C00B0FFED /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = NetworkAPI;
-			packageProductDependencies = (
-				E52AD3252DD0242E00B0FFED /* GRPC */,
-				E52AD3282DD0245100B0FFED /* SwiftProtobuf */,
-			);
-			productName = NetworkAPI;
-			productReference = E52AD29C2DD0236C00B0FFED /* NetworkAPI.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		E5A5F5B22D1647E600140551 /* Cake&Land */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5A5F5C12D1647E700140551 /* Build configuration list for PBXNativeTarget "Cake&Land" */;
@@ -499,12 +350,15 @@
 				E5FCE7872DCE3FD700D420CB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				E559392C2DD579D9007128C4 /* Configurations */,
 				E563C0E12DD02BF200B9C022 /* Modules */,
 				E5A5F5B52D1647E600140551 /* Cake&Land */,
 			);
 			name = "Cake&Land";
 			packageProductDependencies = (
 				E5296C372DBFD10B004887BB /* ColorThiefSwift */,
+				E5B12F312DD3C071003DE48C /* NetworkAPI */,
+				E542A5DB2DD5767900480F84 /* NetworkAPI */,
 			);
 			productName = "Tорт&Land";
 			productReference = E5A5F5B32D1647E600140551 /* Cake&Land.app */;
@@ -584,9 +438,6 @@
 				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = "https://github.com/mightyK1ngRichard";
 				TargetAttributes = {
-					E52AD29B2DD0236C00B0FFED = {
-						CreatedOnToolsVersion = 16.2;
-					};
 					E5A5F5B22D1647E600140551 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -615,8 +466,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */,
-				E52AD3242DD0242E00B0FFED /* XCRemoteSwiftPackageReference "grpc-swift" */,
-				E52AD3272DD0245100B0FFED /* XCRemoteSwiftPackageReference "swift-protobuf" */,
+				E542A5DA2DD5767900480F84 /* XCLocalSwiftPackageReference "../NetworkAPI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E5A5F5B42D1647E600140551 /* Products */;
@@ -627,19 +477,11 @@
 				E5FA818B2D936452004047DE /* Cake&LandTests */,
 				E5FCE7282DCE3EEC00D420CB /* DesignSystem */,
 				E5FCE77F2DCE3FD700D420CB /* Core */,
-				E52AD29B2DD0236C00B0FFED /* NetworkAPI */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E52AD29A2DD0236C00B0FFED /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E5A5F5B12D1647E600140551 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -671,13 +513,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		E52AD2982DD0236C00B0FFED /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E5A5F5AF2D1647E600140551 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -727,94 +562,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		E52AD2A42DD0236C00B0FFED /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = SKCX3NJ774;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.NetworkAPI;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		E52AD2A52DD0236C00B0FFED /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = SKCX3NJ774;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 https://github.com/mightyK1ngRichard. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.NetworkAPI;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		E5A5F5BF2D1647E700140551 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E5A5F5B52D1647E600140551 /* Cake&Land */;
-			baseConfigurationReferenceRelativePath = "Configurations/Config-Debug.xcconfig";
+			baseConfigurationReferenceAnchor = E559392C2DD579D9007128C4 /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Debug.xcconfig";
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -879,8 +630,8 @@
 		};
 		E5A5F5C02D1647E700140551 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E5A5F5B52D1647E600140551 /* Cake&Land */;
-			baseConfigurationReferenceRelativePath = "Configurations/Config-Release.xcconfig";
+			baseConfigurationReferenceAnchor = E559392C2DD579D9007128C4 /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Release.xcconfig";
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -938,8 +689,8 @@
 		};
 		E5A5F5C22D1647E700140551 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E5A5F5B52D1647E600140551 /* Cake&Land */;
-			baseConfigurationReferenceRelativePath = "Configurations/Config-Debug.xcconfig";
+			baseConfigurationReferenceAnchor = E559392C2DD579D9007128C4 /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Debug.xcconfig";
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -976,8 +727,8 @@
 		};
 		E5A5F5C32D1647E700140551 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E5A5F5B52D1647E600140551 /* Cake&Land */;
-			baseConfigurationReferenceRelativePath = "Configurations/Config-Release.xcconfig";
+			baseConfigurationReferenceAnchor = E559392C2DD579D9007128C4 /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Release.xcconfig";
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1133,8 +884,8 @@
 		};
 		E5FCE78B2DCE3FD700D420CB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E5A5F5B52D1647E600140551 /* Cake&Land */;
-			baseConfigurationReferenceRelativePath = "Configurations/Config-Debug.xcconfig";
+			baseConfigurationReferenceAnchor = E559392C2DD579D9007128C4 /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Debug.xcconfig";
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1170,8 +921,8 @@
 		};
 		E5FCE78C2DCE3FD700D420CB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E5A5F5B52D1647E600140551 /* Cake&Land */;
-			baseConfigurationReferenceRelativePath = "Configurations/Config-Release.xcconfig";
+			baseConfigurationReferenceAnchor = E559392C2DD579D9007128C4 /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Release.xcconfig";
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1208,15 +959,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E52AD2A32DD0236C00B0FFED /* Build configuration list for PBXNativeTarget "NetworkAPI" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E52AD2A42DD0236C00B0FFED /* Debug */,
-				E52AD2A52DD0236C00B0FFED /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		E5A5F5AE2D1647E600140551 /* Build configuration list for PBXProject "Cake&Land" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1264,6 +1006,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		E542A5DA2DD5767900480F84 /* XCLocalSwiftPackageReference "../NetworkAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../NetworkAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1271,22 +1020,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.5.0;
-			};
-		};
-		E52AD3242DD0242E00B0FFED /* XCRemoteSwiftPackageReference "grpc-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/grpc/grpc-swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.24.2;
-			};
-		};
-		E52AD3272DD0245100B0FFED /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-protobuf.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.28.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1297,15 +1030,13 @@
 			package = E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */;
 			productName = ColorThiefSwift;
 		};
-		E52AD3252DD0242E00B0FFED /* GRPC */ = {
+		E542A5DB2DD5767900480F84 /* NetworkAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E52AD3242DD0242E00B0FFED /* XCRemoteSwiftPackageReference "grpc-swift" */;
-			productName = GRPC;
+			productName = NetworkAPI;
 		};
-		E52AD3282DD0245100B0FFED /* SwiftProtobuf */ = {
+		E5B12F312DD3C071003DE48C /* NetworkAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E52AD3272DD0245100B0FFED /* XCRemoteSwiftPackageReference "swift-protobuf" */;
-			productName = SwiftProtobuf;
+			productName = NetworkAPI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

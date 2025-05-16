@@ -164,6 +164,7 @@ private extension TLProductCard {
 
 // MARK: - Preview
 
+#if DEBUG
 #Preview("Default") {
     VStack {
         TLProductCard(
@@ -211,6 +212,7 @@ private extension TLProductCard {
     )
     .frame(width: 164)
 }
+#endif
 
 // MARK: - Constants
 

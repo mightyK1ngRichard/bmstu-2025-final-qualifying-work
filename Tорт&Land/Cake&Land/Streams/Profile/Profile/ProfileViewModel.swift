@@ -10,6 +10,7 @@ import Foundation
 import Observation
 import Combine
 import Core
+import GRPC
 import NetworkAPI
 import DesignSystem
 
@@ -21,19 +22,11 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     @ObservationIgnored
     private let rootViewModel: RootViewModel
     @ObservationIgnored
-    private let chatProvider: ChatService
-    @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
-    private let cakeProvider: CakeService
-    @ObservationIgnored
-    private let authService: AuthService
-    @ObservationIgnored
-    private let profileService: ProfileService
+    private let networkManager: NetworkManager
     @ObservationIgnored
     private var coordinator: Coordinator?
-    @ObservationIgnored
-    private var orderService: OrderService
     @ObservationIgnored
     private let priceFormatter = PriceFormatterService.shared
     @ObservationIgnored
@@ -42,21 +35,13 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     init(
         user: UserModel?,
         imageProvider: ImageLoaderProvider,
-        cakeProvider: CakeService,
-        chatProvider: ChatService,
-        authService: AuthService,
-        profileService: ProfileService,
-        orderService: OrderService,
+        networkManager: NetworkManager,
         isCurrentUser: Bool = false,
         rootViewModel: RootViewModel
     ) {
         self.user = user
-        self.profileService = profileService
-        self.cakeProvider = cakeProvider
-        self.authService = authService
-        self.chatProvider = chatProvider
+        self.networkManager = networkManager
         self.isCurrentUser = isCurrentUser
-        self.orderService = orderService
         self.imageProvider = imageProvider
         self.rootViewModel = rootViewModel
     }
@@ -71,28 +56,65 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
 
 extension ProfileViewModel {
 
-    func fetchUserData() {
-//        guard isCurrentUser else {
-//            uiProperties.screenState = .finished
-//            return
-//        }
-
-        uiProperties.screenState = .loading
+    func fetchCurrentUserInfo() {
         Task { @MainActor in
             do {
-                let res = try await profileService.getUserInfo()
-                user = UserModel(from: res.userInfo)
-                uiProperties.screenState = .finished
-                let user = res.userInfo.profile
+                // Получаем данные пользователя
+                let res = try await networkManager.profileService.getUserInfo()
+                let profile = res.userInfo.profile
+                var userModel = UserModel(from: profile)
+                userModel.cakes = res.userInfo.previewCakes.map(CakeModel.init(from:))
+                user = userModel
+
+                // Запоминаем данные текущего пользователя
                 if isCurrentUser {
-                    rootViewModel.updateCurrentUser(user)
+                    rootViewModel.updateCurrentUser(userModel)
                 }
-                fetchAvatarWithHeaderImage(imageURL: user.imageURL, headerImageURL: user.headerImageURL)
+
+                uiProperties.screenState = .finished
+
+                // Получаем изображения пользователя
+                fetchAvatarWithHeaderImage(imageURL: profile.imageURL, headerImageURL: profile.headerImageURL)
+
+                // Получаем изображения тортов
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
                 uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
+    }
+
+    func fetchInterlocutorInfo(interlocutorID: String) {
+        Task { @MainActor in
+            do {
+                // Получаем торты
+                let res = try await networkManager.cakeService.getUserCakes(userID: interlocutorID)
+                user?.cakes = res.map(CakeModel.init(from:))
+                uiProperties.screenState = .finished
+
+                // Получаем изобржения тортов
+                for (index, cake) in res.enumerated() {
+                    Task { @MainActor in
+                        let imageState = await imageProvider.fetchImage(for: cake.imageURL)
+                        user?.cakes[safe: index]?.previewImageState = imageState
+                    }
+                }
+            } catch {
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+            }
+        }
+    }
+
+    func fetchUserData() {
+        uiProperties.screenState = .loading
+
+        // Если данные опонента
+        if let user, !isCurrentUser {
+            fetchInterlocutorInfo(interlocutorID: user.id)
+            return
+        }
+
+        fetchCurrentUserInfo()
     }
 
     private func fetchAvatarWithHeaderImage(imageURL: String?, headerImageURL: String?) {
@@ -121,7 +143,7 @@ extension ProfileViewModel {
         for (index, cake) in cakes.enumerated() {
             Task { @MainActor in
                 let imageState = await imageProvider.fetchImage(for: cake.previewImageURL)
-                user?.cakes[index].previewImageState = imageState
+                user?.cakes[safe: index]?.previewImageState = imageState
             }
         }
     }
@@ -194,7 +216,7 @@ extension ProfileViewModel {
 
     func assemblyCreateCakeView() -> CreateProductView {
         CreateProductAssembler.assemble(
-            cakeProvider: cakeProvider,
+            cakeProvider: networkManager.cakeService,
             imageProvider: imageProvider
         )
     }
@@ -203,12 +225,16 @@ extension ProfileViewModel {
         ChatAssembler.assemble(
             currentUser: currentUser,
             interlocutor: interlocutor,
-            chatProvider: chatProvider
+            chatProvider: networkManager.chatService
         )
     }
 
     func assemblySettingsView(userModel: UserModel) -> SettingsView {
-        let view = SettingsAssembler.assemble(userModel: userModel, authService: authService, profileProvider: profileService)
+        let view = SettingsAssembler.assemble(
+            userModel: userModel,
+            networkManager: networkManager,
+            rootViewModel: rootViewModel
+        )
         view.viewModel.userPublisher
             .sink { [weak self] updatedUser in
                 self?.user = updatedUser
@@ -219,8 +245,8 @@ extension ProfileViewModel {
 
     func assemblyOrdersView() -> OrderListView {
         OrderListAssembler.assemble(
-            cakeService: cakeProvider,
-            orderService: orderService,
+            cakeService: networkManager.cakeService,
+            orderService: networkManager.orderService,
             imageProvider: imageProvider,
             priceFormatter: priceFormatter
         )

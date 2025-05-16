@@ -187,15 +187,6 @@ private extension CategoriesView {
     }
 }
 
-// MARK: - Preview
-
-#Preview("Mockable") {
-    CategoriesView(
-        viewModel: CategoriesViewModelMock()
-    )
-    .environment(Coordinator())
-}
-
 // MARK: - Constants
 
 private extension CategoriesView {

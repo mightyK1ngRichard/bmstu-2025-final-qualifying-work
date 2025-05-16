@@ -29,9 +29,4 @@ final class CakeDetailsAssembler {
 
         return CakeDetailsView(viewModel: viewModel)
     }
-
-    static func assembleMock(cakeModel: CakeModel) -> CakeDetailsView {
-        let viewModel = CakeDetailsViewModelMock(isOwnedByUser: false, cakeModel: cakeModel)
-        return CakeDetailsView(viewModel: viewModel)
-    }
 }

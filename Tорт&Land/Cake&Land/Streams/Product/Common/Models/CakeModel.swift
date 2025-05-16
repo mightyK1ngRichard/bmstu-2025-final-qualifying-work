@@ -50,8 +50,8 @@ struct CakeModel: Identifiable, Hashable {
     var colorsHex: [String]
     /// Ссылка на 3Д модель
     var model3DURL: String?
-    /// Флаг, открыт ли для продажи
-    var isOpenForSale: Bool
+    /// Статус торта
+    var status: CakeStatus
     /// Корректный URL 3D модели
     var model3DURLProd: URL? {
         guard let modelString = model3DURL, let url = URL(string: modelString.replaceLocalhost()) else {
@@ -61,6 +61,24 @@ struct CakeModel: Identifiable, Hashable {
         return url
     }
 }
+
+// MARK: - CakeStatus
+
+/// Статусы торта
+public enum CakeStatus: Hashable {
+    /// Не указано
+    case unspecified
+    /// Ожидает
+    case pending
+    /// Одобрено и открыто для продажи/
+    case approved
+    /// Отказано
+    case rejected
+    /// Скрыто
+    case hidden
+}
+
+// MARK: - Proto
 
 extension CakeModel {
     init(from model: ProfilePreviewCakeEntity) {
@@ -88,9 +106,9 @@ extension CakeModel {
             categories: [],
             fillings: [],
             seller: UserModel(from: model.owner),
-            colorsHex: [],
+            colorsHex: model.colorsHex,
             model3DURL: model.model3DURL,
-            isOpenForSale: model.isOpenForSale
+            status: CakeStatus(from: model.status)
         )
     }
 
@@ -123,8 +141,40 @@ extension CakeModel {
             seller: UserModel(from: model.owner),
             colorsHex: model.colorsHex,
             model3DURL: model.model3DURL,
-            isOpenForSale: model.isOpenForSale
+            status: CakeStatus(from: model.status)
         )
+    }
+}
+
+extension CakeStatus {
+    init(from model: CakeStatusEntity) {
+        switch model {
+        case .unspecified:
+            self = .unspecified
+        case .pending:
+            self = .pending
+        case .approved:
+            self = .approved
+        case .rejected:
+            self = .rejected
+        case .hidden:
+            self = .hidden
+        }
+    }
+
+    var toProto: CakeStatusEntity {
+        switch self {
+        case .unspecified:
+            return .unspecified
+        case .pending:
+            return .pending
+        case .approved:
+            return .approved
+        case .rejected:
+            return .rejected
+        case .hidden:
+            return .hidden
+        }
     }
 }
 
@@ -162,7 +212,7 @@ extension CakeModel {
             seller: UserModel(from: model.owner),
             colorsHex: model.colorsHex,
             model3DURL: model.model3DURL,
-            isOpenForSale: model.isOpenForSale
+            status: CakeStatus(from: model.status)
         )
     }
 
@@ -171,7 +221,7 @@ extension CakeModel {
         cakeCopy.thumbnails = cakeEntity.images.map { Thumbnail(id: $0.id, imageState: .loading, url: $0.imageURL) }
         cakeCopy.categories = cakeEntity.categories.map(Category.init(from:))
         cakeCopy.fillings = cakeEntity.fillings.map(Filling.init(from:))
-        cakeCopy.isOpenForSale = cakeEntity.isOpenForSale
+        cakeCopy.status = CakeStatus(from: cakeEntity.status)
         return cakeCopy
     }
 }
@@ -204,7 +254,7 @@ extension CakeModel {
                 productPrice: priceFormatter.formatPrice(price),
                 productDiscountedPrice: productDiscountedPrice
             ),
-            disableText: isOpenForSale ? nil : "Sorry, this item is currently closed for sale",
+            disableText: status == .approved ? nil : "Sorry, this item is currently closed for sale",
             badgeViewConfiguration: badgeViewConfiguration,
             productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected)),
             starsViewConfiguration: starsConfiguration()

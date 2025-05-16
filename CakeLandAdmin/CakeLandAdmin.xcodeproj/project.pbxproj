@@ -1,0 +1,757 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E527FDEA2DD14C4F004FC58F /* MacDS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E527FDE42DD14C4F004FC58F /* MacDS.framework */; };
+		E527FDEB2DD14C4F004FC58F /* MacDS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E527FDE42DD14C4F004FC58F /* MacDS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E527FEA32DD14CEB004FC58F /* MacCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; };
+		E527FEA42DD14CEB004FC58F /* MacCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E527FEB12DD14D61004FC58F /* MacCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; };
+		E57440A72DD0F6FC0013378D /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E57440A62DD0F6FC0013378D /* NetworkAPI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E527FDE82DD14C4F004FC58F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E51C2F1A2DCFE640000D966F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E527FDE32DD14C4F004FC58F;
+			remoteInfo = MacDS;
+		};
+		E527FEA12DD14CEB004FC58F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E51C2F1A2DCFE640000D966F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E527FE9C2DD14CEB004FC58F;
+			remoteInfo = MacCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E527FDF02DD14C4F004FC58F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E527FDEB2DD14C4F004FC58F /* MacDS.framework in Embed Frameworks */,
+				E527FEA42DD14CEB004FC58F /* MacCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E51C2F222DCFE640000D966F /* CakeLandAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CakeLandAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E527FDE42DD14C4F004FC58F /* MacDS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MacDS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E527FE9D2DD14CEB004FC58F /* MacCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MacCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E51162B82DD0F8E6001A040A /* Exceptions for "CakeLandAdmin" folder in "CakeLandAdmin" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E51C2F212DCFE640000D966F /* CakeLandAdmin */;
+		};
+		E527FDF42DD14C58004FC58F /* Exceptions for "Modules" folder in "MacDS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MacDS/Components/TLButton.swift,
+				"MacDS/Extensions/Text+Ext.swift",
+				MacDS/MacDS.h,
+				MacDS/Protocols/Configurable.swift,
+				MacDS/Resources/Colors.xcassets,
+			);
+			publicHeaders = (
+				MacDS/MacDS.h,
+			);
+			target = E527FDE32DD14C4F004FC58F /* MacDS */;
+		};
+		E527FEAC2DD14CF0004FC58F /* Exceptions for "Modules" folder in "MacCore" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MacCore/MacCore.h,
+				MacCore/Models/ImageState.swift,
+				MacCore/Typealias.swift,
+			);
+			publicHeaders = (
+				MacCore/MacCore.h,
+			);
+			target = E527FE9C2DD14CEB004FC58F /* MacCore */;
+		};
+		E527FEB62DD151F6004FC58F /* Exceptions for "Modules" folder in "CakeLandAdmin" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MacCore/Models/ImageState.swift,
+				MacCore/Typealias.swift,
+				MacDS/Components/TLButton.swift,
+			);
+			target = E51C2F212DCFE640000D966F /* CakeLandAdmin */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E51162C62DD0F947001A040A /* Configurations */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		E51C2F242DCFE640000D966F /* CakeLandAdmin */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E51162B82DD0F8E6001A040A /* Exceptions for "CakeLandAdmin" folder in "CakeLandAdmin" target */,
+			);
+			path = CakeLandAdmin;
+			sourceTree = "<group>";
+		};
+		E527FDDE2DD14C17004FC58F /* Modules */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E527FEB62DD151F6004FC58F /* Exceptions for "Modules" folder in "CakeLandAdmin" target */,
+				E527FDF42DD14C58004FC58F /* Exceptions for "Modules" folder in "MacDS" target */,
+				E527FEAC2DD14CF0004FC58F /* Exceptions for "Modules" folder in "MacCore" target */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E51C2F1F2DCFE640000D966F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E57440A72DD0F6FC0013378D /* NetworkAPI in Frameworks */,
+				E527FDEA2DD14C4F004FC58F /* MacDS.framework in Frameworks */,
+				E527FEA32DD14CEB004FC58F /* MacCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FDE12DD14C4F004FC58F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E527FEB12DD14D61004FC58F /* MacCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FE9A2DD14CEB004FC58F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E51C2F192DCFE640000D966F = {
+			isa = PBXGroup;
+			children = (
+				E527FDDE2DD14C17004FC58F /* Modules */,
+				E51162C62DD0F947001A040A /* Configurations */,
+				E51C2F242DCFE640000D966F /* CakeLandAdmin */,
+				E527FEB02DD14D61004FC58F /* Frameworks */,
+				E51C2F232DCFE640000D966F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E51C2F232DCFE640000D966F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E51C2F222DCFE640000D966F /* CakeLandAdmin.app */,
+				E527FDE42DD14C4F004FC58F /* MacDS.framework */,
+				E527FE9D2DD14CEB004FC58F /* MacCore.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E527FEB02DD14D61004FC58F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E527FDDF2DD14C4F004FC58F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FE982DD14CEB004FC58F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E51C2F212DCFE640000D966F /* CakeLandAdmin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E51C2F312DCFE641000D966F /* Build configuration list for PBXNativeTarget "CakeLandAdmin" */;
+			buildPhases = (
+				E51C2F1E2DCFE640000D966F /* Sources */,
+				E51C2F1F2DCFE640000D966F /* Frameworks */,
+				E51C2F202DCFE640000D966F /* Resources */,
+				E527FDF02DD14C4F004FC58F /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E527FDE92DD14C4F004FC58F /* PBXTargetDependency */,
+				E527FEA22DD14CEB004FC58F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E51162C62DD0F947001A040A /* Configurations */,
+				E51C2F242DCFE640000D966F /* CakeLandAdmin */,
+				E527FDDE2DD14C17004FC58F /* Modules */,
+			);
+			name = CakeLandAdmin;
+			packageProductDependencies = (
+				E57440A62DD0F6FC0013378D /* NetworkAPI */,
+			);
+			productName = CakeLandAdmin;
+			productReference = E51C2F222DCFE640000D966F /* CakeLandAdmin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E527FDE32DD14C4F004FC58F /* MacDS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E527FDEC2DD14C4F004FC58F /* Build configuration list for PBXNativeTarget "MacDS" */;
+			buildPhases = (
+				E527FDDF2DD14C4F004FC58F /* Headers */,
+				E527FDE02DD14C4F004FC58F /* Sources */,
+				E527FDE12DD14C4F004FC58F /* Frameworks */,
+				E527FDE22DD14C4F004FC58F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacDS;
+			packageProductDependencies = (
+			);
+			productName = MacDS;
+			productReference = E527FDE42DD14C4F004FC58F /* MacDS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E527FE9C2DD14CEB004FC58F /* MacCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E527FEA52DD14CEB004FC58F /* Build configuration list for PBXNativeTarget "MacCore" */;
+			buildPhases = (
+				E527FE982DD14CEB004FC58F /* Headers */,
+				E527FE992DD14CEB004FC58F /* Sources */,
+				E527FE9A2DD14CEB004FC58F /* Frameworks */,
+				E527FE9B2DD14CEB004FC58F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacCore;
+			packageProductDependencies = (
+			);
+			productName = MacCore;
+			productReference = E527FE9D2DD14CEB004FC58F /* MacCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E51C2F1A2DCFE640000D966F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					E51C2F212DCFE640000D966F = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					E527FDE32DD14C4F004FC58F = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					E527FE9C2DD14CEB004FC58F = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = E51C2F1D2DCFE640000D966F /* Build configuration list for PBXProject "CakeLandAdmin" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E51C2F192DCFE640000D966F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E57440A52DD0F6FC0013378D /* XCLocalSwiftPackageReference "../NetworkAPI" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E51C2F232DCFE640000D966F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E51C2F212DCFE640000D966F /* CakeLandAdmin */,
+				E527FDE32DD14C4F004FC58F /* MacDS */,
+				E527FE9C2DD14CEB004FC58F /* MacCore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E51C2F202DCFE640000D966F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FDE22DD14C4F004FC58F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FE9B2DD14CEB004FC58F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E51C2F1E2DCFE640000D966F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FDE02DD14C4F004FC58F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E527FE992DD14CEB004FC58F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E527FDE92DD14C4F004FC58F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E527FDE32DD14C4F004FC58F /* MacDS */;
+			targetProxy = E527FDE82DD14C4F004FC58F /* PBXContainerItemProxy */;
+		};
+		E527FEA22DD14CEB004FC58F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E527FE9C2DD14CEB004FC58F /* MacCore */;
+			targetProxy = E527FEA12DD14CEB004FC58F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E51C2F2F2DCFE641000D966F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E51162C62DD0F947001A040A /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Debug.xcconfig";
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E51C2F302DCFE641000D966F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		E51C2F322DCFE641000D966F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E51162C62DD0F947001A040A /* Configurations */;
+			baseConfigurationReferenceRelativePath = "Config-Debug.xcconfig";
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CakeLandAdmin/CakeLandAdmin.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CakeLandAdmin/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CakeLandAdmin/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Админ Торт&Land";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.CakeLandAdmin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E51C2F332DCFE641000D966F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CakeLandAdmin/CakeLandAdmin.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CakeLandAdmin/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CakeLandAdmin/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Админ Торт&Land";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.CakeLandAdmin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E527FDED2DD14C4F004FC58F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.MacDS;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E527FDEE2DD14C4F004FC58F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.MacDS;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E527FEA62DD14CEB004FC58F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.MacCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E527FEA72DD14CEB004FC58F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = SKCX3NJ774;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.git.mightyK1ngRichard.MacCore;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E51C2F1D2DCFE640000D966F /* Build configuration list for PBXProject "CakeLandAdmin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E51C2F2F2DCFE641000D966F /* Debug */,
+				E51C2F302DCFE641000D966F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E51C2F312DCFE641000D966F /* Build configuration list for PBXNativeTarget "CakeLandAdmin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E51C2F322DCFE641000D966F /* Debug */,
+				E51C2F332DCFE641000D966F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E527FDEC2DD14C4F004FC58F /* Build configuration list for PBXNativeTarget "MacDS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E527FDED2DD14C4F004FC58F /* Debug */,
+				E527FDEE2DD14C4F004FC58F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E527FEA52DD14CEB004FC58F /* Build configuration list for PBXNativeTarget "MacCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E527FEA62DD14CEB004FC58F /* Debug */,
+				E527FEA72DD14CEB004FC58F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E57440A52DD0F6FC0013378D /* XCLocalSwiftPackageReference "../NetworkAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../NetworkAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E57440A62DD0F6FC0013378D /* NetworkAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E51C2F1A2DCFE640000D966F /* Project object */;
+}

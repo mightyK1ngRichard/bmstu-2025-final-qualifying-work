@@ -43,6 +43,7 @@ public struct TLChatCell: View, Configurable {
                 textContainer
             }
         }
+        .contentShape(.rect)
     }
 }
 

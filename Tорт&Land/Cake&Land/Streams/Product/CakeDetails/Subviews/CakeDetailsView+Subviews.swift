@@ -193,7 +193,7 @@ private extension CakeDetailsView {
             moreInfoCell(text: Constants.ratingReviewsTitle) {
                 viewModel.didTapRatingReviewsButton()
             }
-            if viewModel.showOwnerButton {
+            if viewModel.bindingData.showOwnerButton {
                 moreInfoCell(text: Constants.sellerInfoTitle) {
                     viewModel.didTapSellerInfoButton()
                 }
@@ -224,7 +224,7 @@ private extension CakeDetailsView {
 
     @ViewBuilder
     var bottomButton: some View {
-        if viewModel.showOwnerButton {
+        if viewModel.bindingData.showOwnerButton {
             TLButton("make order".uppercased(), action: viewModel.didTapMakeOrderButton)
         } else {
             TLButton(
@@ -259,25 +259,16 @@ private extension CakeDetailsView {
                     .foregroundStyle(Constants.iconPrimary)
             }
         } else {
-            Button {
-                viewModel.didTapAdd3DModel()
-            } label: {
-                Image(systemName: "plus")
-                    .foregroundStyle(Constants.iconPrimary)
+            if !viewModel.bindingData.showOwnerButton {
+                Button {
+                    viewModel.didTapAdd3DModel()
+                } label: {
+                    Image(systemName: "plus")
+                        .foregroundStyle(Constants.iconPrimary)
+                }
             }
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    @Previewable
-    @State var coordinator = Coordinator()
-    NavigationStack(path: $coordinator.navPath) {
-        CakeDetailsView(viewModel: CakeDetailsViewModelMock(isOwnedByUser: true))
-    }
-    .environment(coordinator)
 }
 
 // MARK: - Constants

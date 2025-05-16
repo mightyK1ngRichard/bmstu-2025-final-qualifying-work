@@ -19,12 +19,3 @@ struct RatingReviewsView: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    NavigationStack {
-        RatingReviewsView(viewModel: RatingReviewsViewModelMock())
-    }
-    .environment(Coordinator())
-}

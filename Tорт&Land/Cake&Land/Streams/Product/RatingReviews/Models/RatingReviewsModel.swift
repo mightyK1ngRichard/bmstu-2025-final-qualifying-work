@@ -13,6 +13,7 @@ enum RatingReviewsModel {}
 extension RatingReviewsModel {
     struct UIProperties: Hashable {
         var isOpenFeedbackView = false
+        var showFeedbackButton = false
         var state: ScreenState = .initial
     }
 }

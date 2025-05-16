@@ -54,9 +54,11 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
         let lock = NSLock()
         var results: GetImagesStatesResult = []
 
-        for urlString in urlsStrings {
+        for str in urlsStrings {
+            let urlString = str.replaceLocalhost()
+
             // Если есть в кэше, возвращаем
-            if let imageData = imageCache.object(forKey: urlString as NSString),
+            if let imageData = imageCache.object(forKey: urlString.replaceLocalhost() as NSString),
                let uiImage = UIImage(data: imageData as Data) {
                 results.append((urlString, .fetched(.uiImage(uiImage))))
                 continue
@@ -92,10 +94,12 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
         }
     }
 
-    func fetchImage(for urlString: String) async -> ImageState {
+    func fetchImage(for urlStr: String) async -> ImageState {
         do {
+            let urlString = urlStr.replaceLocalhost()
+
             // Если есть в кэше, возвращаем
-            if let imageData = imageCache.object(forKey: urlString as NSString),
+            if let imageData = imageCache.object(forKey: urlString.replaceLocalhost() as NSString),
                let uiImage = UIImage(data: imageData as Data) {
                 Logger.log(kind: .debug, "Получил изображение из кэша")
                 return .fetched(.uiImage(uiImage))

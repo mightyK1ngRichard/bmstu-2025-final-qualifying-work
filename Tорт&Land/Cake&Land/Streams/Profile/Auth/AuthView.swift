@@ -24,11 +24,3 @@ struct AuthView: View {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    NavigationStack {
-        AuthView(viewModel: AuthViewModelMock())
-    }
-}

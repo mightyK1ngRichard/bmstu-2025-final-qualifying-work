@@ -7,62 +7,67 @@
 //
 
 import Foundation
+import SwiftUI
 import NetworkAPI
 import DesignSystem
 
 @Observable
-final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelInput {
+final class ChatViewModel: ChatDisplayLogic, ChatViewModelInput {
     var uiProperties = ChatModel.UIProperties()
     private(set) var currentUser: UserModel
     private(set) var interlocutor: UserModel
-    private(set) var messages: [ChatModel.ChatMessage]
+    private(set) var messages: [ChatModel.ChatMessage] = []
     private(set) var lastMessageID: String?
     @ObservationIgnored
     private var chatProvider: ChatService
+    @ObservationIgnored
+    private var coordinator: Coordinator!
 
     init(
         currentUser: UserModel,
         interlocutor: UserModel,
-        chatProvider: ChatService,
-        messages: [ChatModel.ChatMessage] = []
+        chatProvider: ChatService
     ) {
         self.currentUser = currentUser
         self.interlocutor = interlocutor
         self.chatProvider = chatProvider
-        self.messages = messages
-        self.lastMessageID = messages.last?.id
     }
 
     func fetchMessages() {
+
+        chatProvider.handler = { [weak self] message in
+            guard let self else { return }
+
+            let isYou = message.senderID == currentUser.id
+
+            messages.append(ChatModel.ChatMessage(
+                id: message.id,
+                isYou: isYou,
+                message: message.text,
+                user: isYou ? currentUser : interlocutor,
+                time: message.dateCreation.formattedHHmm,
+                state: .received
+            ))
+
+            lastMessageID = message.id
+        }
+
+        Task {
+            do {
+                try await chatProvider.startChat()
+            } catch {
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+            }
+        }
+        
         uiProperties.isLoading = true
 
         Task { @MainActor in
-            try await chatProvider.startChat()
-
-            chatProvider.handler = { [weak self] message in
-                guard let self else { return }
-                
-                let isYou = message.senderID == currentUser.id
-
-                messages.append(ChatModel.ChatMessage(
-                    id: message.id,
-                    isYou: isYou,
-                    message: message.text,
-                    user: isYou ? currentUser : interlocutor,
-                    time: message.dateCreation.formattedHHmm,
-                    state: .received
-                ))
-            }
-        }
-
-        Task { @MainActor in
-            let messagesEntities = try await chatProvider.getMessages(interlocutorID: interlocutor.id)
-            lastMessageID = messagesEntities.last?.id
-            
-            for message in messagesEntities {
-                let isYou = message.senderID == currentUser.id
-                messages.append(
-                    ChatModel.ChatMessage(
+            do {
+                let messagesEntities = try await chatProvider.getMessages(interlocutorID: interlocutor.id)
+                messages = messagesEntities.map { message in
+                    let isYou = message.senderID == currentUser.id
+                    return ChatModel.ChatMessage(
                         id: message.id,
                         isYou: isYou,
                         message: message.text,
@@ -70,21 +75,12 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
                         time: message.dateCreation.formattedHHmm,
                         state: .received
                     )
-                )
-            }
+                }
+                lastMessageID = messagesEntities.last?.id
 
-            uiProperties.isLoading = false
-
-            chatProvider.handler = { [weak self] msg in
-                guard let self else { return }
-                messages.append(
-                    ChatModel.ChatMessage(
-                        from: msg,
-                        sender: msg.senderID == currentUser.id ? currentUser : interlocutor,
-                        userID: currentUser.id
-                    )
-                )
-                lastMessageID = msg.id
+                uiProperties.isLoading = false
+            } catch {
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
         }
     }
@@ -133,18 +129,7 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelOutput, ChatViewModelI
 }
 
 extension ChatViewModel {
-    func setEnvironmentObjects(coordinator: Coordinator) {}
-}
-
-extension Array {
-    subscript(safe index: Int) -> Element? {
-        get {
-            return indices.contains(index) ? self[index] : nil
-        }
-        set {
-            if let newValue = newValue, indices.contains(index) {
-                self[index] = newValue
-            }
-        }
+    func setEnvironmentObjects(coordinator: Coordinator) {
+        self.coordinator = coordinator
     }
 }

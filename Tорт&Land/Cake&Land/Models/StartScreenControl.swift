@@ -21,6 +21,7 @@ final class StartScreenControl {
             screenKind = .initial
             return
         }
+        
         screenKind = kind
     }
 

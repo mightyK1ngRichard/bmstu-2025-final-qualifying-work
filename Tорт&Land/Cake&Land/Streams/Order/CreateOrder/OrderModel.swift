@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 import NetworkAPI
 
 enum OrderModel {}
@@ -47,3 +48,26 @@ extension PaymentMethodEntity {
         }
     }
 }
+
+// MARK: - OrderStatusEntity
+
+extension OrderStatusEntity {
+    var title: String {
+        String(describing: self)
+    }
+
+    /// Цвет текста статуса
+    var textColor: Color {
+        switch self {
+        case .pending:
+            return .orange
+        case .shipped:
+            return .blue
+        case .delivered:
+            return .green
+        case .cancelled:
+            return .red
+        }
+    }
+}
+

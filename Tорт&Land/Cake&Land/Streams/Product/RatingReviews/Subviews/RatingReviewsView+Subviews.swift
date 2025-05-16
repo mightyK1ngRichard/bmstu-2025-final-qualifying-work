@@ -81,62 +81,31 @@ private extension RatingReviewsView {
         .padding(.trailing, 32)
     }
 
+    @ViewBuilder
     var writeReviewButton: some View {
-        Button(action: viewModel.didTapWriteReviewButton, label: {
-            HStack(spacing: 9) {
-                Image(uiImage: TLAssets.pen)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 13, height: 13)
+        if viewModel.uiProperties.showFeedbackButton {
+            Button(action: viewModel.didTapWriteReviewButton, label: {
+                HStack(spacing: 9) {
+                    Image(uiImage: TLAssets.pen)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 13, height: 13)
 
-                Text(Constants.writeReviewButtonTitle)
-                    .style(11, .semibold, .white)
-            }
-        })
-        .padding(.horizontal, 10)
-        .padding(.vertical, 12)
-        .background(TLColor<BackgroundPalette>.bgRed.color, in: .rect(cornerRadius: 25))
-        .padding(.trailing, 26)
+                    Text(Constants.writeReviewButtonTitle)
+                        .style(11, .semibold, .white)
+                }
+            })
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
+            .background(TLColor<BackgroundPalette>.bgRed.color, in: .rect(cornerRadius: 25))
+            .padding(.trailing, 26)
+        }
     }
 
     var sheetView: some View {
         viewModel.openSheetView()
     }
 }
-
-// MARK: - Preview
-
-#Preview("Mockable") {
-    NavigationStack {
-        RatingReviewsView(viewModel: RatingReviewsViewModelMock())
-    }
-    .environment(Coordinator())
-}
-
-#if DEBUG
-import NetworkAPI
-#Preview("Network") {
-    NavigationStack {
-        RatingReviewsAssembler.assemble(
-            cakeID: "550e8400-e29b-41d4-a716-446655441001",
-            reviewsService: {
-                let networkService = NetworkServiceImpl()
-                let authProvider = AuthGrpcServiceImpl(
-                    configuration: AppHosts.auth,
-                    networkService: networkService
-                )
-                return ReviewsGrpcServiceImpl(
-                    configuration: AppHosts.reviews,
-                    authService: authProvider,
-                    networkService: networkService
-                )
-            }(),
-            imageProvider: ImageLoaderProviderImpl()
-        )
-    }
-    .environment(Coordinator())
-}
-#endif
 
 // MARK: - Constants
 

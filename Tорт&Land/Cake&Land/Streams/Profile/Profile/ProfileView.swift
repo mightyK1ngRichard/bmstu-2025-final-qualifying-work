@@ -7,9 +7,6 @@
 //
 
 import SwiftUI
-#if DEBUG
-import NetworkAPI
-#endif
 
 struct ProfileView: View {
     @State var viewModel: ProfileDisplayLogic & ProfileViewModelInput
@@ -42,13 +39,4 @@ private extension ProfileView {
             viewModel.assemblyOrdersView()
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview("Mockable") {
-    ProfileView(
-        viewModel: ProfileViewModelMock(isCurrentUser: true)
-    )
-    .environment(Coordinator())
 }

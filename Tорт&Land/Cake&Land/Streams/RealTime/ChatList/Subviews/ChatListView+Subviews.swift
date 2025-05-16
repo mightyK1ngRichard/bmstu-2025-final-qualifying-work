@@ -101,15 +101,6 @@ private extension ChatListView {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    ChatListView(
-        viewModel: ChatListViewModelMock(delay: 5)
-    )
-    .environment(Coordinator())
-}
-
 private extension ChatListView {
     enum Constants {
         static let bgColor: Color = TLColor<BackgroundPalette>.bgMainColor.color

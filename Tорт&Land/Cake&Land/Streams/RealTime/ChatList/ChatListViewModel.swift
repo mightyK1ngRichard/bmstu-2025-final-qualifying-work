@@ -20,6 +20,7 @@ final class ChatListViewModel: ChatListDisplayLogic, ChatListViewModelInput, Cha
         : allChatCells.filter { $0.user.titleName.lowercased().contains(uiProperties.searchText.lowercased()) }
     }
     private var allChatCells: [ChatListModel.ChatCellModel] = []
+    @ObservationIgnored
     private let currentUser: UserModel
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
@@ -44,20 +45,16 @@ final class ChatListViewModel: ChatListDisplayLogic, ChatListViewModelInput, Cha
 extension ChatListViewModel {
     func fetchChatsHistory() {
         uiProperties.screenState = .loading
+
         Task { @MainActor in
             do {
                 let usersEntities = try await chatProvider.getUserChats()
+                allChatCells = usersEntities.map(ChatListModel.ChatCellModel.init(from:))
+                uiProperties.screenState = .finished
+
                 for (index, userEntity) in usersEntities.enumerated() {
-                    let cell = ChatListModel.ChatCellModel(
-                        id: UUID().uuidString,
-                        user: UserModel(from: userEntity),
-                        lastMessage: "Последнее сообщение",
-                        timeMessage: Date()
-                    )
-                    allChatCells.append(cell)
                     fetchUserImage(index: index, urlString: userEntity.imageURL)
                 }
-                uiProperties.screenState = .finished
             } catch {
                 uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
@@ -65,19 +62,14 @@ extension ChatListViewModel {
     }
 
     private func fetchUserImage(index: Int, urlString: String?) {
-        guard index < allChatCells.count else {
-            Logger.log(kind: .error, "index out of range")
-            return
-        }
-
         Task { @MainActor in
             guard let urlString else {
-                allChatCells[index].user.avatarImage = .fetched(.uiImage(TLAssets.profile))
+                allChatCells[safe: index]?.user.avatarImage = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
             let imageState = await imageProvider.fetchImage(for: urlString)
-            allChatCells[index].user.avatarImage = imageState
+            allChatCells[safe: index]?.user.avatarImage = imageState
         }
     }
 }

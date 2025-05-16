@@ -94,7 +94,6 @@ private extension TLImageView {
 // MARK: - Preview
 #if DEBUG
 import Core
-#endif
 
 #Preview {
     ScrollView {
@@ -117,3 +116,4 @@ import Core
     }
     .background(.bar)
 }
+#endif

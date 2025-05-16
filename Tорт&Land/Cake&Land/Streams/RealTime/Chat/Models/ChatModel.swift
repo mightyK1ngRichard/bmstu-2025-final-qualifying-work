@@ -8,6 +8,7 @@
 
 import Foundation
 import NetworkAPI
+import UIKit
 
 enum ChatModel {}
 
@@ -15,6 +16,7 @@ extension ChatModel {
     struct UIProperties: Hashable {
         var messageText = ""
         var isLoading = false
+        var alert = AlertModel()
     }
 
     struct ChatMessage: Identifiable, Hashable {

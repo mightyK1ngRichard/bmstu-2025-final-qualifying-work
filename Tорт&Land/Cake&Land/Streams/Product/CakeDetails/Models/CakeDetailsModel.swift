@@ -10,6 +10,8 @@ import Foundation
 enum CakeDetailsModel {
     struct BindingData: Hashable {
         var isLoading = false
+        var show3DButton = true
+        var showOwnerButton = false
         var showSheet = false
         var openFileDirecatory = false
         var selectedFilling: Filling?

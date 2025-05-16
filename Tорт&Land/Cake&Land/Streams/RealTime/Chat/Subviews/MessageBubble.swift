@@ -94,6 +94,7 @@ private extension MessageBubble {
 
 // MARK: - Preview
 
+#if DEBUG
 #Preview {
     let kingUser = CommonMockData.generateMockUserModel(
         id: 1,
@@ -174,6 +175,8 @@ private extension MessageBubble {
         )
     }
 }
+
+#endif
 
 // MARK: - MessageState
 

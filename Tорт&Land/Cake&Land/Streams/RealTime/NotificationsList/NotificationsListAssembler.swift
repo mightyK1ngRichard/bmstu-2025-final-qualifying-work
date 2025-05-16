@@ -11,15 +11,11 @@ import NetworkAPI
 
 final class NotificationsListAssembler {
     static func assemble(
-        notificationService: NotificationService,
-        cakeService: CakeService,
-        orderService: OrderService,
+        networkManager: NetworkManager,
         imageProvider: ImageLoaderProvider
     ) -> NotificationsListView {
         let viewModel = NotificationsListViewModel(
-            notificationService: notificationService,
-            orderService: orderService,
-            cakeService: cakeService,
+            networkManager: networkManager,
             imageProvider: imageProvider
         )
         return NotificationsListView(viewModel: viewModel)

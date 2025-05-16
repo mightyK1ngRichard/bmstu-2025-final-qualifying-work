@@ -97,7 +97,6 @@ private extension Text {
 
 #if DEBUG
 import Core
-#endif
 
 #Preview {
     TLCommentView(
@@ -113,3 +112,4 @@ import Core
     )
     .padding(.horizontal)
 }
+#endif

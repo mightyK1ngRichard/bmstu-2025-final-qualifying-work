@@ -259,22 +259,6 @@ private extension ProfileView {
     }
 }
 
-// MARK: - Preview
-
-#Preview("Mockable current user") {
-    ProfileView(
-        viewModel: ProfileViewModelMock(isCurrentUser: true)
-    )
-    .environment(Coordinator())
-}
-
-#Preview("Mockable not current") {
-    ProfileView(
-        viewModel: ProfileViewModelMock(isCurrentUser: false)
-    )
-    .environment(Coordinator())
-}
-
 // MARK: - Constants
 
 private extension ProfileView {

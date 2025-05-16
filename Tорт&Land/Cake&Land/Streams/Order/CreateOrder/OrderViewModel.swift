@@ -20,13 +20,9 @@ final class OrderViewModel {
     @ObservationIgnored
     let availableMultipliers = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
     @ObservationIgnored
-    private let orderProvider: OrderService
+    private let networkManager: NetworkManager
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
-    @ObservationIgnored
-    private let profileProvider: ProfileService
-    @ObservationIgnored
-    private let cakeProvider: CakeService
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
     @ObservationIgnored
@@ -34,16 +30,12 @@ final class OrderViewModel {
 
     init(
         cakeID: String,
-        orderProvider: OrderService,
-        profileProvider: ProfileService,
-        cakeProvider: CakeService,
+        networkManager: NetworkManager,
         imageProvider: ImageLoaderProvider,
         priceFormatter: PriceFormatterService = .shared
     ) {
         self.cakeID = cakeID
-        self.orderProvider = orderProvider
-        self.cakeProvider = cakeProvider
-        self.profileProvider = profileProvider
+        self.networkManager = networkManager
         self.imageProvider = imageProvider
         self.priceFormatter = priceFormatter
     }
@@ -74,11 +66,11 @@ extension OrderViewModel {
         uiProperties.state = .loading
         Task { @MainActor in
             do {
-                let cakeEntity = try await cakeProvider.fetchCakeDetails(cakeID: cakeID)
-                cake = CakeModel(from: cakeEntity)
-                fetchCakeImages(fillings: cakeEntity.fillings)
-                fetchCakePreview(url: cakeEntity.imageURL)
-                uiProperties.selectedFillingID = cakeEntity.fillings.first?.id ?? ""
+                let res = try await networkManager.cakeService.fetchCakeByID(cakeID: cakeID)
+                cake = CakeModel(from: res.cake)
+                fetchCakeImages(fillings: res.cake.fillings)
+                fetchCakePreview(url: res.cake.imageURL)
+                uiProperties.selectedFillingID = res.cake.fillings.first?.id ?? ""
                 uiProperties.state = .finished
             } catch {
                 uiProperties.state = .error(content: error.readableGRPCContent)
@@ -90,7 +82,7 @@ extension OrderViewModel {
     func fetchUserAddresses() {
         Task { @MainActor in
             do {
-                addresses = try await profileProvider.getUserAddresses()
+                addresses = try await networkManager.profileService.getUserAddresses()
                 let address = addresses.first
                 uiProperties.selectedAddressID = address?.id
                 selectedAddress = address
@@ -103,7 +95,7 @@ extension OrderViewModel {
     /// Создаём адрес
     func createAddress(req: ProfileServiceModel.CreateAddress.Request) {
         Task { @MainActor in
-            let createdAddress = try await profileProvider.createAddress(req: req)
+            let createdAddress = try await networkManager.profileService.createAddress(req: req)
             addresses.append(createdAddress)
             uiProperties.selectedAddressID = createdAddress.id
             selectedAddress = createdAddress
@@ -160,7 +152,7 @@ extension OrderViewModel {
         uiProperties.isLoading = true
         Task { @MainActor in
             do {
-                let _ = try await orderProvider.makeOrder(
+                let _ = try await networkManager.orderService.makeOrder(
                     req: .init(
                         totalPrice: totalAmount,
                         deliveryAddressID: selectedAddressID,
@@ -242,7 +234,7 @@ extension OrderViewModel {
     func assemblyUpdateAddressView(address: AddressEntity) -> UpdateAddressView {
         let viewModel = UpdateAddressViewModel(
             address: address,
-            profileProvider: profileProvider
+            profileProvider: networkManager.profileService
         ) { [weak self] updatedAddress in
             self?.selectedAddress = updatedAddress
         }

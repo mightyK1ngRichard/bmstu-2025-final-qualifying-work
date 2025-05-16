@@ -9,9 +9,7 @@
 import SwiftUI
 import DesignSystem
 import Core
-#if DEBUG
 import NetworkAPI
-#endif
 
 struct OrderView: View {
     @State var viewModel: OrderViewModel

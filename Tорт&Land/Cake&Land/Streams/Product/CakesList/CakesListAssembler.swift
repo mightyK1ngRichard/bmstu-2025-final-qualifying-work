@@ -24,9 +24,4 @@ final class CakesListAssembler {
         presenter.viewModel = viewModel
         return CakesListView(viewModel: viewModel)
     }
-
-    static func assembleMock() -> CakesListView {
-        let viewModel = CakesListViewModelMock(delay: 3)
-        return CakesListView(viewModel: viewModel)
-    }
 }

@@ -13,7 +13,7 @@ import DesignSystem
 
 @Observable
 final class RatingReviewsViewModel: RatingReviewsDisplayLogic, RatingReviewsViewModelInput, RatingReviewsViewModelOutput {
-    var uiProperties = RatingReviewsModel.UIProperties()
+    var uiProperties: RatingReviewsModel.UIProperties
     private(set) var comments: [CommentInfo] = []
     @ObservationIgnored
     private let cakeID: String
@@ -26,9 +26,11 @@ final class RatingReviewsViewModel: RatingReviewsDisplayLogic, RatingReviewsView
 
     init(
         cakeID: String,
+        showFeedbackButton: Bool,
         reviewsService: ReviewsService,
         imageProvider: ImageLoaderProvider
     ) {
+        uiProperties = RatingReviewsModel.UIProperties(showFeedbackButton: showFeedbackButton)
         self.cakeID = cakeID
         self.reviewsService = reviewsService
         self.imageProvider = imageProvider

@@ -18,6 +18,11 @@ struct RootView: View {
                 viewModel.setEnvironmentObjects(coordinator)
                 viewModel.fetchUserInfoIfNeeded()
             }
+            .defaultAlert(
+                errorContent: viewModel.uiProperties.alert.errorContent,
+                isPresented: $viewModel.uiProperties.alert.isShown,
+                action: viewModel.didTapAlertButton
+            )
             .navigationDestination(for: RootModel.Screens.self) { screen in
                 openNextScreen(for: screen)
             }
@@ -41,11 +46,4 @@ private extension RootView {
             viewModel.assemblyOrderView(cakeID: cakeID)
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    RootAssembler.assembleMock()
-        .environment(Coordinator())
 }

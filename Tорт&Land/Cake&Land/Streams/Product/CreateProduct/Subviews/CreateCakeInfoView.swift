@@ -186,8 +186,8 @@ private extension CreateCakeInfoView {
 private extension CreateCakeInfoView {
     enum Constants {
         static let cornderRadius: CGFloat = 8
-        static let priceLimit = 40
-        static let descriptionLimit = 900
+        static let priceLimit = 100
+        static let descriptionLimit = 1500
         static let pricePlaceholder = String(localized: "*Kg price, \(StringConstants.rub)")
         static let massPlaceholder = String(localized: "*Weight in grams")
         static let productNamePlaceholder = String(localized: "Cake name")

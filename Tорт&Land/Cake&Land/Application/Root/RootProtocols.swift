@@ -22,6 +22,7 @@ protocol RootDisplayData {
 protocol RootViewModelInput {
     func fetchUserInfoIfNeeded()
     func reloadGetUserInfo()
+    func didTapAlertButton()
 
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView
     func assemblyProfileView(userModel: UserModel) -> ProfileView

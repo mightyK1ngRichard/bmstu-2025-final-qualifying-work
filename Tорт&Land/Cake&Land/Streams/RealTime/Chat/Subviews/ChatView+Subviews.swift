@@ -12,8 +12,8 @@ import DesignSystem
 
 extension ChatView {
     var mainContainer: some View {
-        ScrollViewReader { proxy in
-            ZStack(alignment: .bottom) {
+        ZStack(alignment: .bottom) {
+            ScrollViewReader { proxy in
                 ScrollView {
                     messagesContainer
 
@@ -21,32 +21,28 @@ extension ChatView {
                         .id(Constants.scrollIdentifier)
                         .padding(.bottom, 50)
                 }
-
-                textFieldBlock
-                    .padding(.vertical, 6)
-                    .background(.ultraThinMaterial)
-            }
-            .frame(maxHeight: .infinity)
-            .background {
-                backgroundView
-                    .ignoresSafeArea()
-            }
-            .onAppear {
-                proxy.scrollTo(Constants.scrollIdentifier, anchor: .bottom)
-            }
-            .onChange(of: viewModel.lastMessageID) { _, _ in
-                withAnimation {
+                .onAppear {
                     proxy.scrollTo(Constants.scrollIdentifier, anchor: .bottom)
                 }
+                .onChange(of: viewModel.lastMessageID) { _, _ in
+                    withAnimation {
+                        proxy.scrollTo(Constants.scrollIdentifier, anchor: .bottom)
+                    }
+                }
             }
+
+            textFieldBlock
+                .padding(.vertical, 6)
+                .background(.ultraThinMaterial)
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 headerInfo
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                interlocutorAvatar
-            }
+        }
+        .background {
+            backgroundView
+                .ignoresSafeArea()
         }
     }
 }
@@ -114,25 +110,6 @@ private extension ChatView {
                 .style(13, .regular, TLColor<TextPalette>.textSecondary.color)
         }
     }
-
-    var interlocutorAvatar: some View {
-        TLImageView(
-            configuration: viewModel.configureInterlocutorAvatar()
-        )
-        .frame(width: 37, height: 37)
-        .clipShape(.circle)
-    }
-}
-
-// MARK: - Preview
-
-#Preview {
-    NavigationStack {
-        ChatView(
-            viewModel: ChatViewModelMock()
-        )
-    }
-    .environment(Coordinator())
 }
 
 // MARK: - Constants

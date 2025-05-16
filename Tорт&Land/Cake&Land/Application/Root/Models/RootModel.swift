@@ -12,6 +12,8 @@ enum RootModel {}
 
 extension RootModel {
     struct UIProperties: Hashable {
+        var alert = AlertModel()
+        var sessionIsExpired = false
     }
 
     enum Screens: Hashable {

@@ -66,7 +66,7 @@ enum CommonMockData {
             ],
             seller: generateMockUserModel(id: id, name: "Продавец #\(id)"),
             colorsHex: [],
-            isOpenForSale: true
+            status: .approved
         )
     }
     static func generateMockUserModel(

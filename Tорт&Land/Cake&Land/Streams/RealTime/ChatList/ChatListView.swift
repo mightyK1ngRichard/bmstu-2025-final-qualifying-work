@@ -34,12 +34,3 @@ private extension ChatListView {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    ChatListView(
-        viewModel: ChatListViewModelMock()
-    )
-    .environment(Coordinator())
-}

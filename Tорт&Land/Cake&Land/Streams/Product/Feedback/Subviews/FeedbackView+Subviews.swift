@@ -112,12 +112,6 @@ extension FeedbackView {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    FeedbackView(viewModel: FeedbackViewModelMock())
-}
-
 // MARK: - Constants
 
 private extension FeedbackView {
