@@ -14,9 +14,24 @@ public enum CakeServiceModel {
     public enum FetchFillings {}
     public enum FetchCategories {}
     public enum FetchCakes {}
+    public enum FetchCakeByID {}
     public enum FetchCategoriesByGenderName {}
     public enum FetchCategoryCakes {}
     public enum AddCakeColors {}
+}
+
+// MARK: - FetchCakeByID {}
+
+public extension CakeServiceModel.FetchCakeByID {
+    struct Response: Sendable {
+        public let cake: CakeEntity
+        public let canWriteFeedback: Bool
+
+        init(from model: Cake_CakeResponse) {
+            self.cake = .init(from: model.cake)
+            self.canWriteFeedback = model.userCanWriteFeedback
+        }
+    }
 }
 
 // MARK: - CreateCategory

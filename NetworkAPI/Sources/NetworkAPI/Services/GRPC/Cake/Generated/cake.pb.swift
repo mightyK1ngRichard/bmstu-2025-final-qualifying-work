@@ -147,6 +147,9 @@ struct Cake_CakeResponse: Sendable {
   /// Clears the value of `cake`. Subsequent reads from it will return its default value.
   mutating func clearCake() {self._cake = nil}
 
+  /// Флаг, может ли пользователь оставить отзыв
+  var userCanWriteFeedback: Bool = false
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
@@ -957,6 +960,7 @@ extension Cake_CakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
   static let protoMessageName: String = _protobuf_package + ".CakeResponse"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "cake"),
+    2: .same(proto: "userCanWriteFeedback"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -966,6 +970,7 @@ extension Cake_CakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularMessageField(value: &self._cake) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self.userCanWriteFeedback) }()
       default: break
       }
     }
@@ -979,11 +984,15 @@ extension Cake_CakeResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     try { if let v = self._cake {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
     } }()
+    if self.userCanWriteFeedback != false {
+      try visitor.visitSingularBoolField(value: self.userCanWriteFeedback, fieldNumber: 2)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Cake_CakeResponse, rhs: Cake_CakeResponse) -> Bool {
     if lhs._cake != rhs._cake {return false}
+    if lhs.userCanWriteFeedback != rhs.userCanWriteFeedback {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

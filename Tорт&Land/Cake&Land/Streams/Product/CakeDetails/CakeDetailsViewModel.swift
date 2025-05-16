@@ -13,11 +13,10 @@ import DesignSystem
 
 @Observable
 final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelInput {
-    var bindingData = CakeDetailsModel.BindingData()
+    var bindingData: CakeDetailsModel.BindingData
     private(set) var cakeModel: CakeModel
-    private(set) var show3DButton = true
     @ObservationIgnored
-    private(set) var showOwnerButton: Bool
+    private var showFeedbackButton = false
     @ObservationIgnored
     private let reviewsService: ReviewsService
     @ObservationIgnored
@@ -40,8 +39,8 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
         rootViewModel: RootViewModelOutput,
         priceFormatter: PriceFormatterService = .shared
     ) {
+        bindingData = CakeDetailsModel.BindingData(showOwnerButton: !isOwnedByUser)
         self.cakeModel = cakeModel
-        self.showOwnerButton = !isOwnedByUser
         self.cakeService = cakeService
         self.reviewsService = reviewsService
         self.imageProvider = imageProvider
@@ -63,17 +62,18 @@ extension CakeDetailsViewModel {
 
         Task { @MainActor in
             do {
-                let cakeEntity = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
-                cakeModel = cakeModel.applyDetails(cakeEntity)
+                let res = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
+                cakeModel = cakeModel.applyDetails(res.cake)
+                showFeedbackButton = res.canWriteFeedback
                 bindingData.isLoading = false
 
                 fetchThumbnails(cakeImages: cakeModel.thumbnails)
-                fetchCategoriesImages(categories: cakeEntity.categories)
-                fetchFillingsImages(fillings: cakeEntity.fillings)
-                fetchSellerImages(imageURL: cakeEntity.owner.imageURL, headerImage: cakeEntity.owner.headerImageURL)
+                fetchCategoriesImages(categories: res.cake.categories)
+                fetchFillingsImages(fillings: res.cake.fillings)
+                fetchSellerImages(imageURL: res.cake.owner.imageURL, headerImage: res.cake.owner.headerImageURL)
 
                 // Обновляем торт
-                rootViewModel.updateCake(cakeEntity)
+                rootViewModel.updateCake(res.cake)
             } catch {
                 bindingData.isLoading = false
                 // TODO: Показать ошибку
@@ -240,6 +240,7 @@ extension CakeDetailsViewModel {
     func assemblyRatingReviewsView() -> RatingReviewsView {
         RatingReviewsAssembler.assemble(
             cakeID: cakeModel.id,
+            showFeedbackButton: showFeedbackButton,
             reviewsService: reviewsService,
             imageProvider: imageProvider
         )

@@ -32,9 +32,12 @@ extension OrderDetailViewModel {
     func fetchCakeByID() {
         Task { @MainActor in
             do {
-                let cakeEntity = try await networkManager.cakeService.fetchCakeByID(cakeID: order.cakeID)
-                cakeModel = CakeModel(from: cakeEntity)
-                fetchCakeImages(previewImage: cakeEntity.imageURL, images: cakeEntity.images.map { $0.imageURL }, userImage: cakeEntity.owner.imageURL)
+                let res = try await networkManager.cakeService.fetchCakeByID(cakeID: order.cakeID)
+                cakeModel = CakeModel(from: res.cake)
+                fetchCakeImages(
+                    previewImage: res.cake.imageURL,
+                    images: res.cake.images.map { $0.imageURL },
+                    userImage: res.cake.owner.imageURL)
             }
         }
     }

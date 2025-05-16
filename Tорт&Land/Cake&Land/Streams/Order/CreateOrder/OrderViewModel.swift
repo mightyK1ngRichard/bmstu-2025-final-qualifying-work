@@ -66,11 +66,11 @@ extension OrderViewModel {
         uiProperties.state = .loading
         Task { @MainActor in
             do {
-                let cakeEntity = try await networkManager.cakeService.fetchCakeByID(cakeID: cakeID)
-                cake = CakeModel(from: cakeEntity)
-                fetchCakeImages(fillings: cakeEntity.fillings)
-                fetchCakePreview(url: cakeEntity.imageURL)
-                uiProperties.selectedFillingID = cakeEntity.fillings.first?.id ?? ""
+                let res = try await networkManager.cakeService.fetchCakeByID(cakeID: cakeID)
+                cake = CakeModel(from: res.cake)
+                fetchCakeImages(fillings: res.cake.fillings)
+                fetchCakePreview(url: res.cake.imageURL)
+                uiProperties.selectedFillingID = res.cake.fillings.first?.id ?? ""
                 uiProperties.state = .finished
             } catch {
                 uiProperties.state = .error(content: error.readableGRPCContent)

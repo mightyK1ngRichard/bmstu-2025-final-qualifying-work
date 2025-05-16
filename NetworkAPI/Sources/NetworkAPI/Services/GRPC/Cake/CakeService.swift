@@ -18,7 +18,7 @@ public protocol CakeService: Sendable {
     func fetchCakes() async throws -> CakeServiceModel.FetchCakes.Response
     func getUserCakes(userID: String) async throws -> [PreviewCakeEntity]
     func fetchAllCakesWithAllStatuses() async throws -> [PreviewCakeEntity]
-    func fetchCakeByID(cakeID: String) async throws -> CakeEntity
+    func fetchCakeByID(cakeID: String) async throws -> CakeServiceModel.FetchCakeByID.Response
     func addCakeColors(req: CakeServiceModel.AddCakeColors.Request) async throws
     func fetchColors() async throws -> [String]
     func add3DModel(cakeID: String, modelData: Data) async throws -> String
@@ -231,13 +231,15 @@ public extension CakeGrpcServiceImpl {
             call: client.cakes,
             with: request,
             mapping: {
-                .init(cakes: $0.cakes.map { PreviewCakeEntity(from: $0) })
+                .init(cakes: $0.cakes.map(PreviewCakeEntity.init(from:)))
             }
         )
     }
 
 
-    func fetchCakeByID(cakeID: String) async throws -> CakeEntity {
+    func fetchCakeByID(cakeID: String) async throws -> CakeServiceModel.FetchCakeByID.Response {
+        try await networkService.maybeRefreshAccessToken(using: authService)
+
         let request = Cake_CakeRequest.with {
             $0.cakeID = cakeID
         }
@@ -245,7 +247,7 @@ public extension CakeGrpcServiceImpl {
         return try await networkService.performAndLog(
             call: client.cake,
             with: request,
-            mapping: { CakeEntity(from: $0.cake) }
+            mapping: { .init(from: $0) }
         )
     }
 

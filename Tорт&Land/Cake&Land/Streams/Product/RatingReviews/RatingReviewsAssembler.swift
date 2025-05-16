@@ -12,11 +12,13 @@ import NetworkAPI
 final class RatingReviewsAssembler {
     static func assemble(
         cakeID: String,
+        showFeedbackButton: Bool,
         reviewsService: ReviewsService,
         imageProvider: ImageLoaderProvider
     ) -> RatingReviewsView {
         let viewModel = RatingReviewsViewModel(
             cakeID: cakeID,
+            showFeedbackButton: showFeedbackButton,
             reviewsService: reviewsService,
             imageProvider: imageProvider
         )

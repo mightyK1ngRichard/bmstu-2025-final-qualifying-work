@@ -11,8 +11,6 @@ import DesignSystem
 protocol CakeDetailsDisplayData {
     var bindingData: CakeDetailsModel.BindingData { get set }
     var cakeModel: CakeModel { get }
-    var showOwnerButton: Bool { get }
-    var show3DButton: Bool { get }
 }
 
 protocol CakeDetailsViewModelInput {

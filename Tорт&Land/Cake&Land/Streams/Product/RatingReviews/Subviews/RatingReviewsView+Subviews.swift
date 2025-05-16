@@ -81,22 +81,25 @@ private extension RatingReviewsView {
         .padding(.trailing, 32)
     }
 
+    @ViewBuilder
     var writeReviewButton: some View {
-        Button(action: viewModel.didTapWriteReviewButton, label: {
-            HStack(spacing: 9) {
-                Image(uiImage: TLAssets.pen)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 13, height: 13)
+        if viewModel.uiProperties.showFeedbackButton {
+            Button(action: viewModel.didTapWriteReviewButton, label: {
+                HStack(spacing: 9) {
+                    Image(uiImage: TLAssets.pen)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 13, height: 13)
 
-                Text(Constants.writeReviewButtonTitle)
-                    .style(11, .semibold, .white)
-            }
-        })
-        .padding(.horizontal, 10)
-        .padding(.vertical, 12)
-        .background(TLColor<BackgroundPalette>.bgRed.color, in: .rect(cornerRadius: 25))
-        .padding(.trailing, 26)
+                    Text(Constants.writeReviewButtonTitle)
+                        .style(11, .semibold, .white)
+                }
+            })
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
+            .background(TLColor<BackgroundPalette>.bgRed.color, in: .rect(cornerRadius: 25))
+            .padding(.trailing, 26)
+        }
     }
 
     var sheetView: some View {
