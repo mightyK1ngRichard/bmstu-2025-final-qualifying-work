@@ -64,7 +64,6 @@ private extension CakeListView {
                     )
             )
             .padding(.horizontal)
-            .padding(.bottom, 8)
             .contentShape(.rect)
             .onTapGesture {
                 isExpanded.toggle()
@@ -124,6 +123,7 @@ private extension CakeListView {
                 }
             }
             .padding(.horizontal)
+            .padding(.top, 8)
         }
     }
 

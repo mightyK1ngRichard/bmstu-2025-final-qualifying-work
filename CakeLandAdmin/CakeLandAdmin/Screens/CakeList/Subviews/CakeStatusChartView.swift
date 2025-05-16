@@ -21,6 +21,10 @@ struct CakeStatusChartView: View {
                         y: .value("Статус", status.title)
                     )
                     .foregroundStyle(by: .value("Статус", status.title))
+                    .annotation(position: .overlay) {
+                        Text("\(count)")
+                            .font(.caption)
+                    }
                 }
             }
         }
