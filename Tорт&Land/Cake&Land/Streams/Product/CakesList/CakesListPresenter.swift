@@ -13,7 +13,7 @@ import GRPC
 import NIO
 
 final class CakesListPresenter: CakesListPresenterInput {
-    var viewModel: CakesListDisplayLogic!
+    weak var viewModel: CakesListDisplayLogic!
 
     func didFetchCakes(result: Result<[CakesListModel.Section.Kind: [PreviewCakeEntity]], Error>) async {
         do {
