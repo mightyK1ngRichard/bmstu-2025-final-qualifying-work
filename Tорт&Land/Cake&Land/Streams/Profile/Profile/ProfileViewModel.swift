@@ -215,10 +215,21 @@ extension ProfileViewModel {
     }
 
     func assemblyCreateCakeView() -> CreateProductView {
-        CreateProductAssembler.assemble(
+        let view = CreateProductAssembler.assemble(
             cakeProvider: networkManager.cakeService,
             imageProvider: imageProvider
         )
+        view.viewModel.createPublisher
+            .sink { [weak self] createdCake in
+                guard let self,
+                      let userModel = user
+                else { return }
+                user?.cakes.append(CakeModel(from: createdCake, user: userModel))
+            }
+            .store(in: &store)
+
+
+        return view
     }
 
     func assemblyChatView(currentUser: UserModel, interlocutor: UserModel) -> ChatView {

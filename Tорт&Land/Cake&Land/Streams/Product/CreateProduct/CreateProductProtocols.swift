@@ -7,10 +7,12 @@
 //
 
 import Foundation
+import Combine
 import DesignSystem
 
 protocol CreateProductDisplayLogic {
     var uiProperties: CreateProductModel.UIProperties { get set }
+    var createPublisher: PassthroughSubject<CreatedCakeModel, Never> { get }
 }
 
 protocol CreateProductViewModelInput {

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RatingReviewsView: View {
-    @State var viewModel: RatingReviewsDisplayLogic & RatingReviewsViewModelInput
+    @State var viewModel: RatingReviewsDisplayLogic & RatingReviewsViewModelInput & RatingReviewsViewModelOutput
     @Environment(Coordinator.self) private var coordinator
 
     var body: some View {

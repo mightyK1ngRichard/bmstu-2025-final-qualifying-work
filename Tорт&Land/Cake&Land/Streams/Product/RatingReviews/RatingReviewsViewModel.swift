@@ -9,12 +9,15 @@
 import Foundation
 import NetworkAPI
 import Core
+import Combine
 import DesignSystem
 
 @Observable
 final class RatingReviewsViewModel: RatingReviewsDisplayLogic, RatingReviewsViewModelInput, RatingReviewsViewModelOutput {
     var uiProperties: RatingReviewsModel.UIProperties
     private(set) var comments: [CommentInfo] = []
+    @ObservationIgnored
+    private(set) var addFeedbackPublisher = PassthroughSubject<FeedbackEntity, Never>()
     @ObservationIgnored
     private let cakeID: String
     @ObservationIgnored
@@ -40,6 +43,7 @@ final class RatingReviewsViewModel: RatingReviewsDisplayLogic, RatingReviewsView
 // MARK: - Network
 
 extension RatingReviewsViewModel {
+
     func fetchComments() {
         uiProperties.state = .loading
         Task { @MainActor in
@@ -60,10 +64,8 @@ extension RatingReviewsViewModel {
             }
         }
     }
-}
 
-private extension RatingReviewsViewModel {
-    func fetchUserImage(index: Int, urlString: String?) {
+    private func fetchUserImage(index: Int, urlString: String?) {
         Task { @MainActor in
             guard let urlString else {
                 comments[index].author.imageState = .fetched(.uiImage(TLAssets.profile))
@@ -74,6 +76,7 @@ private extension RatingReviewsViewModel {
             comments[index].author.imageState = imageState
         }
     }
+
 }
 
 // MARK: - Configurations
@@ -115,9 +118,11 @@ extension RatingReviewsViewModel {
 // MARK: - Actions
 
 extension RatingReviewsViewModel {
+
     func didTapWriteReviewButton() {
         uiProperties.isOpenFeedbackView = true
     }
+
 }
 
 // MARK: - RatingReviewsViewModelOutput
@@ -127,6 +132,7 @@ extension RatingReviewsViewModel {
     func insertNewComment(_ feedback: FeedbackEntity) {
         let index = comments.count
         comments.append(CommentInfo(from: feedback))
+        addFeedbackPublisher.send(feedback)
         fetchUserImage(index: index, urlString: feedback.author.imageURL)
     }
 }

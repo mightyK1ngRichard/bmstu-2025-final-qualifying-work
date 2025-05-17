@@ -10,6 +10,7 @@ import Foundation
 import Core
 import NetworkAPI
 import DesignSystem
+import Combine
 
 @Observable
 final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelInput {
@@ -29,6 +30,8 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     private let priceFormatter: PriceFormatterService
     @ObservationIgnored
     private let rootViewModel: RootViewModelOutput
+    @ObservationIgnored
+    private var cancellables = Set<AnyCancellable>()
 
     init(
         cakeModel: CakeModel,
@@ -238,12 +241,25 @@ extension CakeDetailsViewModel {
     }
 
     func assemblyRatingReviewsView() -> RatingReviewsView {
-        RatingReviewsAssembler.assemble(
+        let view = RatingReviewsAssembler.assemble(
             cakeID: cakeModel.id,
             showFeedbackButton: showFeedbackButton,
             reviewsService: reviewsService,
             imageProvider: imageProvider
         )
+
+        view.viewModel.addFeedbackPublisher
+            .sink { [weak self] feedback in
+                guard let self else { return }
+                var startsSum = cakeModel.rating * cakeModel.reviewsCount
+                startsSum += feedback.rating
+                cakeModel.reviewsCount += 1
+                cakeModel.rating = Int(startsSum / cakeModel.reviewsCount)
+
+            }
+            .store(in: &cancellables)
+
+        return view
     }
 
     func configureFillingDetails(for filling: Filling) -> FillingDetailView.Configuration {

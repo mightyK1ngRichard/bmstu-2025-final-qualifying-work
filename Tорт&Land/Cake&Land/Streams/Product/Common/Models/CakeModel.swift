@@ -10,6 +10,7 @@ import Foundation
 import NetworkAPI
 import DesignSystem
 import Core
+import UIKit
 
 struct CakeModel: Identifiable, Hashable {
     /// Код торта
@@ -217,13 +218,34 @@ extension CakeModel {
     }
 
     func applyDetails(_ cakeEntity: CakeEntity) -> CakeModel {
-        var cakeCopy = self
-        cakeCopy.thumbnails = cakeEntity.images.map { Thumbnail(id: $0.id, imageState: .loading, url: $0.imageURL) }
-        cakeCopy.categories = cakeEntity.categories.map(Category.init(from:))
-        cakeCopy.fillings = cakeEntity.fillings.map(Filling.init(from:))
-        cakeCopy.status = CakeStatus(from: cakeEntity.status)
-        return cakeCopy
+        var newCake = CakeModel(from: cakeEntity)
+        newCake.previewImageState = previewImageState
+        return newCake
     }
+
+    init(from model: CreatedCakeModel, user: UserModel) {
+        self = CakeModel(
+            id: model.id,
+            previewImageState: model.previewImageState,
+            thumbnails: [],
+            cakeName: model.name,
+            price: model.price,
+            mass: model.mass,
+            rating: 0,
+            reviewsCount: 0,
+            isSelected: false,
+            description: model.description,
+            establishmentDate: "",
+            similarCakes: [],
+            comments: [],
+            categories: [],
+            fillings: [],
+            seller: user,
+            colorsHex: [],
+            status: .pending
+        )
+    }
+
 }
 
 // MARK: - TLProductCard

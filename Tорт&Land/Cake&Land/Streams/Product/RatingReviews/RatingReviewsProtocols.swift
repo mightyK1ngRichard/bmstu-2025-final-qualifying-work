@@ -9,6 +9,7 @@
 import Foundation
 import NetworkAPI
 import DesignSystem
+import Combine
 
 protocol RatingReviewsDisplayLogic {
     var uiProperties: RatingReviewsModel.UIProperties { get set }
@@ -29,4 +30,5 @@ protocol RatingReviewsViewModelInput {
 protocol RatingReviewsViewModelOutput {
     @MainActor
     func insertNewComment(_ feedback: FeedbackEntity)
+    var addFeedbackPublisher: PassthroughSubject<FeedbackEntity, Never> { get }
 }

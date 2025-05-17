@@ -11,11 +11,14 @@
 import Foundation
 import Observation
 import NetworkAPI
+import Combine
 import DesignSystem
 
 @Observable
 final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic, RatingReviewsViewModelInput, RatingReviewsViewModelOutput {
     var uiProperties = RatingReviewsModel.UIProperties()
+    @ObservationIgnored
+    var addFeedbackPublisher = PassthroughSubject<NetworkAPI.FeedbackEntity, Never>()
     private(set) var comments: [CommentInfo]
 
     init(comments: [CommentInfo] = MockData.mockCommentsInfo) {

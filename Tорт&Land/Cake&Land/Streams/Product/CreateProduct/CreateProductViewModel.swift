@@ -10,6 +10,8 @@ import Foundation
 import NetworkAPI
 import Observation
 import UIKit
+import Core
+import Combine
 import _PhotosUI_SwiftUI
 import DesignSystem
 
@@ -18,6 +20,8 @@ final class CreateProductViewModel: CreateProductDisplayLogic, CreateProductView
     var uiProperties = CreateProductModel.UIProperties()
     private(set) var selectedImages: [UIImage] = []
 
+    @ObservationIgnored
+    var createPublisher = PassthroughSubject<CreatedCakeModel, Never>()
     @ObservationIgnored
     var addFCViewModel: AddFillingsAndCategoriesViewModel
     @ObservationIgnored
@@ -118,23 +122,39 @@ extension CreateProductViewModel {
             discountedPrice = Double(uiProperties.inputDiscountedPrice)
         }
 
+        let request = CakeServiceModel.CreateCake.Request(
+            name: uiProperties.inputName,
+            previewImageData: previewImage,
+            kgPrice: kgPrice,
+            description: uiProperties.inputDescription,
+            mass: mass,
+            isOpenForSale: true,
+            discountEndTime: discountEndTime,
+            discountKgPrice: discountedPrice,
+            fillingIDs: Array(addFCViewModel.selectedFillingsIDs),
+            categoryIDs: Array(addFCViewModel.selectedCategoriesIDs),
+            imagesData: Array(uiProperties.selectedPhotosData.dropFirst())
+        )
+
         Task { @MainActor in
             do {
-                let response = try await cakeProvider.createCake(
-                    req: .init(
-                        name: uiProperties.inputName,
-                        previewImageData: previewImage,
-                        kgPrice: kgPrice,
-                        description: uiProperties.inputDescription,
-                        mass: mass,
-                        isOpenForSale: true,
-                        discountEndTime: discountEndTime,
-                        discountKgPrice: discountedPrice,
-                        fillingIDs: Array(addFCViewModel.selectedFillingsIDs),
-                        categoryIDs: Array(addFCViewModel.selectedCategoriesIDs),
-                        imagesData: Array(uiProperties.selectedPhotosData.dropFirst())
-                    )
+                let response = try await cakeProvider.createCake(req: request)
+
+                // Возвращает предыдушему экрану новый торт
+                var previewImage: ImageState = .empty
+                if let uiImage = selectedImages.first {
+                    previewImage = .fetched(.uiImage(uiImage))
+                }
+                let createdPreviewCake = CreatedCakeModel(
+                    id: response.cakeID,
+                    name: uiProperties.inputName,
+                    price: kgPrice,
+                    description: uiProperties.inputDescription,
+                    mass: mass,
+                    previewImageState: previewImage
                 )
+                createPublisher.send(createdPreviewCake)
+
                 coordinator.openPreviousScreen()
                 generateCakeColors(cakeID: response.cakeID)
             } catch {

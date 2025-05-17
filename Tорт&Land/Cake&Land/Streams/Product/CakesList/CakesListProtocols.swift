@@ -30,7 +30,7 @@ protocol CakesListViewModelInput {
 }
 
 @MainActor
-protocol CakesListDisplayLogic {
+protocol CakesListDisplayLogic: AnyObject {
     func didFetchSections(with sections: [CakesListModel.Section])
     func showError(content: ErrorContent)
     func updateCakeCellImage(cakeID: String, imageState: ImageState, with sectionKind: CakesListModel.Section.Kind)
