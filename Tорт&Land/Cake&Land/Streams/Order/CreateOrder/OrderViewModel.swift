@@ -196,7 +196,7 @@ extension OrderViewModel {
 
     func configureWeightCellTitle(multiplier: Double, mass: Double) -> String {
         let coef = String(format: "%.1f", multiplier)
-        return "\(coef)× (\(Int(mass * multiplier)) г)"
+        return "\(coef)× (\(Int(mass * multiplier)) g)"
     }
 
     var calculateTotalAmount: Double? {

@@ -52,7 +52,7 @@ extension LocationManager {
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Ошибка получения геолокации: \(error.localizedDescription)")
+        print("[DEBUG]: Ошибка получения геолокации: \(error.localizedDescription)")
     }
 
 }

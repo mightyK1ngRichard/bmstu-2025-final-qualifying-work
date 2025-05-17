@@ -42,22 +42,22 @@ private extension OrderDetailsView {
     }
 
     var orderInfo: some View {
-        Section("Информация о заказе") {
+        Section("Order information") {
             HStack {
-                Text("ID заказа")
+                Text("Order ID")
                 Spacer()
                 Text(viewModel.orderEntity.id)
                     .style(12, .regular, TLColor<TextPalette>.textSecondary.color)
                     .multilineTextAlignment(.trailing)
                     .contextMenu {
                         Button(action: viewModel.copyOrderID) {
-                            Label("Скопировать", systemImage: "doc.on.doc")
+                            Label("Copy", systemImage: "doc.on.doc")
                         }
                     }
             }
 
             HStack {
-                Text("Статус")
+                Text("Status")
                 Spacer()
                 Text(viewModel.orderEntity.status.title.capitalized)
                     .foregroundStyle(viewModel.orderEntity.status.textColor)
@@ -65,60 +65,60 @@ private extension OrderDetailsView {
             }
 
             HStack {
-                Text("Масса")
+                Text("Mass")
                 Spacer()
-                Text("\(viewModel.orderEntity.mass, specifier: "%.0f") г")
+                Text("\(viewModel.orderEntity.mass, specifier: "%.0f") g")
             }
 
             HStack {
-                Text("Цена")
+                Text("Total price")
                 Spacer()
                 Text("\(viewModel.orderEntity.totalPrice, specifier: "%.2f") ₽")
             }
 
             HStack {
-                Text("Оплата")
+                Text("Payment")
                 Spacer()
-                Text(viewModel.orderEntity.paymentMethod == .cash ? "Наличные" : "IO-деньги")
+                Text(viewModel.orderEntity.paymentMethod == .cash ? "Cash" : "YoMoney")
             }
         }
     }
 
     var addressInfo: some View {
-        Section("Доставка") {
+        Section("Delivery") {
             Text(viewModel.orderEntity.deliveryAddress.formattedAddress)
 
             if let entrance = viewModel.orderEntity.deliveryAddress.entrance {
                 HStack {
-                    Text("Подъезд")
+                    Text("Entrance")
                     Spacer()
                     Text(entrance)
                 }
             }
             if let floor = viewModel.orderEntity.deliveryAddress.floor {
                 HStack {
-                    Text("Этаж")
+                    Text("Floor")
                     Spacer()
                     Text(floor)
                 }
             }
             if let apartment = viewModel.orderEntity.deliveryAddress.apartment {
                 HStack {
-                    Text("Квартира")
+                    Text("Apartment")
                     Spacer()
                     Text(apartment)
                 }
             }
             if let comment = viewModel.orderEntity.deliveryAddress.comment {
                 HStack {
-                    Text("Комментарий")
+                    Text("Shipping comment")
                     Spacer()
                     Text(comment)
                 }
             }
 
             HStack {
-                Text("Дата")
+                Text("Date")
                 Spacer()
                 Text(
                     viewModel.orderEntity.deliveryDate.formatted(
@@ -130,22 +130,22 @@ private extension OrderDetailsView {
     }
 
     var fillingInfo: some View {
-        Section("Начинка") {
+        Section("Filling") {
             HStack {
-                Text("Название")
+                Text("Name")
                 Spacer()
                 Text(viewModel.orderEntity.filling.name)
             }
 
             HStack {
-                Text("Состав")
+                Text("Composition")
                 Spacer()
                 Text(viewModel.orderEntity.filling.content)
                     .multilineTextAlignment(.trailing)
             }
 
             HStack {
-                Text("Цена за кг")
+                Text("Price per kg")
                 Spacer()
                 Text("\(viewModel.orderEntity.filling.kgPrice, specifier: "%.2f") ₽")
             }
@@ -157,16 +157,16 @@ private extension OrderDetailsView {
     }
 
     var timeInfo: some View {
-        Section("Временные метки") {
+        Section("Timestamps") {
             HStack {
-                Text("Создан")
+                Text("Created at")
                 Spacer()
                 Text(viewModel.orderEntity.createdAt.formatted())
                     .foregroundStyle(.secondary)
             }
 
             HStack {
-                Text("Обновлён")
+                Text("Updated at")
                 Spacer()
                 Text(viewModel.orderEntity.updatedAt.formatted())
                     .foregroundStyle(.secondary)
@@ -175,7 +175,7 @@ private extension OrderDetailsView {
     }
 
     var cakeContainer: some View {
-        Section("Данные торта") {
+        Section("Cake data") {
             if let cake = viewModel.cakeModel {
                 VStack(spacing: 16) {
                     imagesCarousel(cake: cake)

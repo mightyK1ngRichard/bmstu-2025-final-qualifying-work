@@ -115,7 +115,7 @@ private extension SettingsView {
 
             HStack {
                 pencilImage
-                TextField("Input new FIO", text: $viewModel.uiProperties.inputFIO)
+                TextField("Input new full name", text: $viewModel.uiProperties.inputFIO)
                     .textInputAutocapitalization(.words)
                     .disableAutocorrection(true)
                     .focused($isFocused)

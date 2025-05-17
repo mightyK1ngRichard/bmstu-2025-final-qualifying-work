@@ -86,12 +86,12 @@ private extension OrderListView {
                 .frame(width: 64, height: 64)
                 .foregroundColor(.gray.opacity(0.6))
 
-            Text("Заказов пока нет")
+            Text("No orders yet")
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.primary)
 
-            Text("Когда вы сделаете заказ, он появится здесь.")
+            Text("When you place your order, it will appear here.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

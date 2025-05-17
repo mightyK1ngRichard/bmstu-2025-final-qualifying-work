@@ -71,12 +71,12 @@ private extension NotificationsListView {
                 .frame(width: 64, height: 64)
                 .foregroundColor(.gray.opacity(0.6))
 
-            Text("Уведомлений нет")
+            Text("No notifications")
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.primary)
 
-            Text("Здесь появятся уведомления о заказах, сообщениях и других событиях.")
+            Text("Notifications of orders, messages and other events will appear here.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

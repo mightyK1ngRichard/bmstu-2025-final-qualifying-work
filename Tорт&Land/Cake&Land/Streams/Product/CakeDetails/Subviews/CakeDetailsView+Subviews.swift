@@ -280,7 +280,6 @@ private extension CakeDetailsView {
         static let ratingReviewsTitle = String(localized: "Rating&Reviews")
         static let sellerInfoTitle = String(localized: "Seller Info")
         static let buyButtonTitle = String(localized: "Make an order")
-        static let deleteButtonTitle = String(localized: "Delete product")
 
         static let iconPrimary = TLColor<IconPalette>.iconPrimary.color
     }

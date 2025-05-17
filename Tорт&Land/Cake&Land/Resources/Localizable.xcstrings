@@ -5,13 +5,34 @@
 
     },
     "*Kg price, %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "*Цена за кг, %@"
+          }
+        }
+      }
     },
     "*Weight in grams" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "*Вес в граммах"
+          }
+        }
+      }
     },
-    "%.0f г" : {
-
+    "%.0f g" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.0f г"
+          }
+        }
+      }
     },
     "%.2f ₽" : {
 
@@ -20,24 +41,10 @@
 
     },
     "%lld %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld %2$@"
-          }
-        }
-      }
+
     },
     "%lld/%lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld/%2$lld"
-          }
-        }
-      }
+
     },
     "0" : {
 
@@ -52,13 +59,20 @@
 
     },
     "Add address" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить адрес"
+          }
+        }
+      }
     },
     "All" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Все"
           }
         }
@@ -68,41 +82,127 @@
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Уже есть аккаунт?"
           }
         }
       }
     },
     "Anonymous" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аноним"
+          }
+        }
+      }
+    },
+    "Apartment" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Квартира"
+          }
+        }
+      }
     },
     "Cake" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Торта"
+          }
+        }
+      }
+    },
+    "Cake data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация о торте"
+          }
+        }
+      }
     },
     "Cake filling:" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начинка торта:"
+          }
+        }
+      }
     },
     "Cake Fillings" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начинки торта"
+          }
+        }
+      }
     },
     "Cake name" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название торта"
+          }
+        }
+      }
     },
     "Cake parameters" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Параметры торта"
+          }
+        }
+      }
     },
     "Cake weight:" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вес торта:"
+          }
+        }
+      }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
+          }
+        }
+      }
+    },
+    "Cash" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наличные"
+          }
+        }
+      }
     },
     "Categories" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Категории"
           }
         }
@@ -112,77 +212,151 @@
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Чаты"
           }
         }
       }
     },
     "choose rating" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "выберите рейтинг"
+          }
+        }
+      }
     },
     "Close" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыть"
+          }
+        }
+      }
     },
     "Colors" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цвета"
+          }
+        }
+      }
+    },
+    "Composition" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Состав"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копировать"
+          }
+        }
+      }
     },
     "Create" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создать"
+          }
+        }
+      }
     },
     "Create a product" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Создать продукт"
           }
         }
       }
     },
-    "Customer" : {
-      "extractionState" : "stale",
+    "Created at" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Покупатель"
+            "value" : "Создан"
+          }
+        }
+      }
+    },
+    "Date" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Дата"
           }
         }
       }
     },
     "Delete" : {
-
-    },
-    "Delete product" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Удалить продукт"
+            "state" : "needs_review",
+            "value" : "Удалить"
           }
         }
       }
     },
-    "Delivery address" : {
-      "extractionState" : "stale",
+    "Delivery" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Адрес доставки"
+            "state" : "needs_review",
+            "value" : "Доставка"
           }
         }
       }
     },
     "Desired delivery date:" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Желаемая дата доставки:"
+          }
+        }
+      }
     },
     "Discounted price (Optional field)" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Цена со скидкой (необязательное поле)"
+          }
+        }
+      }
     },
     "Discounted price end date (Optional field)" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Дата окончания действия скидки (необязательное поле)"
+          }
+        }
+      }
     },
     "Don't have account?" : {
       "localizations" : {
@@ -195,18 +369,41 @@
       }
     },
     "Edit user info" : {
-
-    },
-    "Email" : {
-
-    },
-    "Error" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ошибка"
+            "value" : "Редактирование информации о пользователе"
+          }
+        }
+      }
+    },
+    "Email" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "Entrance" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подъезд"
+          }
+        }
+      }
+    },
+    "Filling" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начинка"
           }
         }
       }
@@ -221,6 +418,16 @@
         }
       }
     },
+    "Floor" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Этаж"
+          }
+        }
+      }
+    },
     "Home" : {
       "localizations" : {
         "ru" : {
@@ -231,31 +438,35 @@
         }
       }
     },
-    "ID заказа" : {
-
-    },
-    "ID: %@" : {
-      "extractionState" : "stale",
+    "Input new full name" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Код: %@"
+            "value" : "Введите новое ФИО"
           }
         }
       }
     },
-    "Input new FIO" : {
-
-    },
     "Input new nickname" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите новый псевдоним"
+          }
+        }
+      }
     },
     "Invalid input data" : {
-
-    },
-    "IO-деньги" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Недопустимые входные данные"
+          }
+        }
+      }
     },
     "kids" : {
       "localizations" : {
@@ -268,7 +479,14 @@
       }
     },
     "Logout" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выйти"
+          }
+        }
+      }
     },
     "Make an order" : {
       "localizations" : {
@@ -276,6 +494,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сделать заказ"
+          }
+        }
+      }
+    },
+    "Mass" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Масса"
           }
         }
       }
@@ -301,10 +529,34 @@
       }
     },
     "My orders" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мои заказы"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название"
+          }
+        }
+      }
     },
     "Network error" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сетевая ошибка"
+          }
+        }
+      }
     },
     "New" : {
       "localizations" : {
@@ -327,10 +579,44 @@
       }
     },
     "No message" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет сообщений"
+          }
+        }
+      }
+    },
+    "No notifications" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет уведомлений"
+          }
+        }
+      }
+    },
+    "No orders yet" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заказов пока нет"
+          }
+        }
+      }
     },
     "No Preview Available" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предпросмотр недоступен"
+          }
+        }
+      }
     },
     "Nothing found" : {
       "localizations" : {
@@ -352,6 +638,16 @@
         }
       }
     },
+    "Notifications of orders, messages and other events will appear here." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Здесь будут появляться уведомления о заказах, сообщениях и других событиях."
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "ru" : {
@@ -362,22 +658,35 @@
         }
       }
     },
-    "Order" : {
-      "extractionState" : "stale",
+    "Order address" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Заказ"
+            "value" : "Адрес доставки"
           }
         }
       }
     },
-    "Order address" : {
-
+    "Order ID" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Код заказа"
+          }
+        }
+      }
     },
     "Order information" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация о заказе"
+          }
+        }
+      }
     },
     "Password" : {
       "localizations" : {
@@ -389,8 +698,25 @@
         }
       }
     },
+    "Payment" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оплата"
+          }
+        }
+      }
+    },
     "Payment Type" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тип оплаты"
+          }
+        }
+      }
     },
     "Please share your opinion about the product" : {
       "localizations" : {
@@ -402,23 +728,22 @@
         }
       }
     },
-    "Price range: %lld %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Price range: %1$lld %2$@"
-          }
-        }
-      }
-    },
-    "Product" : {
-      "extractionState" : "stale",
+    "Price per kg" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Продукт"
+            "value" : "Цена за кг"
+          }
+        }
+      }
+    },
+    "Price range: %lld %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ценовой диапазон: %lld %@"
           }
         }
       }
@@ -459,17 +784,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Регистрация"
-          }
-        }
-      }
-    },
-    "Reload" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Повторить"
           }
         }
       }
@@ -515,18 +829,21 @@
       }
     },
     "Select header image" : {
-
-    },
-    "Select product photos" : {
-
-    },
-    "Seller" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Продавец"
+            "value" : "Выберите изображение для шапки"
+          }
+        }
+      }
+    },
+    "Select product photos" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите фотографии товара"
           }
         }
       }
@@ -552,10 +869,34 @@
       }
     },
     "Settings" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        }
+      }
     },
     "Shipping Address:" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес доставки:"
+          }
+        }
+      }
+    },
+    "Shipping comment" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес к доставке"
+          }
+        }
+      }
     },
     "Sign In" : {
       "localizations" : {
@@ -567,8 +908,25 @@
         }
       }
     },
+    "Status" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статус"
+          }
+        }
+      }
+    },
     "Success!" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Успешно!"
+          }
+        }
+      }
     },
     "Super summer sale" : {
       "localizations" : {
@@ -591,27 +949,81 @@
       }
     },
     "There are no chats in your feed" : {
-
-    },
-    "Total Amount:" : {
-
-    },
-    "Update" : {
-
-    },
-    "Update header image" : {
-
-    },
-    "Update image" : {
-
-    },
-    "User address not found" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрес пользователя не найден"
+            "value" : "В вашей ленте нет чатов"
+          }
+        }
+      }
+    },
+    "Timestamps" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Временные метки"
+          }
+        }
+      }
+    },
+    "Total Amount:" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Общая сумма:"
+          }
+        }
+      }
+    },
+    "Total price" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Общая сумма:"
+          }
+        }
+      }
+    },
+    "Update" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновить"
+          }
+        }
+      }
+    },
+    "Update header image" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновление шапки профиля"
+          }
+        }
+      }
+    },
+    "Update image" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновить изображение"
+          }
+        }
+      }
+    },
+    "Updated at" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновлён"
           }
         }
       }
@@ -636,6 +1048,16 @@
         }
       }
     },
+    "When you place your order, it will appear here." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Когда вы оформите заказ, он появится здесь."
+          }
+        }
+      }
+    },
     "women" : {
       "localizations" : {
         "ru" : {
@@ -647,7 +1069,14 @@
       }
     },
     "Write a description of the product..." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напишите описание продукта..."
+          }
+        }
+      }
     },
     "Write a review" : {
       "localizations" : {
@@ -655,6 +1084,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Напишите отзыв"
+          }
+        }
+      }
+    },
+    "YoMoney" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ЮMoney"
           }
         }
       }
@@ -690,7 +1129,14 @@
       }
     },
     "Your addresses" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваши адреса"
+          }
+        }
+      }
     },
     "Your feedback" : {
       "localizations" : {
@@ -703,84 +1149,16 @@
       }
     },
     "Your order will be delivered soon.\nThank you for choosing our app!" : {
-
-    },
-    "Временные метки" : {
-
-    },
-    "Данные торта" : {
-
-    },
-    "Дата" : {
-
-    },
-    "Доставка" : {
-
-    },
-    "Заказов пока нет" : {
-
-    },
-    "Здесь появятся уведомления о заказах, сообщениях и других событиях." : {
-
-    },
-    "Информация о заказе" : {
-
-    },
-    "Квартира" : {
-
-    },
-    "Когда вы сделаете заказ, он появится здесь." : {
-
-    },
-    "Комментарий" : {
-
-    },
-    "Масса" : {
-
-    },
-    "Название" : {
-
-    },
-    "Наличные" : {
-
-    },
-    "Начинка" : {
-
-    },
-    "Обновлён" : {
-
-    },
-    "Оплата" : {
-
-    },
-    "Подъезд" : {
-
-    },
-    "Скопировать" : {
-
-    },
-    "Создан" : {
-
-    },
-    "Состав" : {
-
-    },
-    "Статус" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш заказ будет доставлен в ближайшее время.\nСпасибо, что выбрали наше приложение!"
+          }
+        }
+      }
     },
     "Торт&\nLand" : {
-
-    },
-    "Уведомлений нет" : {
-
-    },
-    "Цена" : {
-
-    },
-    "Цена за кг" : {
-
-    },
-    "Этаж" : {
 
     }
   },
