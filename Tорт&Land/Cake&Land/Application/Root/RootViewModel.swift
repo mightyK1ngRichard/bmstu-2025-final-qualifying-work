@@ -69,7 +69,7 @@ extension RootViewModel {
         // FIXME: Сделать получение юзера из SwiftData
         // currentUser =
 
-        guard currentUser == nil && startScreenControl.screenKind == .cakesList else {
+        guard currentUser == nil else {
             return
         }
 

@@ -137,5 +137,5 @@ private extension CakeListView {
             networkManager: NetworkManager(),
             imageProvider: ImageLoaderProviderImpl()
         )
-        .frame(minWidth: 600, minHeight: 800)
+        .frame(minWidth: 700, minHeight: 800)
 }

@@ -32,7 +32,12 @@ private extension TLImageView {
     var imageView: some View {
         switch configuration.imageState {
         case .loading:
-            ShimmeringView()
+            Rectangle()
+                .fill(Color(.secondarySystemFill))
+                .overlay {
+                    ProgressView()
+                        .controlSize(.mini)
+                }
         case let .nsImage(nsImage):
             getImage(nsImage: nsImage)
         case let .error(message):
@@ -51,14 +56,17 @@ private extension TLImageView {
     @ViewBuilder
     func errorImage(message: String) -> some View {
         Rectangle()
-            .fill(.ultraThinMaterial)
+            .fill(Color(.secondarySystemFill))
             .overlay {
                 Image(systemName: "arrow.trianglehead.2.clockwise")
             }
     }
 
-    var emptyView: some View {
-        Rectangle()
-            .fill(.ultraThinMaterial)
-    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    TLImageView(configuration: .init(imageState: .loading))
+        .padding(100)
 }

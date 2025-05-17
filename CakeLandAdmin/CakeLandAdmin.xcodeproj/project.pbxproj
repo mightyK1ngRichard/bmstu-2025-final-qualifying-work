@@ -12,7 +12,7 @@
 		E527FEA32DD14CEB004FC58F /* MacCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; };
 		E527FEA42DD14CEB004FC58F /* MacCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E527FEB12DD14D61004FC58F /* MacCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; };
-		E57440A72DD0F6FC0013378D /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E57440A62DD0F6FC0013378D /* NetworkAPI */; };
+		E57A9A562DD8DCE0006B22D4 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E57A9A552DD8DCE0006B22D4 /* NetworkAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,8 +129,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E57440A72DD0F6FC0013378D /* NetworkAPI in Frameworks */,
 				E527FDEA2DD14C4F004FC58F /* MacDS.framework in Frameworks */,
+				E57A9A562DD8DCE0006B22D4 /* NetworkAPI in Frameworks */,
 				E527FEA32DD14CEB004FC58F /* MacCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,6 +224,7 @@
 			name = CakeLandAdmin;
 			packageProductDependencies = (
 				E57440A62DD0F6FC0013378D /* NetworkAPI */,
+				E57A9A552DD8DCE0006B22D4 /* NetworkAPI */,
 			);
 			productName = CakeLandAdmin;
 			productReference = E51C2F222DCFE640000D966F /* CakeLandAdmin.app */;
@@ -300,7 +301,7 @@
 			mainGroup = E51C2F192DCFE640000D966F;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E57440A52DD0F6FC0013378D /* XCLocalSwiftPackageReference "../NetworkAPI" */,
+				E57A9A542DD8DCE0006B22D4 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E51C2F232DCFE640000D966F /* Products */;
@@ -739,16 +740,25 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		E57440A52DD0F6FC0013378D /* XCLocalSwiftPackageReference "../NetworkAPI" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../NetworkAPI;
+/* Begin XCRemoteSwiftPackageReference section */
+		E57A9A542DD8DCE0006B22D4 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mightyK1ngRichard/bmstu-2025-cake-land-network-api.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		E57440A62DD0F6FC0013378D /* NetworkAPI */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = NetworkAPI;
+		};
+		E57A9A552DD8DCE0006B22D4 /* NetworkAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E57A9A542DD8DCE0006B22D4 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */;
 			productName = NetworkAPI;
 		};
 /* End XCSwiftPackageProductDependency section */

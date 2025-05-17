@@ -69,7 +69,6 @@ struct CakeCardView: View {
                 }
             }
             .pickerStyle(.radioGroup)
-            .tint(cake.status.textColor)
         }
         .onChange(of: cake.status) { _, newValue in
             changePublisher.send(cake)
@@ -85,5 +84,5 @@ struct CakeCardView: View {
     CakeCardView(cake: $cake, changePublisher: PassthroughSubject<CakeModel, Never>())
     .padding()
     .background(.ultraThinMaterial, in: .rect(cornerRadius: 12))
-    .frame(width: 500, height: 500)
+    .frame(width: 500, height: 550)
 }

@@ -19,12 +19,19 @@ extension AuthView {
                     .transition(.flip)
                     .safeAreaPadding(.bottom, 50)
             } else {
-                ScrollView {
-                    registerView
-                }
+                registerView
+                    .safeAreaPadding(.bottom, isKeyboardVisible ? 120 : 0)
+                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                        withAnimation {
+                            isKeyboardVisible = true
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                        withAnimation {
+                            isKeyboardVisible = false
+                        }
+                    }
                 .transition(.reverseFlip)
-                .safeAreaPadding(.bottom, 130)
-                .safeAreaPadding(.top, 20)
             }
         }
         .frame(maxHeight: .infinity)

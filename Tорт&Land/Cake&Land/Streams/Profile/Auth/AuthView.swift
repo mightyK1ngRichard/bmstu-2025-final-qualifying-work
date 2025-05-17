@@ -12,6 +12,7 @@ import DesignSystem
 struct AuthView: View {
     @State var viewModel: AuthDisplayLogic & AuthViewModelOutput
     @Environment(StartScreenControl.self) private var startScreenControl
+    @State var isKeyboardVisible = false
 
     var body: some View {
         ZStack {
