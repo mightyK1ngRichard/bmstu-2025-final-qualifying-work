@@ -92,7 +92,7 @@ extension ProfileView {
     func imageContainer(user: UserModel) -> some View {
         ZStack(alignment: .topLeading) {
             TLImageView(configuration: .init(imageState: user.headerImage.imageState))
-                .frame(height: Constants.avatarImageSize + 100)
+                .frame(height: Constants.avatarImageSize + 250)
                 .clipShape(.rect(cornerRadius: 12))
 
             VStack {
@@ -104,7 +104,7 @@ extension ProfileView {
 
                 textContainer(user: user)
             }
-            .padding(.top, 133)
+            .padding(.top, 283)
             .padding(.leading, 56)
         }
         .padding(.bottom, 33)
