@@ -52,7 +52,7 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     }
 
     private var visableButtonTitle: String {
-        cakeModel.status == .approved ? "Hide for sale" : "Open for sale"
+        cakeModel.status == .approved ? String(localized: "hide for sale").uppercased() : String(localized: "open for sale").uppercased()
     }
 }
 
@@ -180,8 +180,8 @@ extension CakeDetailsViewModel {
         guard let modelURL = cakeModel.model3DURLProd else {
             bindingData.alert = AlertModel(
                 errorContent: ErrorContent(
-                    title: "Model Error",
-                    message: "The 3D model URL is missing or incorrectly formatted."
+                    title: StringConstants.modelErrorTitle,
+                    message: StringConstants.modelErrorSubtitle
                 ),
                 isShown: true
             )

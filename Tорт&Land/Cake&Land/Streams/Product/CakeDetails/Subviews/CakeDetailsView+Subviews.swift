@@ -225,7 +225,7 @@ private extension CakeDetailsView {
     @ViewBuilder
     var bottomButton: some View {
         if viewModel.bindingData.showOwnerButton {
-            TLButton("make order".uppercased(), action: viewModel.didTapMakeOrderButton)
+            TLButton(String(localized: "make order").uppercased(), action: viewModel.didTapMakeOrderButton)
         } else {
             TLButton(
                 configuration: viewModel.visableButtonConfiguration(),

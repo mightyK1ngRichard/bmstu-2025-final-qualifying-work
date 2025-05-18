@@ -194,13 +194,13 @@ private extension OrderView {
     @ViewBuilder
     func addressInfo(selectedAddress: AddressEntity) -> some View {
         if viewModel.addressIsCorrect {
-            addressCell(title: "Entrance:", info: selectedAddress.entrance)
-            addressCell(title: "Floor:", info: selectedAddress.floor)
-            addressCell(title: "Apartment:", info: selectedAddress.apartment)
-            addressCell(title: "Comment for delivery:", info: selectedAddress.comment)
+            addressCell(title: String(localized: "Entrance:"), info: selectedAddress.entrance)
+            addressCell(title: String(localized: "Floor:"), info: selectedAddress.floor)
+            addressCell(title: String(localized: "Apartment:"), info: selectedAddress.apartment)
+            addressCell(title: String(localized: "Comment for delivery:"), info: selectedAddress.comment)
         }
 
-        linkButton("Update address details") {
+        linkButton(String(localized: "Update address details")) {
             viewModel.didTapUpdateAddress(address: selectedAddress)
         }
     }
@@ -246,7 +246,7 @@ private extension OrderView {
     }
 
     var makeOrderButton: some View {
-        TLButton("Make order".uppercased(), action: viewModel.didTapMakeOrder)
+        TLButton(String(localized: "make order").uppercased(), action: viewModel.didTapMakeOrder)
             .listRowInsets(.init())
             .listRowBackground(Color.clear)
             .disabled(viewModel.orderIsDisabled)

@@ -41,8 +41,8 @@ extension FeedbackViewModel {
         guard uiProperties.countFillStars > 0 && uiProperties.countFillStars < 6 else {
             showErrorMessage(
                 content: ErrorContent(
-                    title: "Invalid input data",
-                    message: String(localized: "choose rating").capitalized
+                    title: StringConstants.invalidInputData,
+                    message: StringConstants.chooseRating.capitalized
                 )
             )
             return
@@ -50,8 +50,8 @@ extension FeedbackViewModel {
         guard !uiProperties.feedbackText.isEmpty else {
             showErrorMessage(
                 content: ErrorContent(
-                    title: "Invalid input data",
-                    message: "Text cannot be empty"
+                    title: StringConstants.invalidInputData,
+                    message: StringConstants.textCannotBeEmpty
                 )
             )
             return

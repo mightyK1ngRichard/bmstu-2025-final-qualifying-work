@@ -27,7 +27,7 @@ struct ARQuickRemoteLook: View {
             } catch {
                 state = .error(
                     content: ErrorContent(
-                        title: "Failed to fetch 3D model",
+                        title: StringConstants.failedFetch3DModel,
                         message: "\(error.localizedDescription)"
                     )
                 )

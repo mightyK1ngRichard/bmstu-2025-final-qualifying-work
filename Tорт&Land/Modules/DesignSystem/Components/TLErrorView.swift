@@ -14,7 +14,10 @@ public extension TLErrorView {
         var kind: Kind = .noConnection
         var buttonTitle: String
 
-        public init(kind: Kind = .noConnection, buttonTitle: String = "Try again") {
+        public init(
+            kind: Kind = .noConnection,
+            buttonTitle: String = String(localized: "Try again")
+        ) {
             self.kind = kind
             self.buttonTitle = buttonTitle
         }
@@ -32,7 +35,7 @@ public extension TLErrorView.Configuration.Kind {
     var title: String {
         switch self {
         case .noConnection:
-            return "No connection"
+            return String(localized: "No connection")
         case let .customError(title, _):
             return title
         }
@@ -41,7 +44,7 @@ public extension TLErrorView.Configuration.Kind {
     var subtitle: String {
         switch self {
         case .noConnection:
-            return "Ooops.. Looks like connection has been lost"
+            return String(localized: "Ooops.. Looks like connection has been lost")
         case let .customError(_, subtitle):
             return subtitle
         }

@@ -79,6 +79,21 @@ extension ProfileViewModel {
                 // Получаем изображения тортов
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
+                // Специфическая логика на "invalid refresh token"
+                if let grpcError = error as? GRPCStatus,
+                   grpcError.code == .invalidArgument,
+                   grpcError.message?.contains("invalid refresh token") == true {
+                    uiProperties.sessionExpired = true
+                    uiProperties.buttonTitle = StringConstants.logout
+                    uiProperties.screenState = .error(
+                        content: ErrorContent(
+                            title: StringConstants.sessionExpiredTitle,
+                            message: StringConstants.sessionExpiredSubtitle
+                        )
+                    )
+                    return
+                }
+
                 uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
@@ -101,6 +116,7 @@ extension ProfileViewModel {
                 }
             } catch {
                 uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.screenState = .finished
             }
         }
     }
@@ -168,6 +184,17 @@ extension ProfileViewModel {
         }
     }
 
+    func didTapAlertButton() {
+        // Если устарела сессия, надо разлогиниться
+        guard !uiProperties.sessionExpired else {
+            rootViewModel.startScreenControl.update(with: .auth)
+            return
+        }
+
+        // Иначе тянем данные
+        fetchUserData()
+    }
+
     func didTapOpenMap() {
         print("[DEBUG]: \(#function)")
     }
@@ -178,8 +205,8 @@ extension ProfileViewModel {
         } else {
             uiProperties.alert = AlertModel(
                 errorContent: ErrorContent(
-                    title: "Current user not found",
-                    message: "Inner error. Relaunch this app"
+                    title: StringConstants.currentUserNotFound,
+                    message: StringConstants.innerError
                 ),
                 isShown: true
             )

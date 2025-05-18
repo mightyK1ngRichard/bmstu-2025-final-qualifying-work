@@ -13,6 +13,7 @@
 		E527FEA42DD14CEB004FC58F /* MacCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E527FEB12DD14D61004FC58F /* MacCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E527FE9D2DD14CEB004FC58F /* MacCore.framework */; };
 		E57A9A562DD8DCE0006B22D4 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E57A9A552DD8DCE0006B22D4 /* NetworkAPI */; };
+		E58F71F32DD9C075000F8AED /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E57440A62DD0F6FC0013378D /* NetworkAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E58F71F32DD9C075000F8AED /* NetworkAPI in Frameworks */,
 				E527FDEA2DD14C4F004FC58F /* MacDS.framework in Frameworks */,
 				E57A9A562DD8DCE0006B22D4 /* NetworkAPI in Frameworks */,
 				E527FEA32DD14CEB004FC58F /* MacCore.framework in Frameworks */,

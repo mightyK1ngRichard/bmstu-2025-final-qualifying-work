@@ -86,8 +86,8 @@ extension RootViewModel {
                     uiProperties.sessionIsExpired = true
                     uiProperties.alert = AlertModel(
                         errorContent: ErrorContent(
-                            title: "Session Expired",
-                            message: "Your session has expired. Please log in again to continue."
+                            title: StringConstants.sessionExpiredTitle,
+                            message: StringConstants.sessionExpiredSubtitle
                         ),
                         isShown: true
                     )
@@ -138,7 +138,10 @@ private extension RootViewModel {
 extension RootViewModel {
 
     func assemblyChatListErrorView() -> TLErrorView.Configuration {
-        .init(kind: .customError("User not found", "Current user not found. Please try again later."))
+        .init(
+            kind: .customError(StringConstants.currentUserNotFound, StringConstants.currentUserNotFoundSubtitle),
+            buttonTitle: StringConstants.tryAgain
+        )
     }
 
     func assemblyAuthView() -> AuthView {

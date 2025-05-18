@@ -53,7 +53,16 @@ extension PaymentMethodEntity {
 
 extension OrderStatusEntity {
     var title: String {
-        String(describing: self)
+        switch self {
+        case .pending:
+            return String(localized: "Pending")
+        case .shipped:
+            return String(localized: "Shipped")
+        case .delivered:
+            return String(localized: "Delivered")
+        case .cancelled:
+            return String(localized: "Cancelled")
+        }
     }
 
     /// Цвет текста статуса

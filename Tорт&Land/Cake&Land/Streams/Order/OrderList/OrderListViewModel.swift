@@ -61,7 +61,7 @@ extension OrderListViewModel {
             title: "#\(shortID)",
             date: order.deliveryDate.formattedDDMMYYYY,
             addressTitle: order.deliveryAddress.formattedAddress,
-            mass: "\(Int(order.mass)) гр",
+            mass: String(localized: "\(Int(order.mass)) g"),
             totalAmount: priceFormatter.formatPrice(order.totalPrice),
             status: {
                 switch order.status {
@@ -74,7 +74,13 @@ extension OrderListViewModel {
                 case .cancelled:
                     return .cancelled
                 }
-            }()
+            }(),
+            titles: .init(
+                deliveryAddress: String(localized: "Delivery address:"),
+                mass: String(localized: "Mass:"),
+                totalAmount: String(localized: "Total Amount:"),
+                details: String(localized: "Details")
+            )
         )
     }
 

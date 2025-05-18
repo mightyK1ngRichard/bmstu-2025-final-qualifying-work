@@ -141,8 +141,8 @@ extension OrderViewModel {
         else {
             uiProperties.alert = .init(
                 errorContent: ErrorContent(
-                    title: "Invalid input data",
-                    message: "Please make sure all fields are filled: cake, filling, address, and total amount."
+                    title: StringConstants.invalidInputData,
+                    message: StringConstants.formFieldsMissingError
                 ),
                 isShown: true
             )

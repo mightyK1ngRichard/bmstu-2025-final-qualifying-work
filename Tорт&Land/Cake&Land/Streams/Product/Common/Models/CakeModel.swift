@@ -276,7 +276,7 @@ extension CakeModel {
                 productPrice: priceFormatter.formatPrice(price),
                 productDiscountedPrice: productDiscountedPrice
             ),
-            disableText: status == .approved ? nil : "Sorry, this item is currently closed for sale",
+            disableText: status == .approved ? nil : StringConstants.cakeIsClosedForSale,
             badgeViewConfiguration: badgeViewConfiguration,
             productButtonConfiguration: .basic(kind: .favorite(isSelected: isSelected)),
             starsViewConfiguration: starsConfiguration()

@@ -35,6 +35,8 @@ protocol ProfileViewModelInput {
     func didTapWriteMessage()
     func didTapCakeLikeButton(cake: CakeModel, isSelected: Bool)
     func didTapCakeCard(with cake: CakeModel)
+
+    func didTapAlertButton()
 }
 
 protocol ProfileViewModelOutput {

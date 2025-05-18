@@ -47,7 +47,8 @@ private extension RootView {
                     action: viewModel.reloadGetUserInfo
                 )
                 .padding(.horizontal, 50)
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(TLColor<BackgroundPalette>.bgMainColor.color)
             }
         case .notifications:
             viewModel.assemblyNotificationsListView()

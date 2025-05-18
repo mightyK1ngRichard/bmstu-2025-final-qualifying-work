@@ -191,7 +191,7 @@ private extension ProductsGridView {
             }
             .tint(Constants.iconRed)
         }
-        .padding(.horizontal)
+        .padding([.horizontal, .top])
     }
 
     var colorsView: some View {

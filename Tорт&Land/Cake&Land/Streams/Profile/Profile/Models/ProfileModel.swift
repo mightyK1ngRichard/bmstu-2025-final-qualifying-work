@@ -14,6 +14,8 @@ extension ProfileModel {
     struct UIProperties: Hashable {
         var screenState: ScreenState = .initial
         var alert = AlertModel()
+        var sessionExpired = false
+        var buttonTitle: String?
     }
 
     enum Screens: Hashable {

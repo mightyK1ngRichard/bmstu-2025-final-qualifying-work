@@ -24,9 +24,10 @@ struct ErrorContent: Hashable {
 }
 
 extension TLErrorView.Configuration {
-    init(from content: ErrorContent) {
+    init(from content: ErrorContent, buttonTitle: String? = nil) {
         self = .init(
-            kind: .customError(content.title, content.message)
+            kind: .customError(content.title, content.message),
+            buttonTitle: buttonTitle ?? StringConstants.tryAgain
         )
     }
 }

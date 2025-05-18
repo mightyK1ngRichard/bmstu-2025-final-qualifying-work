@@ -16,6 +16,7 @@ public extension OrderCell {
         var mass = ""
         var totalAmount = ""
         var status: OrderStatus = .pending
+        var titles = Titles()
 
         public init(
             title: String = "",
@@ -23,7 +24,8 @@ public extension OrderCell {
             addressTitle: String = "",
             mass: String = "",
             totalAmount: String = "",
-            status: OrderStatus = .pending
+            status: OrderStatus = .pending,
+            titles: Titles = .init()
         ) {
             self.title = title
             self.date = date
@@ -31,6 +33,7 @@ public extension OrderCell {
             self.mass = mass
             self.totalAmount = totalAmount
             self.status = status
+            self.titles = titles
         }
     }
 
@@ -46,7 +49,28 @@ public extension OrderCell {
     }
 }
 
-public extension OrderCell.OrderStatus {
+public extension OrderCell.Configuration {
+    struct Titles: Sendable, Hashable {
+        var deliveryAddress = ""
+        var mass = ""
+        var totalAmount = ""
+        var details = ""
+
+        public init(
+            deliveryAddress: String = "",
+            mass: String = "",
+            totalAmount: String = "",
+            details: String = ""
+        ) {
+            self.deliveryAddress = deliveryAddress
+            self.mass = mass
+            self.totalAmount = totalAmount
+            self.details = details
+        }
+    }
+}
+
+extension OrderCell.OrderStatus {
     var title: String {
         String(describing: self)
     }
@@ -104,15 +128,19 @@ private extension OrderCell {
     var bodyContainer: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .top, spacing: 10) {
-                Text("Delivery address:")
+                Text(configuration.titles.deliveryAddress)
                     .style(14, .regular, Constants.textSecondary)
                 Text(configuration.addressTitle)
                     .style(14, .medium)
             }
             HStack {
-                textWithTitle(title: "Mass:", subtitle: configuration.mass, isBold: true)
+                textWithTitle(title: configuration.titles.mass, subtitle: configuration.mass, isBold: true)
                 Spacer()
-                textWithTitle(title: "Total Amount:", subtitle: configuration.totalAmount, isBold: true)
+                textWithTitle(
+                    title: configuration.titles.totalAmount,
+                    subtitle: configuration.totalAmount,
+                    isBold: true
+                )
             }
         }
         .padding(.top, 15)
@@ -142,7 +170,7 @@ private extension OrderCell {
     }
 
     var detailButton: some View {
-        Text("Details")
+        Text(configuration.titles.details)
             .padding(.horizontal, 25)
             .padding(.vertical, 8)
             .background {

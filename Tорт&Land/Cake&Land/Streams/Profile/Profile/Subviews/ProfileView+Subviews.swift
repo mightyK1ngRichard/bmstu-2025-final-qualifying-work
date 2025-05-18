@@ -11,18 +11,23 @@ import DesignSystem
 
 extension ProfileView {
     var mainContainer: some View {
-        ScrollView {
+        Group {
             switch viewModel.uiProperties.screenState {
             case .initial, .loading:
-                shimmeringView
+                ScrollView {
+                    shimmeringView
+                }
             case .finished:
-                contentView
+                ScrollView {
+                    contentView
+                }
             case let .error(content):
                 TLErrorView(
-                    configuration: .init(from: content),
-                    action: viewModel.fetchUserData
+                    configuration: .init(from: content, buttonTitle: viewModel.uiProperties.buttonTitle),
+                    action: viewModel.didTapAlertButton
                 )
                 .padding(.horizontal, 30)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .ignoresSafeArea()

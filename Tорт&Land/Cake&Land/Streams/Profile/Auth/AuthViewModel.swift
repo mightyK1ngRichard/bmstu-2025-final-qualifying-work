@@ -69,14 +69,14 @@ extension AuthViewModel {
     func didTapRegisterButton() {
         guard !uiProperties.email.isEmpty, !uiProperties.password.isEmpty, !uiProperties.repeatPassword.isEmpty else {
             uiProperties.alert = AlertModel(
-                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: "Fill in all the fields"),
+                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: StringConstants.fillInAllFields),
                 isShown: true
             )
             return
         }
         if uiProperties.password != uiProperties.repeatPassword {
             uiProperties.alert = AlertModel(
-                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: "Password does not match"),
+                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: StringConstants.passwordDoesNotMatch),
                 isShown: true
             )
             return
@@ -99,7 +99,7 @@ extension AuthViewModel {
             uiProperties.alert = AlertModel(
                 errorContent: ErrorContent(
                     title: StringConstants.invalidInputData,
-                    message: "Fill in all the fields"
+                    message: StringConstants.fillInAllFields
                 ),
                 isShown: true
             )
