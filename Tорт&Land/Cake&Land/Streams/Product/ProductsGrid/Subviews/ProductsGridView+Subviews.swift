@@ -111,13 +111,13 @@ private extension ProductsGridView {
     @ViewBuilder
     var tabBarItems: some View {
         tabView(
-            title: viewModel.uiProperties.selectedSortMode.rawValue.capitalized,
+            title: viewModel.uiProperties.selectedSortMode.title.capitalized,
             uiImage: TLAssets.sort,
             action: viewModel.didTapSortButton
         )
 
         tabView(
-            title: "Filters",
+            title: String(localized: "Filters"),
             uiImage: TLAssets.filter,
             action: viewModel.didTapFilterButton
         )
@@ -159,7 +159,7 @@ private extension ProductsGridView {
     var sortSheetContent: some View {
         VStack(spacing: 0) {
             ForEach(viewModel.uiProperties.sortModes) { sortMode in
-                Button(sortMode.rawValue) {
+                Button(sortMode.title) {
                     viewModel.didSelectedSortMode(mode: sortMode)
                 }
                 .buttonStyle(TableRowStyle())

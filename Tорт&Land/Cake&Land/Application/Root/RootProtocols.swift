@@ -15,7 +15,6 @@ protocol RootDisplayData {
     var uiProperties: RootModel.UIProperties { get set }
     var screenKind: StartScreenKind { get }
     var activeTab: TabBarItem { get }
-    var cakes: [CakeEntity] { get }
     var currentUser: UserModel? { get }
 }
 
@@ -39,6 +38,4 @@ protocol RootViewModelInput {
 }
 
 protocol RootViewModelOutput {
-    func setCakes(_ newCakes: [CakeEntity])
-    func updateCake(_ cake: CakeEntity)
 }

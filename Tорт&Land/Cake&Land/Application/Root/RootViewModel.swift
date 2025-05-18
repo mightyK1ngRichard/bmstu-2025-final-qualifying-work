@@ -21,8 +21,6 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
 
     // MARK: Private(set) values
     private(set) var currentUser: UserModel?
-    @ObservationIgnored
-    private(set) var cakes: [CakeEntity] = []
 
     // MARK: Private values
     @ObservationIgnored
@@ -180,7 +178,6 @@ extension RootViewModel {
     @MainActor
     func assemblyCakeListView() -> CakesListView {
         CakesListAssembler.assemble(
-            rootViewModel: self,
             cakeService: networkManager.cakeService,
             imageProvider: imageProvider
         )
@@ -243,38 +240,6 @@ extension RootViewModel {
     @MainActor
     func updateCurrentUser(_ user: UserModel?) {
         currentUser = user
-    }
-
-    func setCakes(_ newCakes: [CakeEntity]) {
-        var newCakesDict = Dictionary(uniqueKeysWithValues: newCakes.map { ($0.id, $0) })
-
-        // Обновляем существующие торты
-        for (index, cake) in cakes.enumerated() {
-            if let newCake = newCakesDict[cake.id] {
-                if newCake != cake {
-                    cakes[index] = newCake
-                }
-
-                newCakesDict.removeValue(forKey: cake.id)
-            }
-        }
-
-        // Добавляем новые торты
-        cakes.append(contentsOf: newCakesDict.values)
-
-        // TODO: Сделать кэширование в SwiftData
-    }
-
-    func updateCake(_ cake: CakeEntity) {
-        guard let index = cakes.firstIndex(where: { $0.id == cake.id }) else {
-            return
-        }
-
-        if cakes[index] != cake {
-            cakes[index] = cake
-        }
-
-        // TODO: Сделать кэширование в SwiftData
     }
 
 }

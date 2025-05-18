@@ -51,7 +51,7 @@ private extension CakesListView {
             case .initial, .loading:
                 shimmeringContainer
             case .finished:
-                ForEach(viewModel.bindingData.sections) { section in
+                ForEach(viewModel.bindingData.allSections) { section in
                     sectionView(for: section)
                 }
             case let .error(content):
@@ -115,23 +115,14 @@ private extension CakesListView {
 private extension CakesListView {
 
     @ViewBuilder
-    func sectionView(for section: CakesListModel.Section) -> some View {
-        switch section {
-        case let .new(cakeModels):
-            cakesSectionView(section: .new, models: cakeModels) {
-                viewModel.didTapAllButton(cakeModels, section: .new)
-            }
-        case let .sale(cakeModels):
-            cakesSectionView(section: .sale, models: cakeModels) {
-                viewModel.didTapAllButton(cakeModels, section: .sales)
-            }
-        case let .all(cakeModels):
-            cakesSectionView(section: .all, models: cakeModels)
+    func sectionView(for section: CakesListModel.SectionKind) -> some View {
+        cakesSectionView(section: section, models: viewModel.sections[section] ?? []) {
+            viewModel.didTapSectionAllButton(sectionKind: section)
         }
     }
 
     func cakesSectionView(
-        section: CakesListModel.Section.Kind,
+        section: CakesListModel.SectionKind,
         models: [CakeModel],
         action: TLVoidBlock? = nil
     ) -> some View {
@@ -153,17 +144,14 @@ private extension CakesListView {
     }
 
     func horizontalCakesContainer(
-        section: CakesListModel.Section.Kind,
+        section: CakesListModel.SectionKind,
         models: [CakeModel]
     ) -> some View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 16) {
                 ForEach(models) { cakeModel in
                     TLProductCard(
-                        configuration: viewModel.configureProductCard(
-                            model: cakeModel,
-                            section: section
-                        )
+                        configuration: viewModel.configureProductCard(model: cakeModel)
                     ) { isSelected in
                         viewModel.didTapLikeButton(model: cakeModel, isSelected: isSelected)
                     }
@@ -181,7 +169,7 @@ private extension CakesListView {
 
     @ViewBuilder
     func gridCakesContainer(
-        section: CakesListModel.Section.Kind,
+        section: CakesListModel.SectionKind,
         models: [CakeModel]
     ) -> some View {
         LazyVGrid(
@@ -190,10 +178,7 @@ private extension CakesListView {
         ) {
             ForEach(models) { cakeModel in
                 TLProductCard(
-                    configuration: viewModel.configureProductCard(
-                        model: cakeModel,
-                        section: section
-                    )
+                    configuration: viewModel.configureProductCard(model: cakeModel)
                 ) { isSelected in
                     viewModel.didTapLikeButton(model: cakeModel, isSelected: isSelected)
                 }
@@ -212,8 +197,10 @@ private extension CakesListView {
     ) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text(title).style(34, .bold)
-                Text(subtitle).style(11, .regular, Constants.textSecondary)
+                Text(title)
+                    .style(34, .bold)
+                Text(subtitle)
+                    .style(11, .regular, Constants.textSecondary)
             }
 
             Spacer()
@@ -222,7 +209,8 @@ private extension CakesListView {
                 Button {
                     action()
                 } label: {
-                    Text(Constants.lookAllTitle).style(11, .regular)
+                    Text(Constants.lookAllTitle)
+                        .style(11, .regular)
                 }
             }
         }

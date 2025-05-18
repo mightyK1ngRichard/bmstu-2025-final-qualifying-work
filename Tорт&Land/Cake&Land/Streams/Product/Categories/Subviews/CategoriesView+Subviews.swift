@@ -19,6 +19,10 @@ extension CategoriesView {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
+        .defaultAlert(
+            errorContent: viewModel.uiProperties.alert.errorContent,
+            isPresented: $viewModel.uiProperties.alert.isShown
+        )
     }
 }
 
@@ -31,7 +35,9 @@ private extension CategoriesView {
             HStack {
                 Spacer()
                 Button {
-                    viewModel.didTapSearchToggle()
+                    withAnimation {
+                        viewModel.didTapSearchToggle()
+                    }
                 } label: {
                     Image(uiImage: TLAssets.magnifier)
                         .renderingMode(.template)
@@ -78,7 +84,9 @@ private extension CategoriesView {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
                 .onTapGesture {
-                    viewModel.didTapTab(tab: tab)
+                    withAnimation(.snappy) {
+                        viewModel.didTapTab(tab: tab)
+                    }
                 }
             }
         }

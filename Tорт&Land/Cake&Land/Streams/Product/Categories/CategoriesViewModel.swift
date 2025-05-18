@@ -49,7 +49,7 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
 
 extension CategoriesViewModel {
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {
-        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: .default, cakeService: cakeProvider)
+        ProductsGridAssemler.assembly(cakes: cakes, cakeService: cakeProvider)
     }
 }
 
@@ -57,15 +57,11 @@ extension CategoriesViewModel {
 
 extension CategoriesViewModel {
     func didTapTab(tab: CategoriesModel.Tab) {
-        withAnimation(.snappy) {
-            uiProperties.selectedTab = tab
-        }
+        uiProperties.selectedTab = tab
     }
 
     func didTapSearchToggle() {
-        withAnimation {
-            uiProperties.showSearchBar.toggle()
-        }
+        uiProperties.showSearchBar.toggle()
     }
 
     func didTapSectionCell(section: CategoryCardModel) {
@@ -92,19 +88,21 @@ extension CategoriesViewModel {
 
                 coordinator.addScreen(CategoriesModel.Screens.cakes(cakesModel))
             } catch {
+                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
         }
     }
 
     func didUpdateSelectedTag(section: CategoriesModel.Tab) {
-        fetchCategories(tab: section)
+        fetchSubcategories(tab: section)
     }
 }
 
 // MARK: - Helpers
 
 private extension CategoriesViewModel {
-    func fetchCategories(tab: CategoriesModel.Tab) {
+
+    func fetchSubcategories(tab: CategoriesModel.Tab) {
         Task { @MainActor in
             do {
                 let result = try await cakeProvider.fetchCategoriesByGenderName(
@@ -178,13 +176,11 @@ private extension CategoriesViewModel {
                     case .child: .kids
                     }
 
-                    guard
-                        let index = sections[sectionIndex]?.firstIndex(where: { $0.id == section.id })
-                    else {
+                    guard let index = sections[sectionIndex]?.firstIndex(where: { $0.id == section.id }) else {
                         continue
                     }
 
-                    sections[sectionIndex]?[index].imageState = imageState
+                    sections[sectionIndex]?[safe: index]?.imageState = imageState
                 }
             }
         }
@@ -194,7 +190,7 @@ private extension CategoriesViewModel {
         Task { @MainActor in
             let imageState = await imageProvider.fetchImage(for: entity.imageURL)
             if let index = sections[tab]?.firstIndex(where: { $0.id == entity.id }) {
-                sections[tab]?[index].imageState = imageState
+                sections[tab]?[safe: index]?.imageState = imageState
             }
         }
     }

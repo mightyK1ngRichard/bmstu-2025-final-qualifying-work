@@ -42,7 +42,7 @@ extension UpdateAddressViewModel {
     }
 
     func saveButtonConfiguration() -> TLButton.Configuration {
-        let title = "save".capitalized
+        let title = StringConstants.save.capitalized
         if uiProperties.buttonIsLoading {
             return .init(title: title, kind: .loading)
         }

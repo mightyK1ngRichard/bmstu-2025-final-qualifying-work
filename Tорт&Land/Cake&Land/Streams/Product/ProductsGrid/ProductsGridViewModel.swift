@@ -43,7 +43,6 @@ final class ProductsGridViewModel: ProductsGridDisplayData & ProductsGridViewMod
     }
     private(set) var colors: [ProductsGridModel.ColorCell] = []
     private(set) var selectedColors: Set<String> = []
-    private(set) var sectionKind: ProductsGridModel.SectionKind
     private var cakes: [CakeModel] = []
     @ObservationIgnored
     private var coordinator: Coordinator?
@@ -54,12 +53,10 @@ final class ProductsGridViewModel: ProductsGridDisplayData & ProductsGridViewMod
 
     init(
         cakes: [CakeModel],
-        sectionKind: ProductsGridModel.SectionKind,
         cakeService: CakeService,
-        priceFormatter: PriceFormatterService = .shared
+        priceFormatter: PriceFormatterService
     ) {
         self.cakes = cakes
-        self.sectionKind = sectionKind
         self.cakeService = cakeService
         self.priceFormatter = priceFormatter
 

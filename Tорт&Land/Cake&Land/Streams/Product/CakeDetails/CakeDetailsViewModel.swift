@@ -20,14 +20,16 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     private var showFeedbackButton = false
     @ObservationIgnored
     private let reviewsService: ReviewsService
+    // Network
     @ObservationIgnored
     private let cakeService: CakeService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
-    @ObservationIgnored
-    private var coordinator: Coordinator!
+    // UI
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
+    @ObservationIgnored
+    private var coordinator: Coordinator!
     @ObservationIgnored
     private let rootViewModel: RootViewModelOutput
     @ObservationIgnored
@@ -52,7 +54,9 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     }
 
     private var visableButtonTitle: String {
-        cakeModel.status == .approved ? String(localized: "hide for sale").uppercased() : String(localized: "open for sale").uppercased()
+        cakeModel.status == .approved
+            ? String(localized: "hide for sale").uppercased()
+            : String(localized: "open for sale").uppercased()
     }
 }
 
@@ -65,22 +69,24 @@ extension CakeDetailsViewModel {
 
         Task { @MainActor in
             do {
+                // Получаем подробную информацию торта
                 let res = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
                 cakeModel = cakeModel.applyDetails(res.cake)
                 showFeedbackButton = res.canWriteFeedback
-                bindingData.isLoading = false
 
+                // Тянем изображения
                 fetchThumbnails(cakeImages: cakeModel.thumbnails)
                 fetchCategoriesImages(categories: res.cake.categories)
                 fetchFillingsImages(fillings: res.cake.fillings)
                 fetchSellerImages(imageURL: res.cake.owner.imageURL, headerImage: res.cake.owner.headerImageURL)
 
-                // Обновляем торт
-                rootViewModel.updateCake(res.cake)
+                // TODO: Обновлённый торт. Или кэшируем. Или даём ещё предыдущему экране. Подумать
+                // ....
             } catch {
-                bindingData.isLoading = false
-                // TODO: Показать ошибку
+                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
+
+            bindingData.isLoading = false
         }
     }
     

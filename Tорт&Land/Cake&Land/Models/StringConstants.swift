@@ -29,4 +29,5 @@ enum StringConstants {
     static let cakeIsClosedForSale = String(localized: "Sorry, this item is currently closed for sale")
     static let tryAgain = String(localized: "Try again")
     static let logout = String(localized: "Logout")
+    static let save = String(localized: "save")
 }

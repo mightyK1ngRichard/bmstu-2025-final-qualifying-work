@@ -13,9 +13,8 @@ import Core
 
 @Observable
 final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
-    @ObservationIgnored
-    var interactor: CakesListBusinessLogic!
     private(set) var bindingData = CakesListModel.BindingData()
+    private(set) var sections: [CakesListModel.SectionKind: [CakeModel]] = [:]
     @ObservationIgnored
     private var coordinator: Coordinator!
     @ObservationIgnored
@@ -23,15 +22,15 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
     @ObservationIgnored
     private let cakeService: CakeService
     @ObservationIgnored
-    private var rootViewModel: RootViewModelOutput
+    private let imageProvider: ImageLoaderProvider
 
     init(
-        rootViewModel: RootViewModelOutput,
         cakeService: CakeService,
+        imageProvider: ImageLoaderProvider,
         priceFormatter: PriceFormatterService = .shared
     ) {
         self.priceFormatter = priceFormatter
-        self.rootViewModel = rootViewModel
+        self.imageProvider = imageProvider
         self.cakeService = cakeService
     }
 }
@@ -42,74 +41,50 @@ extension CakesListViewModel {
 
     func fetchData() {
         bindingData.screenState = .loading
-        interactor.fetchCakes()
-    }
+        Task { @MainActor in
+            do {
+                // Получаем преьюхи тортов
+                let response = try await cakeService.fetchCakes()
 
-}
+                // Определяем категории тортов
+                var tempSections: [CakesListModel.SectionKind: [CakeModel]] = [:]
+                var images: [(section: CakesListModel.SectionKind, cakeID: String, url: String)] = []
 
-// MARK: - Presenter
+                for cake in response.cakes {
+                    let sectionKind = identifyСakeSection(for: cake)
+                    tempSections[sectionKind, default: []].append(CakeModel(from: cake))
+                    images.append((sectionKind, cake.id, cake.imageURL))
+                }
 
-extension CakesListViewModel: CakesListDisplayLogic {
+                sections = tempSections
+                bindingData.screenState = .finished
 
-    func didFetchSections(with sections: [CakesListModel.Section]) {
-        bindingData.sections = sections
-        bindingData.screenState = .finished
-    }
+                // Тянем превью изображения тортов
+                fetchImages(for: images)
 
-    func showError(content: ErrorContent) {
-        bindingData.screenState = .error(content: content)
-    }
-
-    func updateUserAvatarImage(imageState: ImageState, cakeID: String) {
-        for (i, section) in bindingData.sections.enumerated() {
-            guard let index = section.cakes.firstIndex(where: { $0.id == cakeID }) else {
-                continue
-            }
-
-            switch section {
-            case let .all(cakes):
-                var updatedCake = cakes
-                updatedCake[index].seller.avatarImage = imageState
-                bindingData.sections[i] = .all(updatedCake)
-            case let .sale(cakes):
-                var updatedCake = cakes
-                updatedCake[index].seller.avatarImage = imageState
-                bindingData.sections[i] = .sale(updatedCake)
-            case let .new(cakes):
-                var updatedCake = cakes
-                updatedCake[index].seller.avatarImage = imageState
-                bindingData.sections[i] = .new(updatedCake)
+            } catch {
+                bindingData.screenState = .error(content: error.readableGRPCContent)
             }
         }
     }
 
-    func updateUserHeaderImage(imageState: ImageState, cakeID: String) {
-//        viewModel.updateUserHeaderImage(imageState: imageState)
-    }
-
-    func addCakesToRootViewModel(_ cakes: [CakeEntity]) {
-        rootViewModel.setCakes(cakes)
-    }
-
-    func updateCakeCellImage(
-        cakeID: String,
-        imageState: ImageState,
-        with sectionKind: CakesListModel.Section.Kind
-    ) {
-        let arrayIndex = sectionKind.arrayIndex
-        var cakes = bindingData.sections[arrayIndex].cakes
-        guard let index = cakes.firstIndex(where: { $0.id == cakeID }) else {
-            return
+    private func identifyСakeSection(for cake: PreviewCakeEntity) -> CakesListModel.SectionKind {
+        if cake.discountKgPrice != nil, let discountEndTime = cake.discountEndTime, Date.now < discountEndTime {
+            return .sale
+        } else if cake.isNew {
+            return .new
         }
+        return .all
+    }
 
-        cakes[index].previewImageState = imageState
-        switch sectionKind {
-        case .all:
-            bindingData.sections[arrayIndex] = .all(cakes)
-        case .sale:
-            bindingData.sections[arrayIndex] = .sale(cakes)
-        case .new:
-            bindingData.sections[arrayIndex] = .new(cakes)
+    private func fetchImages(for items: [(section: CakesListModel.SectionKind, cakeID: String, url: String)]) {
+        for item in items {
+            Task { @MainActor in
+                let imageState = await imageProvider.fetchImage(for: item.url)
+                if let index = sections[item.section]?.firstIndex(where: { item.cakeID == $0.id }) {
+                    sections[item.section]?[safe: index]?.previewImageState = imageState
+                }
+            }
         }
     }
 
@@ -119,18 +94,15 @@ extension CakesListViewModel: CakesListDisplayLogic {
 
 extension CakesListViewModel {
 
-    func assemblyTagsView(
-        cakes: [CakeModel],
-        sectionKind: ProductsGridModel.SectionKind
-    ) -> ProductsGridView {
-        ProductsGridAssemler.assembly(cakes: cakes, sectionKind: sectionKind, cakeService: cakeService)
+    func assemblyTagsView(cakes: [CakeModel]) -> ProductsGridView {
+        ProductsGridAssemler.assembly(cakes: cakes, cakeService: cakeService)
     }
 
     func configureShimmeringProductCard() -> TLProductCard.Configuration {
         .shimmering(imageHeight: 184)
     }
 
-    func configureProductCard(model: CakeModel, section: CakesListModel.Section.Kind) -> TLProductCard.Configuration {
+    func configureProductCard(model: CakeModel) -> TLProductCard.Configuration {
         model.configureProductCard(priceFormatter: priceFormatter)
     }
 
@@ -150,8 +122,9 @@ extension CakesListViewModel {
     }
 
     /// Нажали кнопку `смотреть все`
-    func didTapAllButton(_ cakes: [CakeModel], section: ProductsGridModel.SectionKind) {
-        coordinator.addScreen(CakesListModel.Screens.tags(cakes, section))
+    func didTapSectionAllButton(sectionKind: CakesListModel.SectionKind) {
+        let sectionCakes = sections[sectionKind] ?? []
+        coordinator.addScreen(CakesListModel.Screens.grid(sectionCakes))
     }
     
     /// Нажали на лайк карточки товара

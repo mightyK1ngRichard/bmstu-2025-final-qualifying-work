@@ -36,7 +36,7 @@ private extension AddFillingsAndCategoriesView {
 
     var fillingsContainer: some View {
         VStack(alignment: .leading, spacing: 17) {
-            sectionTitle("Choose fillings")
+            sectionTitle(String(localized: "Choose fillings"))
             scrollableImages {
                 ForEach(viewModel.fillings, id: \.id) { filling in
                     fillingCard(for: filling).onTapGesture {
@@ -49,7 +49,7 @@ private extension AddFillingsAndCategoriesView {
 
     var categoriesContainer: some View {
         VStack(alignment: .leading, spacing: 17) {
-            sectionTitle("Choose categories")
+            sectionTitle(String(localized: "Choose categories") )
             scrollableImages {
                 ForEach(viewModel.categories, id: \.id) { category in
                     categoryCard(for: category).onTapGesture {

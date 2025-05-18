@@ -14,6 +14,7 @@ enum CategoriesModel {}
 extension CategoriesModel {
     struct UIProperties: Hashable {
         var state: ScreenState = .initial
+        var alert = AlertModel()
         var tabBarProgess: CGFloat = .zero
         var selectedTab: Tab? = .women
         var searchText = ""

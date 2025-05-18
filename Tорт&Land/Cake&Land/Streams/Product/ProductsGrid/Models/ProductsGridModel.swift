@@ -40,28 +40,28 @@ extension ProductsGridModel {
         case sort
     }
 
-    enum SortMode: String, Hashable, CaseIterable, Identifiable {
-        case none = "Без сортировки"
-        case priceAsc = "По возрастанию цены"
-        case priceDesc = "По убыванию цены"
-        case dateNewest = "Сначала новые"
-        case dateOldest = "Сначала старые"
+    enum SortMode: Hashable, CaseIterable, Identifiable {
+        case none
+        case priceAsc
+        case priceDesc
+        case dateNewest
+        case dateOldest
 
-        var id: String { rawValue }
-    }
-}
+        var id: String { String(describing: self) }
 
-// MARK: - SectionKind
-
-extension ProductsGridModel.SectionKind {
-    var listSection: CakesListModel.Section {
-        switch self {
-        case .new:
-            return .new([])
-        case .sales:
-            return .sale([])
-        case .default:
-            return .all([])
+        var title: String {
+            switch self {
+            case .none:
+                return String(localized: "No sorting")
+            case .priceAsc:
+                return String(localized: "Price: Low to High")
+            case .priceDesc:
+                return String(localized: "Price: High to Low")
+            case .dateNewest:
+                return String(localized: "Newest First")
+            case .dateOldest:
+                return String(localized: "Oldest First")
+            }
         }
     }
 }

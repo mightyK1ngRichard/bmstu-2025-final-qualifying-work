@@ -12,10 +12,10 @@ import NetworkAPI
 final class ProductsGridAssemler {
     static func assembly(
         cakes: [CakeModel],
-        sectionKind: ProductsGridModel.SectionKind,
-        cakeService: CakeService
+        cakeService: CakeService,
+        priceFormatter: PriceFormatterService = .shared
     ) -> ProductsGridView {
-        let viewModel = ProductsGridViewModel(cakes: cakes, sectionKind: sectionKind, cakeService: cakeService)
+        let viewModel = ProductsGridViewModel(cakes: cakes, cakeService: cakeService, priceFormatter: priceFormatter)
         return ProductsGridView(viewModel: viewModel)
     }
 }

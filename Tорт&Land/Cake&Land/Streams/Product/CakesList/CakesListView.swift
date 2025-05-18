@@ -28,8 +28,8 @@ private extension CakesListView {
     @ViewBuilder
     func openNextScreen(_ screen: CakesListModel.Screens) -> some View {
         switch screen {
-        case let .tags(cakes, sectionKind):
-            viewModel.assemblyTagsView(cakes: cakes, sectionKind: sectionKind)
+        case let .grid(cakes):
+            viewModel.assemblyTagsView(cakes: cakes)
         }
     }
 }

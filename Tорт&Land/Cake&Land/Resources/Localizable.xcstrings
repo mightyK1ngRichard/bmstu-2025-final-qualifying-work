@@ -258,6 +258,26 @@
         }
       }
     },
+    "Choose categories" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите категории"
+          }
+        }
+      }
+    },
+    "Choose fillings" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите начинки"
+          }
+        }
+      }
+    },
     "choose rating" : {
       "localizations" : {
         "ru" : {
@@ -548,6 +568,16 @@
         }
       }
     },
+    "Filters" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фильтры"
+          }
+        }
+      }
+    },
     "Floor" : {
       "localizations" : {
         "ru" : {
@@ -768,6 +798,16 @@
         }
       }
     },
+    "Newest First" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сначала новые"
+          }
+        }
+      }
+    },
     "Nickname" : {
       "localizations" : {
         "ru" : {
@@ -818,6 +858,16 @@
         }
       }
     },
+    "No sorting" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без сортировки"
+          }
+        }
+      }
+    },
     "Nothing found" : {
       "localizations" : {
         "ru" : {
@@ -854,6 +904,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Хорошо"
+          }
+        }
+      }
+    },
+    "Oldest First" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сначала старые"
           }
         }
       }
@@ -988,6 +1048,26 @@
         }
       }
     },
+    "Price: High to Low" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По убыванию цены"
+          }
+        }
+      }
+    },
+    "Price: Low to High" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По возрастанию цены"
+          }
+        }
+      }
+    },
     "Profile" : {
       "localizations" : {
         "ru" : {
@@ -1054,6 +1134,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скидки"
+          }
+        }
+      }
+    },
+    "save" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сохранить"
           }
         }
       }

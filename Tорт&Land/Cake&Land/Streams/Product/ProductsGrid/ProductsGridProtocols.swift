@@ -13,7 +13,6 @@ protocol ProductsGridDisplayData {
     var uiProperties: ProductsGridModel.UIProperties { get set }
     var colors: [ProductsGridModel.ColorCell] { get }
     var displayedCakes: [CakeModel] { get }
-    var sectionKind: ProductsGridModel.SectionKind { get }
 }
 
 protocol ProductsGridViewModelInput {
