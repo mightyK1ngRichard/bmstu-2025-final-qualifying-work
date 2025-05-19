@@ -59,7 +59,7 @@ final class RatingReviewsViewModelMock: RatingReviewsDisplayLogic, RatingReviews
         }
     }
 
-    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration {
+    func configureErrorView(content: AlertContent) -> TLErrorView.Configuration {
         .init(from: content)
     }
 

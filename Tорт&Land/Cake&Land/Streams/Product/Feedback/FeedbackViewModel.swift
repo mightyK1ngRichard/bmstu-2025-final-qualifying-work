@@ -40,7 +40,7 @@ extension FeedbackViewModel {
     func didTapSendFeedbackButton() {
         guard uiProperties.countFillStars > 0 && uiProperties.countFillStars < 6 else {
             showErrorMessage(
-                content: ErrorContent(
+                content: AlertContent(
                     title: StringConstants.invalidInputData,
                     message: StringConstants.chooseRating.capitalized
                 )
@@ -49,7 +49,7 @@ extension FeedbackViewModel {
         }
         guard !uiProperties.feedbackText.isEmpty else {
             showErrorMessage(
-                content: ErrorContent(
+                content: AlertContent(
                     title: StringConstants.invalidInputData,
                     message: StringConstants.textCannotBeEmpty
                 )
@@ -85,9 +85,9 @@ extension FeedbackViewModel {
         uiProperties.alert = .init()
     }
 
-    private func showErrorMessage(content: ErrorContent) {
+    private func showErrorMessage(content: AlertContent) {
         uiProperties.alert = AlertModel(
-            errorContent: content,
+            content: content,
             isShown: true
         )
     }

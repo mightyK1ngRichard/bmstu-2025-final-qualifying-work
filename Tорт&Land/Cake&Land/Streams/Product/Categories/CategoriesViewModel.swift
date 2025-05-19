@@ -88,7 +88,7 @@ extension CategoriesViewModel {
 
                 coordinator.addScreen(CategoriesModel.Screens.cakes(cakesModel))
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
         }
     }

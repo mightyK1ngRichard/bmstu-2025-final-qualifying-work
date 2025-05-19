@@ -37,7 +37,7 @@ struct SettingsView: View {
             preferredItemEncoding: .automatic
         )
         .defaultAlert(
-            errorContent: viewModel.uiProperties.alert.errorContent,
+            errorContent: viewModel.uiProperties.alert.content,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
         .onChange(of: viewModel.uiProperties.selectedImage) { _, newValue in
@@ -178,7 +178,7 @@ private extension SettingsView {
         }
     }
 
-    func errorView(content: ErrorContent) -> some View {
+    func errorView(content: AlertContent) -> some View {
         TLErrorView(
             configuration: .init(from: content),
             action: viewModel.fetchAddresses

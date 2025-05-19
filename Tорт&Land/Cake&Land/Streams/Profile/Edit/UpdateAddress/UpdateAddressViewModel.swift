@@ -80,7 +80,7 @@ extension UpdateAddressViewModel {
             } catch {
                 uiProperties.buttonIsLoading = false
                 uiProperties.alert = AlertModel(
-                    errorContent: error.readableGRPCContent,
+                    content: error.readableGRPCContent,
                     isShown: true
                 )
             }

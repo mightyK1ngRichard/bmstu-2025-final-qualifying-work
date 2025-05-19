@@ -20,7 +20,7 @@ extension CategoriesView {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .defaultAlert(
-            errorContent: viewModel.uiProperties.alert.errorContent,
+            errorContent: viewModel.uiProperties.alert.content,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
     }

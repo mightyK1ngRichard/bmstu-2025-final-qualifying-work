@@ -13,21 +13,5 @@ enum ScreenState: Hashable {
     case initial
     case loading
     case finished
-    case error(content: ErrorContent)
-}
-
-// MARK: - ErrorContent
-
-struct ErrorContent: Hashable {
-    var title: String = String(localized: "Network error")
-    var message: String
-}
-
-extension TLErrorView.Configuration {
-    init(from content: ErrorContent, buttonTitle: String? = nil) {
-        self = .init(
-            kind: .customError(content.title, content.message),
-            buttonTitle: buttonTitle ?? StringConstants.tryAgain
-        )
-    }
+    case error(content: AlertContent)
 }

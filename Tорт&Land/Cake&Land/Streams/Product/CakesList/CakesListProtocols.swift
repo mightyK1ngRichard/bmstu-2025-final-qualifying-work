@@ -22,7 +22,7 @@ protocol CakesListViewModelInput {
     // MARK: Network
     func fetchData()
     // MARK: Configuration
-    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration
+    func configureErrorView(content: AlertContent) -> TLErrorView.Configuration
     func configureProductCard(model: CakeModel) -> TLProductCard.Configuration
     func configureShimmeringProductCard() -> TLProductCard.Configuration
     // MARK: Assembler

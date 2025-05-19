@@ -99,7 +99,7 @@ extension CreateProductViewModel {
             let mass = Double(uiProperties.inputMass)
         else {
             uiProperties.alert = AlertModel(
-                errorContent: .init(title: alertTitle, message: alertMessage),
+                content: AlertContent(title: alertTitle, message: alertMessage),
                 isShown: true
             )
             return
@@ -108,7 +108,7 @@ extension CreateProductViewModel {
         // Если есть скидка, но она не число
         if !uiProperties.inputDiscountedPrice.isEmpty && Double(uiProperties.inputDiscountedPrice) == nil {
             uiProperties.alert = AlertModel(
-                errorContent: .init(title: alertTitle, message: alertMessage),
+                content: AlertContent(title: alertTitle, message: alertMessage),
                 isShown: true
             )
             return
@@ -158,7 +158,7 @@ extension CreateProductViewModel {
                 coordinator.openPreviousScreen()
                 generateCakeColors(cakeID: response.cakeID)
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
         }
     }

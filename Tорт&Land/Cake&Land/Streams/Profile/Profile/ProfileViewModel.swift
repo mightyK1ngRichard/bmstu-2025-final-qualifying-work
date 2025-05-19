@@ -86,7 +86,7 @@ extension ProfileViewModel {
                     uiProperties.sessionExpired = true
                     uiProperties.buttonTitle = StringConstants.logout
                     uiProperties.screenState = .error(
-                        content: ErrorContent(
+                        content: AlertContent(
                             title: StringConstants.sessionExpiredTitle,
                             message: StringConstants.sessionExpiredSubtitle
                         )
@@ -118,7 +118,7 @@ extension ProfileViewModel {
                     }
                 }
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
                 uiProperties.screenState = .finished
             }
         }
@@ -207,7 +207,7 @@ extension ProfileViewModel {
             coordinator?.addScreen(ProfileModel.Screens.sendMessage(currentUser: currentUser, interlocutor: interlocutor))
         } else {
             uiProperties.alert = AlertModel(
-                errorContent: ErrorContent(
+                content: AlertContent(
                     title: StringConstants.currentUserNotFound,
                     message: StringConstants.innerError
                 ),

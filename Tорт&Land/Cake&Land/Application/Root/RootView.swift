@@ -19,7 +19,7 @@ struct RootView: View {
                 viewModel.fetchUserInfoIfNeeded()
             }
             .defaultAlert(
-                errorContent: viewModel.uiProperties.alert.errorContent,
+                errorContent: viewModel.uiProperties.alert.content,
                 isPresented: $viewModel.uiProperties.alert.isShown,
                 action: viewModel.didTapAlertButton
             )

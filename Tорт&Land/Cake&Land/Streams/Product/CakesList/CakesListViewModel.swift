@@ -106,7 +106,7 @@ extension CakesListViewModel {
         model.configureProductCard(priceFormatter: priceFormatter)
     }
 
-    func configureErrorView(content: ErrorContent) -> TLErrorView.Configuration {
+    func configureErrorView(content: AlertContent) -> TLErrorView.Configuration {
         .init(from: content)
     }
 

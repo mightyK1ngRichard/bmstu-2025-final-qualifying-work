@@ -11,7 +11,7 @@ import GRPC
 import NIO
 
 extension Error {
-    var readableGRPCContent: ErrorContent {
+    var readableGRPCContent: AlertContent {
         // 1. Обработка GRPC ошибок
         if let status = self as? GRPCStatus {
             switch status.code {

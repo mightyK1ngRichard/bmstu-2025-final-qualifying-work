@@ -101,7 +101,7 @@ private extension OrderListView {
         .padding()
     }
 
-    func errorView(content: ErrorContent) -> some View {
+    func errorView(content: AlertContent) -> some View {
         TLErrorView(
             configuration: .init(from: content),
             action: viewModel.fetchData

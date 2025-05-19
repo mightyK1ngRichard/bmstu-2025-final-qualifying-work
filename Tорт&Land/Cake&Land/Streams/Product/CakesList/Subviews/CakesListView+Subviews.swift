@@ -64,7 +64,7 @@ private extension CakesListView {
         .padding(.top, -20)
     }
 
-    func errorView(with content: ErrorContent) -> some View {
+    func errorView(with content: AlertContent) -> some View {
         TLErrorView(
             configuration: viewModel.configureErrorView(content: content),
             action: viewModel.fetchData

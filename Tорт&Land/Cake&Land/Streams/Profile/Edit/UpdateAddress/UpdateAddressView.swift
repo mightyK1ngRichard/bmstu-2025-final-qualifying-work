@@ -24,7 +24,7 @@ struct UpdateAddressView: View {
             viewModel.onAppear()
         }
         .defaultAlert(
-            errorContent: viewModel.uiProperties.alert.errorContent,
+            errorContent: viewModel.uiProperties.alert.content,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
         .background(TLColor<BackgroundPalette>.bgMainColor.color)

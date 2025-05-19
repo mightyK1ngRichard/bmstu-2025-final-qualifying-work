@@ -56,7 +56,7 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelInput {
             do {
                 try await chatProvider.startChat()
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
         }
         
@@ -80,7 +80,7 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelInput {
 
                 uiProperties.isLoading = false
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
         }
     }

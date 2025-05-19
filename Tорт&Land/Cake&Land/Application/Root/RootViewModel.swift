@@ -81,7 +81,7 @@ extension RootViewModel {
                 if grpcError.code == .unauthenticated {
                     uiProperties.sessionIsExpired = true
                     uiProperties.alert = AlertModel(
-                        errorContent: ErrorContent(
+                        content: AlertContent(
                             title: StringConstants.sessionExpiredTitle,
                             message: StringConstants.sessionExpiredSubtitle
                         ),

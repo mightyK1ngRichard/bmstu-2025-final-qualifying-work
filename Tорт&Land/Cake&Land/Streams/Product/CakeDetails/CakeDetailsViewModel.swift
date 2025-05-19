@@ -80,7 +80,7 @@ extension CakeDetailsViewModel {
                 // TODO: Обновлённый торт. Или кэшируем. Или даём ещё предыдущему экране. Подумать
                 // ....
             } catch {
-                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
 
             bindingData.isLoading = false
@@ -159,7 +159,7 @@ extension CakeDetailsViewModel {
     func didTap3DButton() {
         guard let modelURL = cakeModel.model3DURLProd else {
             bindingData.alert = AlertModel(
-                errorContent: ErrorContent(
+                content: AlertContent(
                     title: StringConstants.modelErrorTitle,
                     message: StringConstants.modelErrorSubtitle
                 ),
@@ -192,7 +192,7 @@ extension CakeDetailsViewModel {
                 try await cakeService.updateCakeVisibility(cakeID: cakeModel.id, status: updatedStatus.toProto)
                 cakeModel.status = updatedStatus
             } catch {
-                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
 
             bindingData.visableButtonIsLoading = false

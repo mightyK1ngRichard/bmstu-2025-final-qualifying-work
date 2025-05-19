@@ -140,7 +140,7 @@ extension OrderViewModel {
             !uiProperties.selectedFillingID.isEmpty
         else {
             uiProperties.alert = .init(
-                errorContent: ErrorContent(
+                content: AlertContent(
                     title: StringConstants.invalidInputData,
                     message: StringConstants.formFieldsMissingError
                 ),
@@ -169,7 +169,7 @@ extension OrderViewModel {
             } catch {
                 uiProperties.isLoading = false
                 uiProperties.alert = .init(
-                    errorContent: error.readableGRPCContent,
+                    content: error.readableGRPCContent,
                     isShown: true
                 )
             }

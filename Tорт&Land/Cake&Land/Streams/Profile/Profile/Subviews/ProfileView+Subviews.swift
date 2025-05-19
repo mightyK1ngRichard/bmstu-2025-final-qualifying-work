@@ -33,7 +33,7 @@ extension ProfileView {
         .ignoresSafeArea()
         .background(Constants.bgColor)
         .defaultAlert(
-            errorContent: viewModel.uiProperties.alert.errorContent,
+            errorContent: viewModel.uiProperties.alert.content,
             isPresented: $viewModel.uiProperties.alert.isShown
         )
     }

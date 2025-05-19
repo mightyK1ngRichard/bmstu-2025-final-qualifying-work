@@ -52,7 +52,7 @@ extension CakeDetailsView {
             }
         }
         .defaultAlert(
-            errorContent: viewModel.bindingData.alert.errorContent,
+            errorContent: viewModel.bindingData.alert.content,
             isPresented: $viewModel.bindingData.alert.isShown
         )
         .sheet(isPresented: $viewModel.bindingData.openFileDirecatory) {

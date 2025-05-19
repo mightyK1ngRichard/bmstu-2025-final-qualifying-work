@@ -69,14 +69,14 @@ extension AuthViewModel {
     func didTapRegisterButton() {
         guard !uiProperties.email.isEmpty, !uiProperties.password.isEmpty, !uiProperties.repeatPassword.isEmpty else {
             uiProperties.alert = AlertModel(
-                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: StringConstants.fillInAllFields),
+                content: AlertContent(title: StringConstants.invalidInputData, message: StringConstants.fillInAllFields),
                 isShown: true
             )
             return
         }
         if uiProperties.password != uiProperties.repeatPassword {
             uiProperties.alert = AlertModel(
-                errorContent: ErrorContent(title: StringConstants.invalidInputData, message: StringConstants.passwordDoesNotMatch),
+                content: AlertContent(title: StringConstants.invalidInputData, message: StringConstants.passwordDoesNotMatch),
                 isShown: true
             )
             return
@@ -88,7 +88,7 @@ extension AuthViewModel {
                 try await registerUser()
                 startScreenControl?.update(with: .cakesList)
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
             uiProperties.isLoading = false
         }
@@ -97,7 +97,7 @@ extension AuthViewModel {
     func didTapSignInButton() {
         guard !uiProperties.email.isEmpty, !uiProperties.password.isEmpty else {
             uiProperties.alert = AlertModel(
-                errorContent: ErrorContent(
+                content: AlertContent(
                     title: StringConstants.invalidInputData,
                     message: StringConstants.fillInAllFields
                 ),
@@ -112,7 +112,7 @@ extension AuthViewModel {
                 try await loginUser()
                 startScreenControl?.update(with: .cakesList)
             } catch {
-                uiProperties.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
+                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
             }
             uiProperties.isLoading = false
         }

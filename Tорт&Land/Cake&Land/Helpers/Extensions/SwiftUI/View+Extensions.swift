@@ -119,7 +119,7 @@ extension View {
 
 extension View {
     func defaultAlert(
-        errorContent: ErrorContent,
+        errorContent: AlertContent,
         isPresented: Binding<Bool>,
         action: TLVoidBlock? = nil
     ) -> some View {

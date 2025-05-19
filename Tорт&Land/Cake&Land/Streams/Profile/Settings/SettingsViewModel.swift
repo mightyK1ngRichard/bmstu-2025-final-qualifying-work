@@ -104,7 +104,7 @@ extension SettingsViewModel {
                 try await networkManager.authService.logout()
             } catch {
                 uiProperties.alert = AlertModel(
-                    errorContent: error.readableGRPCContent,
+                    content: error.readableGRPCContent,
                     isShown: true
                 )
             }
@@ -129,7 +129,7 @@ extension SettingsViewModel {
                 userPublisher.send(userModel)
             } catch {
                 uiProperties.alert = AlertModel(
-                    errorContent: error.readableGRPCContent,
+                    content: error.readableGRPCContent,
                     isShown: true
                 )
                 uiProperties.penState = .failed
