@@ -99,13 +99,16 @@ extension ProfileViewModel {
         }
     }
 
-    func fetchInterlocutorInfo(interlocutorID: String) {
+    func fetchInterlocutorInfo(interlocutor: UserModel) {
         Task { @MainActor in
             do {
                 // Получаем торты
-                let res = try await networkManager.cakeService.getUserCakes(userID: interlocutorID)
+                let res = try await networkManager.cakeService.getUserCakes(userID: interlocutor.id)
                 user?.cakes = res.map(CakeModel.init(from:))
                 uiProperties.screenState = .finished
+
+                // Получаем изображения пользователя
+                fetchAvatarWithHeaderImage(imageURL: interlocutor.avatarImage.url, headerImageURL: interlocutor.headerImage.url)
 
                 // Получаем изобржения тортов
                 for (index, cake) in res.enumerated() {
@@ -126,7 +129,7 @@ extension ProfileViewModel {
 
         // Если данные опонента
         if let user, !isCurrentUser {
-            fetchInterlocutorInfo(interlocutorID: user.id)
+            fetchInterlocutorInfo(interlocutor: user)
             return
         }
 
@@ -136,22 +139,22 @@ extension ProfileViewModel {
     private func fetchAvatarWithHeaderImage(imageURL: String?, headerImageURL: String?) {
         Task { @MainActor in
             guard let imageURL else {
-                user?.avatarImage = .fetched(.uiImage(TLAssets.profile))
+                user?.avatarImage.imageState = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
             let imageState = await imageProvider.fetchImage(for: imageURL)
-            user?.avatarImage = imageState
+            user?.avatarImage.imageState = imageState
         }
 
         Task { @MainActor in
             guard let headerImageURL else {
-                user?.headerImage = .fetched(.uiImage(.mockHeader))
+                user?.headerImage.imageState = .fetched(.uiImage(.mockHeader))
                 return
             }
 
             let imageState = await imageProvider.fetchImage(for: headerImageURL)
-            user?.headerImage = imageState
+            user?.headerImage.imageState = imageState
         }
     }
 
@@ -229,12 +232,12 @@ extension ProfileViewModel {
 
     func configureAvatarImage() -> TLImageView.Configuration {
         guard let user else { return .init(imageState: .loading) }
-        return .init(imageState: user.avatarImage)
+        return .init(imageState: user.avatarImage.imageState)
     }
 
     func configureHeaderImage() -> TLImageView.Configuration {
         guard let user else { return .init(imageState: .loading) }
-        return .init(imageState: user.headerImage)
+        return .init(imageState: user.headerImage.imageState)
     }
 
     func configureProductCard(for cake: CakeModel) -> TLProductCard.Configuration {

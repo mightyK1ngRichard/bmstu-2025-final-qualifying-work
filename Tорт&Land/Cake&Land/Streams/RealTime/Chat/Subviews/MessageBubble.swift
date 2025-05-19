@@ -69,7 +69,7 @@ private extension MessageBubble {
 
     @ViewBuilder
     var personeAvatar: some View {
-        switch message.user.avatarImage {
+        switch message.user.avatarImage.imageState {
         case .empty, .error:
             Circle()
                 .fill(.mint.gradient)
@@ -83,7 +83,7 @@ private extension MessageBubble {
         default:
             TLImageView(
                 configuration: .init(
-                    imageState: message.user.avatarImage
+                    imageState: message.user.avatarImage.imageState
                 )
             )
             .frame(width: 32, height: 32)

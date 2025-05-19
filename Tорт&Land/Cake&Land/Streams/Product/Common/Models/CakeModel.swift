@@ -217,12 +217,6 @@ extension CakeModel {
         )
     }
 
-    func applyDetails(_ cakeEntity: CakeEntity) -> CakeModel {
-        var newCake = CakeModel(from: cakeEntity)
-        newCake.previewImageState = previewImageState
-        return newCake
-    }
-
     init(from model: CreatedCakeModel, user: UserModel) {
         self = CakeModel(
             id: model.id,

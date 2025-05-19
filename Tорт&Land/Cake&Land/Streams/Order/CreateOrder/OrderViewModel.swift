@@ -107,7 +107,7 @@ extension OrderViewModel {
         for (index, filling) in fillings.enumerated() {
             Task { @MainActor in
                 let imageState = await imageProvider.fetchImage(for: filling.imageURL)
-                cake?.fillings[index].imageState = imageState
+                cake?.fillings[safe: index]?.imageState = imageState
             }
         }
     }

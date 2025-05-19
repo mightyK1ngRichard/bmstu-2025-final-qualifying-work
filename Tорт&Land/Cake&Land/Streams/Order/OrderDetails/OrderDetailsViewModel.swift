@@ -20,6 +20,8 @@ final class OrderDetailsViewModel {
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
+    @ObservationIgnored
+    private var coordinator: Coordinator?
 
     init(
         orderEntity: OrderEntity,
@@ -57,7 +59,7 @@ extension OrderDetailsViewModel {
         for (index, image) in images.enumerated() {
             Task { @MainActor in
                 let imageState = await imageProvider.fetchImage(for: image.imageURL)
-                cakeModel?.thumbnails[index].imageState = imageState
+                cakeModel?.thumbnails[safe: index]?.imageState = imageState
             }
         }
     }
@@ -80,6 +82,14 @@ extension OrderDetailsViewModel {
 
     func copyOrderID() {
         UIPasteboard.general.string = orderEntity.id
+    }
+
+    func didTapOpenCakeScreen(cake: CakeModel) {
+        coordinator?.addScreen(RootModel.Screens.details(cake))
+    }
+
+    func setCoordinator(_ coordinator: Coordinator) {
+        self.coordinator = coordinator
     }
 
 }

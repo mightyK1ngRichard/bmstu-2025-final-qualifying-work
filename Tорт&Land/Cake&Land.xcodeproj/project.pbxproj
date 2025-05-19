@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E5296C372DBFD10B004887BB /* ColorThiefSwift */; };
-		E57A9CD42DD8DD9A006B22D4 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E57A9CD32DD8DD9A006B22D4 /* NetworkAPI */; };
 		E58F6F702DD9B283000F8AED /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5B12F312DD3C071003DE48C /* NetworkAPI */; };
 		E58F6F712DD9B283000F8AED /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E542A5DB2DD5767900480F84 /* NetworkAPI */; };
+		E5D5D73B2DDABB0300CEC714 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5D5D73A2DDABB0300CEC714 /* NetworkAPI */; };
+		E5E532F92DDAC92C00E7C905 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5E532F82DDAC92C00E7C905 /* NetworkAPI */; };
 		E5FCE73E2DCE3EEC00D420CB /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7292DCE3EEC00D420CB /* DesignSystem.framework */; };
 		E5FCE73F2DCE3EEC00D420CB /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7292DCE3EEC00D420CB /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E5FCE7882DCE3FD700D420CB /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FCE7802DCE3FD700D420CB /* Core.framework */; };
@@ -254,11 +255,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5E532F92DDAC92C00E7C905 /* NetworkAPI in Frameworks */,
 				E58F6F712DD9B283000F8AED /* NetworkAPI in Frameworks */,
 				E58F6F702DD9B283000F8AED /* NetworkAPI in Frameworks */,
 				E5FCE73E2DCE3EEC00D420CB /* DesignSystem.framework in Frameworks */,
 				E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */,
-				E57A9CD42DD8DD9A006B22D4 /* NetworkAPI in Frameworks */,
+				E5D5D73B2DDABB0300CEC714 /* NetworkAPI in Frameworks */,
 				E5FCE7882DCE3FD700D420CB /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,7 +365,8 @@
 				E5296C372DBFD10B004887BB /* ColorThiefSwift */,
 				E5B12F312DD3C071003DE48C /* NetworkAPI */,
 				E542A5DB2DD5767900480F84 /* NetworkAPI */,
-				E57A9CD32DD8DD9A006B22D4 /* NetworkAPI */,
+				E5D5D73A2DDABB0300CEC714 /* NetworkAPI */,
+				E5E532F82DDAC92C00E7C905 /* NetworkAPI */,
 			);
 			productName = "Tорт&Land";
 			productReference = E5A5F5B32D1647E600140551 /* Cake&Land.app */;
@@ -471,7 +474,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */,
-				E57A9CD22DD8DD9A006B22D4 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */,
+				E5E532F72DDAC92C00E7C905 /* XCLocalSwiftPackageReference "../../bmstu-2025-cake-land-network-api" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E5A5F5B42D1647E600140551 /* Products */;
@@ -1011,6 +1014,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		E5E532F72DDAC92C00E7C905 /* XCLocalSwiftPackageReference "../../bmstu-2025-cake-land-network-api" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../bmstu-2025-cake-land-network-api";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1018,14 +1028,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.5.0;
-			};
-		};
-		E57A9CD22DD8DD9A006B22D4 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mightyK1ngRichard/bmstu-2025-cake-land-network-api.git";
-			requirement = {
-				branch = main;
-				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1040,12 +1042,15 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkAPI;
 		};
-		E57A9CD32DD8DD9A006B22D4 /* NetworkAPI */ = {
+		E5B12F312DD3C071003DE48C /* NetworkAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57A9CD22DD8DD9A006B22D4 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */;
 			productName = NetworkAPI;
 		};
-		E5B12F312DD3C071003DE48C /* NetworkAPI */ = {
+		E5D5D73A2DDABB0300CEC714 /* NetworkAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkAPI;
+		};
+		E5E532F82DDAC92C00E7C905 /* NetworkAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkAPI;
 		};

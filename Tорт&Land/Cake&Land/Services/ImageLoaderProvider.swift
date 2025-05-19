@@ -15,7 +15,7 @@ protocol ImageLoaderProvider: AnyObject {
         from urlsStrings: [String],
         completion: @escaping (ImageLoaderProviderImpl.GetImagesStatesResult) -> Void
     )
-    func fetchImage(for urlString: String) async -> ImageState
+    func fetchImage(for urlString: String?) async -> ImageState
 }
 
 // MARK: - ImageLoaderProviderImpl
@@ -70,7 +70,6 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
                 continue
             }
 
-            Logger.log("начал получать изображение изображение")
             group.enter()
             imageQueue.async {
                 self.fetchImageData(from: urlString) { result in
@@ -81,7 +80,7 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
                         results.append((urlString, .fetched(.uiImage(uiImage))))
                     case .failure:
                         Logger.log(kind: .error, "начал получать изображение изображение")
-                        results.append((urlString, .error(.systemImage())))
+                        results.append((urlString, .error(urlString, .systemImage())))
                     }
                     group.leave()
                     lock.unlock()
@@ -94,20 +93,24 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
         }
     }
 
-    func fetchImage(for urlStr: String) async -> ImageState {
-        do {
-            let urlString = urlStr.replaceLocalhost()
+    func fetchImage(for urlStr: String?) async -> ImageState {
+        guard let urlStr, !urlStr.isEmpty else {
+            return .error(nil, .systemImage("photo.badge.exclamationmark.fill"))
+        }
 
+        let urlString = urlStr.replaceLocalhost()
+
+        do {
             // Если есть в кэше, возвращаем
             if let imageData = imageCache.object(forKey: urlString.replaceLocalhost() as NSString),
                let uiImage = UIImage(data: imageData as Data) {
-                Logger.log(kind: .debug, "Получил изображение из кэша")
+                Logger.log(kind: .image, "Получил изображение из кэша")
                 return .fetched(.uiImage(uiImage))
             }
 
             // Если есть в файловом хранилище
             if let uiImage = fileManager.obtain(with: urlString) {
-                Logger.log(kind: .debug, "Получил изображение из файлового хранилища")
+                Logger.log(kind: .image, "Получил изображение из файлового хранилища")
                 return .fetched(.uiImage(uiImage))
             }
 
@@ -126,11 +129,11 @@ final class ImageLoaderProviderImpl: ImageLoaderProvider {
                 self.imageCache.setObject(data as NSData, forKey: urlString as NSString)
             }
 
-            Logger.log(kind: .debug, "Получил изображение из сети")
+            Logger.log(kind: .image, "Получил изображение из сети")
             return .fetched(.uiImage(uiImage))
         } catch {
-            Logger.log(kind: .error, "Ошибка получения изображения: \(error)")
-            return .error(.systemImage())
+            Logger.log(kind: .image, "Ошибка получения изображения: \(error)")
+            return .error(urlString, .systemImage())
         }
     }
 

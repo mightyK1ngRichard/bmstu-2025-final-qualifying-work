@@ -1,15 +1,6 @@
 {
-  "originHash" : "5a56ede1fc83dec70e966d8cd0de2edafa6db9d7c301283ad392521e9ab923fa",
+  "originHash" : "80c200e67a465635b2b4b726789ae205d49f8deff93f65cac6c2f7b72a396cd1",
   "pins" : [
-    {
-      "identity" : "bmstu-2025-cake-land-network-api",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mightyK1ngRichard/bmstu-2025-cake-land-network-api.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "5655f2a41be4a7f06b5b5a2ed893f6031b7fc7fb"
-      }
-    },
     {
       "identity" : "colorthiefswift",
       "kind" : "remoteSourceControl",

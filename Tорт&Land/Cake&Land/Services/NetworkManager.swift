@@ -76,4 +76,56 @@ final class NetworkManager {
         notificationService.closeConnection()
         reviewsService.closeConnection()
     }
+
+    #if DEBUG
+    init(mockRefreshToken: String) {
+        let networkService = NetworkServiceImpl(
+            modelName: SystemInfo.modelName,
+            systemVersion: SystemInfo.appVersion,
+            fingerprint: SystemInfo.ios
+        )
+        networkService.setRefreshToken(mockRefreshToken)
+
+        authService = AuthGrpcServiceImpl(
+            configuration: AppHosts.auth,
+            networkService: networkService
+        )
+
+        cakeService = CakeGrpcServiceImpl(
+            configuration: AppHosts.cake,
+            authService: authService,
+            networkService: networkService
+        )
+
+        orderService = OrderGrpcServiceImpl(
+            configuration: AppHosts.order,
+            authService: authService,
+            networkService: networkService
+        )
+
+        profileService = ProfileGrpcServiceImpl(
+            configuration: AppHosts.profile,
+            authService: authService,
+            networkService: networkService
+        )
+
+        chatService = ChatServiceImpl(
+            configuration: AppHosts.chat,
+            authService: authService,
+            networkService: networkService
+        )
+
+        notificationService = NotificationServiceImpl(
+            configuration: AppHosts.notification,
+            authService: authService,
+            networkService: networkService
+        )
+
+        reviewsService = ReviewsGrpcServiceImpl(
+            configuration: AppHosts.reviews,
+            authService: authService,
+            networkService: networkService
+        )
+    }
+    #endif
 }

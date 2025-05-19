@@ -31,26 +31,22 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     @ObservationIgnored
     private var coordinator: Coordinator!
     @ObservationIgnored
-    private let rootViewModel: RootViewModelOutput
-    @ObservationIgnored
     private var cancellables = Set<AnyCancellable>()
 
     init(
-        cakeModel: CakeModel,
+        cake: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeService,
         reviewsService: ReviewsService,
         imageProvider: ImageLoaderProvider,
-        rootViewModel: RootViewModelOutput,
         priceFormatter: PriceFormatterService = .shared
     ) {
         bindingData = CakeDetailsModel.BindingData(showOwnerButton: !isOwnedByUser)
-        self.cakeModel = cakeModel
+        self.cakeModel = cake
         self.cakeService = cakeService
         self.reviewsService = reviewsService
         self.imageProvider = imageProvider
         self.priceFormatter = priceFormatter
-        self.rootViewModel = rootViewModel
     }
 
     private var visableButtonTitle: String {
@@ -71,14 +67,15 @@ extension CakeDetailsViewModel {
             do {
                 // Получаем подробную информацию торта
                 let res = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
-                cakeModel = cakeModel.applyDetails(res.cake)
+                var fetchedCakeModel = CakeModel(from: res.cake)
+                fetchedCakeModel.previewImageState = cakeModel.previewImageState
+                cakeModel = fetchedCakeModel
                 showFeedbackButton = res.canWriteFeedback
 
                 // Тянем изображения
-                fetchThumbnails(cakeImages: cakeModel.thumbnails)
+                fetchThumbnails(cakeImages: fetchedCakeModel.thumbnails)
                 fetchCategoriesImages(categories: res.cake.categories)
                 fetchFillingsImages(fillings: res.cake.fillings)
-                fetchSellerImages(imageURL: res.cake.owner.imageURL, headerImage: res.cake.owner.headerImageURL)
 
                 // TODO: Обновлённый торт. Или кэшируем. Или даём ещё предыдущему экране. Подумать
                 // ....
@@ -89,29 +86,6 @@ extension CakeDetailsViewModel {
             bindingData.isLoading = false
         }
     }
-    
-    /// Получаем изображения продавца
-    private func fetchSellerImages(imageURL: String?, headerImage: String?) {
-        Task { @MainActor in
-            guard let imageURL else {
-                cakeModel.seller.avatarImage = .fetched(.uiImage(TLAssets.profile))
-                return
-            }
-
-            let imageState = await imageProvider.fetchImage(for: imageURL)
-            cakeModel.seller.avatarImage = imageState
-        }
-
-        Task { @MainActor in
-            guard let headerImage else {
-                cakeModel.seller.headerImage = .fetched(.uiImage(.mockHeader))
-                return
-            }
-
-            let imageState = await imageProvider.fetchImage(for: headerImage)
-            cakeModel.seller.headerImage = imageState
-        }
-    }
 
     /// Получаем изображения торта
     private func fetchThumbnails(cakeImages: [Thumbnail]) {
@@ -119,7 +93,7 @@ extension CakeDetailsViewModel {
             Task { @MainActor in
                 let imageState = await imageProvider.fetchImage(for: thumbnail.url)
                 if let index = cakeModel.thumbnails.firstIndex(where: { $0.id == thumbnail.id }) {
-                    cakeModel.thumbnails[index].imageState = imageState
+                    cakeModel.thumbnails[safe: index]?.imageState = imageState
                 }
             }
         }
@@ -131,7 +105,7 @@ extension CakeDetailsViewModel {
             Task { @MainActor in
                 let imageState = await imageProvider.fetchImage(for: category.imageURL)
                 if let index = cakeModel.categories.firstIndex(where: { $0.id == category.id }) {
-                    cakeModel.categories[index].imageState = imageState
+                    cakeModel.categories[safe: index]?.imageState = imageState
                 }
             }
         }
@@ -143,7 +117,7 @@ extension CakeDetailsViewModel {
             Task { @MainActor in
                 let imageState = await imageProvider.fetchImage(for: filling.imageURL)
                 if let index = cakeModel.fillings.firstIndex(where: { $0.id == filling.id }) {
-                    cakeModel.fillings[index].imageState = imageState
+                    cakeModel.fillings[safe: index]?.imageState = imageState
                 }
             }
         }
@@ -202,7 +176,7 @@ extension CakeDetailsViewModel {
     }
 
     func didSelectFile(url: URL) {
-        Task {
+        Task { @MainActor in
             let fileData = try Data(contentsOf: url)
             let model3DURL = try await cakeService.add3DModel(cakeID: cakeModel.id, modelData: fileData)
             cakeModel.model3DURL = model3DURL
@@ -218,6 +192,7 @@ extension CakeDetailsViewModel {
                 try await cakeService.updateCakeVisibility(cakeID: cakeModel.id, status: updatedStatus.toProto)
                 cakeModel.status = updatedStatus
             } catch {
+                bindingData.alert = AlertModel(errorContent: error.readableGRPCContent, isShown: true)
             }
 
             bindingData.visableButtonIsLoading = false
@@ -257,6 +232,7 @@ extension CakeDetailsViewModel {
         view.viewModel.addFeedbackPublisher
             .sink { [weak self] feedback in
                 guard let self else { return }
+
                 var startsSum = cakeModel.rating * cakeModel.reviewsCount
                 startsSum += feedback.rating
                 cakeModel.reviewsCount += 1

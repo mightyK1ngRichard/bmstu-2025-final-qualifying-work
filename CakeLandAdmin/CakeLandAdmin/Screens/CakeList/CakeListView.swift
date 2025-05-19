@@ -22,6 +22,14 @@ struct CakeListView: View {
                 cardsContainer
             }
         }
+        .toolbar {
+            Button {
+                viewModel.fetchCakes()
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+            }
+
+        }
         .defaultAlert(
             errorContent: viewModel.bindingData.alert.content,
             isPresented: $viewModel.bindingData.alert.isShown

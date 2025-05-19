@@ -124,7 +124,7 @@ final class ChatViewModel: ChatDisplayLogic, ChatViewModelInput {
     }
 
     func configureInterlocutorAvatar() -> TLImageView.Configuration {
-        .init(imageState: interlocutor.avatarImage)
+        .init(imageState: interlocutor.avatarImage.imageState)
     }
 }
 

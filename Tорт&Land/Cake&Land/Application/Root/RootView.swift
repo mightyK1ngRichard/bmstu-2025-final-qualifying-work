@@ -23,6 +23,11 @@ struct RootView: View {
                 isPresented: $viewModel.uiProperties.alert.isShown,
                 action: viewModel.didTapAlertButton
             )
+            .onChange(of: viewModel.screenKind) { prevKind, newKind in
+                if prevKind == .auth && newKind != prevKind {
+                    viewModel.fetchUserInfoIfNeeded()
+                }
+            }
             .navigationDestination(for: RootModel.Screens.self) { screen in
                 openNextScreen(for: screen)
             }

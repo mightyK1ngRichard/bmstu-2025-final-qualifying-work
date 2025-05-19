@@ -23,6 +23,14 @@ struct OrderListView: View {
                 openNextScreen(for: screen)
             }
         }
+        .toolbar {
+            Button {
+                viewModel.fetchOrders()
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+            }
+
+        }
         .onFirstAppear {
             viewModel.setCoordinator(coordinator)
             viewModel.fetchOrders()

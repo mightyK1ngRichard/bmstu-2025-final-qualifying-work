@@ -18,9 +18,9 @@ struct UserModel: Identifiable, Hashable {
     /// Псевдоним пользователя
     var nickname: String
     /// Аватарка пользователя
-    var avatarImage: ImageState
+    var avatarImage: Thumbnail
     /// Шапка пользователя
-    var headerImage: ImageState
+    var headerImage: Thumbnail
     /// Почта пользователя
     var mail: String
     /// Телефон пользователя
@@ -43,8 +43,8 @@ extension UserModel {
             id: user.id,
             fio: user.fio,
             nickname: user.nickname,
-            avatarImage: .loading,
-            headerImage: .loading,
+            avatarImage: Thumbnail(id: UUID().uuidString, imageState: .loading, url: model.profile.imageURL),
+            headerImage: Thumbnail(id: UUID().uuidString, imageState: .loading, url: model.profile.headerImageURL),
             mail: user.mail,
             phone: user.phone,
             cakes: model.previewCakes.map(CakeModel.init(from:))
@@ -56,8 +56,8 @@ extension UserModel {
             id: model.id,
             fio: model.fio,
             nickname: model.nickname,
-            avatarImage: .loading,
-            headerImage: .loading,
+            avatarImage: Thumbnail(id: UUID().uuidString, imageState: .loading, url: model.imageURL),
+            headerImage: Thumbnail(id: UUID().uuidString, imageState: .loading, url: model.headerImageURL),
             mail: model.mail,
             cakes: []
         )
@@ -68,8 +68,8 @@ extension UserModel {
             id: model.id,
             fio: model.fio,
             nickname: model.nickname,
-            avatarImage: .loading,
-            headerImage: .loading,
+            avatarImage: Thumbnail(id: UUID().uuidString, imageState: .loading, url: model.imageURL),
+            headerImage: Thumbnail(id: UUID().uuidString, imageState: .loading, url: model.headerImageURL),
             mail: model.mail,
             cakes: []
         )

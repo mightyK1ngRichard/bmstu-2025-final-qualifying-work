@@ -79,12 +79,12 @@ enum CommonMockData {
             id: String(id),
             fio: name ?? "Имя пользователя #\(id)",
             nickname: "nickname_\(id)",
-            avatarImage: avatar ?? .fetched(
+            avatarImage: Thumbnail(id: "1", imageState: avatar ?? .fetched(
                 .uiImage(TLPreviewAssets.user1)
-            ),
-            headerImage: header ?? .fetched(
-                .uiImage(TLPreviewAssets.header1)
-            ),
+            )),
+            headerImage: Thumbnail(id: "2", imageState: avatar ?? .fetched(
+                .uiImage(TLPreviewAssets.user1)
+            )),
             mail: "email_\(id)@gmail.com",
             cakes: []
         )
@@ -104,7 +104,7 @@ enum CommonMockData {
 
     static func generateOrder() -> OrderEntity {
         OrderEntity(
-            id: UUID().uuidString,
+            id: "18a643cf-5788-41ec-aac6-283d5a4b5e32",
             totalPrice: 2499.99,
             deliveryAddress: .init(
                 id: UUID().uuidString,
@@ -135,7 +135,7 @@ enum CommonMockData {
         )
     }
 
-    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDczNTUxMjYsInVzZXJJRCI6IjIyODIyNzNmLTk4NmYtNDc0MS04OTM2LWRmMzEyNDhlMzljYiJ9.rR6oDNh-QUWiyvDmPAgFCRrTZqeD8-4y5s6PMTjtHoI"
+    static var refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDgyMzIwMjYsImlzQWRtaW4iOmZhbHNlLCJ1c2VySUQiOiJmZmM2MjBhYy1iNGNhLTRhNmYtODY0Yy1mOTdlZGViNGU3NjEifQ.OaQYftW6sPMZgqx4HKn2ixVgsOBgGAQyo-83eD3BaMM"
 }
 
 // MARK: - Constants

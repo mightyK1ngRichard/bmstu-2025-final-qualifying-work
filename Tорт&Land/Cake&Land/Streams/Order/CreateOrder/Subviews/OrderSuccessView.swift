@@ -18,18 +18,21 @@ struct OrderSuccessView: View {
             Image(.bags)
             VStack(spacing: 12) {
                 Text("Success!")
-//                    .styleDS(34, .bold)
+                    .style(34, .bold)
 
                 Text("Your order will be delivered soon.\nThank you for choosing our app!")
-//                    .styleDS(14, .regular)
+                    .style(14, .regular)
                     .multilineTextAlignment(.center)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
         .overlay(alignment: .bottom) {
-            TLButton("CONTINUE SHOPPING", action: action)
-                .padding()
+            TLButton(
+                String(localized: "continue shopping").uppercased(),
+                action: action
+            )
+            .padding()
         }
     }
 }

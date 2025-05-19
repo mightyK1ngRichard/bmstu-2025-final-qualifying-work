@@ -12,12 +12,14 @@ import DesignSystem
 
 struct OrderDetailsView: View {
     @State var viewModel: OrderDetailsViewModel
+    @Environment(Coordinator.self) private var coordinator
 
     var body: some View {
         orderContainer
             .scrollContentBackground(.hidden)
             .background(TLColor<BackgroundPalette>.bgMainColor.color)
             .onFirstAppear {
+                viewModel.setCoordinator(coordinator)
                 viewModel.fetchCakeData()
             }
     }
@@ -182,6 +184,17 @@ private extension OrderDetailsView {
                     TLProductDescriptionView(configuration: viewModel.configureCakeCard(cakeModel: cake))
                 }
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+
+                Button {
+                    viewModel.didTapOpenCakeScreen(cake: cake)
+                } label: {
+                    HStack {
+                        Text("Go to the cake")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .foregroundStyle(TLColor<TextPalette>.textWild.color)
+                }
             }
         }
     }
@@ -205,3 +218,36 @@ private extension OrderDetailsView {
         .scrollIndicators(.hidden)
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+#Preview {
+    @Previewable
+    @State var coordinator = Coordinator()
+    let networkManager = NetworkManager(mockRefreshToken: CommonMockData.refreshToken)
+    let imageProvider = ImageLoaderProviderImpl()
+
+    NavigationStack(path: $coordinator.navPath) {
+        OrderDetailsView(
+            viewModel: OrderDetailsViewModel(
+                orderEntity: CommonMockData.generateOrder(),
+                cakeService: networkManager.cakeService,
+                imageProvider: imageProvider
+            )
+        )
+        .navigationDestination(for: RootModel.Screens.self) { screen in
+            if case let .details(cake) = screen {
+                CakeDetailsAssembler.assemble(
+                    cake: cake,
+                    isOwnedByUser: true,
+                    cakeService: networkManager.cakeService,
+                    reviewsService: networkManager.reviewsService,
+                    imageProvider: imageProvider
+                )
+            }
+        }
+    }
+    .environment(coordinator)
+}
+#endif

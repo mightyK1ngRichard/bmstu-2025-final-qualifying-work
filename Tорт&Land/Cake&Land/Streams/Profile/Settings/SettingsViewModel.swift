@@ -84,7 +84,7 @@ extension SettingsViewModel {
                   let index = addresses.firstIndex(where: { $0.id == updatedAddress.id })
             else { return }
 
-            addresses[index] = updatedAddress
+            addresses[safe: index] = updatedAddress
         }
 
         return UpdateAddressView(viewModel: viewModel)
@@ -102,18 +102,18 @@ extension SettingsViewModel {
         Task { @MainActor in
             do {
                 try await networkManager.authService.logout()
-                networkManager.closeConnections()
-                rootViewModel.updateNetworkManager()
-                startScreenControl?.update(with: .auth)
-                coordinator?.goToRoot()
-                coordinator?.activeTab = .house
-                rootViewModel.updateCurrentUser(nil)
             } catch {
                 uiProperties.alert = AlertModel(
                     errorContent: error.readableGRPCContent,
                     isShown: true
                 )
             }
+            networkManager.closeConnections()
+            rootViewModel.updateNetworkManager()
+            startScreenControl?.update(with: .auth)
+            coordinator?.goToRoot()
+            coordinator?.activeTab = .house
+            rootViewModel.updateCurrentUser(nil)
         }
     }
 
@@ -150,9 +150,9 @@ extension SettingsViewModel {
                 let imageState: ImageState = .fetched(.uiImage(uiImage))
                 switch uiProperties.selectedImageKind {
                 case .avatar:
-                    userModel.avatarImage = imageState
+                    userModel.avatarImage.imageState = imageState
                 case .header:
-                    userModel.headerImage = imageState
+                    userModel.headerImage.imageState = imageState
                 }
 
                 userPublisher.send(userModel)

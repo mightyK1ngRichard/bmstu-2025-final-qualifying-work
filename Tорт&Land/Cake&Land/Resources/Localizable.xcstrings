@@ -328,6 +328,16 @@
         }
       }
     },
+    "continue shopping" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "продолжить покупки"
+          }
+        }
+      }
+    },
     "Copy" : {
       "localizations" : {
         "ru" : {
@@ -538,6 +548,16 @@
         }
       }
     },
+    "Failed to load seller" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось загрузить продавца"
+          }
+        }
+      }
+    },
     "Fill in all the fields" : {
       "localizations" : {
         "ru" : {
@@ -594,6 +614,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Этаж:"
+          }
+        }
+      }
+    },
+    "Go to the cake" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перейти к торту"
           }
         }
       }
@@ -1024,6 +1054,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пожалуйста, поделитесь своим мнением о продукте"
+          }
+        }
+      }
+    },
+    "Please try again later." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пожалуйста, повторите попытку позже."
           }
         }
       }

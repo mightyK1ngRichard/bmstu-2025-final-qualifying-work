@@ -12,5 +12,5 @@ import Core
 struct Thumbnail: Identifiable, Hashable {
     var id: String
     var imageState: ImageState
-    var url: String
+    var url: String?
 }

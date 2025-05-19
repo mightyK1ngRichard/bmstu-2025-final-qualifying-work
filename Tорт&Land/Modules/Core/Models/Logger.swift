@@ -30,6 +30,7 @@ public final class Logger {
         case info  = "ℹ️ info"
         case error = "⛔️ error"
         case debug = "⚙️ debug"
+        case image = "💿 image"
         case warning = "⚠️ warning"
     }
 }

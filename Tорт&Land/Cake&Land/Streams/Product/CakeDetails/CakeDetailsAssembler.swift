@@ -11,20 +11,18 @@ import NetworkAPI
 
 final class CakeDetailsAssembler {
     static func assemble(
-        cakeModel: CakeModel,
+        cake: CakeModel,
         isOwnedByUser: Bool,
         cakeService: CakeService,
         reviewsService: ReviewsService,
-        rootViewModel: RootViewModelOutput,
         imageProvider: ImageLoaderProvider
     ) -> CakeDetailsView {
         let viewModel = CakeDetailsViewModel(
-            cakeModel: cakeModel,
+            cake: cake,
             isOwnedByUser: isOwnedByUser,
             cakeService: cakeService,
             reviewsService: reviewsService,
-            imageProvider: imageProvider,
-            rootViewModel: rootViewModel
+            imageProvider: imageProvider
         )
 
         return CakeDetailsView(viewModel: viewModel)

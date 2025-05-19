@@ -227,10 +227,13 @@ private extension CakeDetailsView {
         if viewModel.bindingData.showOwnerButton {
             TLButton(String(localized: "make order").uppercased(), action: viewModel.didTapMakeOrderButton)
         } else {
-            TLButton(
-                configuration: viewModel.visableButtonConfiguration(),
-                action: viewModel.didTapUpdateVisable
-            )
+            // Показываем кнопку только при состоянии торта "одобрено" или "скрыто"
+            if viewModel.cakeModel.status == .approved || viewModel.cakeModel.status == .hidden {
+                TLButton(
+                    configuration: viewModel.visableButtonConfiguration(),
+                    action: viewModel.didTapUpdateVisable
+                )
+            }
         }
     }
 }

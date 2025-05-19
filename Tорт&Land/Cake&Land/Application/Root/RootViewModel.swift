@@ -76,8 +76,6 @@ extension RootViewModel {
                 let result = try await networkManager.profileService.getUserInfo()
                 let user = UserModel(from: result.userInfo)
                 currentUser = user
-                fetchUserAvatar(urlString: result.userInfo.profile.imageURL)
-                fetchUserHeaderImage(urlString: result.userInfo.profile.headerImageURL)
                 fetchCakesImages(cakes: result.userInfo.previewCakes)
             } catch let grpcError as GRPCStatus {
                 if grpcError.code == .unauthenticated {
@@ -97,28 +95,6 @@ extension RootViewModel {
 }
 
 private extension RootViewModel {
-
-    func fetchUserAvatar(urlString: String?) {
-        Task { @MainActor in
-            guard let url = urlString else {
-                return
-            }
-
-            let imageState = await imageProvider.fetchImage(for: url)
-            currentUser?.avatarImage = imageState
-        }
-    }
-
-    func fetchUserHeaderImage(urlString: String?) {
-        Task { @MainActor in
-            guard let url = urlString else {
-                return
-            }
-
-            let imageState = await imageProvider.fetchImage(for: url)
-            currentUser?.headerImage = imageState
-        }
-    }
 
     func fetchCakesImages(cakes: [ProfilePreviewCakeEntity]) {
         for (index, cake) in cakes.enumerated() {
@@ -148,11 +124,10 @@ extension RootViewModel {
 
     func assemblyDetailsView(model: CakeModel) -> CakeDetailsView {
         CakeDetailsAssembler.assemble(
-            cakeModel: model,
+            cake: model,
             isOwnedByUser: model.seller.id == currentUser?.id,
             cakeService: networkManager.cakeService,
             reviewsService: networkManager.reviewsService,
-            rootViewModel: self,
             imageProvider: imageProvider
         )
     }
@@ -163,6 +138,16 @@ extension RootViewModel {
             imageProvider: imageProvider,
             networkManager: networkManager,
             isCurrentUser: currentUser?.id == userModel.id,
+            rootViewModel: self
+        )
+    }
+
+    func assemblyProfileView() -> ProfileView {
+        ProfileAssemler.assemble(
+            user: currentUser,
+            imageProvider: imageProvider,
+            networkManager: networkManager,
+            isCurrentUser: true,
             rootViewModel: self
         )
     }
@@ -202,16 +187,6 @@ extension RootViewModel {
         NotificationsListAssembler.assemble(
             networkManager: networkManager,
             imageProvider: imageProvider
-        )
-    }
-
-    func assemblyProfileView() -> ProfileView {
-        ProfileAssemler.assemble(
-            user: currentUser,
-            imageProvider: imageProvider,
-            networkManager: networkManager,
-            isCurrentUser: true,
-            rootViewModel: self
         )
     }
 

@@ -68,12 +68,12 @@ extension RatingReviewsViewModel {
     private func fetchUserImage(index: Int, urlString: String?) {
         Task { @MainActor in
             guard let urlString else {
-                comments[index].author.imageState = .fetched(.uiImage(TLAssets.profile))
+                comments[safe: index]?.author.imageState = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
             let imageState = await imageProvider.fetchImage(for: urlString)
-            comments[index].author.imageState = imageState
+            comments[safe: index]?.author.imageState = imageState
         }
     }
 

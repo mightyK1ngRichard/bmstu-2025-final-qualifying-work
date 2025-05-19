@@ -37,6 +37,3 @@ protocol CakeDetailsViewModelInput {
     func visableButtonConfiguration() -> TLButton.Configuration
     func didSelectFile(url: URL)
 }
-
-protocol CakeDetailsViewModelOutput {
-}

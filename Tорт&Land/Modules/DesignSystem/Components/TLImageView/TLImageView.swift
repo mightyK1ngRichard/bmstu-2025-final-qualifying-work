@@ -10,9 +10,11 @@ import Core
 
 public struct TLImageView: View, Configurable {
     let configuration: Configuration
+    var didTapReloadImage: TLStringBlock?
 
-    public init(configuration: Configuration) {
+    public init(configuration: Configuration, didTapReloadImage: TLStringBlock? = nil) {
         self.configuration = configuration
+        self.didTapReloadImage = didTapReloadImage
     }
 
     public var body: some View {
@@ -35,8 +37,18 @@ private extension TLImageView {
             ShimmeringView()
         case let .fetched(imageKind):
             getImage(imageKind: imageKind)
-        case let .error(errorKind):
-            errorImage(kind: errorKind)
+        case let .error(url, icon):
+            if didTapReloadImage == nil {
+                errorImage(icon: icon)
+            } else {
+                errorImage(icon: icon)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        if let url {
+                            didTapReloadImage?(url)
+                        }
+                    }
+            }
         case .empty:
             emptyView
         @unknown default:
@@ -72,13 +84,14 @@ private extension TLImageView {
     }
 
     @ViewBuilder
-    func errorImage(kind: ImageState.ImageErrorKind) -> some View {
-        switch kind {
+    func errorImage(icon: ImageState.ImageIcon) -> some View {
+        switch icon {
         case let .uiImage(uiImage):
             getImage(uiImage: uiImage)
         case let .systemImage(systemName):
             emptyView.overlay {
                 Image(systemName: systemName)
+                    .foregroundStyle(.secondary)
             }
         @unknown default:
             fatalError("unknown case")
@@ -106,12 +119,14 @@ import Core
             ),
             .init(imageState: .loading),
             .init(imageState: .empty),
-            .init(imageState: .error(.systemImage()))
+            .init(imageState: .error("mock link", .systemImage()))
         ], id: \.hashValue) { configuration in
-            TLImageView(configuration: configuration)
-                .frame(height: 200)
-                .clipShape(.rect(cornerRadius: 16))
-                .padding(.horizontal)
+            TLImageView(configuration: configuration) { url in
+                print("[DEBUG]: reload image: \(url ?? "none")")
+            }
+            .frame(height: 200)
+            .clipShape(.rect(cornerRadius: 16))
+            .padding(.horizontal)
         }
     }
     .background(.bar)

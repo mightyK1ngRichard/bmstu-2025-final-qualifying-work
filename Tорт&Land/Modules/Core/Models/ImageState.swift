@@ -12,7 +12,7 @@ import UIKit
 public enum ImageState: Hashable {
     case loading
     case fetched(ImageKind)
-    case error(ImageErrorKind)
+    case error(_ urlString: String?, ImageIcon)
     case empty
 }
 
@@ -22,8 +22,8 @@ public extension ImageState {
         case data(Data)
     }
 
-    enum ImageErrorKind: Hashable {
+    enum ImageIcon: Hashable {
         case uiImage(UIImage)
-        case systemImage(_ systemName: String = "photo.badge.exclamationmark")
+        case systemImage(_ systemName: String = "arrow.counterclockwise")
     }
 }

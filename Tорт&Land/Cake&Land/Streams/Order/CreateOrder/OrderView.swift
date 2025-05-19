@@ -279,3 +279,14 @@ private extension OrderView {
         static let rowColor = TLColor<BackgroundPalette>.bgTextField.color
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    OrderAssembler.assemble(
+        cakeID: "550e8400-e29b-41d4-a716-446655441202",
+        networkManager: NetworkManager(),
+        imageProvider: ImageLoaderProviderImpl()
+    )
+    .environment(Coordinator())
+}

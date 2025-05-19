@@ -64,12 +64,12 @@ extension ChatListViewModel {
     private func fetchUserImage(index: Int, urlString: String?) {
         Task { @MainActor in
             guard let urlString else {
-                allChatCells[safe: index]?.user.avatarImage = .fetched(.uiImage(TLAssets.profile))
+                allChatCells[safe: index]?.user.avatarImage.imageState = .fetched(.uiImage(TLAssets.profile))
                 return
             }
 
             let imageState = await imageProvider.fetchImage(for: urlString)
-            allChatCells[safe: index]?.user.avatarImage = imageState
+            allChatCells[safe: index]?.user.avatarImage.imageState = imageState
         }
     }
 }
@@ -95,7 +95,7 @@ extension ChatListViewModel {
 
     func configureChatCell(with model: ChatListModel.ChatCellModel) -> TLChatCell.Configuration {
         .basic(
-            imageState: model.user.avatarImage,
+            imageState: model.user.avatarImage.imageState,
             title: model.user.titleName,
             subtitle: model.lastMessage,
             time: model.timeMessage.formattedHHmm

@@ -115,7 +115,7 @@ private extension AddFillingsAndCategoriesViewModel {
     func fetchFillingsImages(index: Int, imageString: String?) {
         Task { @MainActor in
             guard let imageString else {
-                fillings[safe: index]?.imageState = .error(.systemImage())
+                fillings[safe: index]?.imageState = .error(nil, .systemImage())
                 return
             }
 
@@ -127,7 +127,7 @@ private extension AddFillingsAndCategoriesViewModel {
     func fetchCategoriesImages(index: Int, imageString: String?) {
         Task { @MainActor in
             guard let imageString else {
-                categories[safe: index]?.imageState = .error(.systemImage())
+                categories[safe: index]?.imageState = .error(nil, .systemImage())
                 return
             }
 

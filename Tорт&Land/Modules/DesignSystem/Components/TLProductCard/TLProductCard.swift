@@ -32,12 +32,18 @@ let view = TLProductCard(
 */
 public struct TLProductCard: View, Configurable {
     let configuration: Configuration
-    var didTapButton: TLBoolBlock?
+    private var didTapButton: TLBoolBlock?
+    private var didTapReloadImage: TLStringBlock?
     @State private var offset = CGFloat.zero
 
-    public init(configuration: Configuration, didTapButton: TLBoolBlock? = nil) {
+    public init(
+        configuration: Configuration,
+        didTapButton: TLBoolBlock? = nil,
+        didTapReloadImage: TLStringBlock? = nil
+    ) {
         self.configuration = configuration
         self.didTapButton = didTapButton
+        self.didTapReloadImage = didTapReloadImage
     }
 
     public var body: some View {
@@ -58,7 +64,7 @@ public struct TLProductCard: View, Configurable {
 private extension TLProductCard {
 
     var imageBlock: some View {
-        TLImageView(configuration: configuration.imageConfiguration)
+        TLImageView(configuration: configuration.imageConfiguration, didTapReloadImage: didTapReloadImage)
             .frame(height: configuration.imageHeight)
             .clipShape(.rect(cornerRadius: 9))
             .overlay(alignment: .topLeading) {
@@ -166,41 +172,66 @@ private extension TLProductCard {
 
 #if DEBUG
 #Preview("Default") {
-    VStack {
-        TLProductCard(
-            configuration: .basic(
-                imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
-                imageHeight: 184,
-                productText: .init(
-                    seller: "Mango Boy",
-                    productName: "T-Shirt Sailing",
-                    productPrice: "22$",
-                    productDiscountedPrice: "10$"
-                ),
-                productButtonConfiguration: .basic(kind: .favorite()),
-                starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
+    ScrollView {
+        VStack {
+            TLProductCard(
+                configuration: .basic(
+                    imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
+                    imageHeight: 184,
+                    productText: .init(
+                        seller: "Mango Boy",
+                        productName: "T-Shirt Sailing",
+                        productPrice: "22$",
+                        productDiscountedPrice: "10$"
+                    ),
+                    productButtonConfiguration: .basic(kind: .favorite()),
+                    starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
+                ), didTapReloadImage: { urlString in
+                    print("[DEBUG]: relaod image for \(urlString ?? "no url")")
+                }
             )
-        )
-        .frame(width: 164)
+            .frame(width: 164)
 
-        TLProductCard(
-            configuration: .basic(
-                imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
-                imageHeight: 184,
-                productText: .init(
-                    seller: "Mango Boy",
-                    productName: "T-Shirt Sailing",
-                    productPrice: "22$",
-                    productDiscountedPrice: "10$"
-                ),
-                disableText: "Sorry, this item is currently closed for sale",
-                productButtonConfiguration: .basic(kind: .favorite()),
-                starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
+            TLProductCard(
+                configuration: .basic(
+                    imageState: .error("mock image url", .systemImage()),
+                    imageHeight: 184,
+                    productText: .init(
+                        seller: "Mango Boy",
+                        productName: "T-Shirt Sailing",
+                        productPrice: "22$",
+                        productDiscountedPrice: "10$"
+                    ),
+                    productButtonConfiguration: .basic(kind: .favorite()),
+                    starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
+                ), didTapReloadImage: { urlString in
+                    print("[DEBUG]: relaod image for \(urlString ?? "no url")")
+                }
             )
-        )
-        .frame(width: 164)
+            .frame(width: 164)
+            .onTapGesture {
+                print("[DEBUG]: \(#function)")
+            }
+
+            TLProductCard(
+                configuration: .basic(
+                    imageState: .fetched(.uiImage(TLPreviewAssets.cake1)),
+                    imageHeight: 184,
+                    productText: .init(
+                        seller: "Mango Boy",
+                        productName: "T-Shirt Sailing",
+                        productPrice: "22$",
+                        productDiscountedPrice: "10$"
+                    ),
+                    disableText: "Sorry, this item is currently closed for sale",
+                    productButtonConfiguration: .basic(kind: .favorite()),
+                    starsViewConfiguration: .basic(kind: .four, feedbackCount: 20000)
+                )
+            )
+            .frame(width: 164)
+        }
+        .padding(50)
     }
-    .padding(50)
     .background(TLColor<BackgroundPalette>.bgMainColor.color)
 }
 

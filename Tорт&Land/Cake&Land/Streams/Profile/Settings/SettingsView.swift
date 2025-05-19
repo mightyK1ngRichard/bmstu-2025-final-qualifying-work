@@ -75,7 +75,7 @@ private extension SettingsView {
     var avatarView: some View {
         VStack {
             TLImageView(
-                configuration: .init(imageState: viewModel.userModel.avatarImage)
+                configuration: .init(imageState: viewModel.userModel.avatarImage.imageState)
             )
             .frame(width: 100, height: 100)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -98,7 +98,7 @@ private extension SettingsView {
         .listRowBackground(Color.clear)
         .listRowInsets(EdgeInsets())
         .background {
-            TLImageView(configuration: .init(imageState: viewModel.userModel.headerImage))
+            TLImageView(configuration: .init(imageState: viewModel.userModel.headerImage.imageState))
             TLColor<BackgroundPalette>.bgPrimary.color.opacity(0.3)
         }
     }
