@@ -708,6 +708,16 @@
         }
       }
     },
+    "Load saved data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать сохраненные данные"
+          }
+        }
+      }
+    },
     "Logout" : {
       "localizations" : {
         "ru" : {

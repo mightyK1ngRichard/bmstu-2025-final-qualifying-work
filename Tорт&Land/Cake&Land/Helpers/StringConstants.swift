@@ -32,4 +32,5 @@ enum StringConstants {
     static let save = String(localized: "save")
     static let tryAgainLater = String(localized: "Please try again later.")
     static let failedToLoadSeller = String(localized: "Failed to load seller")
+    static let loadSavedData = String(localized: "Load saved data")
 }

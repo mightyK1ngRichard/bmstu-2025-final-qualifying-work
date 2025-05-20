@@ -10,6 +10,7 @@ import Foundation
 import NetworkAPI
 import DesignSystem
 import Core
+import SwiftData
 
 @Observable
 final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
@@ -23,6 +24,8 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
     private let cakeService: CakeService
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
+    @ObservationIgnored
+    private var modelContext: ModelContext?
 
     init(
         cakeService: CakeService,
@@ -39,18 +42,25 @@ final class CakesListViewModel: CakesListDisplayData, CakesListViewModelInput {
 
 extension CakesListViewModel {
 
-    func fetchData() {
+    func fetchData(fromMemory: Bool) {
         bindingData.screenState = .loading
         Task { @MainActor in
             do {
                 // Получаем преьюхи тортов
-                let response = try await cakeService.fetchCakes()
+                let cakes: [PreviewCakeEntity]
+                if !fromMemory {
+                    let response = try await cakeService.fetchCakes()
+                    cakes = response.cakes
+                } else {
+                    let response = try await fetchFromMemory()
+                    cakes = response
+                }
 
                 // Определяем категории тортов
                 var tempSections: [CakesListModel.SectionKind: [CakeModel]] = [:]
                 var images: [(section: CakesListModel.SectionKind, cakeID: String, url: String)] = []
 
-                for cake in response.cakes {
+                for cake in cakes {
                     let sectionKind = identifyСakeSection(for: cake)
                     tempSections[sectionKind, default: []].append(CakeModel(from: cake))
                     images.append((sectionKind, cake.id, cake.imageURL))
@@ -61,6 +71,11 @@ extension CakesListViewModel {
 
                 // Тянем превью изображения тортов
                 fetchImages(for: images)
+
+                // Кэшируме тортики
+                if !fromMemory {
+                    await saveInMemory(entities: cakes)
+                }
 
             } catch {
                 bindingData.screenState = .error(content: error.readableGRPCContent)
@@ -88,6 +103,48 @@ extension CakesListViewModel {
         }
     }
 
+}
+
+// MARK: - Memory
+
+private extension CakesListViewModel {
+
+    @MainActor
+    func saveInMemory(entities: [PreviewCakeEntity]) async {
+        guard let modelContext else { return }
+
+        for entity in entities {
+            let cakeID = entity.id
+            let predicate = #Predicate<SDCake> { $0.cakeID == cakeID }
+            var descriptor = FetchDescriptor(predicate: predicate)
+            descriptor.fetchLimit = 1
+
+            // Если модель уже есть, обновляем. Иначе добавляем
+            if let existedModel = try? modelContext.fetch(descriptor).first {
+                existedModel.update(with: entity)
+            } else {
+                let model = SDCake(from: entity)
+                modelContext.insert(model)
+            }
+        }
+
+        do {
+            try modelContext.save()
+        } catch {
+            Logger.log(kind: .error, "ошибка при сохранении моделей тортов: \(error)")
+        }
+    }
+
+    @MainActor
+    func fetchFromMemory() async throws -> [PreviewCakeEntity] {
+        guard let modelContext else {
+            return []
+        }
+
+        let fetchDescripor = FetchDescriptor<SDCake>()
+        let cakes = try modelContext.fetch(fetchDescripor)
+        return cakes.compactMap(\.asPreviewEntity)
+    }
 }
 
 // MARK: - Configuration
@@ -136,9 +193,9 @@ extension CakesListViewModel {
 
 extension CakesListViewModel {
 
-    func setEnvironmentObjects(coordinator: Coordinator) {
-        guard self.coordinator == nil else { return }
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext) {
         self.coordinator = coordinator
+        self.modelContext = modelContext
     }
 
 }
