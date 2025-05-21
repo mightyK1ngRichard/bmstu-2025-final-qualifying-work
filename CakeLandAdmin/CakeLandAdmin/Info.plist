@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NETWORK_IP</key>
+	<string>$(NETWORK_IP)</string>
+	<key>Ports</key>
+	<dict>
+		<key>auth</key>
+		<string>$(PORT_AUTH)</string>
+		<key>cake</key>
+		<string>$(PORT_CAKE)</string>
+		<key>chat</key>
+		<string>$(PORT_CHAT)</string>
+		<key>notification</key>
+		<string>$(PORT_NOTIFICATION)</string>
+		<key>order</key>
+		<string>$(PORT_ORDER)</string>
+		<key>profile</key>
+		<string>$(PORT_PROFILE)</string>
+		<key>reviews</key>
+		<string>$(PORT_REVIEWS)</string>
+	</dict>
+</dict>
+</plist>
