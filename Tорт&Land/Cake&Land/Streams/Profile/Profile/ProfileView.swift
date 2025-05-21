@@ -11,10 +11,11 @@ import SwiftUI
 struct ProfileView: View {
     @State var viewModel: ProfileDisplayLogic & ProfileViewModelInput
     @Environment(Coordinator.self) private var coordinator
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         mainContainer.onFirstAppear {
-            viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.setEnvironmentObjects(coordinator: coordinator, modelContext: modelContext)
             viewModel.fetchUserData()
         }
         .navigationDestination(for: ProfileModel.Screens.self) { screen in

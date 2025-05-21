@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 import DesignSystem
 
 protocol CakeDetailsDisplayData {
@@ -16,7 +17,7 @@ protocol CakeDetailsDisplayData {
 protocol CakeDetailsViewModelInput {
     func fetchCakeDetails()
 
-    func setEnvironmentObjects(coordinator: Coordinator)
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext)
     func configureImageViewConfiguration(for thumbnail: Thumbnail) -> TLImageView.Configuration
     func configurePreviewImageViewConfiguration() -> TLImageView.Configuration
     func configureSimilarProductConfiguration(for model: CakeModel) -> TLProductCard.Configuration

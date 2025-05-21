@@ -19,10 +19,14 @@ extension CategoriesView {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(TLColor<BackgroundPalette>.bgMainColor.color)
-        .defaultAlert(
+        .customAlert(
             errorContent: viewModel.uiProperties.alert.content,
             isPresented: $viewModel.uiProperties.alert.isShown
-        )
+        ) {
+            Button(StringConstants.loadSavedData) {
+                viewModel.didTapMemoryCakes()
+            }
+        }
     }
 }
 
@@ -114,8 +118,14 @@ private extension CategoriesView {
         case .finished:
             sectionsBlock
         case let .error(content):
-            TLErrorView(configuration: .init(from: content), action: viewModel.onAppear)
-                .padding()
+            VStack {
+                TLErrorView(
+                    configuration: .init(from: content),
+                    action: viewModel.onAppear
+                )
+                TLButton(StringConstants.loadSavedData, action: viewModel.didTapLoadSavedData)
+            }
+            .padding()
         }
     }
 
@@ -157,7 +167,7 @@ private extension CategoriesView {
                     .padding(.horizontal)
                     .contentShape(.rect)
                     .onTapGesture {
-                        viewModel.didTapSectionCell(section: section)
+                        viewModel.didTapSectionCell(section: section, fromMemory: false)
                     }
                 }
             }

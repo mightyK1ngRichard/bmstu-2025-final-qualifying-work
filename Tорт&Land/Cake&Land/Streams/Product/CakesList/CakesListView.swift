@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CakesListView: View {
     @State var viewModel: CakesListDisplayData & CakesListViewModelInput
     @Environment(Coordinator.self) private var coordinator
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         mainContainer.onFirstAppear {
-            viewModel.setEnvironmentObjects(coordinator: coordinator)
-            viewModel.fetchData()
+            viewModel.setEnvironmentObjects(coordinator: coordinator, modelContext: modelContext)
+            viewModel.fetchData(fromMemory: false)
         }
         .navigationDestination(for: CakesListModel.Screens.self) { screen in
             openNextScreen(screen)

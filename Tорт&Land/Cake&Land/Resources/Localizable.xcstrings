@@ -708,6 +708,16 @@
         }
       }
     },
+    "Load saved data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать сохраненные данные"
+          }
+        }
+      }
+    },
     "Logout" : {
       "localizations" : {
         "ru" : {
@@ -1368,6 +1378,16 @@
         }
       }
     },
+    "The user has not been cached" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Этот пользователь не был сохранён на устройстве"
+          }
+        }
+      }
+    },
     "There are no chats in your feed" : {
       "localizations" : {
         "ru" : {
@@ -1464,6 +1484,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Обновлён"
+          }
+        }
+      }
+    },
+    "User not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пользователь не найден"
           }
         }
       }

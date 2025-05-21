@@ -9,6 +9,7 @@
 import Foundation
 import NetworkAPI
 import DesignSystem
+import SwiftData
 import Core
 
 // MARK: - View Model
@@ -20,7 +21,7 @@ protocol CakesListDisplayData {
 
 protocol CakesListViewModelInput {
     // MARK: Network
-    func fetchData()
+    func fetchData(fromMemory: Bool)
     // MARK: Configuration
     func configureErrorView(content: AlertContent) -> TLErrorView.Configuration
     func configureProductCard(model: CakeModel) -> TLProductCard.Configuration
@@ -32,5 +33,5 @@ protocol CakesListViewModelInput {
     func didTapSectionAllButton(sectionKind: CakesListModel.SectionKind)
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
     // MARK: Setters
-    func setEnvironmentObjects(coordinator: Coordinator)
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext)
 }

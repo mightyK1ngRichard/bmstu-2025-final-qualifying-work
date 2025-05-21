@@ -65,10 +65,18 @@ private extension CakesListView {
     }
 
     func errorView(with content: AlertContent) -> some View {
-        TLErrorView(
-            configuration: viewModel.configureErrorView(content: content),
-            action: viewModel.fetchData
-        )
+        VStack {
+            TLErrorView(
+                configuration: viewModel.configureErrorView(content: content),
+                action: {
+                    viewModel.fetchData(fromMemory: false)
+                }
+            )
+
+            TLButton(StringConstants.loadSavedData) {
+                viewModel.fetchData(fromMemory: true)
+            }
+        }
         .padding(.horizontal, 53)
     }
 
