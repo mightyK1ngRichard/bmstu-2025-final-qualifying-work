@@ -218,36 +218,3 @@ private extension OrderDetailsView {
         .scrollIndicators(.hidden)
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-#Preview {
-    @Previewable
-    @State var coordinator = Coordinator()
-    let networkManager = NetworkManager(mockRefreshToken: CommonMockData.refreshToken)
-    let imageProvider = ImageLoaderProviderImpl()
-
-    NavigationStack(path: $coordinator.navPath) {
-        OrderDetailsView(
-            viewModel: OrderDetailsViewModel(
-                orderEntity: CommonMockData.generateOrder(),
-                cakeService: networkManager.cakeService,
-                imageProvider: imageProvider
-            )
-        )
-        .navigationDestination(for: RootModel.Screens.self) { screen in
-            if case let .details(cake) = screen {
-                CakeDetailsAssembler.assemble(
-                    cake: cake,
-                    isOwnedByUser: true,
-                    cakeService: networkManager.cakeService,
-                    reviewsService: networkManager.reviewsService,
-                    imageProvider: imageProvider
-                )
-            }
-        }
-    }
-    .environment(coordinator)
-}
-#endif

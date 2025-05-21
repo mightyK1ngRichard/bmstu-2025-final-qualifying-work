@@ -1293,7 +1293,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрес к доставке"
+            "value" : "Комментарий к доставке"
           }
         }
       }
