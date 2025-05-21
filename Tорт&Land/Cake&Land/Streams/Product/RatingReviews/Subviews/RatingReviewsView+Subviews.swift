@@ -22,8 +22,8 @@ extension RatingReviewsView {
                     configuration: viewModel.configureErrorView(content: content),
                     action: viewModel.fetchComments
                 )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.horizontal, 50)
-                .ignoresSafeArea()
             case .finished:
                 contentView
             }

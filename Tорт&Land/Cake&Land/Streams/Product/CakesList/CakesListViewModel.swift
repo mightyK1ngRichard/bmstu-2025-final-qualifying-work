@@ -111,28 +111,11 @@ private extension CakesListViewModel {
 
     @MainActor
     func saveInMemory(entities: [PreviewCakeEntity]) async {
-        guard let modelContext else { return }
-
-        for entity in entities {
-            let cakeID = entity.id
-            let predicate = #Predicate<SDCake> { $0.cakeID == cakeID }
-            var descriptor = FetchDescriptor(predicate: predicate)
-            descriptor.fetchLimit = 1
-
-            // Если модель уже есть, обновляем. Иначе добавляем
-            if let existedModel = try? modelContext.fetch(descriptor).first {
-                existedModel.update(with: entity)
-            } else {
-                let model = SDCake(from: entity)
-                modelContext.insert(model)
-            }
+        guard let modelContext else {
+            return
         }
 
-        do {
-            try modelContext.save()
-        } catch {
-            Logger.log(kind: .error, "ошибка при сохранении моделей тортов: \(error)")
-        }
+        await SDMemoryManager.shared.saveOrUpdateCakesInMemory(entities: entities, with: modelContext)
     }
 
     @MainActor
@@ -141,9 +124,9 @@ private extension CakesListViewModel {
             return []
         }
 
-        let fetchDescripor = FetchDescriptor<SDCake>()
-        let cakes = try modelContext.fetch(fetchDescripor)
-        return cakes.compactMap(\.asPreviewEntity)
+        return try await SDMemoryManager.shared
+            .fetchCakesFromMemory(using: modelContext)
+            .compactMap(\.asPreviewEntity)
     }
 }
 

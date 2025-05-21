@@ -134,4 +134,24 @@ extension View {
             Text(errorContent.message)
         }
     }
+
+    func customAlert<Content: View>(
+        errorContent: AlertContent,
+        isPresented: Binding<Bool>,
+        action: TLVoidBlock? = nil,
+        secondButton: () -> Content
+    ) -> some View {
+        alert(
+            errorContent.title,
+            isPresented: isPresented
+        ) {
+            Button("OK") {
+                action?()
+            }
+
+            secondButton()
+        } message: {
+            Text(errorContent.message)
+        }
+    }
 }

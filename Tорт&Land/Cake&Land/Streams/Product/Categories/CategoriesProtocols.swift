@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftData
 
 protocol CategoriesDisplayLogic: CategoriesViewModelInput {
     var uiProperties: CategoriesModel.UIProperties { get set }
@@ -15,15 +16,16 @@ protocol CategoriesDisplayLogic: CategoriesViewModelInput {
 }
 
 protocol CategoriesViewModelInput {
-    func setEnvironmentObjects(coordinator: Coordinator)
-    func filterData(categories: [CategoryCardModel]) -> [CategoryCardModel]
-}
-
-protocol CategoriesViewModelOutput {
     func onAppear()
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext)
+
+    func filterData(categories: [CategoryCardModel]) -> [CategoryCardModel]
     func didTapTab(tab: CategoriesModel.Tab)
     func didTapSearchToggle()
-    func didTapSectionCell(section: CategoryCardModel)
+    func didTapMemoryCakes()
+    func didTapLoadSavedData()
+    func didTapSectionCell(section: CategoryCardModel, fromMemory: Bool)
     func didUpdateSelectedTag(section: CategoriesModel.Tab)
+
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView
 }

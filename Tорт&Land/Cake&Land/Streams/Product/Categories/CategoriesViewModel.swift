@@ -9,10 +9,11 @@
 import Foundation
 import NetworkAPI
 import SwiftUI
+import SwiftData
 import Core
 
 @Observable
-final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutput {
+final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelInput {
     var uiProperties = CategoriesModel.UIProperties()
     private(set) var tabs: [CategoriesModel.Tab] = CategoriesModel.Tab.allCases
     private(set) var sections: [CategoriesModel.Tab: [CategoryCardModel]] = [:]
@@ -21,7 +22,13 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
+    private var modelContext: ModelContext?
+    @ObservationIgnored
     private var coordinator: Coordinator!
+    @ObservationIgnored
+    private var selectedSection: CategoryCardModel?
+    @ObservationIgnored
+    private var memoryCategories: [SDCategory] = []
 
     init(cakeProvider: CakeService, imageProvider: ImageLoaderProvider) {
         self.cakeProvider = cakeProvider
@@ -29,10 +36,11 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
     }
 
     func onAppear() {
-        fetchCategories()
+        fetchCategories(fromMemory: false)
     }
 
-    func setEnvironmentObjects(coordinator: Coordinator) {
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext) {
+        self.modelContext = modelContext
         self.coordinator = coordinator
     }
 
@@ -48,14 +56,56 @@ final class CategoriesViewModel: CategoriesDisplayLogic, CategoriesViewModelOutp
 // MARK: - Navigation
 
 extension CategoriesViewModel {
+
     func assemlyCakesCategoryView(cakes: [CakeModel]) -> ProductsGridView {
         ProductsGridAssemler.assembly(cakes: cakes, cakeService: cakeProvider)
     }
+
+}
+
+// MARK: - Memory
+
+private extension CategoriesViewModel {
+
+    @MainActor
+    func fetchFromMemory() async throws -> [SDCategory] {
+        guard memoryCategories.isEmpty else {
+            return memoryCategories
+        }
+
+        guard let modelContext else {
+            return []
+        }
+
+        return try await SDMemoryManager.shared.fetchCategoriesFromMemory(using: modelContext)
+    }
+
+    @MainActor
+    func fetchCategoryCakesFromMemory() async throws -> [PreviewCakeEntity] {
+        guard let selectedSection,
+              let modelContext
+        else { return [] }
+
+        guard let category = try await SDMemoryManager.shared.fetchCategoryFromMemory(
+            categoryID: selectedSection.id,
+            using: modelContext
+        ) else {
+            return []
+        }
+
+        return category.cakes?.compactMap(\.asPreviewEntity) ?? []
+    }
+
 }
 
 // MARK: - Actions
 
 extension CategoriesViewModel {
+
+    func didTapLoadSavedData() {
+        fetchCategories(fromMemory: true)
+    }
+
     func didTapTab(tab: CategoriesModel.Tab) {
         uiProperties.selectedTab = tab
     }
@@ -64,19 +114,34 @@ extension CategoriesViewModel {
         uiProperties.showSearchBar.toggle()
     }
 
-    func didTapSectionCell(section: CategoryCardModel) {
-        Task {
-            do {
-                let result = try await cakeProvider.fetchCategoryCakes(categoryID: section.id)
+    func didTapSectionCell(section: CategoryCardModel, fromMemory: Bool) {
+        selectedSection = section
 
-                let cakes = result.cakes.filter { $0.status == .approved }
-                var cakesModel: [CakeModel] = cakes.map(CakeModel.init(from:))
+        Task { @MainActor in
+            do {
+                var cakesModel: [CakeModel]
+                var previewImages: [String] = []
+
+                if !fromMemory {
+                    let result = try await cakeProvider.fetchCategoryCakes(categoryID: section.id)
+                    let cakes = result.cakes.filter { $0.status == .approved }
+                    cakesModel = cakes.map {
+                        previewImages.append($0.previewImageURL)
+                        return CakeModel.init(from: $0)
+                    }
+                } else {
+                    let cakes = try await fetchCategoryCakesFromMemory()
+                    cakesModel = cakes.map {
+                        previewImages.append($0.imageURL)
+                        return CakeModel.init(from: $0)
+                    }
+                }
 
                 // Подгружаем картинки
                 await withTaskGroup(of: (Int, ImageState).self) { group in
-                    for (index, cake) in cakes.enumerated() {
+                    for (index, previewImageURL) in previewImages.enumerated() {
                         group.addTask {
-                            let imageState = await self.imageProvider.fetchImage(for: cake.previewImageURL)
+                            let imageState = await self.imageProvider.fetchImage(for: previewImageURL)
                             return (index, imageState)
                         }
                     }
@@ -93,9 +158,18 @@ extension CategoriesViewModel {
         }
     }
 
+    func didTapMemoryCakes() {
+        guard let selectedSection else {
+            return
+        }
+
+        didTapSectionCell(section: selectedSection, fromMemory: true)
+    }
+
     func didUpdateSelectedTag(section: CategoriesModel.Tab) {
         fetchSubcategories(tab: section)
     }
+
 }
 
 // MARK: - Helpers
@@ -129,18 +203,26 @@ private extension CategoriesViewModel {
         }
     }
 
-    func fetchCategories() {
+    func fetchCategories(fromMemory: Bool) {
         uiProperties.state = .loading
 
         Task { @MainActor in
             do {
-                let result = try await cakeProvider.fetchCategories()
-                fetchSectionsImages(entities: result.categories)
+                var categories: [CategoryEntity] = []
+                if !fromMemory {
+                    let result = try await cakeProvider.fetchCategories()
+                    categories = result.categories
+                } else {
+                    memoryCategories = try await fetchFromMemory()
+                    categories = memoryCategories.map(\.asEntity)
+                }
+
+                fetchSectionsImages(entities: categories)
 
                 var males: [CategoryCardModel] = []
                 var females: [CategoryCardModel] = []
                 var childs: [CategoryCardModel] = []
-                for category in result.categories {
+                for category in categories {
                     for tag in category.genderTags {
                         let model = CategoryCardModel(from: category)
                         switch tag {

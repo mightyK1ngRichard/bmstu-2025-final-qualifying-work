@@ -10,6 +10,7 @@ import Foundation
 import Core
 import NetworkAPI
 import DesignSystem
+import SwiftData
 import Combine
 
 @Observable
@@ -28,6 +29,8 @@ final class CakeDetailsViewModel: CakeDetailsDisplayData, CakeDetailsViewModelIn
     // UI
     @ObservationIgnored
     private let priceFormatter: PriceFormatterService
+    @ObservationIgnored
+    private var modelContext: ModelContext?
     @ObservationIgnored
     private var coordinator: Coordinator!
     @ObservationIgnored
@@ -64,26 +67,41 @@ extension CakeDetailsViewModel {
         bindingData.isLoading = true
 
         Task { @MainActor in
+            var fetchedCakeModel = cakeModel
+            var fillings: [FillingEntity] = []
+            var categories: [CategoryEntity] = []
+
             do {
                 // Получаем подробную информацию торта
                 let res = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
-                var fetchedCakeModel = CakeModel(from: res.cake)
-                fetchedCakeModel.previewImageState = cakeModel.previewImageState
-                cakeModel = fetchedCakeModel
+                fetchedCakeModel = CakeModel(from: res.cake)
                 showFeedbackButton = res.canWriteFeedback
+                fillings = res.cake.fillings
+                categories = res.cake.categories
 
-                // Тянем изображения
-                fetchThumbnails(cakeImages: fetchedCakeModel.thumbnails)
-                fetchCategoriesImages(categories: res.cake.categories)
-                fetchFillingsImages(fillings: res.cake.fillings)
-
-                // TODO: Обновлённый торт. Или кэшируем. Или даём ещё предыдущему экране. Подумать
-                // ....
+                // Обновляем запись торта в памяти
+                await updateCakeInMemory(for: res.cake)
             } catch {
                 bindingData.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
+
+                // Тянем данные торта из памяти устройства
+                if let cakeEntity = try? await fetchCakeFromMemory(cakeID: cakeModel.id) {
+                    fetchedCakeModel = CakeModel(from: cakeEntity)
+                    fillings = cakeEntity.fillings
+                    categories = cakeEntity.categories
+                }
             }
 
+            // Preview изображение подставляем из переданной модели, чтобы не тянуть лишний раз изображение
+            fetchedCakeModel.previewImageState = cakeModel.previewImageState
+            cakeModel = fetchedCakeModel
+
             bindingData.isLoading = false
+
+            // Тянем изображения
+            fetchThumbnails(cakeImages: fetchedCakeModel.thumbnails)
+            fetchFillingsImages(fillings: fillings)
+            fetchCategoriesImages(categories: categories)
         }
     }
 
@@ -121,6 +139,32 @@ extension CakeDetailsViewModel {
                 }
             }
         }
+    }
+
+}
+
+// MARK: - Memory
+
+private extension CakeDetailsViewModel {
+
+    @MainActor
+    func updateCakeInMemory(for cakeEntity: CakeEntity) async {
+        guard let modelContext else {
+            return
+        }
+
+        await SDMemoryManager.shared.saveOrUpdateCakeInMemory(cakeEntity: cakeEntity, using: modelContext)
+    }
+
+    @MainActor
+    func fetchCakeFromMemory(cakeID: String) async throws -> CakeEntity? {
+        guard let modelContext else {
+            return nil
+        }
+
+        return try await SDMemoryManager.shared
+            .fetchCakeFromMemory(cakeID: cakeID, using: modelContext)?
+            .asCakeEntity
     }
 
 }
@@ -263,8 +307,8 @@ extension CakeDetailsViewModel {
 // MARK: - Setters
 
 extension CakeDetailsViewModel {
-    func setEnvironmentObjects(coordinator: Coordinator) {
-        guard self.coordinator == nil else { return }
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext) {
         self.coordinator = coordinator
+        self.modelContext = modelContext
     }
 }

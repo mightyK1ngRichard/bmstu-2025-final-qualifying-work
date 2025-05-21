@@ -41,13 +41,13 @@ final class SDCake {
     var owner: SDUser?
     /// Начинки торта
     @Relationship(inverse: \SDFilling.cakes)
-    var fillings: [SDFilling]
+    var fillings: [SDFilling]?
     /// Категории торта
     @Relationship(inverse: \SDCategory.cakes)
-    var categories: [SDCategory]
+    var categories: [SDCategory]?
     /// Фотографии торта
     @Relationship(deleteRule: .cascade)
-    var images: [SDCakeImageEntity]
+    var images: [SDCakeImage]?
     /// Hex цвета торта
     var colorsHex: String
     /// Ссылка на 3Д модель
@@ -66,10 +66,6 @@ final class SDCake {
         dateCreation: Date,
         discountKgPrice: Double?,
         discountEndTime: Date?,
-        owner: SDUser,
-        fillings: [SDFilling],
-        categories: [SDCategory],
-        images: [SDCakeImageEntity],
         colorsHex: [String],
         model3DURL: String?
     ) {
@@ -85,41 +81,14 @@ final class SDCake {
         self.dateCreation = dateCreation
         self.discountKgPrice = discountKgPrice
         self.discountEndTime = discountEndTime
-        self.owner = owner
-        self.fillings = fillings
-        self.categories = categories
-        self.images = images
         self.colorsHex = colorsHex.joined(separator: ",")
         self.model3DURL = model3DURL
-    }
-}
-
-@Model
-final class SDCakeImageEntity: Networkable {
-    @Attribute(.unique)
-    var id: String
-    var imageURL: String
-    // :1-M:
-    var cake: SDCake?
-
-    init(from model: CakeEntity.CakeImageEntity) {
-        id = model.id
-        imageURL = model.imageURL
-    }
-
-    var asEntity: CakeEntity.CakeImageEntity {
-        .init(id: id, imageURL: imageURL)
     }
 }
 
 extension SDCake {
 
     convenience init(from model: CakeEntity) {
-        let sdUser = SDUser(from: model.owner)
-        let sdFillings = model.fillings.map(SDFilling.init(from:))
-        let sdCategories = model.categories.map(SDCategory.init(from:))
-        let sdImages = model.images.map(SDCakeImageEntity.init(from:))
-
         self.init(
             cakeID: model.id,
             name: model.name,
@@ -133,21 +102,12 @@ extension SDCake {
             dateCreation: model.dateCreation,
             discountKgPrice: model.discountKgPrice,
             discountEndTime: model.discountEndTime,
-            owner: sdUser,
-            fillings: sdFillings,
-            categories: sdCategories,
-            images: sdImages,
             colorsHex: model.colorsHex,
             model3DURL: model.model3DURL
         )
     }
 
     convenience init(from model: PreviewCakeEntity) {
-        let sdUser = SDUser(from: model.owner)
-        let sdFillings = model.fillings.map(SDFilling.init(from:))
-        let sdCategories = model.categories.map(SDCategory.init(from:))
-        let sdImages: [SDCakeImageEntity] = []
-
         self.init(
             cakeID: model.id,
             name: model.name,
@@ -161,17 +121,15 @@ extension SDCake {
             dateCreation: model.dateCreation,
             discountKgPrice: model.discountKgPrice,
             discountEndTime: model.discountEndTime,
-            owner: sdUser,
-            fillings: sdFillings,
-            categories: sdCategories,
-            images: sdImages,
             colorsHex: model.colorsHex,
             model3DURL: model.model3DURL
         )
     }
 
     var asCakeEntity: CakeEntity? {
-        guard let owner else { return nil }
+        guard let owner else {
+            return nil
+        }
 
         return CakeEntity(
             id: cakeID,
@@ -187,16 +145,18 @@ extension SDCake {
             discountKgPrice: discountKgPrice,
             discountEndTime: discountEndTime,
             owner: owner.asEntity,
-            fillings: fillings.map(\.asEntity),
-            categories: categories.map(\.asEntity),
-            images: images.map(\.asEntity),
+            fillings: fillings?.compactMap(\.asEntity) ?? [],
+            categories: categories?.compactMap(\.asEntity) ?? [],
+            images: images?.compactMap(\.asEntity) ?? [],
             colorsHex: colorsHex.components(separatedBy: ","),
             model3DURL: model3DURL
         )
     }
 
     var asPreviewEntity: PreviewCakeEntity? {
-        guard let owner else { return nil }
+        guard let owner else {
+            return nil
+        }
 
         return PreviewCakeEntity(
             id: cakeID,
@@ -209,8 +169,8 @@ extension SDCake {
             mass: mass,
             status: CakeStatusEntity(rawValue: statusRaw) ?? .unspecified,
             owner: owner.asEntity,
-            fillings: fillings.map(\.asEntity),
-            categories: categories.map(\.asEntity),
+            fillings: fillings?.map(\.asEntity) ?? [],
+            categories: categories?.map(\.asEntity) ?? [],
             colorsHex: colorsHex.components(separatedBy: ","),
             discountKgPrice: discountKgPrice,
             discountEndTime: discountEndTime,
@@ -220,36 +180,8 @@ extension SDCake {
     }
 
     func update(with newEntity: PreviewCakeEntity) {
-        guard cakeID == newEntity.id,
-              var updatedOwnder = owner
-        else { return }
-        updatedOwnder.update(with: newEntity.owner)
-
-        // Обновление начинок
-        var updatedFillings: [SDFilling] = []
-        updatedFillings.reserveCapacity(newEntity.fillings.count)
-        for filling in newEntity.fillings {
-            // Если текущая начинка уже есть, обновляем её
-            if let oldSDFilling = fillings.first(where: { $0.fillingID == filling.id }) {
-                oldSDFilling.update(with: filling)
-                updatedFillings.append(oldSDFilling)
-            } else {
-                let newSDfilling = SDFilling(from: filling)
-                updatedFillings.append(newSDfilling)
-            }
-        }
-
-        // Обновление категорий
-        var updatedCategories: [SDCategory] = []
-        updatedCategories.reserveCapacity(newEntity.categories.count)
-        for category in newEntity.categories {
-            if let oldCategory = categories.first(where: { $0.categoryID == category.id }) {
-                oldCategory.update(with: category)
-                updatedCategories.append(oldCategory)
-            } else {
-                let newSDCategory = SDCategory(from: category)
-                updatedCategories.append(newSDCategory)
-            }
+        guard cakeID == newEntity.id else {
+            return
         }
 
         name = newEntity.name
@@ -263,9 +195,26 @@ extension SDCake {
         dateCreation = newEntity.dateCreation
         discountKgPrice = newEntity.discountKgPrice
         discountEndTime = newEntity.discountEndTime
-        owner = updatedOwnder
-        fillings = updatedFillings
-        categories = updatedCategories
+        colorsHex = newEntity.colorsHex.joined(separator: ",")
+        model3DURL = newEntity.model3DURL
+    }
+
+    func update(with newEntity: CakeEntity) {
+        guard cakeID == newEntity.id else {
+            return
+        }
+
+        name = newEntity.name
+        imageURL = newEntity.imageURL
+        kgPrice = newEntity.kgPrice
+        rating = newEntity.rating
+        reviewsCount = newEntity.reviewsCount
+        cakeDescription = newEntity.description
+        mass = newEntity.mass
+        statusRaw = newEntity.status.rawValue
+        dateCreation = newEntity.dateCreation
+        discountKgPrice = newEntity.discountKgPrice
+        discountEndTime = newEntity.discountEndTime
         colorsHex = newEntity.colorsHex.joined(separator: ",")
         model3DURL = newEntity.model3DURL
     }

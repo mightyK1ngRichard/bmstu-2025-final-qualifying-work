@@ -22,10 +22,13 @@ extension ProfileView {
                     contentView
                 }
             case let .error(content):
-                TLErrorView(
-                    configuration: .init(from: content, buttonTitle: viewModel.uiProperties.buttonTitle),
-                    action: viewModel.didTapAlertButton
-                )
+                VStack {
+                    TLErrorView(
+                        configuration: .init(from: content, buttonTitle: viewModel.uiProperties.buttonTitle),
+                        action: viewModel.didTapAlertButton
+                    )
+                    TLButton(StringConstants.loadSavedData, action: viewModel.didTapLoadSavedData)
+                }
                 .padding(.horizontal, 30)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

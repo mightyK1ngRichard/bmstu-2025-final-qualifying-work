@@ -13,9 +13,10 @@ import Core
 import GRPC
 import NetworkAPI
 import DesignSystem
+import SwiftData
 
 @Observable
-final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, ProfileViewModelOutput {
+final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput {
     var uiProperties = ProfileModel.UIProperties()
     private(set) var user: UserModel?
     private(set) var isCurrentUser: Bool
@@ -25,6 +26,8 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
     private let imageProvider: ImageLoaderProvider
     @ObservationIgnored
     private let networkManager: NetworkManager
+    @ObservationIgnored
+    private var modelContext: ModelContext?
     @ObservationIgnored
     private var coordinator: Coordinator?
     @ObservationIgnored
@@ -46,9 +49,9 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
         self.rootViewModel = rootViewModel
     }
 
-    func setEnvironmentObjects(coordinator: Coordinator) {
-        guard self.coordinator == nil else { return }
+    func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext) {
         self.coordinator = coordinator
+        self.modelContext = modelContext
     }
 }
 
@@ -57,9 +60,11 @@ final class ProfileViewModel: ProfileDisplayLogic, ProfileViewModelInput, Profil
 extension ProfileViewModel {
 
     func fetchCurrentUserInfo() {
+        uiProperties.screenState = .loading
+
         Task { @MainActor in
             do {
-                // Получаем данные пользователя
+                // Получаем сетевые данные пользователя
                 let res = try await networkManager.profileService.getUserInfo()
                 let profile = res.userInfo.profile
                 var userModel = UserModel(from: profile)
@@ -73,10 +78,8 @@ extension ProfileViewModel {
 
                 uiProperties.screenState = .finished
 
-                // Получаем изображения пользователя
+                // Получаем изображения
                 fetchAvatarWithHeaderImage(imageURL: profile.imageURL, headerImageURL: profile.headerImageURL)
-
-                // Получаем изображения тортов
                 fetchCakesImages(cakes: res.userInfo.previewCakes)
             } catch {
                 // Специфическая логика на "invalid refresh token"
@@ -118,8 +121,7 @@ extension ProfileViewModel {
                     }
                 }
             } catch {
-                uiProperties.alert = AlertModel(content: error.readableGRPCContent, isShown: true)
-                uiProperties.screenState = .finished
+                uiProperties.screenState = .error(content: error.readableGRPCContent)
             }
         }
     }
@@ -169,9 +171,63 @@ extension ProfileViewModel {
 
 }
 
+// MARK: - Memory
+
+private extension ProfileViewModel {
+
+    @MainActor
+    func fetchUserFromMemory(userID: String) async throws -> (UserEntity, [PreviewCakeEntity])? {
+        guard let modelContext else {
+            return nil
+        }
+
+        guard
+            let sdUser = try await SDMemoryManager.shared.fetchUserFromMemory(userID: userID, using: modelContext)
+        else { return nil }
+
+        let previewCakes = sdUser.cakes.compactMap(\.asPreviewEntity)
+        let user = sdUser.asEntity
+
+        return (user, previewCakes)
+    }
+
+}
+
 // MARK: - Actions
 
 extension ProfileViewModel {
+
+    func didTapLoadSavedData() {
+        Task { @MainActor in
+            uiProperties.screenState = .loading
+
+            // TODO: Если это текущий пользователь, надо достать ID
+            guard let userID = user?.id,
+                  let savedData = try? await fetchUserFromMemory(userID: userID) else {
+                uiProperties.screenState = .error(
+                    content: AlertContent(title: StringConstants.userNotFound, message: StringConstants.userHasNotBeenCached)
+                )
+                return
+            }
+
+            let userEntity = savedData.0
+            let userCakes = savedData.1
+            var tempUser = UserModel(from: userEntity)
+            tempUser.cakes = userCakes.map(CakeModel.init(from:))
+            user = tempUser
+
+            uiProperties.screenState = .finished
+
+            // Получаем изображения
+            fetchAvatarWithHeaderImage(imageURL: userEntity.imageURL, headerImageURL: userEntity.headerImageURL)
+            for (index, cake) in userCakes.enumerated() {
+                Task { @MainActor in
+                    let imageState = await imageProvider.fetchImage(for: cake.imageURL)
+                    user?.cakes[safe: index]?.previewImageState = imageState
+                }
+            }
+        }
+    }
 
     func didTapCakeCard(with cake: CakeModel) {
         coordinator?.addScreen(RootModel.Screens.details(cake))
@@ -196,10 +252,6 @@ extension ProfileViewModel {
 
         // Иначе тянем данные
         fetchUserData()
-    }
-
-    func didTapOpenMap() {
-        print("[DEBUG]: \(#function)")
     }
 
     func didTapWriteMessage() {

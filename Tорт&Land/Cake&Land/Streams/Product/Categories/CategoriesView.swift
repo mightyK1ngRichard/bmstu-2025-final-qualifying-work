@@ -7,14 +7,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CategoriesView: View {
-    @State var viewModel: CategoriesDisplayLogic & CategoriesViewModelOutput
+    @State var viewModel: CategoriesDisplayLogic & CategoriesViewModelInput
     @Environment(Coordinator.self) private var coordinator
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         mainContainer.onFirstAppear {
-            viewModel.setEnvironmentObjects(coordinator: coordinator)
+            viewModel.setEnvironmentObjects(coordinator: coordinator, modelContext: modelContext)
             viewModel.onAppear()
         }
         .navigationDestination(for: CategoriesModel.Screens.self) { screen in

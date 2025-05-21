@@ -69,6 +69,7 @@ extension SDCategory {
 
         name = newEntity.name
         imageURL = newEntity.imageURL
+        genderTagsJoinedString = newEntity.genderTags.map(\.rawValue).joined(separator: ",")
     }
 }
 
