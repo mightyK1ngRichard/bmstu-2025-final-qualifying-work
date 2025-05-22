@@ -140,10 +140,10 @@ extension CreateProductViewModel {
             do {
                 let response = try await cakeProvider.createCake(req: request)
 
+                var previewUIImage: ImageState = .empty
                 // Возвращает предыдушему экрану новый торт
-                var previewImage: ImageState = .empty
-                if let uiImage = selectedImages.first {
-                    previewImage = .fetched(.uiImage(uiImage))
+                if let uiImage = UIImage(data: previewImage) {
+                    previewUIImage = .fetched(.uiImage(uiImage))
                 }
                 let createdPreviewCake = CreatedCakeModel(
                     id: response.cakeID,
@@ -151,7 +151,7 @@ extension CreateProductViewModel {
                     price: kgPrice,
                     description: uiProperties.inputDescription,
                     mass: mass,
-                    previewImageState: previewImage
+                    previewImageState: previewUIImage
                 )
                 createPublisher.send(createdPreviewCake)
 

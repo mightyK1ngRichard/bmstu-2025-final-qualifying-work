@@ -68,7 +68,7 @@ private extension AddFillingsAndCategoriesView {
 
     func scrollableImages<Content: View>(_ cards: () -> Content) -> some View {
         ScrollView(.horizontal) {
-            HStack {
+            HStack(alignment: .top) {
                 cards()
             }
             .padding(.horizontal)

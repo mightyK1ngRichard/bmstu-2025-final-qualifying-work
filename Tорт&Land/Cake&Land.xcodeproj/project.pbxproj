@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E507A9C12DDEF165004AA618 /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E507A9C02DDEF165004AA618 /* NetworkAPI */; };
 		E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E5296C372DBFD10B004887BB /* ColorThiefSwift */; };
 		E58F6F702DD9B283000F8AED /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E5B12F312DD3C071003DE48C /* NetworkAPI */; };
 		E58F6F712DD9B283000F8AED /* NetworkAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E542A5DB2DD5767900480F84 /* NetworkAPI */; };
@@ -261,6 +262,7 @@
 				E5FCE73E2DCE3EEC00D420CB /* DesignSystem.framework in Frameworks */,
 				E5296C382DBFD10B004887BB /* ColorThiefSwift in Frameworks */,
 				E5D5D73B2DDABB0300CEC714 /* NetworkAPI in Frameworks */,
+				E507A9C12DDEF165004AA618 /* NetworkAPI in Frameworks */,
 				E5FCE7882DCE3FD700D420CB /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,6 +369,7 @@
 				E542A5DB2DD5767900480F84 /* NetworkAPI */,
 				E5D5D73A2DDABB0300CEC714 /* NetworkAPI */,
 				E5E532F82DDAC92C00E7C905 /* NetworkAPI */,
+				E507A9C02DDEF165004AA618 /* NetworkAPI */,
 			);
 			productName = "Tорт&Land";
 			productReference = E5A5F5B32D1647E600140551 /* Cake&Land.app */;
@@ -474,7 +477,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */,
-				E5E532F72DDAC92C00E7C905 /* XCLocalSwiftPackageReference "../../bmstu-2025-cake-land-network-api" */,
+				E507A9BF2DDEF165004AA618 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E5A5F5B42D1647E600140551 /* Products */;
@@ -651,6 +654,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "T----Land-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Торт&Land";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Нам нужно ваше местоположение, чтобы показать его на карте.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Мы используем ваше местоположение для отображения адреса доставки";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -911,6 +915,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "T----Land-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Торт&Land";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Нам нужно ваше местоположение, чтобы показать его на карте.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Мы используем ваше местоположение для отображения адреса доставки";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -949,6 +954,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "T----Land-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Торт&Land";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Нам нужно ваше местоположение, чтобы показать его на карте.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Мы используем ваше местоположение для отображения адреса доставки";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1220,14 +1226,15 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		E5E532F72DDAC92C00E7C905 /* XCLocalSwiftPackageReference "../../bmstu-2025-cake-land-network-api" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../bmstu-2025-cake-land-network-api";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		E507A9BF2DDEF165004AA618 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mightyK1ngRichard/bmstu-2025-cake-land-network-api.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/yamoridon/ColorThiefSwift.git";
@@ -1239,6 +1246,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E507A9C02DDEF165004AA618 /* NetworkAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E507A9BF2DDEF165004AA618 /* XCRemoteSwiftPackageReference "bmstu-2025-cake-land-network-api" */;
+			productName = NetworkAPI;
+		};
 		E5296C372DBFD10B004887BB /* ColorThiefSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E5296C362DBFD10B004887BB /* XCRemoteSwiftPackageReference "ColorThiefSwift" */;

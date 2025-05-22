@@ -221,7 +221,7 @@ private extension OrderView {
     var orderInformationContainer: some View {
         Picker("Payment Type", selection: $viewModel.uiProperties.paymentMethod) {
             ForEach(PaymentMethod.allCases, id: \.self) { method in
-                Text(method.rawValue.capitalized)
+                Text(method.localizedName.capitalized)
             }
         }
         .font(.system(size: 14, weight: .regular))

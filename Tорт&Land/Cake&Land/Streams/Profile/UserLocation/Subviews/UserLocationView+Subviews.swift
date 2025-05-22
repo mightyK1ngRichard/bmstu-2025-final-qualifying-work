@@ -47,10 +47,18 @@ extension UserLocationView {
                 .presentationBackground(.ultraThinMaterial)
         }
         .overlay(alignment: .bottomTrailing) {
-            MapUserLocationButton(scope: locationSpace)
-                .buttonBorderShape(.circle)
-                .background(.ultraThinMaterial, in: .circle)
-                .padding()
+            Button {
+                Task {
+                    guard let coordinate = locationManager.userLocation else { return }
+                    await viewModel.updateUserLocation(with: coordinate)
+                }
+            } label: {
+                Image(systemName: "location.fill")
+                    .padding(14)
+            }
+            .background(.ultraThinMaterial, in: .circle)
+            .buttonBorderShape(.circle)
+            .padding()
         }
         .mapScope(locationSpace)
         .overlay(alignment: .top) {
@@ -117,7 +125,7 @@ private extension UserLocationView {
             .frame(height: 200)
             .clipShape(.rect(cornerRadius: 15))
 
-            TLButton("Select Address") {
+            TLButton(String(localized: "Select Address").uppercased()) {
                 viewModel.didSelectAddress()
             }
         }

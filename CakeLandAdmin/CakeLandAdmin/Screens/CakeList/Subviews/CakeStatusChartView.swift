@@ -20,7 +20,7 @@ struct CakeStatusChartView: View {
                         x: .value("Количество", count),
                         y: .value("Статус", status.title)
                     )
-                    .foregroundStyle(by: .value("Статус", status.title))
+                    .foregroundStyle(status.textColor)
                     .annotation(position: .overlay) {
                         Text("\(count)")
                             .font(.caption)
@@ -29,7 +29,7 @@ struct CakeStatusChartView: View {
             }
         }
         .chartLegend(.visible)
-        .frame(height: 200)
+        .frame(height: 180)
         .padding()
     }
 }

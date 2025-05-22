@@ -66,6 +66,7 @@ private extension SettingsView {
             updateHeaderImageButton
             editUserInfoContainer
             addressesView
+            model3DContainer
             logoutButton
         case let .error(content):
             errorView(content: content)
@@ -166,6 +167,20 @@ private extension SettingsView {
                 Label("Add address", systemImage: "plus")
             }
             .foregroundStyle(Constants.textSecondary)
+        }
+    }
+
+    var model3DContainer: some View {
+        Section(header: Text("3D Model")) {
+            Button("Create 3D model") {
+                openRealityComposer()
+            }
+        }
+    }
+
+    private func openRealityComposer() {
+        if let appStoreURL = URL(string: "https://apps.apple.com/app/reality-composer/id1462358802") {
+            UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
         }
     }
 
