@@ -18,6 +18,14 @@ struct CakesListView: View {
             viewModel.setEnvironmentObjects(coordinator: coordinator, modelContext: modelContext)
             viewModel.fetchData(fromMemory: false)
         }
+        .onOpenURL { url in
+            guard let scheme = url.scheme, scheme == "cakeland",
+                  url.host() == "cake"
+            else { return }
+
+            let cakeID = url.lastPathComponent
+            viewModel.openCakeFromDeepLink(cakeID: cakeID)
+        }
         .navigationDestination(for: CakesListModel.Screens.self) { screen in
             openNextScreen(screen)
         }

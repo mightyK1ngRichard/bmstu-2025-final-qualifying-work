@@ -170,6 +170,13 @@ extension CakesListViewModel {
     /// Нажали на лайк карточки товара
     func didTapLikeButton(model: CakeModel, isSelected: Bool) {}
 
+    func openCakeFromDeepLink(cakeID: String) {
+        Task { @MainActor in
+            let response = try await cakeService.fetchCakeByID(cakeID: cakeID)
+            coordinator.addScreen(RootModel.Screens.details(CakeModel(from: response.cake)))
+        }
+    }
+
 }
 
 // MARK: - Setter

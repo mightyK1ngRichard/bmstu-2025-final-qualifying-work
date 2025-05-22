@@ -7,15 +7,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RootView: View {
     @State var viewModel: RootDisplayData & RootViewModelInput
     @State private var coordinator = Coordinator()
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         NavigationStack(path: $coordinator.navPath) {
             mainContainer.onFirstAppear {
-                viewModel.setEnvironmentObjects(coordinator)
+                viewModel.setEnvironmentObjects(coordinator, modelContext: modelContext)
                 viewModel.fetchUserInfoIfNeeded()
             }
             .defaultAlert(

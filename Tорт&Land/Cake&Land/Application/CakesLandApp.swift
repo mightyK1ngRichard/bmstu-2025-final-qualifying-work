@@ -12,13 +12,30 @@ import SwiftData
 
 @main
 struct CakesLandApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var startScreenControl = StartScreenControl()
+    @Environment(\.scenePhase) private var scenePhase
     let container: ModelContainer
 
     var body: some Scene {
         WindowGroup {
-            RootAssembler.assemble(startScreenControl: startScreenControl)
-                .environment(startScreenControl)
+            RootAssembler.assemble(
+                startScreenControl: startScreenControl,
+                networkManager: AppDelegate.networkManager
+            )
+            .environment(startScreenControl)
+            .onChange(of: scenePhase) { _, newPhase in
+                switch newPhase {
+                case .active:
+                    print("[DEBUG]: App is active again")
+                case .background:
+                    print("[DEBUG]: App went to background")
+                case .inactive:
+                    print("[DEBUG]: App is inactive")
+                @unknown default:
+                    break
+                }
+            }
         }
         .modelContainer(container)
     }
@@ -34,3 +51,22 @@ struct CakesLandApp: App {
         }
     }
 }
+
+// MARK: - AppDelegate
+
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    static var networkManager = NetworkManager()
+    static func restartNetworkManager() {
+        networkManager.closeConnections()
+        networkManager = NetworkManager()
+    }
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
+        print("[DEBUG]: App did finish launching")
+        return true
+    }
+}
+

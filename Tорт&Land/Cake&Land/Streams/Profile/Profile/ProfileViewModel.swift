@@ -201,9 +201,18 @@ extension ProfileViewModel {
         Task { @MainActor in
             uiProperties.screenState = .loading
 
-            // TODO: Если это текущий пользователь, надо достать ID
-            guard let userID = user?.id,
-                  let savedData = try? await fetchUserFromMemory(userID: userID) else {
+            let savedData: (UserEntity, [PreviewCakeEntity])? = await {
+                if let userID = user?.id, let data = try? await fetchUserFromMemory(userID: userID) {
+                    return data
+                } else if let userID = UserDefaults.standard.string(forKey: UserDefaultsKeys.currentUserID.rawValue),
+                          let data = try? await fetchUserFromMemory(userID: userID) {
+                    return data
+                }
+
+                return nil
+            }()
+
+            guard let savedData else {
                 uiProperties.screenState = .error(
                     content: AlertContent(title: StringConstants.userNotFound, message: StringConstants.userHasNotBeenCached)
                 )

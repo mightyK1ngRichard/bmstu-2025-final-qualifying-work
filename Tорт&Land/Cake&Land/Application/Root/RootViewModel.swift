@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import NetworkAPI
+import SwiftData
 import Observation
 import DesignSystem
 import Core
@@ -28,6 +29,8 @@ final class RootViewModel: RootDisplayData, RootViewModelOutput, @preconcurrency
     @ObservationIgnored
     private let imageProvider: ImageLoaderProvider
     let startScreenControl: StartScreenControl
+    @ObservationIgnored
+    private var modelContext: ModelContext?
     private var coordinator: Coordinator!
 
     @MainActor
@@ -64,14 +67,19 @@ extension RootViewModel {
 extension RootViewModel {
 
     func fetchUserInfoIfNeeded() {
-        // FIXME: Сделать получение юзера из SwiftData
-        // currentUser =
-
         guard currentUser == nil else {
             return
         }
 
+        let currentUserID = UserDefaults.standard.string(forKey: UserDefaultsKeys.currentUserID.rawValue)
+
         Task { @MainActor in
+            // Доставём пользователя из памяти устройства
+            if let currentUserID, let savedUser = await fetchUserFromMemory(userID: currentUserID) {
+                currentUser = savedUser
+            }
+
+            // Делаем сетевой запрос
             do {
                 let result = try await networkManager.profileService.getUserInfo()
                 let user = UserModel(from: result.userInfo)
@@ -90,6 +98,15 @@ extension RootViewModel {
                 }
             }
         }
+    }
+
+    @MainActor
+    private func fetchUserFromMemory(userID: String) async -> UserModel? {
+        guard let modelContext,
+              let sdUser = try? await SDMemoryManager.shared.fetchUserFromMemory(userID: userID, using: modelContext)
+        else { return nil }
+
+        return UserModel(from: sdUser.asEntity)
     }
 
 }
@@ -215,6 +232,9 @@ extension RootViewModel {
     @MainActor
     func updateCurrentUser(_ user: UserModel?) {
         currentUser = user
+        if let userID = user?.id {
+            UserDefaults.standard.set(userID, forKey: UserDefaultsKeys.currentUserID.rawValue)
+        }
     }
 
 }
@@ -222,9 +242,12 @@ extension RootViewModel {
 // MARK: - Setters
 
 extension RootViewModel {
-    func setEnvironmentObjects(_ coordinator: Coordinator) {
+    func setEnvironmentObjects(_ coordinator: Coordinator, modelContext: ModelContext) {
         if self.coordinator == nil {
             self.coordinator = coordinator
+        }
+        if self.modelContext == nil {
+            self.modelContext = modelContext
         }
     }
 }

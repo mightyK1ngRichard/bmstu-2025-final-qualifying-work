@@ -12,9 +12,8 @@ import Core
 
 final class RootAssembler {
     @MainActor
-    static func assemble(startScreenControl: StartScreenControl) -> RootView {
+    static func assemble(startScreenControl: StartScreenControl, networkManager: NetworkManager) -> RootView {
         let imageProvider = ImageLoaderProviderImpl()
-        let networkManager = NetworkManager()
 
         let viewModel = RootViewModel(
             networkManager: networkManager,

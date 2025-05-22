@@ -48,7 +48,10 @@ extension CakeDetailsView {
             }
 
             ToolbarItem(placement: .topBarTrailing) {
-                button3D
+                HStack {
+                    shareButton
+                    button3D
+                }
             }
         }
         .defaultAlert(
@@ -241,6 +244,13 @@ private extension CakeDetailsView {
 // MARK: - Tool Bar Items
 
 private extension CakeDetailsView {
+
+    @ViewBuilder
+    var shareButton: some View {
+        if let link = viewModel.makeShareLink() {
+            ShareLink(item: link)
+        }
+    }
 
     var backButton: some View {
         Button {
