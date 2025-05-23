@@ -78,6 +78,7 @@ struct CakeCardView: View {
 
 // MARK: - Preview
 
+#if DEBUG
 #Preview {
     @Previewable
     @State var cake = CommonMock.cakeMock
@@ -86,3 +87,4 @@ struct CakeCardView: View {
     .background(.ultraThinMaterial, in: .rect(cornerRadius: 12))
     .frame(width: 500, height: 550)
 }
+#endif

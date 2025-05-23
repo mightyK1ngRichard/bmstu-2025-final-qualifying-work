@@ -89,6 +89,17 @@ private extension OrderDetailView {
                         .multilineTextAlignment(.leading)
                         .textSelection(.enabled)
                 }
+
+                VStack(alignment: .leading) {
+                    let deeplink = "cakeland://cake/\(cake.id)"
+                    QRCodeView(urlString: deeplink)
+
+                    if let url = URL(string: deeplink) {
+                        ShareLink(item: url) {
+                            Label("Поделиться тортом в приложении", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                }
             }
 
             userContainer(user: cake.seller)
@@ -234,6 +245,7 @@ private extension OrderDetailView {
 
 // MARK: - Preview
 
+#if DEBUG
 #Preview {
     OrderDetailAssembler.assemble(
         order: CommonMock.orderMock,
@@ -242,3 +254,4 @@ private extension OrderDetailView {
     )
     .frame(width: 500, height: 400)
 }
+#endif

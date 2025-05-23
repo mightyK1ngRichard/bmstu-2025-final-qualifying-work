@@ -15,7 +15,7 @@ public extension OrderCell {
         var addressTitle = ""
         var mass = ""
         var totalAmount = ""
-        var status: OrderStatus = .pending
+        var status: OrderStatus = .pending(title: "")
         var titles = Titles()
 
         public init(
@@ -24,7 +24,7 @@ public extension OrderCell {
             addressTitle: String = "",
             mass: String = "",
             totalAmount: String = "",
-            status: OrderStatus = .pending,
+            status: OrderStatus = .pending(title: ""),
             titles: Titles = .init()
         ) {
             self.title = title
@@ -39,13 +39,13 @@ public extension OrderCell {
 
     enum OrderStatus: Sendable, Hashable {
         /// Заказ создан и ожидает обработки.
-        case pending
+        case pending(title: String)
         /// Заказ находится в пути
-        case shipped
+        case shipped(title: String)
         /// Заказ был успешно выполнен и доставлен.
-        case delivered
+        case delivered(title: String)
         /// Заказ отменён.
-        case cancelled
+        case cancelled(title: String)
     }
 }
 
@@ -72,7 +72,13 @@ public extension OrderCell.Configuration {
 
 extension OrderCell.OrderStatus {
     var title: String {
-        String(describing: self)
+        switch self {
+        case let .pending(title),
+            let .delivered(title),
+            let .shipped(title),
+            let .cancelled(title):
+            return title
+        }
     }
 
     /// Цвет текста статуса
@@ -190,7 +196,7 @@ private extension OrderCell {
             addressTitle: "Авиаторов Шоссе, 12",
             mass: "1000 г",
             totalAmount: "1000 ₽",
-            status: .pending
+            status: .pending(title: "Pending")
         )
     )
     .padding()

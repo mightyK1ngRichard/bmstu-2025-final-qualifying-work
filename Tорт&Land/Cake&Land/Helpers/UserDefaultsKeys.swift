@@ -10,4 +10,5 @@ import Foundation
 
 enum UserDefaultsKeys: String {
     case startScreenKind
+    case currentUserID
 }

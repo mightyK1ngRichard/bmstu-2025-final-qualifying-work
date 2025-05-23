@@ -137,7 +137,12 @@ final class SDMemoryManager {
         let predicate = #Predicate<SDUser> { $0.userID == userID }
         return try modelContext.fetchFirst(predicate: predicate)
     }
-
+    
+    /// Достаю данные категории из памяти устройства
+    /// - Parameters:
+    ///   - categoryID: Код категории
+    ///   - modelContext: Контекст контейнера SwiftData
+    /// - Returns: Данные категории
     @MainActor
     func fetchCategoryFromMemory(categoryID: String, using modelContext: ModelContext) async throws -> SDCategory? {
         let predicate = #Predicate<SDCategory> { $0.categoryID == categoryID }

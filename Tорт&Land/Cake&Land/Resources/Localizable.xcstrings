@@ -69,6 +69,16 @@
     "0" : {
 
     },
+    "3D Model" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D Модель"
+          }
+        }
+      }
+    },
     "200" : {
 
     },
@@ -354,6 +364,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Создать"
+          }
+        }
+      }
+    },
+    "Create 3D model" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создать 3D модель"
           }
         }
       }
@@ -1208,6 +1228,16 @@
         }
       }
     },
+    "Select Address" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать адрес"
+          }
+        }
+      }
+    },
     "Select header image" : {
       "localizations" : {
         "ru" : {
@@ -1293,7 +1323,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрес к доставке"
+            "value" : "Комментарий к доставке"
           }
         }
       }

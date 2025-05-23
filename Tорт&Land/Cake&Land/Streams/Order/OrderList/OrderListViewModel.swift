@@ -66,13 +66,13 @@ extension OrderListViewModel {
             status: {
                 switch order.status {
                 case .pending:
-                    return .pending
+                    return .pending(title: String(localized: "Pending"))
                 case .shipped:
-                    return .shipped
+                    return .shipped(title: String(localized: "Shipped"))
                 case .delivered:
-                    return .delivered
+                    return .delivered(title: String(localized: "Delivered"))
                 case .cancelled:
-                    return .cancelled
+                    return .cancelled(title: String(localized: "Cancelled"))
                 }
             }(),
             titles: .init(

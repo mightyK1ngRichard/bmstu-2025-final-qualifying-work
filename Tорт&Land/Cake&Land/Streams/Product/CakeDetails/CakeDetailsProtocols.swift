@@ -37,4 +37,5 @@ protocol CakeDetailsViewModelInput {
     func didTap3DButton()
     func visableButtonConfiguration() -> TLButton.Configuration
     func didSelectFile(url: URL)
+    func makeShareLink() -> URL?
 }

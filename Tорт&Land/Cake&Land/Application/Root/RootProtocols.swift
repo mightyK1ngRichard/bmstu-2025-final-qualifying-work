@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 import NetworkAPI
 import DesignSystem
 
@@ -34,7 +35,7 @@ protocol RootViewModelInput {
     func assemblyNotificationsListView() -> NotificationsListView
     func assemblyProfileView() -> ProfileView
 
-    func setEnvironmentObjects(_ coordinator: Coordinator)
+    func setEnvironmentObjects(_ coordinator: Coordinator, modelContext: ModelContext)
 }
 
 protocol RootViewModelOutput {

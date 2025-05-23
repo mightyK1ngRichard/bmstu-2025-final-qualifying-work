@@ -8,7 +8,7 @@
 
 #if DEBUG
 import Foundation
-@testable import NetworkAPI
+import NetworkAPI
 import UIKit
 import Core
 
@@ -99,39 +99,6 @@ enum CommonMockData {
             id: String(id),
             name: name ?? "Имя пользователя #\(id)",
             imageState: avatar ?? .fetched(.uiImage(TLPreviewAssets.king))
-        )
-    }
-
-    static func generateOrder() -> OrderEntity {
-        OrderEntity(
-            id: "18a643cf-5788-41ec-aac6-283d5a4b5e32",
-            totalPrice: 2499.99,
-            deliveryAddress: .init(
-                id: UUID().uuidString,
-                latitude: 55.7558,
-                longitude: 37.6173,
-                formattedAddress: "Россия, Москва, ул. Тортовая, д. 12",
-                entrance: "3",
-                floor: "5",
-                apartment: "42",
-                comment: "Охрана знает, просто позвоните"
-            ),
-            mass: 1500,
-            filling: .init(
-                id: UUID().uuidString,
-                name: "Шоколадно-банановая",
-                imageURL: "https://example.com/fillings/choco-banana.jpg",
-                content: "Шоколад, банан, сливки",
-                kgPrice: 950.0,
-                description: "Нежный шоколад с натуральным бананом — идеальный выбор для любителей сладкого."
-            ),
-            deliveryDate: Date().addingTimeInterval(60 * 60 * 24 * 3),
-            sellerID: UUID().uuidString,
-            paymentMethod: .ioMoney,
-            status: .pending,
-            cakeID: "57ae877b-64b0-4ac2-8775-d453e5116f9b",
-            createdAt: Date(),
-            updatedAt: Date()
         )
     }
 

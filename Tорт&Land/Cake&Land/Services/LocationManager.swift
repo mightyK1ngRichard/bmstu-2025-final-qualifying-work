@@ -24,6 +24,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
 
     func requestLocationAccess() {
         manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
     }
 
     func getCurrentLocation() {

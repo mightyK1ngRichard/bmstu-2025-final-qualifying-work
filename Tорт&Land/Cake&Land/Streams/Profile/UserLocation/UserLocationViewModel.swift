@@ -72,6 +72,38 @@ extension UserLocationViewModel {
         self.coordinator = coordinator
     }
 
+    func updateUserLocation(with coordinate: CLLocationCoordinate2D) async {
+        // Центрируем камеру
+        camera = .region(MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        ))
+
+        // Геокодинг
+        let geocoder = CLGeocoder()
+
+        do {
+            let placemarks = try await geocoder.reverseGeocodeLocation(
+                CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            )
+
+            guard let placemark = placemarks.first else {
+                print("[DEBUG]: Не удалось получить placemark")
+                return
+            }
+
+            // Создаем MKPlacemark и MKMapItem
+            let mkPlacemark = MKPlacemark(placemark: placemark)
+            let mkMapItem = MKMapItem(placemark: mkPlacemark)
+
+            // Добавляем в mapItems
+            mapItems = [mkMapItem]
+
+        } catch {
+            print("[DEBUG]: Ошибка геокодинга: \(error)")
+        }
+    }
+
 }
 
 private extension MKCoordinateRegion {

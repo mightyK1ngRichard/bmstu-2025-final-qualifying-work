@@ -68,6 +68,7 @@ extension CakeDetailsViewModel {
 
         Task { @MainActor in
             var fetchedCakeModel = cakeModel
+            var previewImage: String?
             var fillings: [FillingEntity] = []
             var categories: [CategoryEntity] = []
 
@@ -76,6 +77,7 @@ extension CakeDetailsViewModel {
                 let res = try await cakeService.fetchCakeByID(cakeID: cakeModel.id)
                 fetchedCakeModel = CakeModel(from: res.cake)
                 showFeedbackButton = res.canWriteFeedback
+                previewImage = res.cake.imageURL
                 fillings = res.cake.fillings
                 categories = res.cake.categories
 
@@ -99,6 +101,7 @@ extension CakeDetailsViewModel {
             bindingData.isLoading = false
 
             // Тянем изображения
+            fetchPreviewImage(previewURL: previewImage)
             fetchThumbnails(cakeImages: fetchedCakeModel.thumbnails)
             fetchFillingsImages(fillings: fillings)
             fetchCategoriesImages(categories: categories)
@@ -138,6 +141,18 @@ extension CakeDetailsViewModel {
                     cakeModel.fillings[safe: index]?.imageState = imageState
                 }
             }
+        }
+    }
+    
+    /// Получаем изображние превью тортика, если оно ещё не установлено
+    private func fetchPreviewImage(previewURL: String?) {
+        guard let previewURL,
+              cakeModel.previewImageState == .loading
+        else { return }
+
+        Task { @MainActor in
+            let imageState = await imageProvider.fetchImage(for: previewURL)
+            cakeModel.previewImageState = imageState
         }
     }
 
@@ -241,6 +256,10 @@ extension CakeDetailsViewModel {
 
             bindingData.visableButtonIsLoading = false
         }
+    }
+
+    func makeShareLink() -> URL? {
+        URL(string: "cakeland://cake/\(cakeModel.id)")
     }
 
 }

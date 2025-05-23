@@ -20,6 +20,7 @@ struct UserLocationView: View {
     var body: some View {
         mainContainer.onFirstAppear {
             viewModel.setEnvironmentObjects(coordinator: coordinator)
+            locationManager.requestLocationAccess()
         }
     }
 }

@@ -1,6 +1,15 @@
 {
-  "originHash" : "80c200e67a465635b2b4b726789ae205d49f8deff93f65cac6c2f7b72a396cd1",
+  "originHash" : "5a56ede1fc83dec70e966d8cd0de2edafa6db9d7c301283ad392521e9ab923fa",
   "pins" : [
+    {
+      "identity" : "bmstu-2025-cake-land-network-api",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mightyK1ngRichard/bmstu-2025-cake-land-network-api.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "fe209b1b4a3d192ed1ea33f7ad2d38f8ed7519e1"
+      }
+    },
     {
       "identity" : "colorthiefswift",
       "kind" : "remoteSourceControl",
@@ -69,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
-        "version" : "1.1.4"
+        "revision" : "c1805596154bb3a265fd91b8ac0c4433b4348fb0",
+        "version" : "1.2.0"
       }
     },
     {
@@ -123,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-extras.git",
       "state" : {
-        "revision" : "949cf2d3c895e3a576b0f5c5f902848ba17acbb9",
-        "version" : "1.27.0"
+        "revision" : "24cb15c9bc05e3e9eb5ebaf3d28517d42537bfb1",
+        "version" : "1.27.1"
       }
     },
     {

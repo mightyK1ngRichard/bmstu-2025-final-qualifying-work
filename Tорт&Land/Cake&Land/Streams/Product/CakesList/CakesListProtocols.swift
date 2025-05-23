@@ -32,6 +32,7 @@ protocol CakesListViewModelInput {
     func didTapCell(model: CakeModel)
     func didTapSectionAllButton(sectionKind: CakesListModel.SectionKind)
     func didTapLikeButton(model: CakeModel, isSelected: Bool)
+    func openCakeFromDeepLink(cakeID: String)
     // MARK: Setters
     func setEnvironmentObjects(coordinator: Coordinator, modelContext: ModelContext)
 }

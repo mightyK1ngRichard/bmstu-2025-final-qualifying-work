@@ -47,7 +47,16 @@ extension OrderModel {
 
 extension OrderStatusEntity {
     var title: String {
-        String(describing: self)
+        switch self {
+        case .pending:
+            return "Ожидает"
+        case .shipped:
+            return "Отправлен"
+        case .delivered:
+            return "Доставлен"
+        case .cancelled:
+            return "Отменён"
+        }
     }
 
     /// Цвет текста статуса

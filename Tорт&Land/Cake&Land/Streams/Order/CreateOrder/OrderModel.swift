@@ -33,9 +33,15 @@ extension OrderModel {
 
 // MARK: - PaymentMethod
 
-enum PaymentMethod: String, Hashable, CaseIterable {
+enum PaymentMethod: Hashable, CaseIterable {
     case cash
-    case ioMoney = "ЮMoney"
+
+    var localizedName: String {
+        switch self {
+        case .cash:
+            return String(localized: "Cash")
+        }
+    }
 }
 
 extension PaymentMethodEntity {
@@ -43,8 +49,6 @@ extension PaymentMethodEntity {
         switch model {
         case .cash:
             self = .cash
-        case .ioMoney:
-            self = .ioMoney
         }
     }
 }

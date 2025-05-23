@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>com.github.migthyK1ngRichard.CakesLand</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>cakeland</string>
+			</array>
+		</dict>
+	</array>
 	<key>NETWORK_IP</key>
 	<string>$(NETWORK_IP)</string>
 	<key>Ports</key>
